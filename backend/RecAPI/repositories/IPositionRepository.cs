@@ -7,7 +7,5 @@ namespace RecAPI.Repositories
     {
         void AddPosition(string Name, string Description);
         IEnumerable<Position> GetPositions();
-
-        string GetGreat();
     }
 }

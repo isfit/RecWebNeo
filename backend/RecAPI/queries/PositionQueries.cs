@@ -15,10 +15,5 @@ namespace RecAPI.Queries
             [Service]IPositionRepository repository
             ) =>
             repository.GetPositions();
-
-        public string GetGreating(
-            [Service]IPositionRepository repository
-            ) =>
-            repository.GetGreat();
     }
 }

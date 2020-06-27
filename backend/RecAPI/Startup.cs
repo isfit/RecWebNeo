@@ -9,19 +9,51 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using HotChocolate;
 using HotChocolate.AspNetCore;
+using Microsoft.Extensions.Options;
+
+using RecAPI.Queries;
+using RecAPI.Models;
+using RecAPI.Repositories;
+using RecAPI.Database;
+using Microsoft.Extensions.Configuration;
 
 namespace RecAPI
 {
     public class Startup
     {
+
+        private readonly IConfiguration Configuration;
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddGraphQL(
-                SchemaBuilder.New()
-                .AddQueryType<Query>()
+            // Database connection MongoDB
+            services.Configure<RecWebDatabaseSettings>(
+                Configuration.GetSection(nameof(RecWebDatabaseSettings)));
+
+            services.AddSingleton<IRecWebDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<RecWebDatabaseSettings>>().Value);
+            
+
+            // Add repositories to service
+            services.AddSingleton<IPositionRepository, PositionRepository>();
+            
+            // GraphQL Schema
+            services.AddGraphQL(sp => SchemaBuilder.New()
+                .AddServices(sp)
+                .AddQueryType(d => d.Name("Query"))
+                // Add Query types
+                .AddType<PositionQueries>()
+                .AddType<BaseQueries>()
+                // Add Model type
+                .AddType<Position>()
+                .Create()
             );
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

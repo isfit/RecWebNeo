@@ -45,6 +45,10 @@
             "HotChocolate.AspNetCore.Playground": {
               "target": "Package",
               "version": "[10.4.3, )"
+            },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[2.10.4, )"
             }
           },
           "imports": [

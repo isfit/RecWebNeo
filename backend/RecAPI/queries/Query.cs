@@ -9,5 +9,7 @@ namespace RecAPI.Queries
     {
         public string Hello => "World";
 
+        public string Secret => "Hush";
+
     }
 }

@@ -5,6 +5,7 @@ using HotChocolate.Types;
 using HotChocolate.Types.Relay;
 using RecAPI.Repositories;
 using RecAPI.Models;
+using RecAPI.InputType;
 
 namespace RecAPI.Queries
 {
@@ -15,5 +16,12 @@ namespace RecAPI.Queries
             [Service]IPositionRepository repository
             ) =>
             repository.GetPositions();
+
+        public Position GetPosition(
+            SinglePositionInput input,
+            [Service]IPositionRepository repository
+            ){
+                return repository.GetPosition(input.Id);
+            }
     }
 }

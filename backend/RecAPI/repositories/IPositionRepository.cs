@@ -5,7 +5,11 @@ namespace RecAPI.Repositories
 {
     public interface IPositionRepository
     {
-        void AddPosition(string Name, string Description);
         IEnumerable<Position> GetPositions();
+        Position GetPosition(string Id);
+        Position AddPosition(Position position);
+
+        Position UpdatePosition(string Id, Position position);
+        bool DeletePosition(string id);
     }
 }

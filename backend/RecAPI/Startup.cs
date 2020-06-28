@@ -10,12 +10,13 @@ using Microsoft.Extensions.Hosting;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 
 using RecAPI.Queries;
+using RecAPI.Mutations;
 using RecAPI.Models;
 using RecAPI.Repositories;
 using RecAPI.Database;
-using Microsoft.Extensions.Configuration;
 
 namespace RecAPI
 {
@@ -46,9 +47,12 @@ namespace RecAPI
             services.AddGraphQL(sp => SchemaBuilder.New()
                 .AddServices(sp)
                 .AddQueryType(d => d.Name("Query"))
+                .AddMutationType(d => d.Name("Mutation"))
                 // Add Query types
                 .AddType<PositionQueries>()
                 .AddType<BaseQueries>()
+                // Add mutations
+                .AddType<PositionMutations>()
                 // Add Model type
                 .AddType<Position>()
                 .Create()

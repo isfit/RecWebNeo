@@ -25,3 +25,6 @@ yarn-error.log*
 
 # Backend
 bin/
+
+# Visual Studio
+.vs/

@@ -21,6 +21,7 @@ namespace RecAPI.Mutations
             var position = new Position(
                 input.Name,
                 input.Description,
+                input.Team,
                 input.Tags
             );
             return repository.AddPosition(position);
@@ -36,13 +37,14 @@ namespace RecAPI.Mutations
                input.Id,
                input.Name ?? position.Name,
                input.Description ?? position.Description,
+               input.Team ?? position.Team,
                input.Tags ?? position.Tags
            );
            return repository.UpdatePosition(input.Id, updatePosition);
         }
 
         public bool DeletePosition(
-            SinglePositionInput input,
+            SingleModelInput input,
             [Service]IPositionRepository repository
         )
         {

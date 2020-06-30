@@ -5,57 +5,49 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace RecAPI.InputType
 {
-    public class CreatePositionInput
+    public class CreateTeamInput
     {
-        public CreatePositionInput(
+        public CreateTeamInput(
             string name,
             string description,
-            string team,
-            List<string> tags
+            string section
         )
         {
             Name = name;
             Description = description;
-            Team = team;
-            Tags = tags;
+            Section = section;
         }
         [GraphQLNonNullType]
         public string Name { get; }
         [GraphQLNonNullType]
         public string Description { get; }
         [BsonId]
-        public string Team { get; }
-        public List<string> Tags { get; }
-
+        //[GraphQLNonNullType]
+        public string Section { get; }
     }
-
-    public class UpdatePositionInput
+    public class UpdateTeamInput
     {
-        public UpdatePositionInput(
+        public UpdateTeamInput(
             string id,
             string name,
             string description,
-            string team,
-            List<string> tags
+            string section
         )
         {
             Id = id;
             Name = name;
             Description = description;
-            Team = team;
-            Tags = tags;
+            Section = section;
         }
         [BsonId]
         [GraphQLNonNullType]
         public string Id { get; }
-
         [GraphQLNonNullType]
         public string Name { get; }
         [GraphQLNonNullType]
         public string Description { get; }
         [BsonId]
-        public string Team { get; }
-        public List<string> Tags { get; }
-
+        //[GraphQLNonNullType]
+        public string Section { get; }
     }
 }

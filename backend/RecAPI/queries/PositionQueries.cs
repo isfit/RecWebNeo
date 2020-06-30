@@ -18,7 +18,7 @@ namespace RecAPI.Queries
             repository.GetPositions();
 
         public Position GetPosition(
-            SinglePositionInput input,
+            SingleModelInput input,
             [Service]IPositionRepository repository
             ){
                 return repository.GetPosition(input.Id);

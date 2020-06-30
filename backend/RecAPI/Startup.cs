@@ -42,6 +42,7 @@ namespace RecAPI
 
             // Add repositories to service
             services.AddSingleton<IPositionRepository, PositionRepository>();
+            services.AddSingleton<ITeamRepository, TeamRepository>();
             
             // GraphQL Schema
             services.AddGraphQL(sp => SchemaBuilder.New()
@@ -50,11 +51,14 @@ namespace RecAPI
                 .AddMutationType(d => d.Name("Mutation"))
                 // Add Query types
                 .AddType<PositionQueries>()
+                .AddType<TeamQueries>()
                 .AddType<BaseQueries>()
                 // Add mutations
                 .AddType<PositionMutations>()
+                .AddType<TeamMutations>()
                 // Add Model type
                 .AddType<Position>()
+                .AddType<Team>()
                 .Create()
             );
             

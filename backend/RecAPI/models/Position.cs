@@ -1,6 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
+using RecAPI.Resolvers;
 
 namespace RecAPI.Models
 {
@@ -10,11 +11,13 @@ namespace RecAPI.Models
         public Position(
             string name,
             string description,
+            string team,
             List<string> tags
         )
         {
             Name = name;
             Description = description;
+            Team = team;
             Tags = tags;
         }
 
@@ -22,12 +25,14 @@ namespace RecAPI.Models
             string id,
             string name,
             string description,
+            string team,
             List<string> tags
         )
         {
             Id = id;
             Name = name;
             Description = description;
+            Team = team;
             Tags = tags;
         }
         
@@ -50,6 +55,8 @@ namespace RecAPI.Models
         // Section (Model)
 
         // Team (Model) (Dependent on Section)
+        [GetTeamResolverAtribute]
+        public string Team { get; set; }
 
         public List<string> Tags { get; set; }
     }

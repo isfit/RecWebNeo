@@ -12,6 +12,9 @@ namespace RecAPI.Queries
     [ExtendObjectType(Name = "Query")]
     public class PositionQueries
     {
+        [UsePaging]
+        //[UseFiltering]
+        //[UseSorting]
         public IEnumerable<Position> GetPositions(
             [Service]IPositionRepository repository
             ) =>

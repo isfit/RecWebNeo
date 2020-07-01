@@ -27,6 +27,10 @@ namespace RecAPI.Repositories
             var data = _positions.Find(position => ids.Contains(position.Id)).ToList();
             return data;
         }
+        public IEnumerable<Position> GetTeamPositions(string teamId)
+        {
+            return _positions.Find(position => position.Team == teamId).ToList();
+        }
         public Position GetPosition(string Id)
         {
             var data = _positions.Find<Position>(position => position.Id == Id).FirstOrDefault();

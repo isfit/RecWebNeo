@@ -2,6 +2,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 using RecAPI.Resolvers;
+using HotChocolate.Types.Relay;
 
 namespace RecAPI.Models
 {

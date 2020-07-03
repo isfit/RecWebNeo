@@ -54,6 +54,7 @@ namespace RecAPI.Models
         // Deadline (Derviced from Admission periode)
 
         // Section (Model)
+        public string Section { get; set; }
 
         // Team (Model) (Dependent on Section)
         [GetTeamResolverAtribute]

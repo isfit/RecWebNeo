@@ -20,12 +20,12 @@ namespace RecAPI.Repositories
         public IEnumerable<Position> GetPositions()
         {
             var data = _positions.Find(position => true).ToList();
-            return data;
+            return data.Any() ? data : null;
         }
         public IEnumerable<Position> GetPositions(List<string> ids)
         {
             var data = _positions.Find(position => ids.Contains(position.Id)).ToList();
-            return data;
+            return data.Any() ? data : null;
         }
         public IEnumerable<Position> GetTeamPositions(string teamId)
         {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using RecAPI.Models;
 using RecAPI.Database;
 using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace RecAPI.Repositories
 {

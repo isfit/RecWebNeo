@@ -10,7 +10,6 @@ namespace RecAPI.Repositories
         Position GetPosition(string id);
         IEnumerable<Position> GetTeamPositions(string teamId);
         Position AddPosition(Position position);
-
         Position UpdatePosition(string id, Position position);
         bool DeletePosition(string id);
     }

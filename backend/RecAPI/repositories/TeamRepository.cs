@@ -45,7 +45,7 @@ namespace RecAPI.Repositories
         public Team AddTeam(Team team)
         {
             _teams.InsertOne(team);
-            return team;
+            return GetTeam(team.Id);
         }
         // Update a team
         public Team UpdateTeam(string id, Team updateTeam)

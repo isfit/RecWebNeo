@@ -39,7 +39,7 @@ namespace RecAPI.Repositories
         public Position AddPosition(Position position)
         {
             _positions.InsertOne(position);
-            return position;
+            return GetPosition(position.Id);
         }
         public Position UpdatePosition(string Id, Position updatePosition)
         {

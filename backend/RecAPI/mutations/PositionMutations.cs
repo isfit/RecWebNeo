@@ -21,6 +21,7 @@ namespace RecAPI.Mutations
             var position = new Position(
                 input.Name,
                 input.Description,
+                input.Section,
                 input.Team,
                 input.Tags
             );
@@ -37,6 +38,7 @@ namespace RecAPI.Mutations
                input.Id,
                input.Name ?? position.Name,
                input.Description ?? position.Description,
+               input.Section ?? position.Section,
                input.Team ?? position.Team,
                input.Tags ?? position.Tags
            );

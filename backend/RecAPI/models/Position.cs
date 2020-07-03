@@ -12,12 +12,14 @@ namespace RecAPI.Models
         public Position(
             string name,
             string description,
+            string section,
             string team,
             List<string> tags
         )
         {
             Name = name;
             Description = description;
+            Section = section;
             Team = team;
             Tags = tags;
         }
@@ -26,6 +28,7 @@ namespace RecAPI.Models
             string id,
             string name,
             string description,
+            string section,
             string team,
             List<string> tags
         )
@@ -33,30 +36,24 @@ namespace RecAPI.Models
             Id = id;
             Name = name;
             Description = description;
+            Section = section;
             Team = team;
             Tags = tags;
         }
-        
-        
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonRequired]
         public string Id { get; set; }
-        
         [BsonRequired]
         public string Name { get; set; }
-        
         [BsonRequired]
         public string Description { get; set; }
-
         // AdmisionPeriode (model)
 
         // Deadline (Derviced from Admission periode)
 
-        // Section (Model)
+        [GetPositionSectionResolverAtribute]
         public string Section { get; set; }
-
-        // Team (Model) (Dependent on Section)
         [GetTeamResolverAtribute]
         public string Team { get; set; }
 

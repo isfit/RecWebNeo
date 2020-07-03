@@ -27,7 +27,7 @@ namespace RecAPI.Repositories
         }
         public Section AddSection(Section section) {
             _sections.InsertOne(section);
-            return GetSection(section.Id);
+            return section;
         }
         public Section UpdateSection(string id, Section updateSection) {
             _sections.ReplaceOne(team => team.Id == id, updateSection);

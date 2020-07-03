@@ -24,10 +24,15 @@ namespace RecAPI.Models
             Name = name;
             Description = description;
         }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonRequired]
         public string Id { get; set; }
+        [BsonRequired]
         public string Name { get; set; }
+        [BsonRequired]
         public string Description { get; set; }
-        public List<Position> Positions { get; }
         public List<Team> Teams { get; }
+        public List<Position> Positions { get; }
     }
 }

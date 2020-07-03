@@ -6,6 +6,8 @@ namespace RecAPI.Database
         public string DatabaseName { get; set; }
         public string PositionCollectionName { get; set; }
         public string TeamCollectionName { get; set; }
+        public string SectionCollectionName { get; set; }
+        
     }
     public interface IRecWebDatabaseSettings
     {
@@ -13,5 +15,6 @@ namespace RecAPI.Database
         string DatabaseName { get; set; }
         string PositionCollectionName { get; set; }
         string TeamCollectionName { get; set; }
+        string SectionCollectionName { get; set; }
     }
 }

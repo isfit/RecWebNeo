@@ -53,9 +53,11 @@ namespace RecAPI
                 // Add Query types
                 .AddType<PositionQueries>()
                 .AddType<TeamQueries>()
+                .AddType<SectionQueries>()
                 // Add mutations
                 .AddType<PositionMutations>()
                 .AddType<TeamMutations>()
+                .AddType<SectionMutations>()
                 // Add Model type
                 .AddType<Position>()
                 .AddType<Team>()

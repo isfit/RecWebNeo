@@ -8,6 +8,18 @@ namespace RecAPI.Models
     public class Team
     {
          public Team(
+            string id,
+            string name,
+            string description,
+            string section
+        )
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            Section = section;
+        }
+         public Team(
             string name,
             string description,
             string section
@@ -26,6 +38,7 @@ namespace RecAPI.Models
         [BsonRequired]
         public string Description { get; set; }
         [BsonRequired]
+        [GetTeamSectionResolverAtribute]
         public string Section { get; set; }
         
         [GetTeamPositionsResolverAtribute]

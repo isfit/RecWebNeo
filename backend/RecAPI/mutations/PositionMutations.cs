@@ -15,14 +15,16 @@ namespace RecAPI.Mutations
 
         public Position CreatePosition(
             CreatePositionInput input,
-            [Service]IPositionRepository repository
+            [Service]IPositionRepository repository,
+            [Service]ITeamRepository _team
         )
         {
+            var team = _team.GetTeam(input.Team);
             var position = new Position(
                 input.Name,
                 input.Description,
                 input.Section,
-                input.Team,
+                team.Section == input.Team ? input.Team : null,
                 input.Tags
             );
             return repository.AddPosition(position);

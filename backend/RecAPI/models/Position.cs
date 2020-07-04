@@ -54,7 +54,7 @@ namespace RecAPI.Models
 
         [GetPositionSectionResolverAtribute]
         public string Section { get; set; }
-        [GetTeamResolverAtribute]
+        [GetPositionTeamResolverAtribute]
         public string Team { get; set; }
 
         public List<string> Tags { get; set; }

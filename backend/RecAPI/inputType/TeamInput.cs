@@ -42,9 +42,7 @@ namespace RecAPI.InputType
         [BsonId]
         [GraphQLNonNullType]
         public string Id { get; }
-        [GraphQLNonNullType]
         public string Name { get; }
-        [GraphQLNonNullType]
         public string Description { get; }
         [BsonId]
         //[GraphQLNonNullType]

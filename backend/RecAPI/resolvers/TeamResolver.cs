@@ -7,7 +7,7 @@ using RecAPI.Repositories;
 
 namespace RecAPI.Resolvers
 {
-    public sealed class GetTeamResolverAtribute : ObjectFieldDescriptorAttribute
+    public sealed class GetPositionTeamResolverAtribute : ObjectFieldDescriptorAttribute
     {
         public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
         {
@@ -16,6 +16,18 @@ namespace RecAPI.Resolvers
                 Position position = ctx.Parent<Position>();
                 ITeamRepository repository = ctx.Service<ITeamRepository>();
                 return repository.GetTeam(position.Team);
+            });
+        }
+    }
+    public sealed class GetSectionTeamResolverAtribute : ObjectFieldDescriptorAttribute
+    {
+        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
+        {
+            descriptor.Resolver(ctx =>
+            {
+                Section section = ctx.Parent<Section>();
+                ITeamRepository repository = ctx.Service<ITeamRepository>();
+                return repository.GetTeams(section.Id);
             });
         }
     }

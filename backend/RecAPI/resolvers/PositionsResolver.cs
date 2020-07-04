@@ -19,4 +19,16 @@ namespace RecAPI.Resolvers
             });
         }
     }
+    public sealed class GetSectionPositionsResolverAtribute : ObjectFieldDescriptorAttribute
+    {
+        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
+        {
+            descriptor.Resolver(ctx =>
+            {
+                Section section = ctx.Parent<Section>();
+                IPositionRepository repository = ctx.Service<IPositionRepository>();
+                return repository.GetTeamPositions(section.Id);
+            });
+        }
+    }
 }

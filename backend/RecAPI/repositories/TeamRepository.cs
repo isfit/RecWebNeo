@@ -27,7 +27,7 @@ namespace RecAPI.Repositories
         public IEnumerable<Team> GetTeams(string sectionId)
         {
             // TODO: Need sections
-            return new List<Team>();
+            return _teams.Find(team => team.Section == sectionId).ToList();
         }
         // Get temas gived a list of Ids
         public IEnumerable<Team> GetTeams(List<string> ids)

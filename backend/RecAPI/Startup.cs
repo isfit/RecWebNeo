@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using HotChocolate;
@@ -12,10 +11,18 @@ using HotChocolate.AspNetCore;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
 
-using RecAPI.Queries;
-using RecAPI.Mutations;
-using RecAPI.Models;
-using RecAPI.Repositories;
+using RecAPI.Positions.Models;
+using RecAPI.Positions.Repositories;
+using RecAPI.Positions.Queries;
+using RecAPI.Positions.Mutations;
+using RecAPI.Teams.Models;
+using RecAPI.Teams.Repositories;
+using RecAPI.Teams.Queries;
+using RecAPI.Teams.Mutations;
+using RecAPI.Sections.Models;
+using RecAPI.Sections.Repositories;
+using RecAPI.Sections.Queries;
+using RecAPI.Sections.Mutations;
 using RecAPI.Database;
 
 namespace RecAPI
@@ -42,6 +49,8 @@ namespace RecAPI
 
             // Add repositories to service
             services.AddSingleton<IPositionRepository, PositionRepository>();
+            services.AddSingleton<ITeamRepository, TeamRepository>();
+            services.AddSingleton<ISectionRepository, SectionRepository>();
             
             // GraphQL Schema
             services.AddGraphQL(sp => SchemaBuilder.New()
@@ -50,11 +59,16 @@ namespace RecAPI
                 .AddMutationType(d => d.Name("Mutation"))
                 // Add Query types
                 .AddType<PositionQueries>()
-                .AddType<BaseQueries>()
+                .AddType<TeamQueries>()
+                .AddType<SectionQueries>()
                 // Add mutations
                 .AddType<PositionMutations>()
+                .AddType<TeamMutations>()
+                .AddType<SectionMutations>()
                 // Add Model type
                 .AddType<Position>()
+                .AddType<Team>()
+                .AddType<Section>()
                 .Create()
             );
             

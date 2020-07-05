@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using RecAPI.Models;
+using RecAPI.Positions.Models;
 
-namespace RecAPI.Repositories
+namespace RecAPI.Positions.Repositories
 {
     public interface IPositionRepository
     {

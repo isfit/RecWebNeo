@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using HotChocolate;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
-using RecAPI.Repositories;
-using RecAPI.Models;
-using RecAPI.InputType;
-namespace RecAPI.Queries
+using RecAPI.Teams.Repositories;
+using RecAPI.Teams.Models;
+using RecAPI.Generic.InputType;
+namespace RecAPI.Teams.Queries
 {
     [ExtendObjectType(Name = "Query")]
     public class TeamQueries

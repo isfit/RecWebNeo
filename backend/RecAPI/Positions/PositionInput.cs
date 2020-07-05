@@ -1,43 +1,54 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using HotChocolate;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace RecAPI.InputType
+namespace RecAPI.Positions.InputType
 {
-    public class CreateTeamInput
+    public class CreatePositionInput
     {
-        public CreateTeamInput(
+        public CreatePositionInput(
             string name,
             string description,
-            string section
+            string section,
+            string team,
+            List<string> tags
         )
         {
             Name = name;
             Description = description;
             Section = section;
+            Team = team;
+            Tags = tags;
         }
         [GraphQLNonNullType]
         public string Name { get; }
         [GraphQLNonNullType]
         public string Description { get; }
         [BsonId]
-        //[GraphQLNonNullType]
         public string Section { get; }
+        [BsonId]
+        public string Team { get; }
+        public List<string> Tags { get; }
+
     }
-    public class UpdateTeamInput
+
+    public class UpdatePositionInput
     {
-        public UpdateTeamInput(
+        public UpdatePositionInput(
             string id,
             string name,
             string description,
-            string section
+            string section,
+            string team,
+            List<string> tags
         )
         {
             Id = id;
             Name = name;
             Description = description;
             Section = section;
+            Team = team;
+            Tags = tags;
         }
         [BsonId]
         [GraphQLNonNullType]
@@ -45,7 +56,10 @@ namespace RecAPI.InputType
         public string Name { get; }
         public string Description { get; }
         [BsonId]
-        //[GraphQLNonNullType]
         public string Section { get; }
+        [BsonId]
+        public string Team { get; }
+        public List<string> Tags { get; }
+
     }
 }

@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using HotChocolate;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace RecAPI.InputType
+namespace RecAPI.Generic.InputType
 {
     public class SingleModelInput
     {

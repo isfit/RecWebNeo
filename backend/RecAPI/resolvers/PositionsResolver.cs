@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using HotChocolate.Types;
 using HotChocolate.Types.Descriptors;
-using RecAPI.Models;
-using RecAPI.Repositories;
+using RecAPI.Teams.Models;
+using RecAPI.Sections.Models;
+using RecAPI.Positions.Repositories;
 
 namespace RecAPI.Resolvers
 {

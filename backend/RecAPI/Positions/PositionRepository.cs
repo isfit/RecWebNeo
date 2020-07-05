@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using RecAPI.Models;
+using RecAPI.Positions.Models;
 using RecAPI.Database;
 
 using MongoDB.Driver;
 
-namespace RecAPI.Repositories
+namespace RecAPI.Positions.Repositories
 {
     public class PositionRepository : IPositionRepository
     {

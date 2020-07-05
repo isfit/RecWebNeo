@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using RecAPI.Models;
+using RecAPI.Sections.Models;
 using RecAPI.Database;
 using MongoDB.Driver;
-using MongoDB.Bson;
 
-namespace RecAPI.Repositories
+namespace RecAPI.Sections.Repositories
 {
     public class SectionRepository : ISectionRepository
     {

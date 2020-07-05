@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using RecAPI.Models;
+using RecAPI.Teams.Models;
 
-namespace RecAPI.Repositories
+namespace RecAPI.Teams.Repositories
 {
     public interface ITeamRepository
     {

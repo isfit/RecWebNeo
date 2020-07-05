@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using HotChocolate;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
-using RecAPI.Repositories;
-using RecAPI.Models;
-using RecAPI.InputType;
+using RecAPI.Positions.Repositories;
+using RecAPI.Positions.Models;
+using RecAPI.Generic.InputType;
 
-namespace RecAPI.Queries
+namespace RecAPI.Positions.Queries
 {
     [ExtendObjectType(Name = "Query")]
     public class PositionQueries

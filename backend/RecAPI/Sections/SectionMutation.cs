@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using HotChocolate;
 using HotChocolate.Types;
-using RecAPI.Repositories;
-using RecAPI.Models;
-using RecAPI.InputType;
+using RecAPI.Sections.Repositories;
+using RecAPI.Sections.Models;
+using RecAPI.Sections.InputType;
+using RecAPI.Generic.InputType;
 
-namespace RecAPI.Mutations
+namespace RecAPI.Sections.Mutations
 {
     [ExtendObjectType(Name= "Mutation")]
     public class SectionMutations

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using HotChocolate;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
-using RecAPI.Repositories;
-using RecAPI.Models;
-using RecAPI.InputType;
-namespace RecAPI.Queries
+using RecAPI.Sections.Repositories;
+using RecAPI.Sections.Models;
+using RecAPI.Generic.InputType;
+
+namespace RecAPI.Sections.Queries
 {
     [ExtendObjectType(Name = "Query")]
     public class SectionQueries

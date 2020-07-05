@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using HotChocolate;
 using HotChocolate.Types;
-using RecAPI.Repositories;
-using RecAPI.Models;
-using RecAPI.InputType;
+using RecAPI.Teams.Repositories;
+using RecAPI.Teams.Models;
+using RecAPI.Teams.InputType;
+using RecAPI.Generic.InputType;
 
-namespace RecAPI.Mutations
+namespace RecAPI.Teams.Mutations
 {
     [ExtendObjectType(Name= "Mutation")]
     public class TeamMutations

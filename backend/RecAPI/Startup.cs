@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using HotChocolate;
@@ -12,10 +11,18 @@ using HotChocolate.AspNetCore;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
 
-using RecAPI.Queries;
-using RecAPI.Mutations;
-using RecAPI.Models;
-using RecAPI.Repositories;
+using RecAPI.Positions.Models;
+using RecAPI.Positions.Repositories;
+using RecAPI.Positions.Queries;
+using RecAPI.Positions.Mutations;
+using RecAPI.Teams.Models;
+using RecAPI.Teams.Repositories;
+using RecAPI.Teams.Queries;
+using RecAPI.Teams.Mutations;
+using RecAPI.Sections.Models;
+using RecAPI.Sections.Repositories;
+using RecAPI.Sections.Queries;
+using RecAPI.Sections.Mutations;
 using RecAPI.Database;
 
 namespace RecAPI

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using RecAPI.Models;
+using RecAPI.Sections.Models;
 
-namespace RecAPI.Repositories
+namespace RecAPI.Sections.Repositories
 {
     public interface ISectionRepository
     {

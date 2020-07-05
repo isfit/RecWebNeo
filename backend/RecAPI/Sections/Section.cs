@@ -2,32 +2,30 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 using RecAPI.Resolvers;
+using RecAPI.Teams.Models;
+using RecAPI.Positions.Models;
 
-namespace RecAPI.Models
+namespace RecAPI.Sections.Models
 {
-    public class Team
+    public class Section
     {
-         public Team(
+        public Section(
+            string name,
+            string description
+        )
+        {
+            Name = name;
+            Description = description;
+        }
+        public Section(
             string id,
             string name,
-            string description,
-            string section
+            string description
         )
         {
             Id = id;
             Name = name;
             Description = description;
-            Section = section;
-        }
-         public Team(
-            string name,
-            string description,
-            string section
-        )
-        {
-            Name = name;
-            Description = description;
-            Section = section;
         }
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -37,11 +35,9 @@ namespace RecAPI.Models
         public string Name { get; set; }
         [BsonRequired]
         public string Description { get; set; }
-        [BsonRequired]
-        [GetTeamSectionResolverAtribute]
-        public string Section { get; set; }
-        
-        [GetTeamPositionsResolverAtribute]
+        [GetSectionTeamResolverAtribute]
+        public List<Team> Teams { get; }
+        [GetSectionPositionsResolverAtribute]
         public List<Position> Positions { get; }
     }
 }

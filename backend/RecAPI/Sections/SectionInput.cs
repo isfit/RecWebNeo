@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using HotChocolate;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace RecAPI.InputType
+namespace RecAPI.Sections.InputType
 {
     public class CreateSectionInput
     {

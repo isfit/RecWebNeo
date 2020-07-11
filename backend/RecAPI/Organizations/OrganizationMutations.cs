@@ -3,7 +3,7 @@ using HotChocolate;
 using HotChocolate.Types;
 using RecAPI.Organizations.Repositories;
 using RecAPI.Organizations.Models;
-using RecApi.Organizations.InputType;
+using RecAPI.Organizations.InputType;
 using RecAPI.Generic.InputType;
 using HotChocolate.Execution;
 

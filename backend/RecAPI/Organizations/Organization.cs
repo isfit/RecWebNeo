@@ -2,7 +2,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 using RecAPI.Sections.Models;
-using RecAPI.AdmisionPeriodes.Model;
+using RecAPI.AdmisionPeriodes.Models;
 using RecAPI.Resolvers;
 
 

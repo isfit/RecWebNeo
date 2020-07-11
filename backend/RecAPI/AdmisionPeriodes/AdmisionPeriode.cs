@@ -6,7 +6,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using RecAPI.Resolvers;
 
-namespace RecAPI.AdmisionPeriodes.Model
+namespace RecAPI.AdmisionPeriodes.Models
 {
     public class AdmisionPeriode
     {
@@ -15,7 +15,7 @@ namespace RecAPI.AdmisionPeriodes.Model
         [BsonRequired]
         public string Id { get; set; }
         [BsonRequired]
-        public Organization Organization { get; set; }
+        public string Organization { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public List<Section> Sections { get; }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using HotChocolate;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace RecApi.Organizations.InputType
+namespace RecAPI.Organizations.InputType
 {
     public class CreateOrganizationInput
     {
@@ -45,6 +45,7 @@ namespace RecApi.Organizations.InputType
             AdmisionPeriodes = admisionPeriodes;
         }
         [BsonId]
+        [GraphQLNonNullType]
         public string Id { get; }
         [GraphQLNonNullType]
         public string Name { get; }

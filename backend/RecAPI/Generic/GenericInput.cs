@@ -17,6 +17,18 @@ namespace RecAPI.Generic.InputType
         public string Id { get; }
     }
 
+    public class SingleModelNameInput
+    {
+        public SingleModelNameInput(
+            string name
+        )
+        {
+            Name = name;
+        }
+        [GraphQLNonNullType]
+        public string Name { get; }
+    }
+
     public class MultipeModelsInput
     {
         public MultipeModelsInput(

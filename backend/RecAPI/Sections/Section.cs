@@ -9,24 +9,6 @@ namespace RecAPI.Sections.Models
 {
     public class Section
     {
-        public Section(
-            string name,
-            string description
-        )
-        {
-            Name = name;
-            Description = description;
-        }
-        public Section(
-            string id,
-            string name,
-            string description
-        )
-        {
-            Id = id;
-            Name = name;
-            Description = description;
-        }
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonRequired]
@@ -39,5 +21,6 @@ namespace RecAPI.Sections.Models
         public List<Team> Teams { get; }
         [GetSectionPositionsResolverAtribute]
         public List<Position> Positions { get; }
+        public string Organization { get; set; }
     }
 }

@@ -15,14 +15,22 @@ using RecAPI.Positions.Models;
 using RecAPI.Positions.Repositories;
 using RecAPI.Positions.Queries;
 using RecAPI.Positions.Mutations;
+
 using RecAPI.Teams.Models;
 using RecAPI.Teams.Repositories;
 using RecAPI.Teams.Queries;
 using RecAPI.Teams.Mutations;
+
 using RecAPI.Sections.Models;
 using RecAPI.Sections.Repositories;
 using RecAPI.Sections.Queries;
 using RecAPI.Sections.Mutations;
+
+using RecAPI.Organizations.Models;
+using RecAPI.Organizations.Repositories;
+using RecAPI.Organizations.Queries;
+using RecAPI.Organizations.Mutations;
+
 using RecAPI.Database;
 
 namespace RecAPI
@@ -51,6 +59,7 @@ namespace RecAPI
             services.AddSingleton<IPositionRepository, PositionRepository>();
             services.AddSingleton<ITeamRepository, TeamRepository>();
             services.AddSingleton<ISectionRepository, SectionRepository>();
+            services.AddSingleton<IOrganizationRepository, OrganizationRepository>();
             
             // GraphQL Schema
             services.AddGraphQL(sp => SchemaBuilder.New()
@@ -61,14 +70,17 @@ namespace RecAPI
                 .AddType<PositionQueries>()
                 .AddType<TeamQueries>()
                 .AddType<SectionQueries>()
+                .AddType<OrganizationQueries>()
                 // Add mutations
                 .AddType<PositionMutations>()
                 .AddType<TeamMutations>()
                 .AddType<SectionMutations>()
+                .AddType<OrganizationMutations>()
                 // Add Model type
                 .AddType<Position>()
                 .AddType<Team>()
                 .AddType<Section>()
+                .AddType<Organization>()
                 .Create()
             );
             

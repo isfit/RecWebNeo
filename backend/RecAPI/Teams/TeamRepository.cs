@@ -41,6 +41,11 @@ namespace RecAPI.Teams.Repositories
             var data = _teams.Find(team => team.Id == teamId).FirstOrDefault();
             return data;
         }
+        public Team GetTeamByName(string teamName)
+        {
+            var data = _teams.Find(team => team.Name == teamName).FirstOrDefault();
+            return data;
+        }
         // Add new team
         public Team AddTeam(Team team)
         {

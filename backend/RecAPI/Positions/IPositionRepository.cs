@@ -8,6 +8,7 @@ namespace RecAPI.Positions.Repositories
         IEnumerable<Position> GetPositions();
         IEnumerable<Position> GetPositions(List<string> ids);
         Position GetPosition(string id);
+        Position GetPositionByName(string name);
         IEnumerable<Position> GetPositionsByAdmisionPeriode(string admisionPeriodeId);
         IEnumerable<Position> GetTeamPositions(string teamId);
         IEnumerable<Position> GetSectionPositions(string sectionId);

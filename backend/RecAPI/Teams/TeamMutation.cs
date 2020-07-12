@@ -4,9 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using HotChocolate;
 using HotChocolate.Types;
 using RecAPI.Teams.Repositories;
+using RecAPI.Sections.Repositories;
 using RecAPI.Teams.Models;
 using RecAPI.Teams.InputType;
 using RecAPI.Generic.InputType;
+using RecAPI.Teams.ErrorHandeling;
+using RecAPI.Generic;
 
 namespace RecAPI.Teams.Mutations
 {
@@ -15,9 +18,12 @@ namespace RecAPI.Teams.Mutations
     {
         public Team CreateTeam(
             CreateTeamInput input,
-            [Service]ITeamRepository repository
+            [Service]ITeamRepository repository,
+            [Service]ISectionRepository _section
         )
         {
+            TeamError.UniqueNameError(repository, input.Name, null);
+            TeamError.SectionExists(_section, input.Section);
             var team = new Team()
             {
                 Name = input.Name,
@@ -29,10 +35,16 @@ namespace RecAPI.Teams.Mutations
 
         public Team UpdateTeam(
             UpdateTeamInput input,
-            [Service]ITeamRepository repository
+            [Service]ITeamRepository repository,
+            [Service]ISectionRepository _section
         )
         {
             var team = repository.GetTeam(input.Id);
+            TeamError.UniqueNameError(repository, team.Name, input.Name);
+            if (input.Section != null)
+            {
+                TeamError.SectionExists(_section, input.Section);
+            }
             team.Name = input.Name ?? team.Name;
             team.Description = input.Description ?? team.Description;
             team.Section = input.Section ?? team.Section;

@@ -44,6 +44,11 @@ namespace RecAPI.Positions.Repositories
             var data = _positions.Find<Position>(position => position.Id == Id).FirstOrDefault();
             return data;
         }
+        public Position GetPositionByName(string name)
+        {
+            var data = _positions.Find<Position>(position => position.Name == name).FirstOrDefault();
+            return data;
+        }
         public Position AddPosition(Position position)
         {
             _positions.InsertOne(position);

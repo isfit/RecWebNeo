@@ -6,7 +6,8 @@ using RecAPI.Positions.Models;
 using RecAPI.Positions.InputType;
 using RecAPI.Generic.InputType;
 using RecAPI.Teams.Repositories;
-using RecAPI.Teams.Models;
+using RecAPI.Sections.Repositories;
+using RecAPI.Positions.ErrorHandeling;
 
 namespace RecAPI.Positions.Mutations
 {
@@ -17,15 +18,17 @@ namespace RecAPI.Positions.Mutations
         public Position CreatePosition(
             CreatePositionInput input,
             [Service]IPositionRepository repository,
+            [Service]ISectionRepository _section,
             [Service]ITeamRepository _team
         )
         {
-            string section;
-            // Checks that the team is part of the section
-            try {
-                section = _team.GetTeam(input.Team)?.Section;
-            } catch(FormatException err) {
-                section = null;
+            if(input.Section != null)
+            {
+                PositionError.SectionExists(_section, input.Section);
+            }
+            if (input.Team != null)
+            {
+                PositionError.TeamExists(_team, input.Team, input.Section);
             }
             var position = new Position()
             {
@@ -33,7 +36,7 @@ namespace RecAPI.Positions.Mutations
                 Description = input.Description,
                 AdmisionPeriode = input.AdmisionPeriode,
                 Section = input.Section,
-                Team = section == input.Section ? input.Team : null,
+                Team = input.Team,
                 Tags = input.Tags
             };
             return repository.AddPosition(position);
@@ -42,18 +45,25 @@ namespace RecAPI.Positions.Mutations
         public Position UpdatePosition(
             UpdatePositionInput input,
             [Service]IPositionRepository repository,
+            [Service]ISectionRepository _section,
             [Service]ITeamRepository _team
         )
         {
-            string section;
-            // Checks that the team is part of the section
+            // Error cheking
             var position = repository.GetPosition(input.Id);
-            try {
-                string team = input.Team ?? position.Team;
-                section = _team.GetTeam(team)?.Section;
-            } catch(FormatException err) {
-                section = null;
+            if(input.Section != null)
+            {
+                PositionError.SectionExists(_section, input.Section);
             }
+            if(input.Team != null)
+            {
+                PositionError.TeamExists(_team, input.Team, input.Section ?? position.Section);
+            }
+            else if(input.Section != null)
+            {
+                PositionError.TeamExists(_team, position.Team, input.Section);
+            }
+
            var updatePosition = new Position()
            {
                Id = input.Id,
@@ -61,7 +71,7 @@ namespace RecAPI.Positions.Mutations
                Description = input.Description ?? position.Description,
                AdmisionPeriode = input.AdmisionPeriode ?? position.AdmisionPeriode,
                Section = input.Section ?? position.Section,
-               Team = section == input.Section ? (input.Team ?? position.Team) : null,
+               Team = input.Team ?? position.Team,
                Tags = input.Tags ?? position.Tags
            };
            return repository.UpdatePosition(input.Id, updatePosition);

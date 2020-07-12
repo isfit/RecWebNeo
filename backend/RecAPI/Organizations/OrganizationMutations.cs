@@ -6,7 +6,7 @@ using RecAPI.Organizations.Models;
 using RecAPI.Organizations.InputType;
 using RecAPI.Generic.InputType;
 using HotChocolate.Execution;
-using RecAPI.Generic;
+using RecAPI.Organizations.ErrorHandeling;
 
 namespace RecAPI.Organizations.Mutations
 {

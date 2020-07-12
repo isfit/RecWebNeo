@@ -1,13 +1,9 @@
-using System;
-using HotChocolate;
-using HotChocolate.Types;
-using RecAPI.Organizations.Repositories;
-using RecAPI.Organizations.Models;
-using RecAPI.Organizations.InputType;
-using RecAPI.Generic.InputType;
-using HotChocolate.Execution;
 
-namespace RecAPI.Generic
+using HotChocolate;
+using HotChocolate.Execution;
+using RecAPI.Organizations.Repositories;
+
+namespace RecAPI.Organizations.ErrorHandeling
 {
     public class OrganizationError
     {

@@ -6,6 +6,7 @@ using RecAPI.Organizations.Models;
 using RecAPI.Organizations.InputType;
 using RecAPI.Generic.InputType;
 using HotChocolate.Execution;
+using RecAPI.Generic;
 
 namespace RecAPI.Organizations.Mutations
 {
@@ -17,10 +18,7 @@ namespace RecAPI.Organizations.Mutations
             [Service]IOrganizationRepository repository
         )
         {
-            var organizationNameExist = repository.GetOrganizationByName(input.Name);
-            if (organizationNameExist != null){
-                throw new QueryException(ErrorBuilder.New().SetMessage("Organization name already exist!").Build());
-            }
+            OrganizationError.UniqueNameError(repository, input.Name, null); // Checks if the organization name is unique
             var organization = new Organization()
             {
                 Name = input.Name,
@@ -35,11 +33,7 @@ namespace RecAPI.Organizations.Mutations
         )
         {
             var organization = repository.GetOrganization(input.Id);
-            var organizationNameExist = input.Name == organization.Name ? false : repository.GetOrganizationByName(input.Name) != null;
-            if (organizationNameExist)
-            {
-                throw new QueryException(ErrorBuilder.New().SetMessage("Organization name already exist!").Build());
-            }
+            OrganizationError.UniqueNameError(repository, organization.Name, input.Name); // Checks if the organization name is unique
             var updatedOrganization = new Organization()
             {
                 Id = input.Id,

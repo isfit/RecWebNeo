@@ -18,11 +18,12 @@ namespace RecAPI.Teams.Mutations
             [Service]ITeamRepository repository
         )
         {
-            var team = new Team(
-                input.Name,
-                input.Description,
-                input.Section
-            );
+            var team = new Team()
+            {
+                Name = input.Name,
+                Description = input.Description,
+                Section = input.Section
+            };
             return repository.AddTeam(team);
         }
 

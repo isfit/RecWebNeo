@@ -4,6 +4,8 @@ using RecAPI.Sections.Repositories;
 using RecAPI.Sections.Models;
 using RecAPI.Sections.InputType;
 using RecAPI.Generic.InputType;
+using RecAPI.Organizations.Repositories;
+using HotChocolate.Execution;
 
 namespace RecAPI.Sections.Mutations
 {
@@ -12,13 +14,21 @@ namespace RecAPI.Sections.Mutations
     {
         public Section CreateSection(
             CreateSectionInput input,
-            [Service]ISectionRepository repository
+            [Service]ISectionRepository repository,
+            [Service]IOrganizationRepository _organization
         )
         {
-            var section = new Section(
-                input.Name,
-                input.Description
-            );
+            var organization = _organization.GetOrganization(input.Organization);
+            if (organization == null)
+            {
+                throw new QueryException(ErrorBuilder.New().SetMessage("Linked Organization does not exist").Build());
+            }
+            var section = new Section()
+            {
+                Name = input.Name,
+                Description = input.Description,
+                Organization = input.Organization
+            };
             return repository.AddSection(section);
         }
 
@@ -30,6 +40,7 @@ namespace RecAPI.Sections.Mutations
             var section = repository.GetSection(input.Id);
             section.Name = input.Name ?? section.Name;
             section.Description = input.Description ?? section.Description;
+            section.Organization = input.Organization ?? section.Organization;
             return repository.UpdateSection(input.Id ,section);
         }
 

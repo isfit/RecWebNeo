@@ -9,35 +9,40 @@ namespace RecAPI.Sections.InputType
     {
         public CreateSectionInput(
             string name,
-            string description
+            string description,
+            string organization
         )
         {
             Name = name;
             Description = description;
+            Organization = organization;
         }
         [GraphQLNonNullType]
         public string Name { get; }
         [GraphQLNonNullType]
         public string Description { get; }
+        [GraphQLNonNullType]
+        public string Organization { get; }
     }
     public class UpdateSectionInput
     {
         public UpdateSectionInput(
             string id,
             string name,
-            string description
+            string description,
+            string organization
         )
         {
             Id = id;
             Name = name;
             Description = description;
+            Organization = organization;
         }
         [BsonId]
         [GraphQLNonNullType]
         public string Id { get; }
-        [GraphQLNonNullType]
         public string Name { get; }
-        [GraphQLNonNullType]
         public string Description { get; }
+        public string Organization { get; }
     }
 }

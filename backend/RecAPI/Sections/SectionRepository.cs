@@ -21,6 +21,10 @@ namespace RecAPI.Sections.Repositories
         public IEnumerable<Section> GetSections(List<string> ids) {
             return _sections.Find(section => ids.Contains(section.Id)).ToList();
         }
+        public IEnumerable<Section> GetSectionsByOrganization(string organizationId)
+        {
+            return _sections.Find(section => section.Organization == organizationId).ToList();
+        }
         public Section GetSection(string id) {
             return _sections.Find(section => section.Id == id).FirstOrDefault();
         }

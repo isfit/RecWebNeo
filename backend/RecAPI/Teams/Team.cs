@@ -8,28 +8,6 @@ namespace RecAPI.Teams.Models
 {
     public class Team
     {
-         public Team(
-            string id,
-            string name,
-            string description,
-            string section
-        )
-        {
-            Id = id;
-            Name = name;
-            Description = description;
-            Section = section;
-        }
-         public Team(
-            string name,
-            string description,
-            string section
-        )
-        {
-            Name = name;
-            Description = description;
-            Section = section;
-        }
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonRequired]
@@ -39,10 +17,10 @@ namespace RecAPI.Teams.Models
         [BsonRequired]
         public string Description { get; set; }
         [BsonRequired]
-        [GetTeamSectionResolverAtribute]
+        [SectionResolverTeam]
         public string Section { get; set; }
         
-        [GetTeamPositionsResolverAtribute]
+        [PositionResolverTeam]
         public List<Position> Positions { get; }
     }
 }

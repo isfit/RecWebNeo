@@ -27,13 +27,15 @@ namespace RecAPI.Positions.Mutations
             } catch(FormatException err) {
                 section = null;
             }
-            var position = new Position(
-                input.Name,
-                input.Description,
-                input.Section,
-                section == input.Section ? input.Team : null,
-                input.Tags
-            );
+            var position = new Position()
+            {
+                Name = input.Name,
+                Description = input.Description,
+                AdmisionPeriode = input.AdmisionPeriode,
+                Section = input.Section,
+                Team = section == input.Section ? input.Team : null,
+                Tags = input.Tags
+            };
             return repository.AddPosition(position);
         }
 
@@ -52,14 +54,16 @@ namespace RecAPI.Positions.Mutations
             } catch(FormatException err) {
                 section = null;
             }
-           var updatePosition = new Position(
-               input.Id,
-               input.Name ?? position.Name,
-               input.Description ?? position.Description,
-               input.Section ?? position.Section,
-               section == input.Section ? (input.Team ?? position.Team) : null,
-               input.Tags ?? position.Tags
-           );
+           var updatePosition = new Position()
+           {
+               Id = input.Id,
+               Name = input.Name ?? position.Name,
+               Description = input.Description ?? position.Description,
+               AdmisionPeriode = input.AdmisionPeriode ?? position.AdmisionPeriode,
+               Section = input.Section ?? position.Section,
+               Team = section == input.Section ? (input.Team ?? position.Team) : null,
+               Tags = input.Tags ?? position.Tags
+           };
            return repository.UpdatePosition(input.Id, updatePosition);
         }
 

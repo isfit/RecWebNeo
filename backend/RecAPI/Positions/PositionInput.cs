@@ -9,6 +9,7 @@ namespace RecAPI.Positions.InputType
         public CreatePositionInput(
             string name,
             string description,
+            string admisionPeriode,
             string section,
             string team,
             List<string> tags
@@ -16,6 +17,7 @@ namespace RecAPI.Positions.InputType
         {
             Name = name;
             Description = description;
+            AdmisionPeriode = admisionPeriode;
             Section = section;
             Team = team;
             Tags = tags;
@@ -24,6 +26,9 @@ namespace RecAPI.Positions.InputType
         public string Name { get; }
         [GraphQLNonNullType]
         public string Description { get; }
+        [BsonId]
+        [GraphQLNonNullType]
+        public string AdmisionPeriode { get; }
         [BsonId]
         public string Section { get; }
         [BsonId]
@@ -38,6 +43,7 @@ namespace RecAPI.Positions.InputType
             string id,
             string name,
             string description,
+            string admisionPeriode,
             string section,
             string team,
             List<string> tags
@@ -46,6 +52,7 @@ namespace RecAPI.Positions.InputType
             Id = id;
             Name = name;
             Description = description;
+            AdmisionPeriode = admisionPeriode;
             Section = section;
             Team = team;
             Tags = tags;
@@ -55,6 +62,8 @@ namespace RecAPI.Positions.InputType
         public string Id { get; }
         public string Name { get; }
         public string Description { get; }
+        [BsonId]
+        public string AdmisionPeriode { get; }
         [BsonId]
         public string Section { get; }
         [BsonId]

@@ -1,0 +1,36 @@
+using System;
+using System.Collections.Generic;
+using HotChocolate;
+using HotChocolate.Types;
+using HotChocolate.Types.Relay;
+using RecAPI.Organizations.Repositories;
+using RecAPI.Organizations.Models;
+using RecAPI.Generic.InputType;
+
+namespace RecAPI.Organizations.Queries
+{
+    [ExtendObjectType(Name = "Query")]
+    public class OrganizationQueries
+    {
+        public IEnumerable<Organization> GetOrganizations(
+            [Service]IOrganizationRepository repository
+        ) =>
+        repository.GetOrganizations();
+    
+        public Organization GetOrganization(
+            SingleModelInput input,
+            [Service]IOrganizationRepository repository
+        )
+        {
+            return repository.GetOrganization(input.Id);
+        }
+        
+        public Organization GetOrganizationByName(
+            SingleModelNameInput input,
+            [Service]IOrganizationRepository repository
+        )
+        {
+            return repository.GetOrganization(input.Name);
+        }
+    }
+}

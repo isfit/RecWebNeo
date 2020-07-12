@@ -15,15 +15,12 @@ namespace RecAPI.Positions.Models
         public string Name { get; set; }
         [BsonRequired]
         public string Description { get; set; }
-        // AdmisionPeriode (model)
-
-        // Deadline (Derviced from Admission periode)
-
-        [GetPositionSectionResolverAtribute]
+        [AdmisionPeriodeResolverPosition]
+        public string AdmisionPeriode { get; set; }
+        [SectionResolverPosition]
         public string Section { get; set; }
-        [GetPositionTeamResolverAtribute]
+        [TeamResolverPosition]
         public string Team { get; set; }
-
         public List<string> Tags { get; set; }
     }
 }

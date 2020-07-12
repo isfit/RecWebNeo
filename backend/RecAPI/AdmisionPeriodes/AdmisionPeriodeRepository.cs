@@ -24,6 +24,11 @@ namespace RecAPI.AdmisionPeriodes.Repositories
             var data = _admisionPeriode.Find(admisionPeriode => ids.Contains(admisionPeriode.Id)).ToList();
             return data;
         }
+        public IEnumerable<AdmisionPeriode> GetAdmisionPeriodesByOrganization(string organizationId)
+        {
+            var data = _admisionPeriode.Find(admisionPeriode => admisionPeriode.Organization == organizationId).ToList();
+            return data;
+        }
         public AdmisionPeriode GetAdmisionPeriode(string id)
         {
             var data = _admisionPeriode.Find(admisionPeriode => admisionPeriode.Id == id).FirstOrDefault();

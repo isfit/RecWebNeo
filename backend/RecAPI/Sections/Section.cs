@@ -17,10 +17,11 @@ namespace RecAPI.Sections.Models
         public string Name { get; set; }
         [BsonRequired]
         public string Description { get; set; }
-        [GetSectionTeamResolverAtribute]
+        [TeamResolverSection]
         public List<Team> Teams { get; }
-        [GetSectionPositionsResolverAtribute]
+        [PositionResolverSection]
         public List<Position> Positions { get; }
+        [OrganizationResolverSection]
         public string Organization { get; set; }
     }
 }

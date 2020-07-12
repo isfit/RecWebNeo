@@ -10,14 +10,12 @@ namespace RecAPI.AdmisionPeriodes.InputType
         public CreateAdmisionPeriodeInput(
             string organization,
             DateTime startDate,
-            DateTime endDate,
-            List<string> sections
+            DateTime endDate
         )
         {
             Organization = organization;
             StartDate = startDate;
             EndDate = endDate;
-            Sections = sections;
         }
         [BsonId]
         [GraphQLNonNullType]
@@ -28,8 +26,6 @@ namespace RecAPI.AdmisionPeriodes.InputType
         public DateTime StartDate { get; }
         [GraphQLNonNullType]
         public DateTime EndDate { get; }
-        public List<string> Sections { get; }
-
     }
     public class UpdateAdmisionPeriodesInput
     {
@@ -37,15 +33,13 @@ namespace RecAPI.AdmisionPeriodes.InputType
             string id,
             string organization,
             DateTime startDate,
-            DateTime endDate,
-            List<string> sections
+            DateTime endDate
         )
         {
             Id = id;
             Organization = organization;
             StartDate = startDate;
             EndDate = endDate;
-            Sections = sections;
         }
         [BsonId]
         [GraphQLNonNullType]
@@ -54,6 +48,5 @@ namespace RecAPI.AdmisionPeriodes.InputType
         public string Organization { get; }
         public DateTime StartDate { get; }
         public DateTime EndDate { get; }
-        public List<string> Sections { get; }
     }
 }

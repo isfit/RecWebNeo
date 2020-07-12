@@ -7,6 +7,7 @@ namespace RecAPI.Sections.Repositories
     {
         IEnumerable<Section> GetSections();
         IEnumerable<Section> GetSections(List<string> ids);
+        IEnumerable<Section> GetSectionsByOrganization(string organizationId);
         Section GetSection(string id);
         Section AddSection(Section section);
         Section UpdateSection(string id, Section section);

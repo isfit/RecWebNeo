@@ -20,7 +20,9 @@ namespace RecAPI.Organizations.Models
         [BsonRequired]
         public string Description { get; set; }
         // Image
+        [SectionResolverOrganization]
         public List<Section> Sections { get; }
+        [AdmisionPeriodeResolverOrganization]
         public List<AdmisionPeriode> AdmisionPeriodes { get; }
     }
 }

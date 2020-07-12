@@ -27,9 +27,17 @@ namespace RecAPI.Positions.Repositories
             var data = _positions.Find(position => ids.Contains(position.Id)).ToList();
             return data.Any() ? data : null;
         }
+        public IEnumerable<Position> GetPositionsByAdmisionPeriode(string admisionPeriodeId)
+        {
+            return _positions.Find(position => position.AdmisionPeriode == admisionPeriodeId).ToList();
+        }
         public IEnumerable<Position> GetTeamPositions(string teamId)
         {
             return _positions.Find(position => position.Team == teamId).ToList();
+        }
+        public IEnumerable<Position> GetSectionPositions(string sectionId)
+        {
+            return _positions.Find(position => position.Section == sectionId).ToList();
         }
         public Position GetPosition(string Id)
         {

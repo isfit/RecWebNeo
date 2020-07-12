@@ -31,6 +31,7 @@ namespace RecAPI.Positions.Mutations
             {
                 Name = input.Name,
                 Description = input.Description,
+                AdmisionPeriode = input.AdmisionPeriode,
                 Section = input.Section,
                 Team = section == input.Section ? input.Team : null,
                 Tags = input.Tags
@@ -58,6 +59,7 @@ namespace RecAPI.Positions.Mutations
                Id = input.Id,
                Name = input.Name ?? position.Name,
                Description = input.Description ?? position.Description,
+               AdmisionPeriode = input.AdmisionPeriode ?? position.AdmisionPeriode,
                Section = input.Section ?? position.Section,
                Team = section == input.Section ? (input.Team ?? position.Team) : null,
                Tags = input.Tags ?? position.Tags

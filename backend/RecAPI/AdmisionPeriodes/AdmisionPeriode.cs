@@ -15,9 +15,11 @@ namespace RecAPI.AdmisionPeriodes.Models
         [BsonRequired]
         public string Id { get; set; }
         [BsonRequired]
+        [OrganizationResolverAdmisionPeriode]
         public string Organization { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public List<Section> Sections { get; }
+        
+        public List<Section> Positions { get; }
     }
 }

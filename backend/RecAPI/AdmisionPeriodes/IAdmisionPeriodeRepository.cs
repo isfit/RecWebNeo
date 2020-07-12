@@ -6,6 +6,7 @@ namespace RecAPI.AdmisionPeriodes.Repositories
     {
         IEnumerable<AdmisionPeriode> GetAdmisionPeriodes();
         IEnumerable<AdmisionPeriode> GetAdmisionPeriodes(List<string> ids);
+        IEnumerable<AdmisionPeriode> GetAdmisionPeriodesByOrganization(string organizationId);
         AdmisionPeriode GetAdmisionPeriode(string id);
         AdmisionPeriode CreateAdmisionPeriode(AdmisionPeriode admisionPeriode);
         AdmisionPeriode UpdateAdmisionPeriode(string id, AdmisionPeriode admisionPeriode);

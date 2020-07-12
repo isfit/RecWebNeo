@@ -1,4 +1,3 @@
-using System;
 using HotChocolate;
 using HotChocolate.Types;
 using RecAPI.AdmisionPeriodes.Repositories;
@@ -27,7 +26,7 @@ namespace RecAPI.AdmisionPeriodes.Mutations
             {
                 Organization = input.Organization,
                 StartDate = input.StartDate,
-                EndDate = input.EndDate,
+                EndDate = input.EndDate
             };
             return repository.CreateAdmisionPeriode(admisionPeriode);
         }
@@ -39,14 +38,16 @@ namespace RecAPI.AdmisionPeriodes.Mutations
         )
         {
             var organizationExist = _organization.GetOrganization(input.Organization) != null;
+            var admisionPeriode = repository.GetAdmisionPeriode(input.Id);
             if (!organizationExist){
                 throw new QueryException(ErrorBuilder.New().SetMessage("Organization does not exist!").Build());
             }
-            var admisionPeriode = new AdmisionPeriode()
+            var updateAdmisionPeriode = new AdmisionPeriode()
             {
-                Organization = input.Organization,
-                StartDate = input.StartDate,
-                EndDate = input.EndDate,
+                Id = admisionPeriode.Id,
+                Organization = input.Organization ?? admisionPeriode.Organization,
+                StartDate = input.StartDate != null ? input.StartDate : admisionPeriode.StartDate,
+                EndDate = input.EndDate != null ? input.EndDate : admisionPeriode.EndDate,
             };
             return repository.CreateAdmisionPeriode(admisionPeriode);
         }

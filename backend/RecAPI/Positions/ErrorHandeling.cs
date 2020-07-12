@@ -3,6 +3,7 @@ using HotChocolate.Execution;
 using RecAPI.Positions.Repositories;
 using RecAPI.Teams.Repositories;
 using RecAPI.Sections.Repositories;
+using RecAPI.AdmisionPeriodes.Repositories;
 namespace RecAPI.Positions.ErrorHandeling
 {
     public class PositionError
@@ -13,7 +14,7 @@ namespace RecAPI.Positions.ErrorHandeling
             var organizationNameExist = name?.ToLower() == oldName?.ToLower() ? false : repository.GetPositionByName(name) != null;
             if (organizationNameExist)
             {
-                throw new QueryException(ErrorBuilder.New().SetMessage("Organization name already exist!").Build());
+                throw new QueryException(ErrorBuilder.New().SetMessage("Position name already exist!").Build());
             }
         }
 
@@ -22,7 +23,15 @@ namespace RecAPI.Positions.ErrorHandeling
         {
             var sectionExist = repository.GetSection(sectionId) != null;
             if (!sectionExist){
-                throw new QueryException(ErrorBuilder.New().SetMessage("The given organization does not exist").Build());
+                throw new QueryException(ErrorBuilder.New().SetMessage("The given section does not exist").Build());
+            }
+        }
+
+        public static void AdmisionPeriodeExists(IAdmisionPeriodeRepository repository, string admisionPeriodeId)
+        {
+            var admisionPeriodeExists = repository.GetAdmisionPeriode(admisionPeriodeId) != null;
+            if (!admisionPeriodeExists){
+                throw new QueryException(ErrorBuilder.New().SetMessage("The given admision periode does not exist").Build());
             }
         }
 
@@ -31,7 +40,7 @@ namespace RecAPI.Positions.ErrorHandeling
             var team = _team.GetTeam(teamId);
             if (team == null)
             {
-                throw new QueryException(ErrorBuilder.New().SetMessage("The given organization does not exist").Build());
+                throw new QueryException(ErrorBuilder.New().SetMessage("The given team does not exist").Build());
             }
             if (team.Section != sectionId)
             {

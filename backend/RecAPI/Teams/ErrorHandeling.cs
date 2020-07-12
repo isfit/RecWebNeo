@@ -11,7 +11,7 @@ namespace RecAPI.Teams.ErrorHandeling
             var organizationNameExist = name?.ToLower() == oldName?.ToLower() ? false : repository.GetTeamByName(name) != null;
             if (organizationNameExist)
             {
-                throw new QueryException(ErrorBuilder.New().SetMessage("Organization name already exist!").Build());
+                throw new QueryException(ErrorBuilder.New().SetMessage("Section name already exist!").Build());
             }
         }
 
@@ -20,7 +20,7 @@ namespace RecAPI.Teams.ErrorHandeling
         {
             var sectionExist = repository.GetSection(sectionId) != null;
             if (!sectionExist){
-                throw new QueryException(ErrorBuilder.New().SetMessage("The given organization does not exist").Build());
+                throw new QueryException(ErrorBuilder.New().SetMessage("The given section does not exist").Build());
             }
         }
     } 

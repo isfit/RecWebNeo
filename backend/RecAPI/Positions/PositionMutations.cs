@@ -7,6 +7,7 @@ using RecAPI.Positions.InputType;
 using RecAPI.Generic.InputType;
 using RecAPI.Teams.Repositories;
 using RecAPI.Sections.Repositories;
+using RecAPI.AdmisionPeriodes.Repositories;
 using RecAPI.Positions.ErrorHandeling;
 
 namespace RecAPI.Positions.Mutations
@@ -17,11 +18,13 @@ namespace RecAPI.Positions.Mutations
 
         public Position CreatePosition(
             CreatePositionInput input,
+            [Service]IAdmisionPeriodeRepository _admisionPeriode,
             [Service]IPositionRepository repository,
             [Service]ISectionRepository _section,
             [Service]ITeamRepository _team
         )
         {
+            PositionError.AdmisionPeriodeExists(_admisionPeriode, input.AdmisionPeriode);
             if(input.Section != null)
             {
                 PositionError.SectionExists(_section, input.Section);
@@ -30,6 +33,7 @@ namespace RecAPI.Positions.Mutations
             {
                 PositionError.TeamExists(_team, input.Team, input.Section);
             }
+
             var position = new Position()
             {
                 Name = input.Name,
@@ -44,6 +48,7 @@ namespace RecAPI.Positions.Mutations
 
         public Position UpdatePosition(
             UpdatePositionInput input,
+            [Service]IAdmisionPeriodeRepository _admisionPeriode,
             [Service]IPositionRepository repository,
             [Service]ISectionRepository _section,
             [Service]ITeamRepository _team
@@ -51,6 +56,10 @@ namespace RecAPI.Positions.Mutations
         {
             // Error cheking
             var position = repository.GetPosition(input.Id);
+            if (input.AdmisionPeriode != null)
+            {
+                PositionError.AdmisionPeriodeExists(_admisionPeriode, input.AdmisionPeriode);
+            }
             if(input.Section != null)
             {
                 PositionError.SectionExists(_section, input.Section);

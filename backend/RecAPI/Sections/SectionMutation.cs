@@ -6,6 +6,8 @@ using RecAPI.Sections.InputType;
 using RecAPI.Generic.InputType;
 using RecAPI.Organizations.Repositories;
 using HotChocolate.Execution;
+using RecAPI.Sections.ErrorHandling;
+using RecAPI.Generic;
 
 namespace RecAPI.Sections.Mutations
 {
@@ -18,6 +20,10 @@ namespace RecAPI.Sections.Mutations
             [Service]IOrganizationRepository _organization
         )
         {
+            // Error handling
+            SectionsError.UniqueNameError(repository, input.Name, null);
+            SectionsError.OrganizationExists(_organization, input.Organization);
+
             var organization = _organization.GetOrganization(input.Organization);
             if (organization == null)
             {
@@ -34,10 +40,18 @@ namespace RecAPI.Sections.Mutations
 
         public Section UpdateSection(
             UpdateSectionInput input,
-            [Service]ISectionRepository repository
+            [Service]ISectionRepository repository,
+            [Service]IOrganizationRepository _organization
         )
         {
+            // Error handling
             var section = repository.GetSection(input.Id);
+            SectionsError.UniqueNameError(repository, section.Name, input.Name);
+            if (input.Organization != null)
+            {
+                SectionsError.OrganizationExists(_organization, input.Organization);
+            }
+
             section.Name = input.Name ?? section.Name;
             section.Description = input.Description ?? section.Description;
             section.Organization = input.Organization ?? section.Organization;

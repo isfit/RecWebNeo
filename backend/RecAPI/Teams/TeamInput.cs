@@ -22,7 +22,7 @@ namespace RecAPI.Teams.InputType
         [GraphQLNonNullType]
         public string Description { get; }
         [BsonId]
-        //[GraphQLNonNullType]
+        [GraphQLNonNullType]
         public string Section { get; }
     }
     public class UpdateTeamInput

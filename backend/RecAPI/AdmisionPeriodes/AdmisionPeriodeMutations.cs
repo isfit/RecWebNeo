@@ -5,7 +5,7 @@ using RecAPI.Organizations.Repositories;
 using RecAPI.AdmisionPeriodes.Models;
 using RecAPI.AdmisionPeriodes.InputType;
 using RecAPI.Generic.InputType;
-using HotChocolate.Execution;
+using RecAPI.AdmisionPeriodes.ErrorHandling;
 
 namespace RecAPI.AdmisionPeriodes.Mutations
 {
@@ -18,10 +18,10 @@ namespace RecAPI.AdmisionPeriodes.Mutations
             [Service]IOrganizationRepository _organization
         )
         {
-            var organizationExist = _organization.GetOrganization(input.Organization) != null;
-            if (!organizationExist){
-                throw new QueryException(ErrorBuilder.New().SetMessage("Organization does not exist!").Build());
-            }
+            // Error checking
+            AdmisionPeriodeError.OrganizationExists(_organization, input.Organization);
+            AdmisionPeriodeError.ValidDates(input.StartDate, input.EndDate);
+
             var admisionPeriode = new AdmisionPeriode()
             {
                 Organization = input.Organization,
@@ -37,17 +37,19 @@ namespace RecAPI.AdmisionPeriodes.Mutations
             [Service]IOrganizationRepository _organization
         )
         {
-            var organizationExist = _organization.GetOrganization(input.Organization) != null;
+            // Error checking
+            AdmisionPeriodeError.OrganizationExists(_organization, input.Organization);
             var admisionPeriode = repository.GetAdmisionPeriode(input.Id);
-            if (!organizationExist){
-                throw new QueryException(ErrorBuilder.New().SetMessage("Organization does not exist!").Build());
-            }
+            var startDate = input.StartDate != null ? input.StartDate : admisionPeriode.StartDate;
+            var endDate = input.EndDate != null ? input.EndDate : admisionPeriode.EndDate;
+            AdmisionPeriodeError.ValidDates(startDate, endDate);
+
             var updateAdmisionPeriode = new AdmisionPeriode()
             {
                 Id = admisionPeriode.Id,
                 Organization = input.Organization ?? admisionPeriode.Organization,
-                StartDate = input.StartDate != null ? input.StartDate : admisionPeriode.StartDate,
-                EndDate = input.EndDate != null ? input.EndDate : admisionPeriode.EndDate,
+                StartDate = startDate,
+                EndDate = endDate
             };
             return repository.CreateAdmisionPeriode(admisionPeriode);
         }

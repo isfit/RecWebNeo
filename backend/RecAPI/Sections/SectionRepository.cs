@@ -28,6 +28,10 @@ namespace RecAPI.Sections.Repositories
         public Section GetSection(string id) {
             return _sections.Find(section => section.Id == id).FirstOrDefault();
         }
+        public Section GetSectionByName(string name)
+        {
+            return _sections.Find(section => section.Name == name).FirstOrDefault();
+        }
         public Section AddSection(Section section) {
             _sections.InsertOne(section);
             return section;

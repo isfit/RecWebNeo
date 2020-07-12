@@ -2,7 +2,7 @@ using HotChocolate;
 using HotChocolate.Execution;
 namespace RecAPI.Generic
 {
-    public class GenericErrorHendler
+    public class GenericErrorHandler
     {
         public static void StringValueExists(string value, string typeError)
         {

@@ -2,7 +2,7 @@ using System;
 using HotChocolate;
 using HotChocolate.Execution;
 using RecAPI.Organizations.Repositories;
-namespace RecAPI.AdmisionPeriodes.ErrorHandeling
+namespace RecAPI.AdmisionPeriodes.ErrorHandling
 {
     public class AdmisionPeriodeError
     {

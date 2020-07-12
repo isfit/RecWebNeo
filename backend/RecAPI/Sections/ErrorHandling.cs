@@ -2,7 +2,7 @@ using HotChocolate;
 using HotChocolate.Execution;
 using RecAPI.Sections.Repositories;
 using RecAPI.Organizations.Repositories;
-namespace RecAPI.Sections.ErrorHandeling
+namespace RecAPI.Sections.ErrorHandling
 {
     public class SectionsError
     {

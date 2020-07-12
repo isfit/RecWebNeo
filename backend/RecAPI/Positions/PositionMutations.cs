@@ -8,7 +8,7 @@ using RecAPI.Generic.InputType;
 using RecAPI.Teams.Repositories;
 using RecAPI.Sections.Repositories;
 using RecAPI.AdmisionPeriodes.Repositories;
-using RecAPI.Positions.ErrorHandeling;
+using RecAPI.Positions.ErrorHandling;
 
 namespace RecAPI.Positions.Mutations
 {

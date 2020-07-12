@@ -4,7 +4,7 @@ using RecAPI.Positions.Repositories;
 using RecAPI.Teams.Repositories;
 using RecAPI.Sections.Repositories;
 using RecAPI.AdmisionPeriodes.Repositories;
-namespace RecAPI.Positions.ErrorHandeling
+namespace RecAPI.Positions.ErrorHandling
 {
     public class PositionError
     {

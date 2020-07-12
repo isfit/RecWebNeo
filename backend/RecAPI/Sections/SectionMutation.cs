@@ -6,7 +6,7 @@ using RecAPI.Sections.InputType;
 using RecAPI.Generic.InputType;
 using RecAPI.Organizations.Repositories;
 using HotChocolate.Execution;
-using RecAPI.Sections.ErrorHandeling;
+using RecAPI.Sections.ErrorHandling;
 using RecAPI.Generic;
 
 namespace RecAPI.Sections.Mutations

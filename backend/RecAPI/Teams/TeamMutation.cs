@@ -8,7 +8,7 @@ using RecAPI.Sections.Repositories;
 using RecAPI.Teams.Models;
 using RecAPI.Teams.InputType;
 using RecAPI.Generic.InputType;
-using RecAPI.Teams.ErrorHandeling;
+using RecAPI.Teams.ErrorHandling;
 using RecAPI.Generic;
 
 namespace RecAPI.Teams.Mutations

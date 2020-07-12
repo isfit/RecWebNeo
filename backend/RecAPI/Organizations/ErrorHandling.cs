@@ -3,7 +3,7 @@ using HotChocolate;
 using HotChocolate.Execution;
 using RecAPI.Organizations.Repositories;
 
-namespace RecAPI.Organizations.ErrorHandeling
+namespace RecAPI.Organizations.ErrorHandling
 {
     public class OrganizationError
     {

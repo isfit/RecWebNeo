@@ -2,7 +2,7 @@ using HotChocolate;
 using HotChocolate.Execution;
 using RecAPI.Teams.Repositories;
 using RecAPI.Sections.Repositories;
-namespace RecAPI.Teams.ErrorHandeling
+namespace RecAPI.Teams.ErrorHandling
 {
     public class TeamError
     {
@@ -11,7 +11,7 @@ namespace RecAPI.Teams.ErrorHandeling
             var organizationNameExist = name?.ToLower() == oldName?.ToLower() ? false : repository.GetTeamByName(name) != null;
             if (organizationNameExist)
             {
-                throw new QueryException(ErrorBuilder.New().SetMessage("Section name already exist!").Build());
+                throw new QueryException(ErrorBuilder.New().SetMessage("Team name already exist!").Build());
             }
         }
 

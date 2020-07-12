@@ -5,7 +5,7 @@ using RecAPI.Organizations.Repositories;
 using RecAPI.AdmisionPeriodes.Models;
 using RecAPI.AdmisionPeriodes.InputType;
 using RecAPI.Generic.InputType;
-using RecAPI.AdmisionPeriodes.ErrorHandeling;
+using RecAPI.AdmisionPeriodes.ErrorHandling;
 
 namespace RecAPI.AdmisionPeriodes.Mutations
 {

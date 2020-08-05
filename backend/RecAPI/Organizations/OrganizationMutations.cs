@@ -7,12 +7,14 @@ using RecAPI.Organizations.InputType;
 using RecAPI.Generic.InputType;
 using HotChocolate.Execution;
 using RecAPI.Organizations.ErrorHandling;
+using HotChocolate.AspNetCore.Authorization;
 
 namespace RecAPI.Organizations.Mutations
 {
     [ExtendObjectType(Name= "Mutation")]
     public class OrganizationMutations
     {
+        [Authorize]
         public Organization CreateOrganization(
             CreateOrganizationInput input,
             [Service]IOrganizationRepository repository

@@ -30,8 +30,21 @@ using RecAPI.Organizations.Models;
 using RecAPI.Organizations.Repositories;
 using RecAPI.Organizations.Queries;
 using RecAPI.Organizations.Mutations;
-
 using RecAPI.Database;
+
+using RecAPI.Auth.Repositories;
+using RecAPI.Auth.Mutations;
+using RecAPI.Auth.Models;
+
+using HotChocolate.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using HotChocolate.AspNetCore.Interceptors;
+using System.Security.Claims;
 
 namespace RecAPI
 {
@@ -53,14 +66,56 @@ namespace RecAPI
 
             services.AddSingleton<IRecWebDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<RecWebDatabaseSettings>>().Value);
-            
+
+
+            //services.AddSingleton<IIdentityService, IdentityService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddHttpContextAccessor();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidAudience = "audience",
+                    ValidIssuer = "issuer",
+                    RequireSignedTokens = false,
+                    IssuerSigningKey =
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes("3AEC6D497DDADC59A3496BF158FDC"))
+                };
+
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+            });
+
+            services.AddAuthorization(x =>
+            {
+                x.AddPolicy("it", builder =>
+                    builder
+                        .RequireAuthenticatedUser()
+                        .RequireRole("dev")
+                );
+
+                x.AddPolicy("hr", builder =>
+                    builder.RequireRole("hr")
+                );
+            });
+            services.AddQueryRequestInterceptor(AuthenticationInterceptor());
 
             // Add repositories to service
             services.AddSingleton<IPositionRepository, PositionRepository>();
             services.AddSingleton<ITeamRepository, TeamRepository>();
             services.AddSingleton<ISectionRepository, SectionRepository>();
             services.AddSingleton<IOrganizationRepository, OrganizationRepository>();
-            
+            services.AddSingleton<IAuthRepository, AuthRepository>();
+
             // GraphQL Schema
             services.AddGraphQL(sp => SchemaBuilder.New()
                 .AddServices(sp)
@@ -71,6 +126,7 @@ namespace RecAPI
                 .AddType<TeamQueries>()
                 .AddType<SectionQueries>()
                 .AddType<OrganizationQueries>()
+                .AddType<AuthMutation>()
                 // Add mutations
                 .AddType<PositionMutations>()
                 .AddType<TeamMutations>()
@@ -81,9 +137,25 @@ namespace RecAPI
                 .AddType<Team>()
                 .AddType<Section>()
                 .AddType<Organization>()
+                .AddAuthorizeDirectiveType()
                 .Create()
             );
+
             
+        }
+
+        private static OnCreateRequestAsync AuthenticationInterceptor()
+        {
+            return (context, builder, token) =>
+            {
+                if (context.GetUser().Identity.IsAuthenticated)
+                {
+                    builder.SetProperty("currentUser",
+                        new CurrentUser(Guid.Parse(context.User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                            context.User.Claims.Select(x => $"{x.Type} : {x.Value}").ToList()));
+                }
+                return Task.CompletedTask;
+            };
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,8 +166,11 @@ namespace RecAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseGraphQL();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UsePlayground();
+            app.UseGraphQL();
         }
     }
 }

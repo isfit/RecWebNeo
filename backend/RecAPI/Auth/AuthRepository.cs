@@ -27,11 +27,11 @@ namespace RecAPI.Auth.Repositories
             return _authUsers.Find(user => user.Id == userId).FirstOrDefault();
         }
 
-        public bool RegisterUser(AuthUser authUser)
+        public string RegisterUser(AuthUser authUser)
         {
             _authUsers.InsertOne(authUser);
             var createdUser = GetAuthUser(authUser.Id);
-            return authUser == createdUser;
+            return createdUser?.Id;
         }
         public AuthUser GetAuthUserByEmail(string email)
         {

@@ -6,10 +6,10 @@ namespace RecAPI.Auth.Models
 {
     public class CurrentUser
     {
-        public Guid UserId { get; }
+        public string UserId { get; }
         public List<string> Claims { get; }
 
-        public CurrentUser(Guid userId, List<string> claims)
+        public CurrentUser(string userId, List<string> claims)
         {
             UserId = userId;
             Claims = claims;

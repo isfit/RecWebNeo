@@ -4,7 +4,7 @@ namespace RecAPI.Auth.Repositories
 {
     public interface IAuthRepository
     {
-        bool RegisterUser(AuthUser authUser);
+        string RegisterUser(AuthUser authUser);
         AuthUser GetAuthUserByEmail(string email);
         AuthUser GetAuthUser(string userId);
     }

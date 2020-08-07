@@ -7,6 +7,6 @@ namespace RecAPI.Auth.Repositories
     public interface IAuthService
     {
         string Authenticate(string email, string password, IAuthRepository authRepository);
-        bool RegisterUser(string email, string password, IAuthRepository authRepository);
+        string RegisterUser(string email, string password, IAuthRepository authRepository);
     }
 }

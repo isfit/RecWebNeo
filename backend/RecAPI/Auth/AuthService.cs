@@ -20,7 +20,7 @@ namespace RecAPI.Auth.Repositories
     public class AuthService : IAuthService
     {
 
-        public bool RegisterUser(string email, string password, [Service] IAuthRepository authRepository)
+        public string RegisterUser(string email, string password, [Service] IAuthRepository authRepository)
         {
             AuthError.UniqueEmailError(authRepository, email, null);
             byte[] salt = new byte[128 / 8];

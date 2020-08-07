@@ -30,11 +30,16 @@ using RecAPI.Organizations.Models;
 using RecAPI.Organizations.Repositories;
 using RecAPI.Organizations.Queries;
 using RecAPI.Organizations.Mutations;
-using RecAPI.Database;
+
+using RecAPI.Users.Models;
+using RecAPI.Users.Repositories;
+using RecAPI.Users.Queries;
+using RecAPI.Users.Mutations;
 
 using RecAPI.Auth.Repositories;
-using RecAPI.Auth.Mutations;
 using RecAPI.Auth.Models;
+
+using RecAPI.Database;
 
 using HotChocolate.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -115,6 +120,7 @@ namespace RecAPI
             services.AddSingleton<ISectionRepository, SectionRepository>();
             services.AddSingleton<IOrganizationRepository, OrganizationRepository>();
             services.AddSingleton<IAuthRepository, AuthRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
 
             // GraphQL Schema
             services.AddGraphQL(sp => SchemaBuilder.New()
@@ -126,12 +132,13 @@ namespace RecAPI
                 .AddType<TeamQueries>()
                 .AddType<SectionQueries>()
                 .AddType<OrganizationQueries>()
-                .AddType<AuthMutation>()
+                .AddType<UserQueries>()
                 // Add mutations
                 .AddType<PositionMutations>()
                 .AddType<TeamMutations>()
                 .AddType<SectionMutations>()
                 .AddType<OrganizationMutations>()
+                .AddType<UserMutation>()
                 // Add Model type
                 .AddType<Position>()
                 .AddType<Team>()
@@ -151,7 +158,8 @@ namespace RecAPI
                 if (context.GetUser().Identity.IsAuthenticated)
                 {
                     builder.SetProperty("currentUser",
-                        new CurrentUser(Guid.Parse(context.User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                        new CurrentUser(
+                            context.User.FindFirstValue(ClaimTypes.NameIdentifier),
                             context.User.Claims.Select(x => $"{x.Type} : {x.Value}").ToList()));
                 }
                 return Task.CompletedTask;

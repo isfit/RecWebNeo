@@ -8,7 +8,7 @@ class SearchModule extends Component {
         return (
             <div className="row mb-3">
                 <input type="checkbox" defaultChecked={this.state.chkbox} onChange={this.handleChangeChk} />
-                <h6 className="page-title ml-2">{tag}</h6>
+                <h6 className="page-title ml-2 mb-0">{tag}</h6>
             </div>
         );
     }

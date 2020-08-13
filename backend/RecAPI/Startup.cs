@@ -31,6 +31,11 @@ using RecAPI.Organizations.Repositories;
 using RecAPI.Organizations.Queries;
 using RecAPI.Organizations.Mutations;
 
+using RecApi.Applications.Models;
+using RecApi.Applications.Repositories;
+using RecApi.Applications.Queries;
+using RecApi.Applications.Mutations;
+
 using RecAPI.Users.Models;
 using RecAPI.Users.Repositories;
 using RecAPI.Users.Queries;
@@ -119,6 +124,7 @@ namespace RecAPI
             services.AddSingleton<ITeamRepository, TeamRepository>();
             services.AddSingleton<ISectionRepository, SectionRepository>();
             services.AddSingleton<IOrganizationRepository, OrganizationRepository>();
+            services.AddSingleton<IApplicationRepository, ApplicationRepository>(); 
             services.AddSingleton<IAuthRepository, AuthRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
 
@@ -132,18 +138,22 @@ namespace RecAPI
                 .AddType<TeamQueries>()
                 .AddType<SectionQueries>()
                 .AddType<OrganizationQueries>()
+                .AddType<ApplicationQueries>()
                 .AddType<UserQueries>()
                 // Add mutations
                 .AddType<PositionMutations>()
                 .AddType<TeamMutations>()
                 .AddType<SectionMutations>()
                 .AddType<OrganizationMutations>()
+                .AddType<ApplicationMutations>()
                 .AddType<UserMutation>()
                 // Add Model type
                 .AddType<Position>()
                 .AddType<Team>()
                 .AddType<Section>()
                 .AddType<Organization>()
+                .AddType<Application>()
+                .AddType<User>()
                 .AddAuthorizeDirectiveType()
                 .Create()
             );

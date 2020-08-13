@@ -11,7 +11,7 @@ namespace RecAPI.Database
         public string AdmisionPeriodeCollectionName { get; set; }
         public string AuthCollectionName { get; set; }
         public string UserCollectionName { get; set; }
-
+        public string ApplicationCollectionName { get; set; }
     }
     public interface IRecWebDatabaseSettings
     {
@@ -24,5 +24,6 @@ namespace RecAPI.Database
         string AdmisionPeriodeCollectionName { get; set; }
         string AuthCollectionName { get; set; }
         string UserCollectionName { get; set; }
+        string ApplicationCollectionName { get; set; }
     }
 }

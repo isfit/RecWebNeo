@@ -38,5 +38,38 @@ namespace RecAPI.Auth.Repositories
             var authUser = _authUsers.Find(user => user.Email == email).FirstOrDefault();
             return authUser;
         }
+
+        // Clean the code!
+        public bool AddRoleToUser(string email, string role)
+        {
+            var user = GetAuthUserByEmail(email);
+            if (user == null)
+            {
+                return false;
+            }
+            var updateUserRole = user.AddRole(role);
+            if (updateUserRole) {
+                _authUsers.FindOneAndReplace(u => u.Id == user.Id, user);
+                var updatedUser = GetAuthUserByEmail(email);
+                return updatedUser.Roles?.Contains(role) ?? false;
+            }
+            return false;
+        }
+        public bool RemoveRoleFromUser(string email, string role)
+        {
+            var user = GetAuthUserByEmail(email);
+            if (user == null)
+            {
+                return false;
+            }
+            var updateUserRole = user.AddRole(role);
+            if (updateUserRole)
+            {
+                _authUsers.FindOneAndReplace(u => u.Id == user.Id, user);
+                var updatedUser = GetAuthUserByEmail(email);
+                return updatedUser.Roles?.Contains(role) ?? false;
+            }
+            return false;
+        }
     }
 }

@@ -102,7 +102,7 @@ namespace RecAPI
 
             services.AddAuthorization(x =>
             {
-                x.AddPolicy("it", builder =>
+                x.AddPolicy("DevDepartment", builder =>
                     builder
                         .RequireAuthenticatedUser()
                         .RequireRole("dev")

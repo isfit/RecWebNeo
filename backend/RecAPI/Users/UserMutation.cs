@@ -22,6 +22,15 @@ namespace RecAPI.Users.Mutations
             return authService.Authenticate(email, password, authRepository);
         }
 
+        public bool AddRole(
+            string email,
+            string role,
+            [Service] IAuthRepository authRepository
+        )
+        {
+            return authRepository.AddRoleToUser(email, role);
+        }
+
         public bool RegisterUser(
             RegisterUserInput registerUser,
             [Service] IAuthService authService,

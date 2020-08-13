@@ -15,6 +15,10 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
 
+// https://medium.com/@marcinjaniak/graphql-simple-authorization-and-authentication-with-hotchocolate-11-and-asp-net-core-3-162e0a35743d
+// https://docs.microsoft.com/en-us/aspnet/core/security/authorization/policies?view=aspnetcore-3.1
+// https://docs.microsoft.com/en-us/aspnet/core/security/authorization/iauthorizationpolicyprovider?view=aspnetcore-3.1
+
 namespace RecAPI.Auth.Repositories
 {
     public class AuthService : IAuthService
@@ -47,7 +51,6 @@ namespace RecAPI.Auth.Repositories
             return authRepository.RegisterUser(authUser);
         }
 
-        // https://medium.com/@marcinjaniak/graphql-simple-authorization-and-authentication-with-hotchocolate-11-and-asp-net-core-3-162e0a35743d
         public string Authenticate(string email, string password, [Service] IAuthRepository authRepository)
         {
             var authUser = authRepository.GetAuthUserByEmail(email);
@@ -68,8 +71,11 @@ namespace RecAPI.Auth.Repositories
 
             if (authUser.PassHash == passwordHash)
             {
-                var roles = new List<string>();
-                roles.Add("member");
+                var roles = authUser.Roles;
+                if (roles == null)
+                {
+                    roles = new List<string>();
+                }
                 return GenerateAccessToken(authUser.Email, authUser.Id, roles.ToArray());
             }
             // TODO: Throw error

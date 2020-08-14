@@ -19,6 +19,8 @@ namespace RecAPI.Applications.InputType
         public List<DateTime> Available { get; set; }
         [GraphQLNonNullType]
         public bool PreferDigital { get; set; }
+        [GraphQLNonNullType]
+        public string Interest { get; set; }
     }
 
     public class UpdateApplicationInput
@@ -28,5 +30,6 @@ namespace RecAPI.Applications.InputType
         public string ApplicationText { get; set;}
         public List<DateTime> Available { get; set; }
         public bool? PreferDigital { get; set; }
+        public string Interest { get; set; }
     }
 }

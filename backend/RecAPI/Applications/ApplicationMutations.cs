@@ -38,8 +38,9 @@ namespace RecAPI.Applications.Mutations
                 Prioritized = input.Prioritized,
                 ApplicationText = input.ApplicationText,
                 Available = input.Available,
-                PreferDigital = input.PreferDigital
-            };  
+                //PreferDigital = input.PreferDigital
+            };
+            application.setInterest(input.Interest);
             return applicationRepository.CreateApplication(application);
         }
 
@@ -67,8 +68,12 @@ namespace RecAPI.Applications.Mutations
                 Prioritized = input.Prioritized ?? application.Prioritized,
                 ApplicationText = input.ApplicationText ?? application.ApplicationText,
                 Available = input.Available ?? application.Available,
-                PreferDigital = input.PreferDigital ?? application.PreferDigital
+                //PreferDigital = input.PreferDigital ?? application.PreferDigital
             };
+            if (input.Interest != null)
+            {
+                updateApplication.setInterest(input.Interest);
+            }
             return applicationRepository.UpdateApplication(user.UserId, updateApplication);
         }
 

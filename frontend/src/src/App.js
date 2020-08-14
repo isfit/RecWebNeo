@@ -1,44 +1,33 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import { render } from '@testing-library/react';
 
-import NavBar from './components/navbar';
-import Positions from './components/positions';
-import SearchModule from './components/searchmodule';
-import ShoppingCart from './components/shoppingcart';
+import LogInModal from './components/modal/loginmodal';
+
+import LandingPage from './pages/landingpage';
+import ApplicationTextPage from './pages/applicationtextpage';
+
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCheckSquare, faCoffee, faAddressCard, faListOl, faSignature, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faCheckSquare, faCoffee, faAddressCard, faListOl, faSignature, faPhoneAlt)
+
+const App = () => {
+  const [showingLogInModal, showLogInModal] = useState(true);
+
+  return (
+    <React.Fragment>
+      <Router>
+        <Switch>
+          <Route path="/enterapplication"> <ApplicationTextPage showingLogInModal={ showingLogInModal }  showLogInModal={ showLogInModal } /> </Route>
+          <Route path="/"> <LandingPage showingLogInModal={ showingLogInModal }  showLogInModal={ showLogInModal } /> </Route>
+        </Switch>
+      </Router>
+    </React.Fragment>
+  );
+};
 
 
-
-
-
-class App extends Component {
-  render() {
-    return (
-      <React.Fragment>
-      <div className="page">
-        <div className="page-main">
-          <NavBar />
-          <div className="page-content bg-light">
-            <div className="container">
-              <div className="page-header mt-3 mb-4">
-                <h4 className="page-title">Choose positions</h4>
-              </div>
-              <div className="row">
-                <div className="col">
-                <SearchModule />
-                <Positions />
-                </div>
-                <div className="col col-lg-4">
-                  <ShoppingCart />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      </React.Fragment>
-    );
-  }
-}
 
 export default App;

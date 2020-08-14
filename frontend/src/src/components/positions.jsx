@@ -11,6 +11,9 @@ class Positions extends Component {
                 <td className="w-1"><span className="avatar" style={{backgroundImage: "url("+bg+")"}}></span></td>
                 <td className="">God in the IT team</td>
                 <td className="text-nowrap">May 6, 2018</td>
+                <td className="w-0">
+                    <button type="button" className="btn btn-outline-success">+</button>
+                </td>
             </tr>
         );
     }
@@ -22,7 +25,7 @@ class Positions extends Component {
                 <div className="table-responsive">
                     <table className="table card-table table-striped table-vcenter">
                         <thead className="">
-                            <th className="" colspan="2">Position</th>
+                            <th className="" colSpan="2">Position</th>
                             <th className="">Expiracy date</th>
                             <th className=""></th>
                         </thead>

@@ -12,6 +12,7 @@ using HotChocolate.AspNetCore.Authorization;
 namespace RecAPI.Organizations.Mutations
 {
     [ExtendObjectType(Name= "Mutation")]
+    [Authorize(Policy = "administrator")]
     public class OrganizationMutations
     {
         [Authorize]

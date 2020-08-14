@@ -8,10 +8,12 @@ using RecAPI.Organizations.Repositories;
 using HotChocolate.Execution;
 using RecAPI.Sections.ErrorHandling;
 using RecAPI.Generic;
+using HotChocolate.AspNetCore.Authorization;
 
 namespace RecAPI.Sections.Mutations
 {
     [ExtendObjectType(Name= "Mutation")]
+    [Authorize(Policy = "administrator")]
     public class SectionMutations
     {
         public Section CreateSection(

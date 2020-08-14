@@ -9,10 +9,12 @@ using RecAPI.Teams.Repositories;
 using RecAPI.Sections.Repositories;
 using RecAPI.AdmisionPeriodes.Repositories;
 using RecAPI.Positions.ErrorHandling;
+using HotChocolate.AspNetCore.Authorization;
 
 namespace RecAPI.Positions.Mutations
 {
     [ExtendObjectType(Name= "Mutation")]
+    [Authorize(Policy = "administrator")]
     public class PositionMutations
     {
 

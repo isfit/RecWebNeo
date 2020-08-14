@@ -14,7 +14,6 @@ namespace RecAPI.Organizations.Queries
     [ExtendObjectType(Name = "Query")]
     public class OrganizationQueries
     {
-        [Authorize]
         public IEnumerable<Organization> GetOrganizations(
             [Service]IOrganizationRepository repository
         ) =>
@@ -27,8 +26,7 @@ namespace RecAPI.Organizations.Queries
         {
             return repository.GetOrganization(input.Id);
         }
-        
-        [Authorize]
+
         public Organization GetOrganizationByName(
             SingleModelNameInput input,
             [Service]IOrganizationRepository repository

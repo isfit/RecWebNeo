@@ -6,10 +6,12 @@ using RecAPI.AdmisionPeriodes.Models;
 using RecAPI.AdmisionPeriodes.InputType;
 using RecAPI.Generic.InputType;
 using RecAPI.AdmisionPeriodes.ErrorHandling;
+using HotChocolate.AspNetCore.Authorization;
 
 namespace RecAPI.AdmisionPeriodes.Mutations
 {
     [ExtendObjectType(Name= "Mutation")]
+    [Authorize(Policy = "administrator")]
     public class AdmisionPeriodeMutations
     {
         public AdmisionPeriode CreateAdmisionPeriode(

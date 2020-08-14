@@ -10,10 +10,12 @@ using RecAPI.Teams.InputType;
 using RecAPI.Generic.InputType;
 using RecAPI.Teams.ErrorHandling;
 using RecAPI.Generic;
+using HotChocolate.AspNetCore.Authorization;
 
 namespace RecAPI.Teams.Mutations
 {
     [ExtendObjectType(Name= "Mutation")]
+    [Authorize(Policy = "administrator")]
     public class TeamMutations
     {
         public Team CreateTeam(

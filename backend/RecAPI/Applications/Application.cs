@@ -13,12 +13,14 @@ namespace RecAPI.Applications.Models
         public string Id { get; set; }
         
         public Dictionary<int, string> Positions { get; set; }
+        public string AdmissionPeriode { get; set; }
         public bool Prioritized { get; set; }
 
         public string ApplicationText { get; set;}
         public List<DateTime> Available { get; set; }
 
         [BsonId]
+        [BsonRequired]
         public string Applicant { get; set; }
 
         public bool PreferDigital { get; set; }

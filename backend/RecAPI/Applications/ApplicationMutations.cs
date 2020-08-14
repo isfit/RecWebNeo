@@ -8,57 +8,77 @@ using RecAPI.Generic.InputType;
 using RecAPI.Teams.Repositories;
 using RecAPI.Sections.Repositories;
 using RecAPI.AdmisionPeriodes.Repositories;
+using HotChocolate.AspNetCore.Authorization;
+using RecAPI.Auth.Models;
 using RecAPI.Applications.ErrorHandling;
+using RecAPI.Positions.Repositories;
+using System.Linq;
 
 namespace RecAPI.Applications.Mutations
 {
     [ExtendObjectType(Name= "Mutation")]
     public class ApplicationMutations
     {
-
+        [Authorize]
         public Application CreateApplication(
+            [GlobalState("currentUser")] CurrentUser user,
             CreateApplicationInput input,
-            [Service]IApplicationRepository repository
+            [Service]IApplicationRepository applicationRepository,
+            [Service]IAdmisionPeriodeRepository admisionPeriodeRepository,
+            [Service]IPositionRepository positionRepository
         )
         {
-            // TODO: Error checking. Does there already exist an application?
-            // Different application for different application periode?
+            ApplicationError.AlreadyRegisteredApplication(applicationRepository, user.UserId, input.AdmissionPeriode);
+            ApplicationError.ValidAdmisionPeriode(admisionPeriodeRepository, input.AdmissionPeriode);
+            ApplicationError.ValidPositions(positionRepository, admisionPeriodeRepository, input.Positions, input.AdmissionPeriode);
             var application = new Application()
             {
-                Positions = input.Positions;
-                Prioritized = input.Prioritized;
-                ApplicationText = input.ApplicationText;
-                Available = input.Available;
-                PreferDigital = input.PreferDigital;
-            }   
-            return repository.CreateApplication(application);
+                Positions = input.Positions,
+                AdmissionPeriode = input.AdmissionPeriode,
+                Prioritized = input.Prioritized,
+                ApplicationText = input.ApplicationText,
+                Available = input.Available,
+                PreferDigital = input.PreferDigital
+            };  
+            return applicationRepository.CreateApplication(application);
         }
 
+        [Authorize]
         public Application UpdateApplication(
+            [GlobalState("currentUser")] CurrentUser user,
             UpdateApplicationInput input,
-            [Service]IApplicationRepository repository
+            [Service] IApplicationRepository applicationRepository,
+            [Service] IAdmisionPeriodeRepository admisionPeriodeRepository,
+            [Service] IPositionRepository positionRepository
         )
         {
-            // TODO: Error cheking
-            var userId = "123";
-            var application = repository.GetUserApplication(userId);
+            var application = applicationRepository.GetUserApplication(user.UserId);
+            if(application == null)
+            {
+                ApplicationError.ApplicationNotRegistered();
+            }
+            if (input.Positions != null)
+            {
+                ApplicationError.ValidPositions(positionRepository, admisionPeriodeRepository, input.Positions, application.AdmissionPeriode);
+            }
             var updateApplication = new Application()
             {
-                Positions = input.Positions ?? application.Positions;
-                Prioritized = input.Prioritized ?? application.Prioritized;
-                ApplicationText = input.ApplicationText ?? application.ApplicationText;
-                Available = input.Available ?? application.Available;
-                PreferDigital = input.PreferDigital ?? application.PreferDigital;
-            }
-            return repository.UpdatePosition(input.Id, updatePosition);
+                Positions = input.Positions ?? application.Positions,
+                Prioritized = input.Prioritized ?? application.Prioritized,
+                ApplicationText = input.ApplicationText ?? application.ApplicationText,
+                Available = input.Available ?? application.Available,
+                PreferDigital = input.PreferDigital ?? application.PreferDigital
+            };
+            return applicationRepository.UpdateApplication(user.UserId, updateApplication);
         }
 
+        [Authorize]
         public bool DeleteApplication(
-            SingleModelInput input,
+            [GlobalState("currentUser")] CurrentUser user,
             [Service]IApplicationRepository repository
         )
         {
-            return repository.DeleteApplication(input.Id);
+            return repository.DeleteUserApplication(user.UserId);
         }
 
     }

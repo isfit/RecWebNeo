@@ -13,5 +13,7 @@ namespace RecAPI.Applications.Repositories
         Application CreateApplication(Application application);
         Application UpdateApplication(string applicationId, Application application);
         bool DeleteApplication(string id);
+        bool DeleteUserApplication(string userId);
+        bool CheckExistanceOfApplication(string userId, string admisionPeriode);
     }
 }

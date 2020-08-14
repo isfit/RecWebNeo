@@ -6,21 +6,23 @@ using HotChocolate.Types.Relay;
 using RecAPI.Positions.Repositories;
 using RecAPI.Positions.Models;
 using RecAPI.Generic.InputType;
-using HotChocolate.AspNetCore.Authorization;
 
 namespace RecAPI.Positions.Queries
 {
     [ExtendObjectType(Name = "Query")]
     public class PositionQueries
     {
-        [Authorize(Policy = "DevDepartment")]
         [UsePaging]
-        //[UseFiltering]
-        //[UseSorting]
+        [UseFiltering]
+        [UseSorting]
         public IEnumerable<Position> GetPositions(
-            [Service]IPositionRepository repository
-            ) =>
-            repository.GetPositions();
+            [Service] IPositionRepository repository
+
+        )
+        {
+            var positions = repository.GetPositions();
+            return positions; 
+        }
 
         public Position GetPosition(
             SingleModelInput input,

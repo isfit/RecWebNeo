@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using HotChocolate;
 using MongoDB.Bson.Serialization.Attributes;
@@ -16,7 +17,14 @@ namespace RecAPI.Users.Input
         public string FirstName { get; set; }
         [GraphQLNonNullType]
         public string LastName { get; set; }
-        //[GraphQLNonNullType]
-        //public DateTime BirtDate { get; set; }
-    }    
+        [GraphQLNonNullType]
+        public DateTime BirtDate { get; set; }
+    }  
+    
+    public class UpdateUserInput
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime BirtDate { get; set; }
+    }
 }

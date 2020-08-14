@@ -103,7 +103,7 @@ namespace RecAPI.Auth.Repositories
                 "issuer",
                 "audience",
                 claims,
-                expires: DateTime.Now.AddDays(90),
+                expires: DateTime.Now.AddDays(1),
                 signingCredentials: signingCredentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

@@ -8,22 +8,22 @@ namespace RecAPI.Applications.Repositories
 {
     public class ApplicationRepository : IApplicationRepository
     {
-        private readonly IMongoCollection<User> _applications;
+        private readonly IMongoCollection<Application> _applications;
         public ApplicationRepository(IRecWebDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _applications = database.GetCollection<User>(settings.ApplicationCollectionName);
+            _applications = database.GetCollection<Application>(settings.ApplicationCollectionName);
         }
 
         public List<Application> GetApplications()
         {
-            var applications = _applications.Find(application => true).ToList();
+            var applications = _applications.Find(appl => true).ToList();
             return applications;
         }
         public Application GetApplication(string id)
         {
-            var application = _applications.Find(application => application.Id == id).FirstOrDefault();
+            var application = _applications.Find(appl => appl.Id == id).FirstOrDefault();
             return application;
         }
         public Application GetUserApplication(string userId)
@@ -34,18 +34,29 @@ namespace RecAPI.Applications.Repositories
 
         public Application CreateApplication(Application application)
         {
-            var storedApplication = _applications.InsertOne(application);
-            return storedApplication;
+            _applications.InsertOne(application);
+            return GetUserApplication(application.Applicant);
         }
-        public Application UpdateApplication(string applicationId, Application application)
+        public Application UpdateApplication(string userId, Application application)
         {
-            var updatedApplication = _applications.ReplaceOne(appl => appl.Id = applicationId, application);
-            return updatedApplication;
+            _applications.ReplaceOne(appl => appl.Applicant == userId, application);
+            return GetUserApplication(application.Applicant);
         }
         public bool DeleteApplication(string id)
         {
-            var actionResult =_applications.DeleteOne(application => application.Id == id);
+            var actionResult =_applications.DeleteOne(appl => appl.Id == id);
             return actionResult.IsAcknowledged && actionResult.DeletedCount > 0;
+        }
+        public bool DeleteUserApplication(string userId)
+        {
+            var actionResult = _applications.DeleteOne(appl => appl.Applicant == userId);
+            return actionResult.IsAcknowledged && actionResult.DeletedCount > 0;
+        }
+
+        public bool CheckExistanceOfApplication(string userId, string admisionPeriode)
+        {
+            var application = _applications.Find(appl => appl.Applicant == userId && appl.AdmissionPeriode == admisionPeriode).FirstOrDefault();
+            return application != null;
         }
     }
 }

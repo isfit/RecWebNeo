@@ -16,12 +16,13 @@ namespace RecAPI.Users.Queries
     [ExtendObjectType(Name = "Query")]
     public class UserQueries
     {
-        [Authorize]
-        public IEnumerable<User> GetOrganizations(
+        [Authorize(Policy = "administrator")]
+        public IEnumerable<User> GetUsers(
             [Service]IUserRepository repository
         ) =>
         repository.GetUsers();
-        [Authorize]
+
+        [Authorize(Policy = "administrator")]
         public User GetUser(
             SingleModelInput input,
             [Service]IUserRepository repository

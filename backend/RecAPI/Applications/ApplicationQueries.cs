@@ -6,28 +6,42 @@ using HotChocolate.Types.Relay;
 using RecAPI.Applications.Repositories;
 using RecAPI.Applications.Models;
 using RecAPI.Generic.InputType;
+using RecAPI.Auth.Models;
+using HotChocolate.AspNetCore.Authorization;
 
 namespace RecAPI.Applications.Queries
 {
     [ExtendObjectType(Name = "Query")]
     public class ApplicationQueries
     {
+        [Authorize(Policy = "administrator")]
         [UsePaging]
-        //[UseFiltering]
-        //[UseSorting]
-        public IEnumerable<Position> GetApplications(
+        [UseFiltering]
+        [UseSorting]
+        public IEnumerable<Application> GetApplications(
             [Service]IApplicationRepository repository
             ) =>
             repository.GetApplications();
 
-        public Position GetApplication(
+        // Get application from user id
+        [Authorize(Policy = "administrator")]
+        public Application GetApplication(
             SingleModelInput input,
             [Service]IApplicationRepository repository
-            )
-            {
-                return repository.GetApplication(input.Id);
-            }
+        )
+        {
+            return repository.GetApplication(input.Id);
+        }
 
-        // TODO: Get My Application
+        
+        [Authorize]
+        public Application GetMyApplication(
+            [GlobalState("currentUser")] CurrentUser user,
+            [Service] IApplicationRepository repository
+        )
+        {
+            var application = repository.GetUserApplication(user.UserId);
+            return application;
+        }
     }
 }

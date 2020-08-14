@@ -31,10 +31,10 @@ using RecAPI.Organizations.Repositories;
 using RecAPI.Organizations.Queries;
 using RecAPI.Organizations.Mutations;
 
-using RecApi.Applications.Models;
-using RecApi.Applications.Repositories;
-using RecApi.Applications.Queries;
-using RecApi.Applications.Mutations;
+using RecAPI.Applications.Models;
+using RecAPI.Applications.Repositories;
+using RecAPI.Applications.Queries;
+using RecAPI.Applications.Mutations;
 
 using RecAPI.Users.Models;
 using RecAPI.Users.Repositories;
@@ -105,16 +105,19 @@ namespace RecAPI
                 options.SaveToken = true;
             });
 
+            // https://docs.microsoft.com/en-us/archive/msdn-magazine/2017/october/cutting-edge-policy-based-authorization-in-asp-net-core
             services.AddAuthorization(x =>
             {
-                x.AddPolicy("DevDepartment", builder =>
+                x.AddPolicy("administrator", builder =>
                     builder
                         .RequireAuthenticatedUser()
-                        .RequireRole("dev")
+                        .RequireRole("admin", "superuser")
                 );
 
-                x.AddPolicy("hr", builder =>
-                    builder.RequireRole("hr")
+                x.AddPolicy("superuser", builder =>
+                    builder
+                        .RequireAuthenticatedUser()
+                        .RequireRole("superuser")
                 );
             });
             services.AddQueryRequestInterceptor(AuthenticationInterceptor());

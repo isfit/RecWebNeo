@@ -1,7 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
+using RecAPI.Auth.Models;
 using RecAPI.Auth.Repositories;
 using RecAPI.Users.Input;
 using RecAPI.Users.Models;
@@ -9,7 +11,7 @@ using RecAPI.Users.Repositories;
 
 namespace RecAPI.Users.Mutations
 {
-    [ExtendObjectType(Name= "Mutation")]
+    [ExtendObjectType(Name = "Mutation")]
     public class UserMutation
     {
         public string Login(
@@ -20,15 +22,6 @@ namespace RecAPI.Users.Mutations
         )
         {
             return authService.Authenticate(email, password, authRepository);
-        }
-
-        public bool AddRole(
-            string email,
-            string role,
-            [Service] IAuthRepository authRepository
-        )
-        {
-            return authRepository.AddRoleToUser(email, role);
         }
 
         public bool RegisterUser(
@@ -55,5 +48,35 @@ namespace RecAPI.Users.Mutations
             }
             return false;
         }
+
+        [Authorize]
+        public User EditUserInformation(
+            UpdateUserInput input,
+            [Service] IUserRepository userRepository
+        )
+        {
+            // TODO + Error handling
+            return null;
+        }
+        [Authorize]
+        public bool DeleteUser(
+            [GlobalState("currentUser")] CurrentUser user,
+            [Service] IUserRepository userRepository
+        )
+        {
+            // TODO + Error handling
+            return false;
+        }
+
+        [Authorize(Policy = "superuser")]
+        public bool AddRole(
+            string email,
+            string role,
+            [Service] IAuthRepository authRepository
+        )
+        {
+            return authRepository.AddRoleToUser(email, role);
+        }
+
     }
 }

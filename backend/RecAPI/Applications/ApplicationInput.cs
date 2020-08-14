@@ -1,13 +1,16 @@
+using System;
 using System.Collections.Generic;
 using HotChocolate;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace RecAPI.Application.InputType
+namespace RecAPI.Applications.InputType
 {
     public class CreateApplicationInput
     {
         [GraphQLNonNullType]
         public Dictionary<int, string> Positions { get; set; }
+        [GraphQLNonNullType]
+        public string AdmissionPeriode { get; set; }
         [GraphQLNonNullType]
         public bool Prioritized { get; set; }
         [GraphQLNonNullType]
@@ -21,9 +24,9 @@ namespace RecAPI.Application.InputType
     public class UpdateApplicationInput
     {
         public Dictionary<int, string> Positions { get; set; }
-        public bool Prioritized { get; set; }
+        public bool? Prioritized { get; set; }
         public string ApplicationText { get; set;}
         public List<DateTime> Available { get; set; }
-        public bool PreferDigital { get; set; }
+        public bool? PreferDigital { get; set; }
     }
 }

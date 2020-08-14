@@ -26,7 +26,11 @@ namespace RecAPI.AdmisionPeriodes.Mutations
             {
                 Organization = input.Organization,
                 StartDate = input.StartDate,
-                EndDate = input.EndDate
+                EndDate = input.EndDate,
+                StartInterviewDate = input.StartInterviewDate,
+                EndInterviewDate = input.EndInterviewDate,
+                MinAppliedPositions = input.MinAppliedPositions,
+                MaxAppliedPositions = input.MaxAppliedPositions
             };
             return repository.CreateAdmisionPeriode(admisionPeriode);
         }
@@ -37,21 +41,21 @@ namespace RecAPI.AdmisionPeriodes.Mutations
             [Service]IOrganizationRepository _organization
         )
         {
-            // Error checking
+            //TODO: Update admision periode
             AdmisionPeriodeError.OrganizationExists(_organization, input.Organization);
             var admisionPeriode = repository.GetAdmisionPeriode(input.Id);
+
             var startDate = input.StartDate != null ? input.StartDate : admisionPeriode.StartDate;
             var endDate = input.EndDate != null ? input.EndDate : admisionPeriode.EndDate;
             AdmisionPeriodeError.ValidDates(startDate, endDate);
 
             var updateAdmisionPeriode = new AdmisionPeriode()
             {
-                Id = admisionPeriode.Id,
                 Organization = input.Organization ?? admisionPeriode.Organization,
                 StartDate = startDate,
                 EndDate = endDate
             };
-            return repository.CreateAdmisionPeriode(admisionPeriode);
+            return repository.UpdateAdmisionPeriode(admisionPeriode.Id, admisionPeriode);
         }
 
         public bool DeleteAdmisionPeriode(

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace RecAPI.Applications.Models
+namespace RecAPI.Interviews.Models
 {
-    public class Application
+    public class Interview
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

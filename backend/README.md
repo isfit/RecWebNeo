@@ -36,3 +36,11 @@ Use the command ``` mongo ``` to access the mongodb commands.
 
 ## Mutations
 - TODO
+
+# Building and releasing
+Run the dotnet publish command to create the publish files
+- ``dotnet publish -c Release``
+Create a docker image
+- ``docker build -t recweb-api -f Dockerfile .``
+Start a container
+- ``docker run -d -p 5000:80 --name RecWebAPI recweb-api``

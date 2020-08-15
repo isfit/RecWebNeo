@@ -6,6 +6,8 @@ using HotChocolate.Types.Relay;
 using RecAPI.Organizations.Repositories;
 using RecAPI.Organizations.Models;
 using RecAPI.Generic.InputType;
+using HotChocolate.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace RecAPI.Organizations.Queries
 {
@@ -24,7 +26,7 @@ namespace RecAPI.Organizations.Queries
         {
             return repository.GetOrganization(input.Id);
         }
-        
+
         public Organization GetOrganizationByName(
             SingleModelNameInput input,
             [Service]IOrganizationRepository repository

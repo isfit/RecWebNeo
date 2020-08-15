@@ -7,46 +7,31 @@ namespace RecAPI.AdmisionPeriodes.InputType
 {
     public class CreateAdmisionPeriodeInput
     {
-        public CreateAdmisionPeriodeInput(
-            string organization,
-            DateTime startDate,
-            DateTime endDate
-        )
-        {
-            Organization = organization;
-            StartDate = startDate;
-            EndDate = endDate;
-        }
-        [BsonId]
         [GraphQLNonNullType]
-        public string Id { get; }
+        public string Organization { get; set; }
         [GraphQLNonNullType]
-        public string Organization { get; }
+        public DateTime StartDate { get; set; }
         [GraphQLNonNullType]
-        public DateTime StartDate { get; }
+        public DateTime EndDate { get; set; }
         [GraphQLNonNullType]
-        public DateTime EndDate { get; }
+        public DateTime StartInterviewDate { get; set; }
+        [GraphQLNonNullType]
+        public DateTime EndInterviewDate { get; set; }
+        [GraphQLNonNullType]
+        public int MinAppliedPositions { get; set; }
+        [GraphQLNonNullType]
+        public int MaxAppliedPositions { get; set; }
     }
     public class UpdateAdmisionPeriodesInput
     {
-        public UpdateAdmisionPeriodesInput(
-            string id,
-            string organization,
-            DateTime startDate,
-            DateTime endDate
-        )
-        {
-            Id = id;
-            Organization = organization;
-            StartDate = startDate;
-            EndDate = endDate;
-        }
-        [BsonId]
         [GraphQLNonNullType]
-        public string Id { get; }
-        [GraphQLNonNullType]
-        public string Organization { get; }
-        public DateTime StartDate { get; }
-        public DateTime EndDate { get; }
+        public string Id { get; set; }
+        public string Organization { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public DateTime StartInterviewDate { get; set; }
+        public DateTime EndInterviewDate { get; set; }
+        public int MinAppliedPositions { get; set; }
+        public int MaxAppliedPositions { get; set; }
     }
 }

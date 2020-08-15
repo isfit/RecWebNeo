@@ -1,5 +1,11 @@
-## Backend files here
+## TODO
+------
+- Identity user
+- User class and repo
 
+
+## Backend files here
+------
 ### Endpoints
 The graphql backend endpoint is served on port 5000.
 The standard endpoint is found at
@@ -23,11 +29,18 @@ To access the database with shell commands, use the command below:
 This accessed the bash shell of the docker container.
 Use the command ``` mongo ``` to access the mongodb commands.
 
+
 ## Queries
+- TODO
 
-### Basic
-#### Hello
-The query Hello results in a string type with the value "World", and is used as a proof of concept for the endpoint. It has no further use than this.
 
-#### Position
-TODO: ...
+## Mutations
+- TODO
+
+# Building and releasing
+Run the dotnet publish command to create the publish files
+- ``dotnet publish -c Release``
+Create a docker image
+- ``docker build -t recweb-api -f Dockerfile .``
+Start a container
+- ``docker run -d -p 5000:80 --name RecWebAPI recweb-api``

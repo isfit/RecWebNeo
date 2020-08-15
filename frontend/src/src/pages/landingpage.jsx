@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import NavBar from '../components/navbar';
-import Positions from '../components/positions';
+import PositionRow from '../components/positions';
 import SearchModule from '../components/searchmodule';
 import ShoppingCart from '../components/shoppingcart';
 
@@ -15,7 +15,6 @@ const LandingPage = (props) => {
         <div className="page">
           <div className="page-main">
             <NavBar showingLogInModal={ props.showingLogInModal }  showLogInModal={ props.showLogInModal } />
-            <LogInModal showingLogInModal={ props.showingLogInModal }  showLogInModal={ props.showLogInModal } />
             <div className="page-content bg-light">
               <div className="container">
                 <div className="page-header pt-3 mb-4">
@@ -24,7 +23,7 @@ const LandingPage = (props) => {
                 <div className="row">
                   <div className="col">
                   <SearchModule />
-                  <Positions />
+                  <PositionRow />
                   </div>
                   <div className="col col-lg-4">
                     <ShoppingCart />

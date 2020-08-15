@@ -1,25 +1,31 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useQuery, gql } from '@apollo/client';
 
-class Positions extends Component {
-    state = {  }
-    
-
-    renderPosition(){
-        var bg=require('./favicon.ico')
+const EXCHANGE_RATES = gql`
+  query positions {
+  positions {
+    nodes {
+      id,
+      name,
+      admisionPeriode {
+          endDate
+      }
+    }
+  }
+}
+`;
+const PositionsTable = (props) => {
+    const { loading, error, data } = useQuery(EXCHANGE_RATES);
+    console.log(data);
+    if (data == null) {
         return (
-            <tr className="">
-                <td className="w-1"><span className="avatar" style={{backgroundImage: "url("+bg+")"}}></span></td>
-                <td className="">God in the IT team</td>
-                <td className="text-nowrap">May 6, 2018</td>
-                <td className="w-0">
-                    <button type="button" className="btn btn-outline-success">+</button>
-                </td>
-            </tr>
-        );
+            <div>
+
+            </div>
+        )
     }
 
-    render(){
-        return (
+    return(
         <div className="row mt-4">
             <div className="card w-100">
                 <div className="table-responsive">
@@ -30,26 +36,34 @@ class Positions extends Component {
                             <th className=""></th>
                         </thead>
                         <tbody className="">
-                            {this.renderPosition()}
-                            {this.renderPosition()}
-                            {this.renderPosition()}
-                            {this.renderPosition()}
-                            {this.renderPosition()}
-                            {this.renderPosition()}
-                            {this.renderPosition()}
-                            {this.renderPosition()}
-                            {this.renderPosition()}
-                            {this.renderPosition()}
+                            {
+                                data.positions.nodes.map( position => {
+                                    return(
+                                        <PositionRow position={position} />
+                                    )
+                                })
+                            }
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        );
-    }
+    );
+}
 
-    
+const PositionRow = ({position}) => {
+    let bg = require('./favicon.ico');
+    return(
+        <tr className="">
+            <td className="w-1"><span className="avatar" style={{backgroundImage: "url("+bg+")"}}></span></td>
+            <td className="">{position.name}</td>
+            <td className="text-nowrap"> { position.admisionPeriode.endDate } </td>
+            <td className="w-0">
+                <button type="button" className="btn btn-outline-success">+</button>
+            </td>
+        </tr>
+    )
 }
 
  
-export default Positions;
+export default PositionsTable;

@@ -11,7 +11,7 @@ using HotChocolate.AspNetCore.Authorization;
 namespace RecAPI.AdmisionPeriodes.Mutations
 {
     [ExtendObjectType(Name= "Mutation")]
-    [Authorize(Policy = "administrator")]
+    //[Authorize(Policy = "administrator")]
     public class AdmisionPeriodeMutations
     {
         public AdmisionPeriode CreateAdmisionPeriode(

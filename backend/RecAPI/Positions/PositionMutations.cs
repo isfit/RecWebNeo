@@ -14,10 +14,9 @@ using HotChocolate.AspNetCore.Authorization;
 namespace RecAPI.Positions.Mutations
 {
     [ExtendObjectType(Name= "Mutation")]
-    [Authorize(Policy = "administrator")]
     public class PositionMutations
     {
-
+        [Authorize(Policy = "administrator")]
         public Position CreatePosition(
             CreatePositionInput input,
             [Service]IAdmisionPeriodeRepository _admisionPeriode,
@@ -48,6 +47,7 @@ namespace RecAPI.Positions.Mutations
             return repository.AddPosition(position);
         }
 
+        [Authorize(Policy = "administrator")]
         public Position UpdatePosition(
             UpdatePositionInput input,
             [Service]IAdmisionPeriodeRepository _admisionPeriode,
@@ -88,6 +88,7 @@ namespace RecAPI.Positions.Mutations
            return repository.UpdatePosition(input.Id, updatePosition);
         }
 
+        [Authorize(Policy = "administrator")]
         public bool DeletePosition(
             SingleModelInput input,
             [Service]IPositionRepository repository

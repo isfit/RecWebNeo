@@ -23,7 +23,7 @@ namespace RecAPI.Users.Mutations
         {
             return authService.Authenticate(email, password, authRepository);
         }
-
+        [Authorize]
         public bool RegisterUser(
             RegisterUserInput registerUser,
             [Service] IAuthService authService,

@@ -12,10 +12,9 @@ using HotChocolate.AspNetCore.Authorization;
 namespace RecAPI.Organizations.Mutations
 {
     [ExtendObjectType(Name= "Mutation")]
-    [Authorize(Policy = "administrator")]
     public class OrganizationMutations
     {
-        [Authorize]
+        [Authorize(Policy = "administrator")]
         public Organization CreateOrganization(
             CreateOrganizationInput input,
             [Service]IOrganizationRepository repository
@@ -30,6 +29,7 @@ namespace RecAPI.Organizations.Mutations
             return repository.CreateOrganization(organization);
         }
 
+        [Authorize(Policy = "administrator")]
         public Organization UpdateOrganization(
             UpdateOrganizationInput input,
             [Service]IOrganizationRepository repository
@@ -46,6 +46,7 @@ namespace RecAPI.Organizations.Mutations
             return repository.UpdateOrganization(input.Id, updatedOrganization);
         }
 
+        [Authorize(Policy = "administrator")]
         public bool DeleteOrganization(
             SingleModelInput input,
             [Service]IOrganizationRepository repository

@@ -1,22 +1,10 @@
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
+import { POSITIONS } from '../requests/positionRequests';
 
-const EXCHANGE_RATES = gql`
-  query positions {
-  positions {
-    nodes {
-      id,
-      name,
-      admisionPeriode {
-          endDate
-      }
-    }
-  }
-}
-`;
 const PositionsTable = (props) => {
-    const { loading, error, data } = useQuery(EXCHANGE_RATES);
-    console.log(data);
+    
+    const { loading, error, data } = useQuery(POSITIONS);
     if (data == null) {
         return (
             <div>

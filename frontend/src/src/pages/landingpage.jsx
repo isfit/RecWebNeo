@@ -15,6 +15,7 @@ const LandingPage = (props) => {
         <div className="page">
           <div className="page-main">
             <NavBar showingLogInModal={ props.showingLogInModal }  showLogInModal={ props.showLogInModal } />
+            <LogInModal />
             <div className="page-content bg-light">
               <div className="container">
                 <div className="page-header pt-3 mb-4">

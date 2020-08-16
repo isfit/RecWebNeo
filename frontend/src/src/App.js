@@ -7,6 +7,7 @@ import LandingPage from "./pages/landingpage";
 import ApplicationTextPage from "./pages/applicationtextpage";
 import AvailableTimesPage from "./pages/availabletimespage";
 import MyProfilePage from "./pages/myprofilepage";
+import MyApplicationPage from "./pages/myapplicationpage";
 
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
@@ -60,6 +61,15 @@ const App = () => {
             <Route path="/myprofile">
               {" "}
               <MyProfilePage />{" "}
+            </Route>
+            <Route path="/myapplication">
+              {" "}
+              <MyApplicationPage 
+                userLogedIn={userLogedIn}
+                setUserLogedIn={(userLoginValue) =>
+                  setUserLogedIn(userLoginValue)
+                }
+              />{" "}
             </Route>
             <Route path="/">
               {" "}

@@ -1,0 +1,1 @@
+export const getLoginModalState = store => store.ModalSwitcher.showLoginModal;

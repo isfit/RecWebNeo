@@ -1,39 +1,28 @@
 import React, { useState } from 'react';
-
-import NavBar from '../components/navbar';
-import Positions from '../components/positions';
+import PositionRow from '../components/positions';
 import SearchModule from '../components/searchmodule';
 import ShoppingCart from '../components/shoppingcart';
-
-import LogInModal from '../components/modal/loginmodal';
-
-
+import PageLayout from './pageLayout';
 
 const LandingPage = (props) => {
 
     return (
-        <div className="page">
-          <div className="page-main">
-            <NavBar showingLogInModal={ props.showingLogInModal }  showLogInModal={ props.showLogInModal } />
-            <LogInModal showingLogInModal={ props.showingLogInModal }  showLogInModal={ props.showLogInModal } />
-            <div className="page-content bg-light">
-              <div className="container">
-                <div className="page-header pt-3 mb-4">
-                  <h4 className="page-title">Choose positions</h4>
-                </div>
-                <div className="row">
-                  <div className="col">
-                  <SearchModule />
-                  <Positions />
-                  </div>
-                  <div className="col col-lg-4">
-                    <ShoppingCart />
-                  </div>
-                </div>
+        <PageLayout userLogedIn={ props.userLogedIn }  setUserLogedIn={ userLoginValue => props.setUserLogedIn(userLoginValue) }>
+          <div className="container">
+            <div className="page-header pt-3 mb-4">
+              <h4 className="page-title">Choose positions</h4>
+            </div>
+            <div className="row">
+              <div className="col">
+              <SearchModule />
+              <PositionRow />
+              </div>
+              <div className="col col-lg-4">
+                <ShoppingCart />
               </div>
             </div>
           </div>
-        </div>
+        </PageLayout>
     );
 };
 

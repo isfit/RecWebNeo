@@ -15,22 +15,19 @@ const RegisterModalForm = () => {
   const [lastNameInput, setLastNameInput] = useState("");
   const [startDate, setStartDate] = useState(new Date().toISOString());
 
-  console.log(data, error, loading);
-
   const register = (event) => {
     event.preventDefault();
     const variableData = {
-      variables:{
-        input:{
-          email:"torstein@otterlei.no",
-          firstName:"torstein",
-          lastName:"otterlei",
-          password:"torstein123",
-          birthDate:"2019-08-26T00:00:00",
-        },
-      },
+      variables: {
+        input: {
+          email: emailInput,
+          firstName: firstNameInput,
+          lastName: lastNameInput,
+          password: passwordInput,
+          birtDate: startDate,
+        }
+      }
     };
-    console.log(variableData);
     updateRegistration(variableData);
   };
 
@@ -110,6 +107,7 @@ const RegisterModalForm = () => {
                 startDate={new Date(startDate)}
                 setStartDate={setStartDate}
               />
+
             </div>
           </div>
         </div>

@@ -8,7 +8,7 @@ const PageLayout = (props) => {
         <div className="page">
           <div className="page-main">
             <NavBar showingLogInModal={ !props.userLogedIn }  showLogInModal={ showModal => props.setUserLogedIn(!showModal) } />
-            <LogInModal showModal={ !props.userLogedIn }  setShowModal={showModal => props.setUserLogedIn(!showModal)} />
+            <LogInModal />
             <div className="page-content bg-light">
                 { props.children }
             </div>

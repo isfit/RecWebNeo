@@ -4,6 +4,10 @@ import NavBarButton from "./navbarbutton";
 
 import "../stylesheets/pages/flexgrid.css";
 
+import { connect } from "react-redux";
+import { setLoginModal } from "../redux/actions";
+import { getLoginModalState, getUserLogedIn } from "../redux/selectors";
+
 
   const RenderProfile = () => {
     return (
@@ -16,7 +20,8 @@ import "../stylesheets/pages/flexgrid.css";
     );
   } 
 
-  const NavBar = (props) => {
+  const NavBar = ({userLogedIn, showLoginModal, setLoginModal}) => {
+
     return (
       <div className="header py-1 border-bottom">
         <div className="container">
@@ -32,8 +37,13 @@ import "../stylesheets/pages/flexgrid.css";
                 <ul className="nav" style={{justifyContent:"right"}}>
                   <NavBarButton title="Overview" iconstring="list-ol" address="/" />
                   <NavBarButton title="My application" iconstring="address-card" address="/myapplication" />
-                  <img src='/profilepic.png' style={{borderRadius: "50%", maxHeight: "5%", maxWidth:"8%"}} alt="Image" />
-                  <RenderProfile />
+                  <div>
+
+                  {
+                    userLogedIn ? <RenderProfile /> : <button className="btn btn-outline-primary" onClick={ () => setLoginModal(true) }>Sign in</button>
+                  }
+                  </div>
+                  
                 </ul>
             </div>
           </div>
@@ -43,6 +53,11 @@ import "../stylesheets/pages/flexgrid.css";
   }
 
 
+const mapStateToProps = state => {
+  return {
+    showLoginModal: getLoginModalState(state),
+    userLogedIn: getUserLogedIn(state)
+  };
+};
 
-
-export default NavBar;
+export default connect(mapStateToProps, { setLoginModal })(NavBar);

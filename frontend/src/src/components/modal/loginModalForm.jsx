@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import {LOGIN} from '../../requests/userRequests';
 
-const LoginModalForm = (props) => {
+import { connect } from "react-redux";
+import { setUserLogin } from "../../redux/actions";
+
+const LoginModalForm = ({ setShowModal, setUserLogin }) => {
     
     const [updateLogin, { data, error, loading}] = useMutation(LOGIN, { onError: () => {} });
     const [ emailInput, setEmailInput ] = useState("");
@@ -16,8 +19,8 @@ const LoginModalForm = (props) => {
 
     if (data != null) {
         localStorage.setItem("AuthorizationKey", data.login)
-        console.log(data);
-        props.setShowModal(false);
+        setUserLogin(true, data.login);
+        setShowModal(false);
     }
 
     return(
@@ -46,6 +49,6 @@ const LoginModalForm = (props) => {
         </div>
     )   
 }
-
-export default LoginModalForm;
+  
+export default connect(null, { setUserLogin })(LoginModalForm);
 

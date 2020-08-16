@@ -27,19 +27,19 @@ const RegisterModalForm = () => {
             <div className="row d-flex justify-content-center mt-4">
                 <div className="container w-75">
                     <span className="ml-1">First name</span>
-                    <input className="navbar-search" type="password" placeholder="Type your password..."></input>
+                    <input className="navbar-search" placeholder="Type your first name..."></input>
                 </div>
             </div>
             <div className="row d-flex justify-content-center mt-4">
                 <div className="container w-75">
                     <span className="ml-1">Last name</span>
-                    <input className="navbar-search" type="password" placeholder="Type your password..."></input>
+                    <input className="navbar-search" placeholder="Type your last name..."></input>
                 </div>
             </div>
             <div className="row d-flex justify-content-center mt-4">
                 <div className="container w-75">
                     <span className="ml-1">Birthdate</span>
-                    <input className="navbar-search" type="password" placeholder="Type your password..."></input>
+                    <input className="navbar-search" placeholder="Type your password..."></input>
                 </div>
             </div>
 

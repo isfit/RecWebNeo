@@ -1,7 +1,7 @@
 import { SET_USER_LOGIN } from '../actionTypes';
 
 const initialState = {
-    userLogedIn: false,
+    userLogedIn: localStorage.getItem("AuthorizationKey") != null,
     authenticationKey: null
 };
 

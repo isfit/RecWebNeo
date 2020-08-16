@@ -4,23 +4,31 @@ import NavBarButton from "./navbarbutton";
 
 import "../stylesheets/pages/flexgrid.css";
 
+import { useQuery, gql } from "@apollo/client";
+import { ME_NAME } from "../requests/userRequests";
+
 import { connect } from "react-redux";
 import { setLoginModal } from "../redux/actions";
-import { getLoginModalState, getUserLogedIn } from "../redux/selectors";
+import { getLoginModalState, getUserLogedIn, getUserAuthKey } from "../redux/selectors";
 
 
   const RenderProfile = () => {
+    const { loading, error, data } = useQuery(ME_NAME);
+    if (data == null) {
+      return <div></div>;
+    }
+
     return (
         <a href="/myprofile">
           <span className="ml-2 d-none d-lg-block">
-            <span className="text-default">Torstein Otterlei</span>
-            <small className="text-muted d-block">Administrator</small>
+            <span className="text-default"> { data.me.firstName } { data.me.lastName} </span>
+            <small className="text-muted d-block">Applicant</small>
           </span>
         </a>
     );
   } 
 
-  const NavBar = ({userLogedIn, showLoginModal, setLoginModal}) => {
+  const NavBar = ({userLogedIn, showLoginModal, setLoginModal, userAuthKey}) => {
 
     return (
       <div className="header py-1 border-bottom">
@@ -40,7 +48,7 @@ import { getLoginModalState, getUserLogedIn } from "../redux/selectors";
                   <div>
 
                   {
-                    userLogedIn ? <RenderProfile /> : <button className="btn btn-outline-primary" onClick={ () => setLoginModal(true) }>Sign in</button>
+                    userLogedIn ? <RenderProfile userAuthKey={userAuthKey} /> : <button className="btn btn-outline-primary" onClick={ () => setLoginModal(true) }>Sign in</button>
                   }
                   </div>
                   
@@ -56,7 +64,8 @@ import { getLoginModalState, getUserLogedIn } from "../redux/selectors";
 const mapStateToProps = state => {
   return {
     showLoginModal: getLoginModalState(state),
-    userLogedIn: getUserLogedIn(state)
+    userLogedIn: getUserLogedIn(state),
+    userAuthKey: getUserAuthKey(state)
   };
 };
 

@@ -12,6 +12,9 @@ import MyApplicationPage from "./pages/myapplicationpage";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 
+import { connect } from "react-redux";
+import { getUserAuthKey } from "./redux/selectors";
+
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faCheckSquare,
@@ -31,28 +34,30 @@ library.add(
   faPhoneAlt
 );
 
-const client = new ApolloClient({
-  uri: "http://localhost:5000",
-  cache: new InMemoryCache(),
-});
+
+const client = (token) => {
+  return new ApolloClient({
+    uri: "http://localhost:5000",
+    headers: {
+      "Authorization": "Bearer "+token
+    }, 
+    cache: new InMemoryCache(),
+  });
+};
 
 const App = () => {
-  let [userLogedIn, setUserLogedIn] = useState(false);
-  console.log("From app, user loged in:", userLogedIn);
+
+  const authKey = localStorage.getItem("AuthorizationKey");
+  console.log("Auth key", authKey)
 
   return (
-    <ApolloProvider client={client}>
+    <ApolloProvider client={client(authKey)}>
       <React.Fragment>
         <Router>
           <Switch>
             <Route path="/enterapplication">
               {" "}
-              <ApplicationTextPage
-                userLogedIn={userLogedIn}
-                setUserLogedIn={(userLoginValue) =>
-                  setUserLogedIn(userLoginValue)
-                }
-              />{" "}
+              <ApplicationTextPage/>{" "}
             </Route>
             <Route path="/enteravailabletimes">
               {" "}
@@ -64,21 +69,11 @@ const App = () => {
             </Route>
             <Route path="/myapplication">
               {" "}
-              <MyApplicationPage 
-                userLogedIn={userLogedIn}
-                setUserLogedIn={(userLoginValue) =>
-                  setUserLogedIn(userLoginValue)
-                }
-              />{" "}
+              <MyApplicationPage />{" "}
             </Route>
             <Route path="/">
               {" "}
-              <LandingPage
-                userLogedIn={userLogedIn}
-                setUserLogedIn={(userLoginValue) =>
-                  setUserLogedIn(userLoginValue)
-                }
-              />{" "}
+              <LandingPage/>{" "}
             </Route>
           </Switch>
         </Router>

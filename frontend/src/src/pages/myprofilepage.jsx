@@ -8,8 +8,16 @@ import LogInModal from '../components/modal/loginmodal';
 
 import "../stylesheets/pages/flexgrid.css";
 
+import { useQuery, gql } from "@apollo/client";
+import { ME } from "../requests/userRequests";
 
 const MyProfilePage = (props) => {
+
+    const { loading, error, data } = useQuery(ME);
+    console.log(loading, error, data);
+    if (data == null) {
+      return <div></div>;
+    }
 
     return (
         <div className="page">
@@ -25,11 +33,11 @@ const MyProfilePage = (props) => {
                     <div className="col">
                         <div className="card h-100 py-3 px-3">
                             <span>Name</span>
-                            <h5>Torstein Otterlei</h5>
+                            <h5> { data.me.firstName } { data.me.lastName } </h5>
                             <span>E-mail</span>
-                            <h5>torstein@otterlei.no</h5>
-                            <span>Number</span>
-                            <h5>91736801</h5>
+                            <h5>{ data.me.email }</h5>
+                            <span>Birth date</span>
+                            <h5>{ data.me.birtDate }</h5>
                             <button className="mt-5">Edit information</button>
                         </div>
                     </div>

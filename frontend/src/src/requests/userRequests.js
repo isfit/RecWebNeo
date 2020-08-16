@@ -6,6 +6,28 @@ const LOGIN = gql`
   }
 `;
 
+const ME_NAME = gql`
+    query me {
+      me {
+        firstName,
+        lastName,  
+      }
+    }
+`;
+
+const ME = gql`
+    query me {
+      me {
+        email,
+        firstName,
+        lastName,
+        birtDate
+      }
+    }
+`;
+
 export {
-    LOGIN
+    LOGIN,
+    ME,
+    ME_NAME
 };

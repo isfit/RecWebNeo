@@ -1,0 +1,59 @@
+.navbarWrapper{
+    padding: 0;
+    margin: 0;
+    color: black;
+    width: 100%;
+    height: 60px;
+    position: relative;
+}
+
+/* Styling for burger menu */
+.navbarIcon{
+    z-index: 1;
+    display: block;
+    float: right;
+    margin-right: 20px;
+
+    width: 50px;
+    height: 100%;
+    position: relative;
+    cursor: pointer;
+}
+
+.navbarIcon > div{
+    height: 3px;
+    width: 35px;
+    background-color: #000;
+    position: absolute;
+    transition: all 0.5s ease;
+}
+
+.navbarIcon > .firstIcon{
+    top: 19px;
+    left: 15%;
+}
+
+.navbarIcon > .secondIcon{
+    top: 29px;
+    left: 15%;
+}
+
+.navbarIcon > .thirdIcon{
+    top: 39px;
+    left: 15%;
+}
+
+.responsive > .firstIcon{
+    transform: translateY(10px) rotate(45deg);
+    background-color: white;
+    transition: all 0.5s ease;
+}
+.responsive > .secondIcon{
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+.responsive > .thirdIcon {
+    transform: translateY(-10px) rotate(-45deg);
+    background-color: white;
+    transition: all 0.5s ease;
+}

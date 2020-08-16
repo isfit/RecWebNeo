@@ -1,0 +1,23 @@
+/* Overlay */
+.overlayWrappper{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background-color: black;
+    opacity: 0;
+    z-index: -1;
+    transition: all 0.5s ease;
+}
+
+.overlayActive{
+    opacity: 0.95;
+    z-index: 1;
+    transition: all 0.5s ease;
+}
+
+/* Navigation link for nav bar */
+.navigationLinks{
+    position: absolute;
+    top: 80px;
+    right: 0;
+}

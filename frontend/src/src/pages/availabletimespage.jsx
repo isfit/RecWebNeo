@@ -310,8 +310,8 @@ const AvaiableTimesPage = (props) => {
                  <div className="row">
                   <div className="col mb-3">
                       <button type="button" className="btn btn-outline-secondary float-left">Back</button>
-                      <button type="button" className="btn btn-outline-success float-right">Continue</button>
-                    </div>
+                      <a type="button" className="btn btn-outline-success float-right" href="/myapplication">Continue</a>
+                  </div>
                 </div>
               </div>
             </div>

@@ -7,7 +7,7 @@ import "../stylesheets/pages/flexgrid.css";
 
   const RenderProfile = () => {
     return (
-        <a>
+        <a href="/myprofile">
           <span className="ml-2 d-none d-lg-block">
             <span className="text-default">Torstein Otterlei</span>
             <small className="text-muted d-block">Administrator</small>
@@ -30,8 +30,8 @@ import "../stylesheets/pages/flexgrid.css";
             </div>
             <div className="col">
                 <ul className="nav" style={{justifyContent:"right"}}>
-                  <NavBarButton title="Overview" iconstring="list-ol" />
-                  <NavBarButton title="My application" iconstring="address-card" />
+                  <NavBarButton title="Overview" iconstring="list-ol" address="/" />
+                  <NavBarButton title="My application" iconstring="address-card" address="/myapplication" />
                   <img src='/profilepic.png' style={{borderRadius: "50%", maxHeight: "5%", maxWidth:"8%"}} alt="Image" />
                   <RenderProfile />
                 </ul>

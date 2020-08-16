@@ -34,7 +34,7 @@ const getListStyle = isDraggingOver => ({
 });
 
 
-class ShoppingCart extends Component {
+class PositionsBox extends Component {
     constructor(props) {
         super(props);
         const mylist = [{id: 'item-0',content: 'position 0'},{id: 'item-1',content: 'position 1'},{id: 'item-2',content: 'position 2'}];
@@ -107,11 +107,10 @@ class ShoppingCart extends Component {
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}
                         >
-                            <h5 className="page-title border-bottom ml-2 mt-2">My application</h5>
+                            <h5 className="page-title border-bottom ml-2 mt-2">Positions</h5>
                             { this.positionColumn() }
                             
                             {provided.placeholder}
-                            <a type="button" className="btn btn-outline-success ml-auto mr-2 mb-2" href='/enterapplication'>Continue</a>
                         </div>
                     )}
                 </Droppable>
@@ -121,4 +120,4 @@ class ShoppingCart extends Component {
 
 }
 
-export default ShoppingCart;
+export default PositionsBox;

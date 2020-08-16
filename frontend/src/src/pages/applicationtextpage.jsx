@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ShoppingCart from '../components/shoppingcart';
+import PositionsBox from '../components/positionsbox';
 import PageLayout from './pageLayout';
 
 const ApplicationTextPage = (props) => {
@@ -18,7 +18,7 @@ const ApplicationTextPage = (props) => {
               <textarea className="w-100 h-100" placeholder="Please write a short application about why you would like to apply for these positions..." onChange={e => changeText( e.target.value )} type="text" />
             </div>
             <div className="col col-lg-4">
-              <ShoppingCart />
+              <PositionsBox />
             </div>
           </div>
           <div className="row">
@@ -56,7 +56,7 @@ const ApplicationTextPage = (props) => {
           <div className="row">
             <div className="col mt-2">
                 <button type="button" className="btn btn-outline-secondary float-left">Back</button>
-                <button type="button" className="btn btn-outline-success float-right">Continue</button>
+                <a type="button" className="btn btn-outline-success float-right" href="/enteravailabletimes">Continue</a>
               </div>
           </div>
         

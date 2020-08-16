@@ -4,21 +4,20 @@ import {LOGIN} from '../../requests/userRequests';
 
 const LoginModalForm = (props) => {
     
-    const [updateLogin, { data, error, loading}] = useMutation(LOGIN);
+    const [updateLogin, { data, error, loading}] = useMutation(LOGIN, { onError: () => {} });
     const [ emailInput, setEmailInput ] = useState("");
     const [ passwordInput, setPasswordInput ] = useState("");
 
     
     const login = (event) => {
         event.preventDefault();
-        console.log("Login");
-        console.log("Email: " + emailInput);
-        console.log("Password: " + passwordInput);
         updateLogin({variables: {email: emailInput, password: passwordInput}});
     };
 
     if (data != null) {
         localStorage.setItem("AuthorizationKey", data.login)
+        console.log(data);
+        props.setShowModal(false);
     }
 
     return(
@@ -39,6 +38,7 @@ const LoginModalForm = (props) => {
                         <input className="navbar-search" type="password" placeholder="Type your password..." type="password" value={passwordInput} onChange={event => setPasswordInput(event.target.value)} />
                     </div>
                 </div>
+                { error ? <div style={{color: "red"}}>The email or password is invalid</div> : null }
                 <div className="row d-flex justify-content-center mt-5">
                         <button className="signinbutton mt-5">Sign in</button>
                 </div>

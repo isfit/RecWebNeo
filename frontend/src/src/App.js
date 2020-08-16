@@ -22,15 +22,16 @@ const client = new ApolloClient({
 
 
 const App = () => {
-  const [showingLogInModal, showLogInModal] = useState(true);
+  let [userLogedIn, setUserLogedIn] = useState(false);
+  console.log("From app, user loged in:", userLogedIn);
 
   return (
     <ApolloProvider client={client}>
       <React.Fragment>
         <Router>
           <Switch>
-            <Route path="/enterapplication"> <ApplicationTextPage showingLogInModal={ showingLogInModal }  showLogInModal={ showLogInModal } /> </Route>
-            <Route path="/"> <LandingPage showingLogInModal={ showingLogInModal }  showLogInModal={ showLogInModal } /> </Route>
+            <Route path="/enterapplication"> <ApplicationTextPage userLogedIn={ userLogedIn }  setUserLogedIn={ userLoginValue => setUserLogedIn(userLoginValue) } /> </Route>
+            <Route path="/"> <LandingPage userLogedIn={ userLogedIn }  setUserLogedIn={ userLoginValue => setUserLogedIn(userLoginValue) } /> </Route>
           </Switch>
         </Router>
       </React.Fragment>

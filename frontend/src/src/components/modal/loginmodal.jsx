@@ -9,17 +9,16 @@ import "./loginModalStylesheet.css";
 
 const LogInModal = (props) =>  {
 
-    const [showModal, setShowModal] = useState(true);
     const [alreadyUser, setAlreadyUser] = useState(true);
 
     return(
-        <Modal showModal={ showModal }  setShowModal={ showModalValue => setShowModal(showModalValue) }>
+        <Modal showModal={ props.showModal }  setShowModal={ showModalValue => props.setShowModal(showModalValue) }>
             <div className="loginChoiceWrapper">
                 <div className="loginChoice" onClick={() => setAlreadyUser(true)} > Login </div>
                 <div className="loginChoice" onClick={() => setAlreadyUser(false)} > Register </div>
             </div>
             {
-                alreadyUser ? <LoginModalForm /> : <RegisterModalForm />
+                alreadyUser ? <LoginModalForm setShowModal={ showModalValue => props.setShowModal(showModalValue)} /> : <RegisterModalForm />
             }
         </Modal>
     );

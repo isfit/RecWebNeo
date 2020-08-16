@@ -67,7 +67,7 @@ namespace RecAPI.Users.Mutations
             return false;
         }
 
-        //[Authorize(Policy = "superuser")]
+        [Authorize(Policy = "superuser")]
         public bool AddRole(
             string email,
             string role,

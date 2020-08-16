@@ -31,6 +31,11 @@ using RecAPI.Organizations.Repositories;
 using RecAPI.Organizations.Queries;
 using RecAPI.Organizations.Mutations;
 
+using RecAPI.AdmisionPeriodes.Models;
+using RecAPI.AdmisionPeriodes.Repositories;
+using RecAPI.AdmisionPeriodes.Queries;
+using RecAPI.AdmisionPeriodes.Mutations;
+
 using RecAPI.Applications.Models;
 using RecAPI.Applications.Repositories;
 using RecAPI.Applications.Queries;
@@ -61,6 +66,8 @@ namespace RecAPI
     public class Startup
     {
 
+        readonly string AllowSpecificOrigins = "_allowSpecificOrigins";
+
         private readonly IConfiguration Configuration;
         public Startup(IConfiguration configuration)
         {
@@ -70,6 +77,19 @@ namespace RecAPI
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // CORS
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
+
             // Database connection MongoDB
             services.Configure<RecWebDatabaseSettings>(
                 Configuration.GetSection(nameof(RecWebDatabaseSettings)));
@@ -130,6 +150,8 @@ namespace RecAPI
             services.AddSingleton<IApplicationRepository, ApplicationRepository>(); 
             services.AddSingleton<IAuthRepository, AuthRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IAdmisionPeriodeRepository, AdmisionPeriodeRepository>();
+
 
             // GraphQL Schema
             services.AddGraphQL(sp => SchemaBuilder.New()
@@ -141,6 +163,7 @@ namespace RecAPI
                 .AddType<TeamQueries>()
                 .AddType<SectionQueries>()
                 .AddType<OrganizationQueries>()
+                .AddType<AdmisionPeriodeQueries>()
                 .AddType<ApplicationQueries>()
                 .AddType<UserQueries>()
                 // Add mutations
@@ -148,6 +171,7 @@ namespace RecAPI
                 .AddType<TeamMutations>()
                 .AddType<SectionMutations>()
                 .AddType<OrganizationMutations>()
+                .AddType<AdmisionPeriodeMutations>()
                 .AddType<ApplicationMutations>()
                 .AddType<UserMutation>()
                 // Add Model type
@@ -155,6 +179,7 @@ namespace RecAPI
                 .AddType<Team>()
                 .AddType<Section>()
                 .AddType<Organization>()
+                .AddType<AdmisionPeriode>()
                 .AddType<Application>()
                 .AddType<User>()
                 .AddAuthorizeDirectiveType()
@@ -186,6 +211,8 @@ namespace RecAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+            // CORS
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();

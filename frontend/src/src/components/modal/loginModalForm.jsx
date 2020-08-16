@@ -29,7 +29,7 @@ const LoginModalForm = (props) => {
                 <div className="row d-flex justify-content-center mt-5">
                     <div className="container w-75">
                         <span className="ml-1">Email</span>
-                        <input className="navbar-search" placeholder="Type your username..." type="email" value={emailInput} onChange={event => {setEmailInput(event.target.value)}} />
+                        <input className="navbar-search" placeholder="Type your email..." type="email" value={emailInput} onChange={event => {setEmailInput(event.target.value)}} />
                     </div>
                 </div>
                 <div className="row d-flex justify-content-center mt-4">

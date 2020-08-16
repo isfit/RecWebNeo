@@ -6,6 +6,12 @@ const LOGIN = gql`
   }
 `;
 
+const REGISTER = gql`
+  mutation registerUser($input: RegisterUserInput) {
+    registerUser(registerUser: $input)
+  }
+`;
+
 export {
-    LOGIN
+    LOGIN, REGISTER,
 };

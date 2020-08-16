@@ -6,8 +6,8 @@ const POSITIONS = gql`
         nodes {
             id,
             name,
-            admisionPeriode {
-                endDate
+            team {
+                name
             }
         }
     }

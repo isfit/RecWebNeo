@@ -22,6 +22,5 @@
   width: 32%;
 }
 
-.left, .middle, .right { background: #efefef; border: 1px solid #999; }
 .middle { flex: 1; text-align: center; }
 .right {margin-left: auto; display:flex;}

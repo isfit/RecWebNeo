@@ -1,20 +1,23 @@
-import { SET_MODAL } from '../actionTypes';
+import { SET_USER_LOGIN } from '../actionTypes';
 
 const initialState = {
     userLogedIn: false,
     authenticationKey: null
 };
 
-export default function(state = initialState, action) {
+const UserLogin = (state = initialState, action) => {
     switch (action.type) {
-        case "Tull": {
-            const { showModal } = action.payload;
+        case SET_USER_LOGIN: {
+            const { userLogedIn, authenticationKey } = action.payload;
             return {
                 ...state,
-                showModal: showModal
+                userLogedIn: userLogedIn,
+                authenticationKey: authenticationKey
             }
         };
         default:
             return state;
     }
-}
+};
+
+export default UserLogin;

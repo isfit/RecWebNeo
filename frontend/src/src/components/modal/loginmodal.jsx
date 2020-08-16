@@ -9,7 +9,7 @@ import "./loginModalStylesheet.css";
 
 import { connect } from "react-redux";
 import { setLoginModal } from "../../redux/actions";
-import { getLoginModalState } from "../../redux/selectors";
+import { getLoginModalState,getUserLogedIn } from "../../redux/selectors";
 
 const LogInModal = ({showLoginModal, setLoginModal}) =>  {
 
@@ -25,15 +25,16 @@ const LogInModal = ({showLoginModal, setLoginModal}) =>  {
                 <div className="loginChoice" onClick={() => setAlreadyUser(false)} > Register </div>
             </div>
             {
-                alreadyUser ? <LoginModalForm setShowModal={value => setLoginModal(value)} /> : <RegisterModalForm />
+                showLoginModal ? <LoginModalForm setShowModal={value => setLoginModal(value)} /> : <RegisterModalForm />
             }
         </Modal>
     );
 };
 
 const mapStateToProps = state => {
-    console.log(state);
-    return { showLoginModal: getLoginModalState(state) };
+    return { 
+        showLoginModal: getLoginModalState(state)
+    };
 };
 
 export default connect(mapStateToProps, { setLoginModal })(LogInModal);

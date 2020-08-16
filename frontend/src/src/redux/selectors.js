@@ -1,1 +1,5 @@
-export const getLoginModalState = store => store.ModalSwitcher.showLoginModal;
+// Modal
+export const getLoginModalState = store => store.modal.showLoginModal;
+
+// Login
+export const getUserLogedIn = store => store.user.userLogedIn;

@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import ModalSwitcher from "./modal";
+import modal from "./modal";
 import user from "./user";
 
-export default combineReducers({ ModalSwitcher, user });
+export default combineReducers({ modal, user });

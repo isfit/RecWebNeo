@@ -34,11 +34,11 @@ class SearchModule extends Component {
                         {this.renderCheckbox("Organizational Resources")}
                     </div>
                     <div className="col">
-                        {this.renderCheckbox("Student Peace Prize")}
                         {this.renderCheckbox("Culture")}
+                        {this.renderCheckbox("Student Peace Prize")}
                     </div>
                 </div>
-            </div>
+            </div> 
         </div>
 
         );

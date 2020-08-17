@@ -8,7 +8,32 @@ import LogInModal from '../components/modal/loginmodal';
 
 import "../stylesheets/pages/table.css";
 
-const AvaiableTimesPage = (props) => {  
+import { APPLY } from "../requests/userRequests";
+import { useMutation } from "@apollo/client";
+
+
+const AvaiableTimesPage = (props) => {
+    const [updateRegistration, { data, error, loading }] = useMutation(APPLY, {
+        onError: () => {},
+    });
+
+    const [textInput, setTextInput] = useState("");
+    const [positionsInput, setPositionsInput] = useState("");
+    const [priorityInput, setPriorityInput] = useState("");
+    const [otherPositionsInput, setOtherPositions] = useState("");
+    const [hoursInput, setHoursInput] = useState("");
+
+    const apply = (event) => {
+        event.preventDefault();
+        const variableData = {
+          variables: {
+            input: {
+            }
+          }
+        };
+        updateRegistration(variableData);
+    };
+
     return (
         <div className="page">
           <div className="page-main">

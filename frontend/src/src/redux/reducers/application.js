@@ -1,7 +1,7 @@
 import { ADD_POSITION, REMOVE_POSITION, PRIORITIZE_POSITION, DEPRIORITIZE_POSITION } from '../actionTypes';
 
 const initialState = {
-    positions: [],
+    positions: JSON.parse(localStorage.getItem('applicationPositions') || "[]"),
     positionsUpdated: false
 };
 
@@ -17,6 +17,7 @@ const Application = (state = initialState, action) => {
             if (state.positions.length < 3 && !state.positions.some(x => x.id == positionId)) {
                 let pos = state.positions;
                 pos.push(position)
+                localStorage.setItem("applicationPositions", JSON.stringify(pos));
                 return {
                     ...state,
                     positions: pos,
@@ -35,6 +36,7 @@ const Application = (state = initialState, action) => {
                 const newPositionsPri = state.positions;
                 const position = newPositionsPri.splice(index, 1)[0];
                 newPositionsPri.splice(index-1, 0, position);
+                localStorage.setItem("applicationPositions", JSON.stringify(newPositionsPri));
                 return {
                     ...state,
                     positions: newPositionsPri,
@@ -52,6 +54,7 @@ const Application = (state = initialState, action) => {
                 const newPositionsPri = state.positions;
                 const position = newPositionsPri.splice(index, 1)[0];
                 newPositionsPri.splice(index+1, 0, position);
+                localStorage.setItem("applicationPositions", JSON.stringify(newPositionsPri));
                 return {
                     ...state,
                     positions: newPositionsPri,
@@ -70,7 +73,7 @@ const Application = (state = initialState, action) => {
                         pos.push(x)
                     }
                 });
-                console.log("Removing something and getting:", pos);
+                localStorage.setItem("applicationPositions", JSON.stringify(pos));
                 return {
                     ...state,
                     positions: pos,

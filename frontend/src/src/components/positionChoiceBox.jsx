@@ -16,6 +16,8 @@ const PositionChoiceField = ({id, title, prioritize, dePrioritize, remove}) => {
 
 const PositionChoicBox = ({positions, positionsUpdated, prioritizePosition, dePrioritizePosition, removePositionFromApplication}) => {
     
+    console.log("Position box", positions[0]);
+
     return(
         <div className="card w-100">
             <h5 className="page-title border-bottom ml-2 mt-2">Positions</h5>

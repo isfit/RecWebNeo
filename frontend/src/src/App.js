@@ -53,6 +53,9 @@ const client = new ApolloClient({
 });
 
 const App = () => {
+  //localStorage.setItem("applicationPositions", "");
+  let data = JSON.parse(localStorage.getItem('applicationPositions') || "[]");
+  console.log("App.js data:", data);
 
   return (
     <ApolloProvider client={client}>

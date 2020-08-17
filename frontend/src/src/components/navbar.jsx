@@ -24,7 +24,7 @@ import { getLoginModalState, getUserLogedIn, getUserAuthKey } from "../redux/sel
             <span className="text-default"> { data.me.firstName } { data.me.lastName} </span>
             <small className="text-muted d-block">Applicant</small>
           </span>
-        </a>
+        </a>  
     );
   } 
 
@@ -44,14 +44,14 @@ import { getLoginModalState, getUserLogedIn, getUserAuthKey } from "../redux/sel
             <div className="col">
                 <ul className="nav" style={{justifyContent:"right"}}>
                   <NavBarButton title="Overview" iconstring="list-ol" address="/" />
-                  <NavBarButton title="My application" iconstring="address-card" address="/myapplication" />
+                  { userLogedIn ? <NavBarButton title="My application" iconstring="address-card" address="/myapplication" /> : null}
+                  { userLogedIn ? <NavBarButton title="My Profile" iconstring="address-card" address="/myprofile" /> : null}
                   <div>
-
-                  {
-                    userLogedIn ? <RenderProfile userAuthKey={userAuthKey} /> : <button className="btn btn-outline-primary" onClick={ () => setLoginModal(true) }>Sign in</button>
-                  }
+                    {
+                        userLogedIn ?
+                        <RenderProfile userAuthKey={userAuthKey} /> : <button className="btn btn-outline-primary" onClick={ () => setLoginModal(true) }>Sign in</button>
+                    }
                   </div>
-                  
                 </ul>
             </div>
           </div>

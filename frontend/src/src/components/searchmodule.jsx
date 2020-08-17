@@ -23,19 +23,19 @@ class SearchModule extends Component {
                         <input className="navbar-search form-control" placeholder="Search for position..."></input>
                     </div>
                 </form>
-                <h5 className="page-title ml-2 mt-3 mb-3">Filter by tags</h5>
+                <h5 className="page-title ml-2 mt-3 mb-3">Filter by section</h5>
                 <div className="row">
                     <div className="col ml-5">
-                        {this.renderCheckbox("Physical")}
-                        {this.renderCheckbox("Creative")}
+                        {this.renderCheckbox("Administration")}
+                        {this.renderCheckbox("Communication")}
                     </div>
                     <div className="col">
-                        {this.renderCheckbox("Marketing")}
-                        {this.renderCheckbox("IT")}
+                        {this.renderCheckbox("Participants")}
+                        {this.renderCheckbox("Organizational Resources")}
                     </div>
                     <div className="col">
-                        {this.renderCheckbox("Leadership")}
-                        {this.renderCheckbox("Administrative")}
+                        {this.renderCheckbox("Student Peace Prize")}
+                        {this.renderCheckbox("Culture")}
                     </div>
                 </div>
             </div>

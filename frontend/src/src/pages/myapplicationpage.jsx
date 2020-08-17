@@ -14,7 +14,7 @@ const MyApplicationPage = (props) => {
           </div>
           <div className="row">
             <div className="col">
-              <textarea className="w-100 h-100" placeholder="My application text" type="text" />
+              <textarea readOnly="true" className="w-100 h-100" placeholder="My application text" type="text"></textarea>
             </div>
             <div className="col col-lg-4">
               <PositionsBox />

@@ -26,6 +26,7 @@ const PositionRow = ({ position }) => {
   let bg = require("./favicon.ico");
   return (
     <div className="position-entry py-2 px-2 mb-2">
+    <a href="/">
       <div className="flex-grid">
         <div className="col">
           <h4>{position.name}</h4>
@@ -35,6 +36,7 @@ const PositionRow = ({ position }) => {
           <button type="button" className="btn btn-outline-success">+</button>
         </div>
       </div>    
+      </a>
     </div>
 
   );

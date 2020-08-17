@@ -95,7 +95,7 @@ const AvaiableTimesPage = (props) => {
                     <td className="hour" rowSpan="1">
                       <span>08:00-10:00</span>
                     </td>
-                    <td></td>
+                    <td><a>X</a></td>
                     <td></td>
                     <td></td>
                     <td></td>

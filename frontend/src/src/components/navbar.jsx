@@ -8,7 +8,7 @@ import { useQuery, gql } from "@apollo/client";
 import { ME_NAME } from "../requests/userRequests";
 
 import { connect } from "react-redux";
-import { setLoginModal } from "../redux/actions";
+import { openLoginModal } from "../redux/actions";
 import { getLoginModalState, getUserLogedIn, getUserAuthKey } from "../redux/selectors";
 
 
@@ -28,7 +28,7 @@ import { getLoginModalState, getUserLogedIn, getUserAuthKey } from "../redux/sel
     );
   } 
 
-  const NavBar = ({userLogedIn, showLoginModal, setLoginModal, userAuthKey}) => {
+  const NavBar = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey}) => {
 
     return (
       <div className="header py-1 border-bottom">
@@ -47,10 +47,10 @@ import { getLoginModalState, getUserLogedIn, getUserAuthKey } from "../redux/sel
                   { userLogedIn ? <NavBarButton title="My application" iconstring="address-card" address="/myapplication" /> : null}
                   { userLogedIn ? <NavBarButton title="My Profile" iconstring="address-card" address="/myprofile" /> : null}
                   <div>
-                    {
-                        userLogedIn ?
-                        <RenderProfile userAuthKey={userAuthKey} /> : <button className="btn btn-outline-primary" onClick={ () => setLoginModal(true) }>Sign in</button>
-                    }
+
+                  {
+                    userLogedIn ? <RenderProfile userAuthKey={userAuthKey} /> : <button className="btn btn-outline-primary" onClick={ () => openLoginModal() }>Sign in</button>
+                  }
                   </div>
                 </ul>
             </div>
@@ -69,4 +69,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setLoginModal })(NavBar);
+export default connect(mapStateToProps, { openLoginModal })(NavBar);

@@ -1,8 +1,10 @@
-import { SET_USER_LOGIN } from '../actionTypes';
+import { SET_USER_LOGIN, LOG_OUT_USER } from '../actionTypes';
+
+
 
 const initialState = {
-    userLogedIn: localStorage.getItem("AuthorizationKey") != null,
-    authenticationKey: null
+    userLogedIn: localStorage.getItem("AuthorizationKey") != (null || "" ),
+    authenticationKey: localStorage.getItem("AuthorizationKey")
 };
 
 const UserLogin = (state = initialState, action) => {
@@ -15,6 +17,15 @@ const UserLogin = (state = initialState, action) => {
                 authenticationKey: authenticationKey
             }
         };
+        case LOG_OUT_USER: {
+            const { userLogedIn } = action.payload;
+            localStorage.setItem("AuthorizationKey", "")
+            return {
+                ...state,
+                userLogedIn: userLogedIn,
+                authenticationKey: ""
+            }
+        }
         default:
             return state;
     }

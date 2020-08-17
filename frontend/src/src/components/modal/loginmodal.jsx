@@ -8,10 +8,10 @@ import RegisterModalForm from './registerModalForm'
 import "./loginModalStylesheet.css";
 
 import { connect } from "react-redux";
-import { setLoginModal } from "../../redux/actions";
+import { closeLoginModal } from "../../redux/actions";
 import { getLoginModalState,getUserLogedIn } from "../../redux/selectors";
 
-const LogInModal = ({showLoginModal, setLoginModal}) =>  {
+const LogInModal = ({showLoginModal, closeLoginModal}) =>  {
 
     const [alreadyUser, setAlreadyUser] = useState(true);
 
@@ -19,13 +19,13 @@ const LogInModal = ({showLoginModal, setLoginModal}) =>  {
     console.log("The redux value is", showLoginModal);
 
     return(
-        <Modal showModal={showLoginModal} setShowModal={ value => setLoginModal(value) } >
+        <Modal showModal={showLoginModal} setShowModal={ () => closeLoginModal() } >
             <div className="loginChoiceWrapper">
                 <div className="loginChoice" onClick={() => setAlreadyUser(true)} > Login </div>
                 <div className="loginChoice" onClick={() => setAlreadyUser(false)} > Register </div>
             </div>
             {
-                showLoginModal ? <LoginModalForm setShowModal={value => setLoginModal(value)} /> : <RegisterModalForm />
+                showLoginModal ? <LoginModalForm setShowModal={() => closeLoginModal()} /> : <RegisterModalForm />
             }
         </Modal>
     );
@@ -37,4 +37,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, { setLoginModal })(LogInModal);
+export default connect(mapStateToProps, { closeLoginModal })(LogInModal);

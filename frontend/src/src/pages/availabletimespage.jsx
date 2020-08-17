@@ -22,6 +22,9 @@ const AvaiableTimesPage = (props) => {
   const [otherPositionsInput, setOtherPositions] = useState("");
   const [hoursInput, setHoursInput] = useState("");
 
+  const [hourNum, setHourNum] = useState([0]);
+
+
   const apply = (event) => {
     event.preventDefault();
     const variableData = {
@@ -31,6 +34,8 @@ const AvaiableTimesPage = (props) => {
     };
     updateRegistration(variableData);
   };
+
+
 
   return (
     <div className="page">
@@ -95,12 +100,13 @@ const AvaiableTimesPage = (props) => {
                     <td className="hour" rowSpan="1">
                       <span>08:00-10:00</span>
                     </td>
-                    <td><a>X</a></td>
+                    <td><button onClick={() => hourNum.push(3), setHourNum(hourNum.push(3))}>Click me</button></td>
+                    {console.log(hourNum)}
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
+                    <td></td>   
                     <td></td>
                   </tr>
                   <tr>

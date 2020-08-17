@@ -1,4 +1,4 @@
-import { SET_LOGIN_MODAL, SET_USER_LOGIN, LOG_OUT_USER } from "./actionTypes";
+import { SET_LOGIN_MODAL, SET_POSITION_MODAL, SET_USER_LOGIN, LOG_OUT_USER } from "./actionTypes";
 
 export const openLoginModal = () => ({
     type: SET_LOGIN_MODAL,
@@ -11,6 +11,20 @@ export const closeLoginModal = () => ({
     type: SET_LOGIN_MODAL,
     payload: {
         showLoginModal: false
+    }
+})
+
+export const openPositionModal = () => ({
+    type: SET_POSITION_MODAL,
+    payload: {
+        showPositionModal: true
+    }
+});
+
+export const closePositionModal = () => ({
+    type: SET_POSITION_MODAL,
+    payload: {
+        showPositionModal: false
     }
 })
 

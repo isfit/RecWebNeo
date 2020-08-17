@@ -23,6 +23,9 @@ import {
   faListOl,
   faSignature,
   faPhoneAlt,
+  faArrowUp,
+  faArrowDown,
+  faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -31,7 +34,10 @@ library.add(
   faAddressCard,
   faListOl,
   faSignature,
-  faPhoneAlt
+  faPhoneAlt,
+  faArrowUp,
+  faArrowDown,
+  faTrashAlt,
 );
 
 const httpLink = new HttpLink({ uri: 'http://recruitment.isfit.org:5000/'});

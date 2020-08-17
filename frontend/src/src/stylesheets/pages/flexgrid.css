@@ -4,10 +4,10 @@
   display: flex;
 }
 
-
 .flex-grid .col {
   flex: 1;
 }
+
 
 .flex-grid .col-list {
  flex-direction: column;

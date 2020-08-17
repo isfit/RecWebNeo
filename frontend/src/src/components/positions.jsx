@@ -43,14 +43,12 @@ const PositionRow = ({ position, openPositionModal, addPositionToApplication }) 
   return (
     <div className="position-entry py-2 px-2 mb-2">
         <div className="flex-grid">
-      <a onClick={() => openPositionModal(position)}>
-          <div className="col">
-            <h4>{position.name}</h4>
-            <span>{position.team.name}</span>
-          </div>
-      </a>
-          <div className="right">
-          <button type="button" className="btn btn-outline-success" onClick={() => addPositionToApplication(position.id, position.name)}>
+         <a className="col" style={{flexGrow: 9}} onClick={() => openPositionModal(position)}>
+                <h4>{position.name}</h4>
+                <span>{position.team.name}</span>
+          </a>
+          <div className="col" style={{flexGrow: 1}}>
+          <button type="button" className="btn btn-outline-success w-100 h-100" onClick={() => addPositionToApplication(position.id, position.name)}>
               +
             </button>
           </div>

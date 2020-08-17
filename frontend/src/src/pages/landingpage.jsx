@@ -3,7 +3,7 @@ import PositionTable from '../components/positions';
 import SearchModule from '../components/searchmodule';
 import ShoppingCart from '../components/shoppingcart';
 import PageLayout from './pageLayout';
-import PositionChoicBox from '../components/positionChoiceBox';
+import PositionChoiceBox from '../components/positionChoiceBox';
 
 
 const LandingPage = () => {
@@ -20,7 +20,8 @@ const LandingPage = () => {
               <PositionTable />
               </div>
               <div className="col col-lg-4">
-                <PositionChoicBox />
+                <PositionChoiceBox />
+                <buton className="btn btn-outline-success mt-1 mr-2 float-right">Continue</buton>
               </div>
             </div>
           </div>

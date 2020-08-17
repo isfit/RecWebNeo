@@ -3,6 +3,7 @@ import PositionRow from '../components/positions';
 import SearchModule from '../components/searchmodule';
 import ShoppingCart from '../components/shoppingcart';
 import PageLayout from './pageLayout';
+import PositionChoicBox from '../components/positionChoiceBox';
 
 const LandingPage = (props) => {
 
@@ -18,7 +19,7 @@ const LandingPage = (props) => {
               <PositionRow />
               </div>
               <div className="col col-lg-4">
-                <ShoppingCart />
+                <PositionChoicBox />
               </div>
             </div>
           </div>

@@ -107,11 +107,22 @@ class ShoppingCart extends Component {
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}
                         >
-                            <h5 className="page-title border-bottom ml-2 mt-2">My application</h5>
-                            { this.positionColumn() }
+                          <h5 className="page-title border-bottom ml-3 mt-2">My application</h5>
+                          <div className="flex-grid">
                             
+                            <div className="col-list w-10 pt-3 mr-2 ">
+                              <h5>1</h5>
+                              <h5 className="pt-4 mt-3">2</h5>
+                              <h5 className="pt-4 mt-3">3</h5>
+                            </div>
+                            <div className="col-list w-100">
+                              { this.positionColumn() }
+                            </div>
+                          </div>
                             {provided.placeholder}
-                            <a type="button" className="btn btn-outline-success ml-auto mr-2 mb-2" href='/enterapplication'>Continue</a>
+                            <small style={{textAlign:"center"}}>Apply for one, two or three positions</small>
+                            <small style={{textAlign:"center"}}>Simply drag to prioritize them</small>
+                            <a type="button" className="btn btn-outline-success ml-auto mr-2 mb-2 mt-2" href='/enterapplication'>Continue</a>
                         </div>
                     )}
                 </Droppable>

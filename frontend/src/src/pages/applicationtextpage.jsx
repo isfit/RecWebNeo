@@ -55,7 +55,7 @@ const ApplicationTextPage = (props) => {
           </div>
           <div className="row">
             <div className="col mt-2">
-                <button type="button" className="btn btn-outline-secondary float-left">Back</button>
+                <a type="button" className="btn btn-outline-secondary float-left" href="/">Back</a>
                 <a type="button" className="btn btn-outline-success float-right" href="/enteravailabletimes">Continue</a>
               </div>
           </div>

@@ -6,9 +6,14 @@ const POSITIONS = gql`
         nodes {
             id,
             name,
+            description,
             team {
                 name
+            },
+            section {
+                name
             }
+            
         }
     }
     }

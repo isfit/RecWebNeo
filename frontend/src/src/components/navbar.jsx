@@ -47,7 +47,6 @@ import { getLoginModalState, getUserLogedIn, getUserAuthKey } from "../redux/sel
                   { userLogedIn ? <NavBarButton title="My application" iconstring="address-card" address="/myapplication" /> : null}
                   { userLogedIn ? <NavBarButton title="My Profile" iconstring="address-card" address="/myprofile" /> : null}
                   <div>
-
                   {
                     userLogedIn ? <RenderProfile userAuthKey={userAuthKey} /> : <button className="btn btn-outline-primary" onClick={ () => openLoginModal() }>Sign in</button>
                   }
@@ -61,12 +60,12 @@ import { getLoginModalState, getUserLogedIn, getUserAuthKey } from "../redux/sel
   }
 
 
-const mapStateToProps = state => {
-  return {
-    showLoginModal: getLoginModalState(state),
-    userLogedIn: getUserLogedIn(state),
-    userAuthKey: getUserAuthKey(state)
+  const mapStateToProps = state => {
+    return {
+      showLoginModal: getLoginModalState(state),
+      userLogedIn: getUserLogedIn(state),
+      userAuthKey: getUserAuthKey(state)
+    };
   };
-};
 
 export default connect(mapStateToProps, { openLoginModal })(NavBar);

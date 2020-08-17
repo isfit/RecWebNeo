@@ -107,10 +107,19 @@ class PositionsBox extends Component {
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}
                         >
-                            <h5 className="page-title border-bottom ml-2 mt-2">Positions</h5>
-                            { this.positionColumn() }
-                            
-                            {provided.placeholder}
+                            <h5 className="page-title border-bottom ml-3 mt-2">Positions</h5>
+                            <div className="flex-grid">
+                                <div className="col-list w-10 pt-3 mr-2 ">
+                                  <h5>1</h5>
+                                  <h5 className="pt-4 mt-3">2</h5>
+                                  <h5 className="pt-4 mt-3">3</h5>
+                                </div>
+                                <div className="col-list w-100">
+                                    { this.positionColumn() }
+                                </div>
+                            </div>
+                                {provided.placeholder}
+                                <small style={{textAlign:"center"}}>Simply drag to prioritize or remove positions</small>
                         </div>
                     )}
                 </Droppable>

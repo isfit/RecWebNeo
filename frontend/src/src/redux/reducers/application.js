@@ -8,7 +8,7 @@ const initialState = {
 const Application = (state = initialState, action) => {
     switch (action.type) {
         case ADD_POSITION: {
-
+            console.log("Hello");
             const { positionId, positionName } = action.payload;
             const position = {
                 id: positionId,

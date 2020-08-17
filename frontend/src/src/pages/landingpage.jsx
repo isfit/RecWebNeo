@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import PositionRow from '../components/positions';
+import PositionTable from '../components/positions';
 import SearchModule from '../components/searchmodule';
 import ShoppingCart from '../components/shoppingcart';
 import PageLayout from './pageLayout';
 import PositionChoicBox from '../components/positionChoiceBox';
 
-const LandingPage = (props) => {
+
+const LandingPage = () => {
 
     return (
-        <PageLayout userLogedIn={ props.userLogedIn }  setUserLogedIn={ userLoginValue => props.setUserLogedIn(userLoginValue) }>
+        <PageLayout>
           <div className="container">
             <div className="page-header pt-3 mb-4">
               <h4 className="page-title">Choose positions</h4>
@@ -16,7 +17,7 @@ const LandingPage = (props) => {
             <div className="row">
               <div className="col">
               <SearchModule />
-              <PositionRow />
+              <PositionTable />
               </div>
               <div className="col col-lg-4">
                 <PositionChoicBox />
@@ -26,6 +27,7 @@ const LandingPage = (props) => {
         </PageLayout>
     );
 };
+
 
 
 

@@ -125,7 +125,6 @@ class ShoppingCart extends Component {
                               <h5 className="pt-4 mt-3">2</h5>
                               <h5 className="pt-4 mt-3">3</h5>
                             </div>
-                            { this.state.items.map(x => x.id) }
                             <div className="col-list w-100">
                               { this.positionColumn() }
                             </div>

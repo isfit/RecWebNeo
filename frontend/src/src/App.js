@@ -9,7 +9,7 @@ import AvailableTimesPage from "./pages/availabletimespage";
 import MyProfilePage from "./pages/myprofilepage";
 import MyApplicationPage from "./pages/myapplicationpage";
 
-import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloProvider, ApolloClient, HttpLink, ApolloLink, InMemoryCache, concat } from '@apollo/client';
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 
 import { connect } from "react-redux";
@@ -34,24 +34,28 @@ library.add(
   faPhoneAlt
 );
 
+const httpLink = new HttpLink({ uri: 'http://localhost:5000'});
 
-const client = (token) => {
-  return new ApolloClient({
-    uri: "http://localhost:5000",
+const authMiddleware = new ApolloLink((operation, forward) => {
+  // add the authorization to the headers
+  operation.setContext({
     headers: {
-      "Authorization": "Bearer "+token
-    }, 
-    cache: new InMemoryCache(),
+      Authorization: "Bearer " + localStorage.getItem('AuthorizationKey') || null,
+    }
   });
-};
+
+  return forward(operation);
+})
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: concat(authMiddleware, httpLink),
+});
 
 const App = () => {
 
-  const authKey = localStorage.getItem("AuthorizationKey");
-  console.log("Auth key", authKey)
-
   return (
-    <ApolloProvider client={client(authKey)}>
+    <ApolloProvider client={client}>
       <React.Fragment>
         <Router>
           <Switch>

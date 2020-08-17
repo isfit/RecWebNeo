@@ -6,6 +6,7 @@ import "../stylesheets/components/positions/positioncard.css";
 
 const PositionsTable = (props) => {
   const { loading, error, data } = useQuery(POSITIONS);
+  console.log(loading, error, data);
   if (data == null) {
     return <div></div>;
   }

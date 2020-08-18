@@ -25,6 +25,7 @@ const FILTER_POSITIONS = gql`
       positions(where: $input) {
           totalCount,
         nodes {
+          id,
           name,
           section {
             id,

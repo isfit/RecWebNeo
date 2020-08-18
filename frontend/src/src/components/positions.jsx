@@ -17,9 +17,9 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
   
   const positionQuery = () => {
     if (sectionList.length == 0) {
+      console.log("Sending null")
       return null
     }
-    console.log("Down under", sectionList);
     const queryArguments = {
       variables: {
         input: {
@@ -27,20 +27,14 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
         }
       }
     }
+    console.log("Sending arguments" ,queryArguments);
     return queryArguments;
   }
 
-  const {refetch, data, error, loading} = useQuery(FILTER_POSITIONS, positionQuery());
+  const {data, error, loading} = useQuery(FILTER_POSITIONS, positionQuery());
 
   const [positionData, setPositionData] = useState(null);
   console.log(loading, error, data);
-
-
-  const filter = (event) => {
-    event.preventDefault();
-    refetch(positionQuery());  
-    /* updateSectionFilter(positionQuery); */
-  };
 
   if (data == null) {
     return <div></div>;

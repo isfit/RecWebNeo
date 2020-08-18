@@ -25,7 +25,6 @@ const LandingPage = () => {
             </div>
             <div className="row">
               <div className="col">
-              <SearchModule sectionList={sectionList} setSectionList={sect => updateSectionList(sect)}/>
               <PositionTable sectionList={sectionList} />
               { console.log("Section list", sectionList) }
               </div>

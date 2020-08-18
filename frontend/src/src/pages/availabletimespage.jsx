@@ -59,6 +59,24 @@ const AvailableTimesPage = (props) => {
     )
   }
 
+
+  if (data != null ){
+    return (
+      <PageLayout>
+        <span>Application entered successfully. Thank you!</span>
+      </PageLayout>
+    );
+  };
+
+  if (error?.message == "There already exists an application for this user for this application periode.") {
+    return (
+        <PageLayout>
+          <span>There already exists an application for this user. Go to my application to see it.</span>
+        </PageLayout>
+
+    );
+  };
+
   if (error != null) {
     return (
       <PageLayout>
@@ -70,6 +88,8 @@ const AvailableTimesPage = (props) => {
       </PageLayout>
     )
   }
+
+
 
   return (
     <PageLayout>

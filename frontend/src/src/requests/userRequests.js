@@ -42,10 +42,11 @@ const APPLY = gql`
 const MYAPPLICATION = gql`
   query myApplication {
     myApplication {
+      id,
       applicationText,
-      interest,
+      positions {key, value},
       prioritized,
-      available
+      interest
     }
   }
 `;

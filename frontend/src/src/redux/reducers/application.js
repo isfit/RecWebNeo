@@ -8,12 +8,12 @@ const initialState = {
 const Application = (state = initialState, action) => {
     switch (action.type) {
         case ADD_POSITION: {
-            console.log("Hello");
             const { positionId, positionName } = action.payload;
             const position = {
                 id: positionId,
                 content: positionName,
             }
+            console.log(position);
             if (state.positions.length < 3 && !state.positions.some(x => x.id == positionId)) {
                 let pos = state.positions;
                 pos.push(position)

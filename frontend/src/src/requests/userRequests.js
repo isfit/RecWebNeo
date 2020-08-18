@@ -44,7 +44,6 @@ const MYAPPLICATION = gql`
   query myApplication {
     myApplication {
       applicationText,
-      positions,
       interest,
       prioritized,
       available

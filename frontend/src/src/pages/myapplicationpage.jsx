@@ -51,8 +51,11 @@ const MyApplicationPage = (props) => {
           </div>
           <div className="row">
             <div className="col mt-3">
+              { console.log("Data", data) }
                 <div className="card">
-                    { data.myApplication.applicationText ? <span>You chose to prioritize your the positions in your application</span> : <span>You chose not to prioritize your the positions in your application</span> }
+                        <div>
+                            <div> { data?.myApplication?.applicationText } </div>
+                        </div>
                     {/* {if (data.myApplication.interest === "")   } */}
                 </div>
             </div>

@@ -29,15 +29,15 @@ namespace RecAPI.Applications.Models
             // TODO!
             if (interest == "OnlyPositions")
             {
-                Interest = "I am only interested in the positions i have entered";
+                Interest = "OnlyPositions";
             }
             if (interest == "Same")
             {
-                Interest = "I am open to other positions widthin the same genre of the positions i have entered";
+                Interest = "Same";
             }
             if (interest == "open")
             {
-                Interest = "I am open ti any other position in ISFIT, regardles of the positons i have entered";
+                Interest = "open";
             }
         }
     }

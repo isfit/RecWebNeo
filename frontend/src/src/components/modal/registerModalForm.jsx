@@ -28,7 +28,7 @@ const RegisterModalForm = () => {
         }
       }
     };
-    updateRegistration(variableData);
+    updateRegistration(variableData)
   };
 
   return (
@@ -111,6 +111,12 @@ const RegisterModalForm = () => {
             </div>
           </div>
         </div>
+        {data ? (
+          <div style={{ color: "green" }}>
+            You are registered successfully. Please log in. {" "}
+          </div>
+        ) : null}
+
         {error ? (
           <div style={{ color: "red" }}>
             Could not register. Try again with different information.{" "}

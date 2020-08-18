@@ -3,7 +3,7 @@ import pandas as pd
 import glob, os
 import csv
 
-positionFiles = ['positions15.txt', 'positions21.txt', 'positions8.txt', 'positions19.txt', '23.txt', 'positions5.txt', 'positions11.txt', 'positions14.txt', 'positions12.txt', 'positions9.txt', 'positions18.txt', 'positions16.txt', 'positions24.txt', 'positions17.txt', 'positions10.txt', 'positions7.txt', 'positions2.txt', 'positions13.txt', 'positions20.txt', 'positions3.txt', 'positions6.txt', 'positions4.txt', 'positions25.txt', 'positions22.txt', 'positions1.txt']
+positionFiles = ['film.txt']
 
 """
 os.chdir("./positionfiles")
@@ -12,8 +12,8 @@ for file in glob.glob("*.txt"):
 print(positionFiles)
 """
 
-apiUri = "http://localhost:5000"
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjVmMzgwMmUxY2JjZDg4ODkwM2VlMDUwMiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJzYW5kZXIuay5raWxlbkBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsic3VwZXJ1c2VyIiwiYWRtaW4iXSwiZXhwIjoxNTk3NjY0OTMwLCJpc3MiOiJpc3N1ZXIiLCJhdWQiOiJhdWRpZW5jZSJ9.SC2l0ursTTTswRg-4yZiUCs12rh_WJV_EmLcyh54azY"
+apiUri = "https://recruitment.isfit.org:5000/"
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjVmMzk2MjAwZDIwNDJmMDAwMTQ5YTc4ZCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJhZG1pbkBpc2ZpdC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsic3VwZXJ1c2VyIiwiYWRtaW4iXSwiZXhwIjoxNTk3ODUxMTM0LCJpc3MiOiJpc3N1ZXIiLCJhdWQiOiJhdWRpZW5jZSJ9.yPJNwZYQIRq62y1oKbbBhHvM7AOXdU4IDKj9MRCdHG0"
 headers = {"Authorization": "Bearer "+token}
 
 def createAdmissionPeriodeMutation():
@@ -100,6 +100,7 @@ teams = {}
 positions = {}
 
 
+"""
 with open('positionfiles/Positions.csv') as csv_file:
     csv_reader = csv.DictReader(csv_file)
     line_count = 0
@@ -138,8 +139,10 @@ with open('positionfiles/Positions.csv') as csv_file:
             positions[row_data_list[2]] = {"Section": sections[row_data_list[0]], "Team": teams[row_data_list[0]][row_data_list[1]]}
 
         line_count += 1
+"""
 
-
+section = "5f3a7eaf0276b000016a0ed0"
+team = "5f3a7eaf0276b000016a0ed2"
 
 for positionFile in positionFiles:
     f = open("positionfiles/"+positionFile, "r")
@@ -154,8 +157,8 @@ for positionFile in positionFiles:
             position_name,
             position_description,
             admisionPeriode,
-            positions[position_name]["Section"],
-            positions[position_name]["Team"],
+            section, #positions[position_name]["Section"],
+            team, #positions[position_name]["Team"],
             ["ISFIT2021"]
             )
         mutation_string = createPositionMutation()

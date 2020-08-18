@@ -21,7 +21,8 @@ import { getLoginModalState, getUserLogedIn, getUserAuthKey } from "../redux/sel
     return (
         <a href="/myprofile">
           <span className="ml-2 d-none d-lg-block">
-            <span className="text-default"> { data.me.firstName } { data.me.lastName} </span>
+            { console.log("ME", data) }
+            <span className="text-default"> { data.me?.firstName } { data.me?.lastName} </span>
             <small className="text-muted d-block">Applicant</small>
           </span>
         </a>  

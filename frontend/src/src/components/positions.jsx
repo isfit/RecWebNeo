@@ -10,35 +10,35 @@ import PositionModal from "./modal/positionmodal";
 import { connect } from "react-redux";
 import { openPositionModal, addPositionToApplication } from "../redux/actions";
 import { getPositionModalState } from "../redux/selectors";
+import { useEffect } from "react";
 
-
-/* const [updateSectionFilter, { data, error, loading}] = useMutation(FILTER_POSITIONS, { onError: () => {} });
-  
-  const filter = (event) => {
-    event.preventDefault();
-    updatePositions({variables: { where: { section_in: {} } }});
-  }; */
 
 const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApplication, sectionList }) => {
   
-  /* const [updateSectionFilter, {data, error, loading}] = useQuery(FILTER_POSITIONS, { onError: () => {} }); */
-  /* const [updateSectionFilter,{ loading, error, data }] = useQuery(FILTER_POSITIONS);
- */
-  const { loading, error, data } = useQuery(POSITIONS);
+  const positionQuery = () => {
+    if (sectionList.length == 0) {
+      return null
+    }
+    console.log("Down under", sectionList);
+    const queryArguments = {
+      variables: {
+        input: {
+          section_in: sectionList
+        }
+      }
+    }
+    return queryArguments;
+  }
+
+  const {refetch, data, error, loading} = useQuery(FILTER_POSITIONS, positionQuery());
+
   const [positionData, setPositionData] = useState(null);
   console.log(loading, error, data);
 
 
   const filter = (event) => {
     event.preventDefault();
-    const positionQuery = {
-      variables: {
-        where: {
-          section_in: ["5f3a7eb00276b000016a0ed7"],
-        }
-      }
-    }
-
+    refetch(positionQuery());  
     /* updateSectionFilter(positionQuery); */
   };
 
@@ -46,6 +46,7 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
     return <div></div>;
   }
   
+  console.log("Positions", data);
 
   return (
     <div className="row mt-4">
@@ -74,8 +75,8 @@ const PositionRow = ({ position, openPositionModal, addPositionToApplication }) 
     <div className="position-entry py-2 px-2 mb-2">
         <div className="flex-grid">
          <a className="col" style={{flexGrow: 9}} onClick={() => openPositionModal(position)}>
-                <h4>{position.name}</h4>
-                <span>{position.team.name}</span>
+                <h4>{position?.name}</h4>
+                <span>{position?.team?.name}</span>
           </a>
           <div className="col" style={{flexGrow: 1}}>
           <button type="button" className="btn btn-outline-success w-100 h-100" onClick={() => addPositionToApplication(position.id, position.name)}>

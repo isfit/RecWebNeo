@@ -41,7 +41,7 @@ library.add(
   faTrashAlt,
 );
 
-const httpLink = new HttpLink({ uri: 'https://localhost:44391/'});
+const httpLink = new HttpLink({ uri: 'http://recruitment.isfit.org:5000/'});
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists

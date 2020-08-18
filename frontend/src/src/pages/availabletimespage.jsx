@@ -77,6 +77,15 @@ const AvailableTimesPage = (props) => {
     );
   };
 
+  if (error?.message == "There must be at least 1 and at most 3 positions connected to an application") {
+    return (
+        <PageLayout>
+          <span>There must be at least 1 and at most 3 positions connected to an application</span>
+        </PageLayout>
+
+    );
+  };
+
   if (error != null) {
     return (
       <PageLayout>

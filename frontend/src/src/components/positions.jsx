@@ -44,6 +44,7 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
 
   return (
     <div className="row mt-4">
+      { console.log("Position modal data", positionData) }
       <PositionModal position={positionData} />
       <div className="card w-100 px-3 py-3">
         {data.positions.nodes.map((position) => {
@@ -51,6 +52,7 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
             <PositionRow
               position={position}
               openPositionModal={(position) => {
+                console.log("Setting position data", position);
                 setPositionData(position);
                 openPositionModal();
               }}

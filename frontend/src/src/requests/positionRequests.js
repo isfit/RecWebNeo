@@ -27,10 +27,15 @@ const FILTER_POSITIONS = gql`
         nodes {
           id,
           name,
+          description,
           section {
             id,
             name
-          }
+          },
+          team {
+            id,
+            name
+        },
         }
       }
     }

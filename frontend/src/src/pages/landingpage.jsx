@@ -8,6 +8,7 @@ import PositionChoiceBox from '../components/positionChoiceBox';
 
 const LandingPage = () => {
   const history = useHistory();
+  const [sectionList, setSectionList] = useState([]);
 
     return (
         <PageLayout>
@@ -17,8 +18,8 @@ const LandingPage = () => {
             </div>
             <div className="row">
               <div className="col">
-              <SearchModule />
-              <PositionTable />
+              <SearchModule sectionList={sectionList} setSectionList={setSectionList}/>
+              <PositionTable sectionList={sectionList} />
               </div>
               <div className="col col-lg-4">
                 <PositionChoiceBox />

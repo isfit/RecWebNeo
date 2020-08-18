@@ -38,10 +38,23 @@ const APPLY = gql`
   }
 `;
 
+const MYAPPLICATION = gql`
+  query myApplication {
+    myApplication {
+      applicationText,
+      positions,
+      interest,
+      prioritized,
+      available
+    }
+  }
+`;
+
 export {
     LOGIN,
     ME,
     ME_NAME,
     REGISTER,
-    APPLY
+    APPLY,
+    MYAPPLICATION
 };

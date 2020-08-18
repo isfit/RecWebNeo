@@ -118,7 +118,7 @@ const RegisterModalForm = () => {
         ) : null}
 
         {error ? (
-          <div style={{ color: "red" }}>
+          <div style={{ color: "red" }}>  
             Could not register. Try again with different information.{" "}
           </div>
         ) : null}

@@ -32,16 +32,16 @@ const SearchModule = ({sectionList, setSectionList}) => {
             <h5 className="page-title ml-2 mt-3 mb-3">Filter by section</h5>
             <div className="row">
                 <div className="col ml-5">
-                    <FilterCheckbox func={() => addToSectionList("administration")}>Administration</FilterCheckbox>
-                    <FilterCheckbox func={() => addToSectionList("communication")}>Communication</FilterCheckbox>
+                    <FilterCheckbox func={() => addToSectionList("5f3a7eb10276b000016a0edc")}>Administration</FilterCheckbox>
+                    <FilterCheckbox func={() => addToSectionList("5f3a7eaf0276b000016a0ed0")}>Communication</FilterCheckbox>
                 </div>
                 <div className="col">
-                    <FilterCheckbox func={() => addToSectionList("participant")}>Participants</FilterCheckbox>
-                    <FilterCheckbox func={() => addToSectionList("organizational resources")}>Organizational Resources</FilterCheckbox>
+                    <FilterCheckbox func={() => addToSectionList("5f3a7eb30276b000016a0eee")}>Participants</FilterCheckbox>
+                    <FilterCheckbox func={() => addToSectionList("5f3a7eb30276b000016a0ee9")}>Organizational Resources</FilterCheckbox>
                 </div>
                 <div className="col">
-                    <FilterCheckbox func={() => addToSectionList("culture")}>Culture</FilterCheckbox>
-                    <FilterCheckbox func={() => addToSectionList("student peace prize")}>Student Peace Prize</FilterCheckbox>
+                    <FilterCheckbox func={() => addToSectionList("5f3a7eb10276b000016a0ee0")}>Culture</FilterCheckbox>
+                    <FilterCheckbox func={() => addToSectionList("5f3a7eb00276b000016a0ed7")}>Student Peace Prize</FilterCheckbox>
                 </div>
             </div>
         </div> 

@@ -19,6 +19,26 @@ const POSITIONS = gql`
     }
 `;
 
+
+const FILTER_POSITIONS = gql`
+    query positions($input: PositionFilter) {
+      positions(where: $input) {
+          totalCount,
+        nodes {
+          name,
+          section {
+            id,
+            name
+          }
+        }
+      }
+    }
+`;
+
+
+
+
 export {
-    POSITIONS
+    POSITIONS,
+    FILTER_POSITIONS
 };

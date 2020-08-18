@@ -9,14 +9,19 @@ import "./loginModalStylesheet.css";
 
 
 import { connect } from "react-redux";
-import { closePositionModal } from "../../redux/actions";
+import { closePositionModal, addPositionToApplication } from "../../redux/actions";
 import { getPositionModalState,getUserLogedIn } from "../../redux/selectors";
 
-const PositionModal = ({position, showPositionModal, closePositionModal}) =>  {
+const PositionModal = ({position, showPositionModal, closePositionModal, addPositionToApplication}) =>  {
 
     const [alreadyUser, setAlreadyUser] = useState(true);
 
     console.log("The position modal redux value is", showPositionModal);
+
+    const addAndClose = (position) => {
+        addPositionToApplication(position?.id, position?.name)
+        closePositionModal()
+    };
 
     return(
 
@@ -36,7 +41,7 @@ const PositionModal = ({position, showPositionModal, closePositionModal}) =>  {
             </div>
             <div className="flex-grid mt-4 mx-5">
                 <button type="button" className="btn btn-outline-secondary mr-2 mb-2" onClick={ () => closePositionModal() }>Back</button>
-                <button type="button" className="btn btn-outline-success ml-auto mr-2 mb-2">Add to application</button>
+                <button type="button" className="btn btn-outline-success ml-auto mr-2 mb-2" onClick={() => addAndClose(position) }>Add to application</button>
             </div>
         </Modal>
     );
@@ -49,4 +54,4 @@ const mapStateToProps = state => {
 };
 
 
-export default connect(mapStateToProps, { closePositionModal })(PositionModal);
+export default connect(mapStateToProps, { addPositionToApplication, closePositionModal })(PositionModal);

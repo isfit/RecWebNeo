@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import { POSITIONS } from "../requests/positionRequests";
+import {FILTER_POSITIONS} from '../requests/positionRequests';
+
 
 import "../stylesheets/components/positions/positioncard.css";
 
@@ -9,13 +11,41 @@ import { connect } from "react-redux";
 import { openPositionModal, addPositionToApplication } from "../redux/actions";
 import { getPositionModalState } from "../redux/selectors";
 
-const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApplication }) => {
+
+/* const [updateSectionFilter, { data, error, loading}] = useMutation(FILTER_POSITIONS, { onError: () => {} });
+  
+  const filter = (event) => {
+    event.preventDefault();
+    updatePositions({variables: { where: { section_in: {} } }});
+  }; */
+
+const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApplication, sectionList }) => {
+  
+  /* const [updateSectionFilter, {data, error, loading}] = useQuery(FILTER_POSITIONS, { onError: () => {} }); */
+  /* const [updateSectionFilter,{ loading, error, data }] = useQuery(FILTER_POSITIONS);
+ */
   const { loading, error, data } = useQuery(POSITIONS);
   const [positionData, setPositionData] = useState(null);
   console.log(loading, error, data);
+
+
+  const filter = (event) => {
+    event.preventDefault();
+    const positionQuery = {
+      variables: {
+        where: {
+          section_in: ["5f3a7eb00276b000016a0ed7"],
+        }
+      }
+    }
+
+    /* updateSectionFilter(positionQuery); */
+  };
+
   if (data == null) {
     return <div></div>;
   }
+  
 
   return (
     <div className="row mt-4">

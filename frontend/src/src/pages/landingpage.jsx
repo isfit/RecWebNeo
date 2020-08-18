@@ -7,6 +7,7 @@ import PositionChoiceBox from '../components/positionChoiceBox';
 
 
 const LandingPage = () => {
+    const [sectionList, setSectionList] = useState([]);
 
     return (
         <PageLayout>
@@ -16,12 +17,12 @@ const LandingPage = () => {
             </div>
             <div className="row">
               <div className="col">
-              <SearchModule />
-              <PositionTable />
+              <SearchModule sectionList={sectionList} setSectionList={setSectionList}/>
+              <PositionTable sectionList={sectionList} />
               </div>
               <div className="col col-lg-4">
                 <PositionChoiceBox />
-                <buton className="btn btn-outline-success mt-1 mr-2 float-right">Continue</buton>
+                <a className="btn btn-outline-success mt-1 mr-2 float-right" href="/enterapplication">Continue</a>
               </div>
             </div>
           </div>

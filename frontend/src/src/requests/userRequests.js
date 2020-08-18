@@ -33,8 +33,10 @@ const REGISTER = gql`
 `;
 
 const APPLY = gql`
-  mutation registerUser($input: RegisterUserInput) {
-    registerUser(registerUser: $input)
+  mutation createApplication($input: CreateApplicationInput) {
+    createApplication(input: $input) {
+      id
+    }
   }
 `;
 

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PageLayout from './pageLayout';
 import AvailableTimesFom from '../components/availableTimesForm';
+import ErrorPage from './errorPage';
 
 
 import "../stylesheets/pages/table.css";
@@ -15,8 +16,59 @@ const AvailableTimesPage = (props) => {
     onError: () => {},
   });
 
+  console.log(error);
+
+  const getBusyTimes = () => {
+      const busy = JSON.parse(localStorage.getItem("busyTimes") || "[]");
+      let busyTime = [];
+      busy.map(x => busyTime.push(new Date(x)));
+      return busy;
+  };
+
+  const getPositions = () => {
+    const positions = JSON.parse(localStorage.getItem('applicationPositions') || "[]");
+    const positionInput = [];
+    for (let i = 0; i < positions.length; i++) {
+      const pos = {key: i.toString(), value: positions[i].id};
+      positionInput.push(pos);
+    }
+    return positionInput;
+  };
+
+  const variableData = {
+    variables: {
+      input: {
+        admissionPeriode: "5f396eebd2042f000149a790",
+        applicationText: localStorage.getItem("applicationText") || "",
+        available: getBusyTimes(),
+        interest: localStorage.getItem("otherPositions") || "OnlyPositions",
+        positions: getPositions(),
+        preferDigital: true,
+        prioritized: localStorage.getItem("prioritized") === 'true',
+      }
+    }
+  };
+
   const submitApplication = () => {
-    console.log("Submiting");
+      updateRegistration(variableData);
+    };
+
+  if (loading) {
+    return (
+      <div>Loading</div>
+    )
+  }
+
+  if (error != null) {
+    return (
+      <PageLayout>
+        <ErrorPage 
+          errorMessage={"The current user is not authorized to access this resource."}
+          errorType={"AuthenticationError"}
+          refetch={() => updateRegistration(variableData)}
+        />
+      </PageLayout>
+    )
   }
 
   return (

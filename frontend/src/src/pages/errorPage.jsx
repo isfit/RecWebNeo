@@ -1,28 +1,23 @@
 import React, { useEffect, useState } from 'react';
-
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { openLoginModal, logOutUser } from "../redux/actions";
 import { getUserLogedIn } from "../redux/selectors";
 
 const ErrorPage = ( { errorMessage, errorType, refetch, userLogedIn, logOutUser, openLoginModal } ) => {
 
-    useEffect( () => {
-        function handleLoginChange(userLogedIn) {
-            if (userLogedIn) {
-                refetch();
-            }
-        }
-    });
+    const history = useHistory();
 
     const something = () => {
         logOutUser();
-        openLoginModal();
+        history.push("/enterapplication");
     };
 
     return(
         <div>
             <h1>ISFIT 2021</h1>
-            <p> { errorMessage } </p>
+            <p> You are not authorized to access this resource. </p>
+            <p> Please log in with the button below! :) </p>
             <button onClick={() => something() }>Log in</button>
         </div>
     )

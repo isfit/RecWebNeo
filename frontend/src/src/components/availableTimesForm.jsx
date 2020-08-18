@@ -49,6 +49,8 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
 
 
 const AvailableTimesFom = (props) => {
+    //console.log("Busy storage",localStorage.getItem("busyTimes"));
+    //localStorage.removeItem("busyTimes");
   const startInterview = new Date("2020-08-27T00:00:00.000Z");
   const endInterview = new Date("2020-09-10T00:00:00.000Z");
   //localStorage.setItem("busyTimes",);
@@ -106,13 +108,12 @@ const AvailableTimesFom = (props) => {
         }
         localStorage.setItem("busyTimes", JSON.stringify(busy));
         setBusyTimes(busy);
-        console.log(busyTimes);
     }
 
   const times = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00"];
   const daysName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-  const [busyTimes, setBusyTimes] = useState(JSON.parse(localStorage.getItem("busyTimes")||[]));
+  const [busyTimes, setBusyTimes] = useState(JSON.parse(localStorage.getItem("busyTimes") || "[]"));
   const [busyTimesDict, setBusyTimesDict] = useState(getWeeks());
 
 

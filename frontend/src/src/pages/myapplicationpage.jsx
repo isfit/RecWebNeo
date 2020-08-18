@@ -54,7 +54,7 @@ const MyApplicationPage = (props) => {
               { console.log("Data", data) }
                 <div className="card">
                         <div>
-                            <div> { data?.myApplication?.applicationText } </div>
+                            <div> { data?.myApplication?.applicationText || "You have not registered an application yet" } </div>
                         </div>
                     {/* {if (data.myApplication.interest === "")   } */}
                 </div>

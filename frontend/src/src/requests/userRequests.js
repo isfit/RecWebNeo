@@ -16,14 +16,13 @@ const ME_NAME = gql`
 `;
 
 const ME = gql`
-    query me {
-      me {
-        email,
-        firstName,
-        lastName,
-        birtDate
-      }
+  query me {
+    me {
+      email,
+      firstName,
+      lastName
     }
+  }
 `;
 
 const REGISTER = gql`

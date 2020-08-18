@@ -13,16 +13,16 @@ const FilterCheckbox = (props) => {
 const SearchModule = ({sectionList, setSectionList}) => {
 
     const addToSectionList = (section) => {
-        let copyList = sectionList
+        let copyList = [...sectionList]
         if (copyList.includes(section)) {
             const index = copyList.indexOf(section);
             if (index > -1) {
                 copyList.splice(index, 1);
             }
         }else {
-            copyList.push(section)
+            copyList.push(section);
         }
-        setSectionList(copyList)
+        setSectionList(copyList);
     };
 
 

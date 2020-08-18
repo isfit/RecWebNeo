@@ -10,6 +10,13 @@ const LandingPage = () => {
   const history = useHistory();
   const [sectionList, setSectionList] = useState([]);
 
+  const updateSectionList = (sect) => {
+    console.log("Section list", sect);
+    setSectionList(sect);
+  }
+
+  console.log("Rerendering boiii", sectionList);
+
     return (
         <PageLayout>
           <div className="container">
@@ -18,8 +25,9 @@ const LandingPage = () => {
             </div>
             <div className="row">
               <div className="col">
-              <SearchModule sectionList={sectionList} setSectionList={setSectionList}/>
+              <SearchModule sectionList={sectionList} setSectionList={sect => updateSectionList(sect)}/>
               <PositionTable sectionList={sectionList} />
+              { console.log("Section list", sectionList) }
               </div>
               <div className="col col-lg-4">
                 <PositionChoiceBox />

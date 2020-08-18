@@ -25,7 +25,7 @@ namespace RecAPI.Applications.ErrorHandling
         {
             ValidAdmisionPeriode(admisionPeriodeRepo, admisionPeriodeId);
             var admisionPeriode = admisionPeriodeRepo.GetAdmisionPeriode(admisionPeriodeId);
-            if (positions.Count() > admisionPeriode.MinAppliedPositions || positions.Count() > admisionPeriode.MaxAppliedPositions)
+            if (positions.Count() < admisionPeriode.MinAppliedPositions || positions.Count() > admisionPeriode.MaxAppliedPositions)
             {
                 throw new QueryException(
                     ErrorBuilder
@@ -35,7 +35,7 @@ namespace RecAPI.Applications.ErrorHandling
                         + admisionPeriode.MinAppliedPositions.ToString()
                         + " and at most "
                         + admisionPeriode.MaxAppliedPositions.ToString()
-                        + " connected to an application"
+                        + " positions connected to an application"
                     ).Build());
             }
             for (int i = 0; i < positions.Count(); i++)
@@ -44,7 +44,7 @@ namespace RecAPI.Applications.ErrorHandling
                 {
                     throw new QueryException(ErrorBuilder.New().SetMessage("The positions must be labled 1,2,3 and so forth, when requesting to reply for a position.").Build());
                 }
-                var position = positionRepo.GetPosition(positions[(i + 1).ToString()]);
+                var position = positionRepo.GetPosition(positions[i.ToString()]);
                 if (position != null)
                 {
                     if(position.AdmisionPeriode != admisionPeriodeId)

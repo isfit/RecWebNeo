@@ -23,7 +23,17 @@ const AvailableTimesPage = (props) => {
       let busyTime = [];
       busy.map(x => busyTime.push(new Date(x)));
       return busy;
-  }
+  };
+
+  const getPositions = () => {
+    const positions = JSON.parse(localStorage.getItem('applicationPositions') || "[]");
+    const positionInput = [];
+    for (let i = 0; i < positions.length; i++) {
+      const pos = {key: i.toString(), value: positions[i].id};
+      positionInput.push(pos);
+    }
+    return positionInput;
+  };
 
   const variableData = {
     variables: {
@@ -32,13 +42,12 @@ const AvailableTimesPage = (props) => {
         applicationText: localStorage.getItem("applicationText") || "",
         available: getBusyTimes(),
         interest: localStorage.getItem("otherPositions") || "OnlyPositions",
-        positions: JSON.parse(localStorage.getItem('applicationPositions') || "[]"),
+        positions: getPositions(),
         preferDigital: true,
         prioritized: localStorage.getItem("prioritized") === 'true',
       }
     }
   };
-  console.log(JSON.stringify(variableData));
 
   const submitApplication = () => {
       updateRegistration(variableData);

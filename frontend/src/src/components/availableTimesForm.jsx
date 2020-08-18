@@ -25,9 +25,6 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
     const existsInSelected = (date) => {
         let dato = new Date(date);
         dato.setHours(time.substring(0,2));
-        console.log(dato.toString())
-        console.log(dato.toUTCString())
-        console.log(timeSelected.some(x => (new Date(x)).toString() == dato.toString()));
         return timeSelected.some(x => (new Date(x)).toString() == dato.toString());
     }
 

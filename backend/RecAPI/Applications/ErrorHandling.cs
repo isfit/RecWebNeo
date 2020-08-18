@@ -21,7 +21,7 @@ namespace RecAPI.Applications.ErrorHandling
                 throw new QueryException(ErrorBuilder.New().SetMessage("The admision periode does not exist.").Build());
             }
         }
-        public static void ValidPositions(IPositionRepository positionRepo, IAdmisionPeriodeRepository admisionPeriodeRepo, Dictionary<int, string> positions, string admisionPeriodeId)
+        public static void ValidPositions(IPositionRepository positionRepo, IAdmisionPeriodeRepository admisionPeriodeRepo, Dictionary<string, string> positions, string admisionPeriodeId)
         {
             ValidAdmisionPeriode(admisionPeriodeRepo, admisionPeriodeId);
             var admisionPeriode = admisionPeriodeRepo.GetAdmisionPeriode(admisionPeriodeId);
@@ -40,11 +40,11 @@ namespace RecAPI.Applications.ErrorHandling
             }
             for (int i = 0; i < positions.Count(); i++)
             {
-                if (!positions.ContainsKey(i + 1))
+                if (!positions.ContainsKey((i).ToString()))
                 {
                     throw new QueryException(ErrorBuilder.New().SetMessage("The positions must be labled 1,2,3 and so forth, when requesting to reply for a position.").Build());
                 }
-                var position = positionRepo.GetPosition(positions[i+1]);
+                var position = positionRepo.GetPosition(positions[(i + 1).ToString()]);
                 if (position != null)
                 {
                     if(position.AdmisionPeriode != admisionPeriodeId)

@@ -8,7 +8,7 @@ namespace RecAPI.Applications.InputType
     public class CreateApplicationInput
     {
         [GraphQLNonNullType]
-        public Dictionary<int, string> Positions { get; set; }
+        public Dictionary<string, string> Positions { get; set; }
         [GraphQLNonNullType]
         public string AdmissionPeriode { get; set; }
         [GraphQLNonNullType]
@@ -25,7 +25,7 @@ namespace RecAPI.Applications.InputType
 
     public class UpdateApplicationInput
     {
-        public Dictionary<int, string> Positions { get; set; }
+        public Dictionary<string, string> Positions { get; set; }
         public bool? Prioritized { get; set; }
         public string ApplicationText { get; set;}
         public List<DateTime> Available { get; set; }

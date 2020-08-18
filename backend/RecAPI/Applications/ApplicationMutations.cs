@@ -38,6 +38,7 @@ namespace RecAPI.Applications.Mutations
                 Prioritized = input.Prioritized,
                 ApplicationText = input.ApplicationText,
                 Available = input.Available,
+                Applicant = user.UserId,
                 //PreferDigital = input.PreferDigital
             };
             application.setInterest(input.Interest);

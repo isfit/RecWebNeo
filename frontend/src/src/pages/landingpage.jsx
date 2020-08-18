@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import PositionTable from '../components/positions';
 import SearchModule from '../components/searchmodule';
 import ShoppingCart from '../components/shoppingcart';
 import PageLayout from './pageLayout';
 import PositionChoiceBox from '../components/positionChoiceBox';
 
-
 const LandingPage = () => {
+  const history = useHistory();
 
     return (
         <PageLayout>
@@ -21,7 +22,7 @@ const LandingPage = () => {
               </div>
               <div className="col col-lg-4">
                 <PositionChoiceBox />
-                <buton className="btn btn-outline-success mt-1 mr-2 float-right">Continue</buton>
+                <buton className="btn btn-outline-success mt-1 mr-2 float-right" onClick={() => history.push("/enterapplication")}>Continue</buton>
               </div>
             </div>
           </div>

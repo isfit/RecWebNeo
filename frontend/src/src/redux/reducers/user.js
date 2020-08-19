@@ -3,7 +3,7 @@ import { SET_USER_LOGIN, LOG_OUT_USER } from '../actionTypes';
 
 
 const initialState = {
-    userLogedIn: localStorage.getItem("AuthorizationKey") != (null || "" ),
+    userLogedIn: Boolean(localStorage.getItem("AuthorizationKey")),
     authenticationKey: localStorage.getItem("AuthorizationKey")
 };
 

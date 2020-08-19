@@ -31,3 +31,4 @@ obj/
 .vs/
 
 id_rsa
+frontend/src/build

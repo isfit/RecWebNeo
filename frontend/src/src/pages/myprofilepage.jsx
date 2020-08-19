@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import NavBar from '../components/navbar';
 import Positions from '../components/positionsModule';
 import SearchModule from '../components/searchModule';
 import PageLayout from './pageLayout';

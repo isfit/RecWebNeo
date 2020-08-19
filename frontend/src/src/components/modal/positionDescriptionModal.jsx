@@ -5,8 +5,6 @@ import { useMutation } from '@apollo/client';
 import { LOGIN } from '../../requests/userRequests';
 import LoginModalForm from './loginModalForm';
 import RegisterModalForm from './registerModalForm'
-import "./loginModalStylesheet.css";
-
 
 import { connect } from "react-redux";
 import { closePositionModal, addPositionToApplication } from "../../redux/actions";

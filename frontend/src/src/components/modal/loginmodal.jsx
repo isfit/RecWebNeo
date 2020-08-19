@@ -5,7 +5,7 @@ import { useMutation } from '@apollo/client';
 import { LOGIN } from '../../requests/userRequests';
 import LoginModalForm from './loginModalForm';
 import RegisterModalForm from './registerModalForm'
-import "./loginModalStylesheet.css";
+import "../../stylesheets/components/modal/loginModalStylesheet.css";
 
 import { connect } from "react-redux";
 import { closeLoginModal } from "../../redux/actions";
@@ -14,9 +14,6 @@ import { getLoginModalState,getUserLogedIn } from "../../redux/selectors";
 const LogInModal = ({showLoginModal, closeLoginModal}) =>  {
 
     const [alreadyUser, setAlreadyUser] = useState(true);
-
-    console.log("Hello there");
-    console.log("The redux value is", showLoginModal);
 
     return(
         <Modal showModal={showLoginModal} setShowModal={ () => closeLoginModal() } >

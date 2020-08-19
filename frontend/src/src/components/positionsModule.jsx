@@ -6,7 +6,7 @@ import {FILTER_POSITIONS} from '../requests/positionRequests';
 
 import "../stylesheets/components/positions/positioncard.css";
 
-import PositionModal from "./modal/positionmodal";
+import PositionDescriptionModal from "./modal/positionDescriptionModal";
 import { connect } from "react-redux";
 import { openPositionModal, addPositionToApplication } from "../redux/actions";
 import { getPositionModalState } from "../redux/selectors";
@@ -45,7 +45,7 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
   return (
     <div className="row mt-4">
       { console.log("Position modal data", positionData) }
-      <PositionModal position={positionData} />
+      <PositionDescriptionModal position={positionData} />
       <div className="card w-100 px-3 py-3">
         {data.positions.nodes.map((position) => {
           return (
@@ -66,7 +66,6 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
 };
 
 const PositionRow = ({ position, openPositionModal, addPositionToApplication }) => {
-  let bg = require("./favicon.ico");
   return (
     <div className="position-entry py-2 px-2 mb-2">
         <div className="flex-grid">

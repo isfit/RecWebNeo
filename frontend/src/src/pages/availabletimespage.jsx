@@ -3,9 +3,6 @@ import PageLayout from './pageLayout';
 import AvailableTimesFom from '../components/availableTimesForm';
 import ErrorPage from './errorPage';
 
-
-import "../stylesheets/pages/table.css";
-
 import { APPLY } from "../requests/userRequests";
 import { useQuery, useMutation } from "@apollo/client";
 

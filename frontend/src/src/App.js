@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+import "./stylesheets/pages/flexgrid.css";
 
 import LogInModal from "./components/modal/loginmodal";
 

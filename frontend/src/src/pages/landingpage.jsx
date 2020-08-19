@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
-import PositionTable from '../components/positions';
-import SearchModule from '../components/searchmodule';
-import ShoppingCart from '../components/shoppingcart';
+import PositionTable from '../components/positionsModule';
+import SearchModule from '../components/searchModule';
 import PageLayout from './pageLayout';
 import PositionChoiceBox from '../components/positionChoiceBox';
 

@@ -2,8 +2,6 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import NavBarButton from "./navbarbutton";
 
-import "../stylesheets/pages/flexgrid.css";
-
 import { useQuery, gql } from "@apollo/client";
 import { ME_NAME } from "../requests/userRequests";
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../stylesheets/pages/table.css";
+import "../stylesheets/components/availableTimesTable.css";
 
 import { APPLY } from "../requests/userRequests";
 import { useQuery, useMutation } from "@apollo/client";

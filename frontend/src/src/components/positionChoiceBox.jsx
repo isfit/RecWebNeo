@@ -23,7 +23,7 @@ const PositionChoiceField = ({id, title, prioritize, dePrioritize, remove}) => {
     )
 }
 
-const PositionChoiceBox = ({positions, positionsUpdated, prioritizePosition, dePrioritizePosition, removePositionFromApplication}) => {
+const PositionChoiceBoxSimple = ({positions, positionsUpdated, prioritizePosition, dePrioritizePosition, removePositionFromApplication}) => {
 
     return(
         <div className="card w-100 px-2">
@@ -59,4 +59,4 @@ const mapStateToProps = state => {
     };
   };
   
-export default connect(mapStateToProps, { addPositionToApplication, prioritizePosition, dePrioritizePosition, removePositionFromApplication })(PositionChoiceBox);
+export default connect(mapStateToProps, { addPositionToApplication, prioritizePosition, dePrioritizePosition, removePositionFromApplication })(PositionChoiceBoxSimple);

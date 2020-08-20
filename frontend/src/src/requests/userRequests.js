@@ -51,6 +51,7 @@ const MYAPPLICATION = gql`
           name
         }
       }
+      available
       prioritized
       interest
     }

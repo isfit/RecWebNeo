@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import "../stylesheets/components/availableTimesTable.css";
 
-const AvailableTimeSlot = ({ date, time, timeSelected, selectTime }) => {
+const AvailableTimeSlot = ({ date, time, timeSelected, selectTime, readOnly }) => {
     const [selected, setSelected] = useState(timeSelected);
 
     const selectTimePeriode = () => {
         setSelected(!selected);
         selectTime(date, time, selected)
     };
-
-  return(
-    <td onClick={() => selectTimePeriode()} style={{ backgroundColor: selected ? "#ff5d4f": "" }} >
-    </td>
-  )
+  if (readOnly) {
+     return(<td style={{ backgroundColor: selected ? "#ff5d4f": "" }} ></td>);
+  }
+  else {
+      return (<td onClick={() => selectTimePeriode()} style={{ backgroundColor: selected ? "#ff5d4f": "" }} ></td>);
+  };
 };
 
-const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTime}) => {
-    console.log(timeSelected);
+const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTime, readOnly}) => {
 
     const existsInSelected = (date) => {
         let dato = new Date(date);
@@ -32,7 +32,7 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
       {
         days?.map(date => {
           return(
-            <AvailableTimeSlot date={date} time={time} timeSelected={ existsInSelected(date) } selectTime={(d, t, selected) => selectTime(d, t, selected)} />
+            <AvailableTimeSlot date={date} time={time} timeSelected={ existsInSelected(date) } selectTime={(d, t, selected) => selectTime(d, t, selected)} readOnly={readOnly} />
           )
         })
       }
@@ -41,12 +41,13 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
 };
 
 
-const AvailableTimesFom = (props) => {
+const AvailableTimesForm = (props) => {
     //console.log("Busy storage",localStorage.getItem("busyTimes"));
     //localStorage.removeItem("busyTimes");
   const startInterview = new Date("2020-08-27T00:00:00.000Z");
   const endInterview = new Date("2020-09-10T00:00:00.000Z");
   //localStorage.setItem("busyTimes",);
+  const ReadOnly = props.readOnly ? true : false;
 
     Date.prototype.addDays = function(days) {
         var date = new Date(this.valueOf());
@@ -143,8 +144,9 @@ const AvailableTimesFom = (props) => {
                                         time={ times[index] } 
                                         timePeriode={timePeriode} 
                                         days={days} 
-                                        timeSelected={ busyTimes }
-                                        selectTime={(date, time, selected) => selectTime(date, time, !selected)} 
+                                        timeSelected={ Boolean(props.busyTimes) ? props.busyTimes : busyTimes }
+                                        selectTime={(date, time, selected) => selectTime(date, time, !selected)}
+                                        readOnly = {ReadOnly}
                                     />
                                 )
                                 })
@@ -159,4 +161,4 @@ const AvailableTimesFom = (props) => {
   )
 };
 
-export default AvailableTimesFom;
+export default AvailableTimesForm;

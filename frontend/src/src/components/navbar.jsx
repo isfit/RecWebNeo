@@ -8,6 +8,8 @@ import { connect } from "react-redux";
 import { openLoginModal } from "../redux/actions";
 import { getLoginModalState, getUserLogedIn, getUserAuthKey } from "../redux/selectors";
 
+import { MYAPPLICATION } from "../requests/userRequests";
+
 
   const RenderProfile = () => {
     const { loading, error, data } = useQuery(ME_NAME);
@@ -26,6 +28,8 @@ import { getLoginModalState, getUserLogedIn, getUserAuthKey } from "../redux/sel
   } 
 
   const NavBar = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey}) => {
+    const myApplicationData = useQuery(MYAPPLICATION);
+    const userHasApplication = Boolean(myApplicationData?.data?.myApplication)
 
     return (
       <div className="header py-1 border-bottom">
@@ -41,7 +45,7 @@ import { getLoginModalState, getUserLogedIn, getUserAuthKey } from "../redux/sel
             <div className="col">
                 <ul className="nav" style={{justifyContent:"right"}}>
                   <NavBarButton title="Overview" iconstring="list-ol" address="/" />
-                  { userLogedIn ? <NavBarButton title="My application" iconstring="address-card" address="/myapplication" /> : null}
+                  { userHasApplication ? <NavBarButton title="My application" iconstring="address-card" address="/myapplication" /> : null}
                   { userLogedIn ? <NavBarButton title="My Profile" iconstring="address-card" address="/myprofile" /> : null}
                   <div>
                   {

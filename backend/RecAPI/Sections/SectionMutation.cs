@@ -15,7 +15,7 @@ namespace RecAPI.Sections.Mutations
     [ExtendObjectType(Name= "Mutation")]
     public class SectionMutations
     {
-        [Authorize(Policy = "administrator")]
+        [Authorize(Policy = "superuser")]
         public Section CreateSection(
             CreateSectionInput input,
             [Service]ISectionRepository repository,
@@ -40,7 +40,7 @@ namespace RecAPI.Sections.Mutations
             return repository.AddSection(section);
         }
 
-        [Authorize(Policy = "administrator")]
+        [Authorize(Policy = "superuser")]
         public Section UpdateSection(
             UpdateSectionInput input,
             [Service]ISectionRepository repository,
@@ -61,7 +61,7 @@ namespace RecAPI.Sections.Mutations
             return repository.UpdateSection(input.Id ,section);
         }
 
-        [Authorize(Policy = "administrator")]
+        [Authorize(Policy = "superuser")]
         public bool DeleteSection(
             SingleModelInput input,
             [Service]ISectionRepository repository

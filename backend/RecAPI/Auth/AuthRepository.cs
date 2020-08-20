@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using RecAPI.Auth.Models;
 using RecAPI.Database;
 using MongoDB.Driver;
+using RecAPI.Auth.ErrorHandling;
 
 namespace RecAPI.Auth.Repositories
 {
@@ -42,17 +43,32 @@ namespace RecAPI.Auth.Repositories
         // Clean the code!
         public bool AddRoleToUser(string email, string role)
         {
+            var availableRoles = new Dictionary<string, List<string>>()
+            {
+                { "superuser", new List<string>() { "internal", "admin", "superuser" } },
+                { "admin", new List<string>() { "internal", "admin"} }
+            };
+
             var user = GetAuthUserByEmail(email);
             if (user == null)
             {
-                return false;
+                // Check if user exists
+                AuthError.UserExistanceError();
             }
-            var updateUserRole = user.AddRole(role);
-            if (updateUserRole) {
-                _authUsers.FindOneAndReplace(u => u.Id == user.Id, user);
-                var updatedUser = GetAuthUserByEmail(email);
-                return updatedUser.Roles?.Contains(role) ?? false;
+            /*
+            var roles = user.Roles;
+            Console.WriteLine(roles);
+            if (roles != null && roles.Any( role => availableRoles.ContainsKey(role) && availableRoles[role].Contains(role) ))
+            {
+                var updateUserRole = user.AddRole(role);
+                if (updateUserRole)
+                {
+                    _authUsers.FindOneAndReplace(u => u.Id == user.Id, user);
+                    var updatedUser = GetAuthUserByEmail(email);
+                    return updatedUser.Roles?.Contains(role) ?? false;
+                }
             }
+            */
             return false;
         }
         public bool RemoveRoleFromUser(string email, string role)

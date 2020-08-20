@@ -128,6 +128,12 @@ namespace RecAPI
             // https://docs.microsoft.com/en-us/archive/msdn-magazine/2017/october/cutting-edge-policy-based-authorization-in-asp-net-core
             services.AddAuthorization(x =>
             {
+                x.AddPolicy("internal", builder =>
+                    builder
+                    .RequireAuthenticatedUser()
+                    .RequireRole("internal", "admin", "superuser")
+                );
+
                 x.AddPolicy("administrator", builder =>
                     builder
                         .RequireAuthenticatedUser()

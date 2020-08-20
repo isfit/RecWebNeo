@@ -14,7 +14,7 @@ namespace RecAPI.Organizations.Mutations
     [ExtendObjectType(Name= "Mutation")]
     public class OrganizationMutations
     {
-        [Authorize(Policy = "administrator")]
+        [Authorize(Policy = "superuser")]
         public Organization CreateOrganization(
             CreateOrganizationInput input,
             [Service]IOrganizationRepository repository
@@ -29,7 +29,7 @@ namespace RecAPI.Organizations.Mutations
             return repository.CreateOrganization(organization);
         }
 
-        [Authorize(Policy = "administrator")]
+        [Authorize(Policy = "superuser")]
         public Organization UpdateOrganization(
             UpdateOrganizationInput input,
             [Service]IOrganizationRepository repository
@@ -46,7 +46,7 @@ namespace RecAPI.Organizations.Mutations
             return repository.UpdateOrganization(input.Id, updatedOrganization);
         }
 
-        [Authorize(Policy = "administrator")]
+        [Authorize(Policy = "superuser")]
         public bool DeleteOrganization(
             SingleModelInput input,
             [Service]IOrganizationRepository repository

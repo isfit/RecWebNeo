@@ -18,7 +18,7 @@ namespace RecAPI.Users.Repositories
 
         public List<User> GetUsers()
         {
-            return null;
+            return _users.Find(user => true).ToList();
         }
         public List<User> GetUsers(List<string> ids)
         {
@@ -30,7 +30,8 @@ namespace RecAPI.Users.Repositories
         }
         public User GetUser(string id)
         {
-            return null;
+            var user = _users.Find(user => user.Id == id).FirstOrDefault();
+            return user;
         }
         public User GetUserByAuth(string authId)
         {

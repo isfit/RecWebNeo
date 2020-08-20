@@ -30,8 +30,6 @@ import { MYAPPLICATION } from "../requests/userRequests";
   const RenderMyApplicationButton = () => {
     const myApplicationData = useQuery(MYAPPLICATION, {fetchPolicy: "no-cache"},);
     const userHasApplication = Boolean(myApplicationData?.data?.myApplication);
-    console.log("Does this user have an application? ", userHasApplication);
-    console.log("This is the myApplicationData ", myApplicationData)
 
     if (userHasApplication) {
       return (<NavBarButton title="My application" iconstring="address-card" address="/myapplication" />);

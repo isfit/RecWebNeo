@@ -23,7 +23,6 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
         }
       }
     }
-    console.log("Sending arguments" ,queryArguments);
     return queryArguments;
   }
 
@@ -44,7 +43,6 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
             <PositionRow
               position={position}
               openPositionModal={(position) => {
-                console.log("Setting position data", position);
                 setPositionData(position);
                 openPositionModal();
               }}

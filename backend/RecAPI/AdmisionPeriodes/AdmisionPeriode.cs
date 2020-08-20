@@ -19,6 +19,14 @@ namespace RecAPI.AdmisionPeriodes.Models
         public string Organization { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+
+        public DateTime StartInterviewDate { get; set; }
+        public DateTime EndInterviewDate { get; set; }
+
+        public int MinAppliedPositions { get; set; }
+        public int MaxAppliedPositions { get; set; }
+
+
         [PositionResolverAdmisionPeriode]
         public List<Section> Positions { get; }
     }

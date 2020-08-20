@@ -13,12 +13,16 @@ namespace RecAPI.Positions.Queries
     public class PositionQueries
     {
         [UsePaging]
-        //[UseFiltering]
-        //[UseSorting]
+        [UseFiltering]
+        [UseSorting]
         public IEnumerable<Position> GetPositions(
-            [Service]IPositionRepository repository
-            ) =>
-            repository.GetPositions();
+            [Service] IPositionRepository repository
+
+        )
+        {
+            var positions = repository.GetPositions();
+            return positions; 
+        }
 
         public Position GetPosition(
             SingleModelInput input,

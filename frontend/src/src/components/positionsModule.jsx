@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useQuery } from "@apollo/client";
 import {FILTER_POSITIONS} from '../requests/positionRequests';
 
-
 import "../stylesheets/components/positions/positioncard.css";
 
 import PositionDescriptionModal from "./modal/positionDescriptionModal";
@@ -35,7 +34,7 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
   }
 
   return (
-    <div className="row mt-4">
+    <div>
       <PositionDescriptionModal position={positionData} />
       <div className="card w-100 px-3 py-3">
         {data.positions.nodes.map((position) => {

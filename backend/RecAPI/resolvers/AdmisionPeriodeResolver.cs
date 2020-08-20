@@ -36,4 +36,17 @@ namespace RecAPI.Resolvers
             });
         }
     }
+
+    public sealed class AdmisionPeriodeResolver : ObjectFieldDescriptorAttribute
+    {
+        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
+        {
+            descriptor.Resolver(ctx =>
+            {
+                var parrent = ctx.Parent<IAdmisionPeriodeConnection>();
+                var repository = ctx.Service<IAdmisionPeriodeRepository>();
+                return repository.GetAdmisionPeriode(parrent.AdmisionPeriode);
+            });
+        }
+    }
 }

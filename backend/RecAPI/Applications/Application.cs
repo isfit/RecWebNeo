@@ -4,6 +4,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using RecAPI.Users.Models;
 using RecAPI.Resolvers;
+using RecAPI.AdmisionPeriodes.Models;
 
 namespace RecAPI.Applications.Models
 {
@@ -13,20 +14,30 @@ namespace RecAPI.Applications.Models
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonRequired]
         public string Id { get; set; }
+
         
         [PositionsApplicationResolver]
         public Dictionary<string, string> Positions { get; set; }
+
+        //[AdmisionPeriodeResolver]
         public string AdmissionPeriode { get; set; }
+
         public bool Prioritized { get; set; }
 
+
         public string ApplicationText { get; set;}
+
         public List<DateTime> Available { get; set; }
+
 
         [ApplicationApplicantResolver]
         public string Applicant { get; set; }
 
+
         //public bool PreferDigital { get; set; }
+
         public string Interest { get; set; }
+
 
         public void setInterest(string interest)
         {

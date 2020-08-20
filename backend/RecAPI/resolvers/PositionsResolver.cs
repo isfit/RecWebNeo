@@ -11,19 +11,6 @@ using RecAPI.AdmisionPeriodes.Repositories;
 
 namespace RecAPI.Resolvers
 {
-    // Resolves Section field in Position
-    public sealed class SectionResolverPosition : ObjectFieldDescriptorAttribute
-    {
-        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
-        {
-            descriptor.Resolver(ctx =>
-            {
-                var position = ctx.Parent<Position>();
-                var repository = ctx.Service<ISectionRepository>();
-                return repository.GetSection(position.Section);
-            });
-        }
-    }
     // Reolves Team field in Position
     public sealed class TeamResolverPosition : ObjectFieldDescriptorAttribute
     {

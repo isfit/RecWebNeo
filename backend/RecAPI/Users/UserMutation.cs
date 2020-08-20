@@ -71,13 +71,13 @@ namespace RecAPI.Users.Mutations
         }
 
         [Authorize(Policy = "administrator")]
-        public bool AddRole(
+        public bool SetRole(
             string email,
             string role,
             [Service] IAuthRepository authRepository
         )
         {
-            return authRepository.AddRoleToUser(email, role);
+            return authRepository.SetRoleOfUser(email, role);
         }
 
     }

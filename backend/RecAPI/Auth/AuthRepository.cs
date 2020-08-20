@@ -41,12 +41,12 @@ namespace RecAPI.Auth.Repositories
         }
 
         // Clean the code!
-        public bool AddRoleToUser(string email, string role)
+        public bool SetRoleOfUser(string email, string role)
         {
             var availableRoles = new Dictionary<string, List<string>>()
             {
                 { "superuser", new List<string>() { "internal", "admin", "superuser" } },
-                { "admin", new List<string>() { "internal", "admin"} }
+                { "admin", new List<string>() { "internal"} }
             };
 
             var user = GetAuthUserByEmail(email);
@@ -55,35 +55,17 @@ namespace RecAPI.Auth.Repositories
                 // Check if user exists
                 AuthError.UserExistanceError();
             }
-            /*
             var roles = user.Roles;
             Console.WriteLine(roles);
             if (roles != null && roles.Any( role => availableRoles.ContainsKey(role) && availableRoles[role].Contains(role) ))
             {
-                var updateUserRole = user.AddRole(role);
+                var updateUserRole = user.SetRole(role);
                 if (updateUserRole)
                 {
                     _authUsers.FindOneAndReplace(u => u.Id == user.Id, user);
                     var updatedUser = GetAuthUserByEmail(email);
                     return updatedUser.Roles?.Contains(role) ?? false;
                 }
-            }
-            */
-            return false;
-        }
-        public bool RemoveRoleFromUser(string email, string role)
-        {
-            var user = GetAuthUserByEmail(email);
-            if (user == null)
-            {
-                return false;
-            }
-            var updateUserRole = user.AddRole(role);
-            if (updateUserRole)
-            {
-                _authUsers.FindOneAndReplace(u => u.Id == user.Id, user);
-                var updatedUser = GetAuthUserByEmail(email);
-                return updatedUser.Roles?.Contains(role) ?? false;
             }
             return false;
         }

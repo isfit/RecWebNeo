@@ -11,19 +11,6 @@ using RecAPI.Positions.Repositories;
 
 namespace RecAPI.Resolvers
 {
-    // Resolves Section field in Team
-    public sealed class SectionResolverTeam : ObjectFieldDescriptorAttribute
-    {
-        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
-        {
-            descriptor.Resolver(ctx =>
-            {
-                Team team = ctx.Parent<Team>();
-                ISectionRepository repository = ctx.Service<ISectionRepository>();
-                return repository.GetSection(team.Section);
-            });
-        }
-    }
     // Resolves Positions field in Team
     public sealed class PositionResolverTeam : ObjectFieldDescriptorAttribute
     {
@@ -37,5 +24,4 @@ namespace RecAPI.Resolvers
             });
         }
     }
-
 }

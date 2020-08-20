@@ -24,4 +24,13 @@ namespace RecAPI.Sections.Models
         [OrganizationResolverSection]
         public string Organization { get; set; }
     }
+
+    public interface ISectionConnection
+    {
+        string Section { get; set; }
+    }
+    public interface ISectionsConnection
+    {
+        List<Section> Sections { get; }
+    }
 }

@@ -30,4 +30,8 @@ namespace RecAPI.AdmisionPeriodes.Models
         [PositionResolverAdmisionPeriode]
         public List<Section> Positions { get; }
     }
+    public interface IAdmisionPeriodeConnection
+    {
+        string AdmisionPeriode { get; set; }
+    }
 }

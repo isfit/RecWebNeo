@@ -12,7 +12,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
 
 
   const RenderProfile = () => {
-    const { loading, error, data } = useQuery(ME_NAME);
+    const { loading, error, data } = useQuery(ME_NAME, {fetchPolicy: "no-cache"},);
     if (data == null) {
       return <div></div>;
     }
@@ -25,12 +25,24 @@ import { MYAPPLICATION } from "../requests/userRequests";
           </span>
         </a>  
     );
-  } 
+  }
+
+  const RenderMyApplicationButton = () => {
+    const myApplicationData = useQuery(MYAPPLICATION, {fetchPolicy: "no-cache"},);
+    const userHasApplication = Boolean(myApplicationData?.data?.myApplication);
+    console.log("Does this user have an application? ", userHasApplication);
+    console.log("This is the myApplicationData ", myApplicationData)
+
+    if (userHasApplication) {
+      return (<NavBarButton title="My application" iconstring="address-card" address="/myapplication" />);
+    }
+
+    return (
+      <div></div>
+    );
+  };
 
   const NavBar = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey}) => {
-    const myApplicationData = useQuery(MYAPPLICATION);
-    const userHasApplication = Boolean(myApplicationData?.data?.myApplication)
-
     return (
       <div className="header py-1 border-bottom">
         <div className="container">
@@ -45,7 +57,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
             <div className="col">
                 <ul className="nav" style={{justifyContent:"right"}}>
                   <NavBarButton title="Overview" iconstring="list-ol" address="/" />
-                  { userHasApplication ? <NavBarButton title="My application" iconstring="address-card" address="/myapplication" /> : null}
+                  { userLogedIn ? <RenderMyApplicationButton /> : null }
                   { userLogedIn ? <NavBarButton title="My Profile" iconstring="address-card" address="/myprofile" /> : null}
                   <div>
                   {

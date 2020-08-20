@@ -45,7 +45,7 @@ const MyProfilePage = (props) => {
                       <span>E-mail</span>
                       <h5>{ data.me.email }</h5>
                       <span>Birth date</span>
-                      <h5>{ data.me.birtDate }</h5>
+                      <h5>{ data?.me.birtDate }</h5>
                       <button className="mt-5">Edit information</button>
                   </div>
               </div>

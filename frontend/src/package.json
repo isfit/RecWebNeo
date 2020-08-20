@@ -28,7 +28,7 @@
     "eject": "react-scripts eject",
     "aws:deploy:frontend": "npm run build && scp -r -i ./id_rsa ./build ec2-user@recruitment.isfit.org:/home/ec2-user/build",
     "aws:deploy:backend": "cd ../../backend/RecAPI/ && dotnet publish -c Release && docker build -t recweb-api -f Dockerfile . && cd ../../frontend/src && npm run aws:docker:transfer",
-    "aws:docker:transfer": "docker save -o ./image.tar recweb-api && scp -i ./id_rsa ./image.tar ec2-user@recruitment.isfit.org:/home/ec2-user/image.tar && rm ./image.tar && npm run aws:deploy:docker",
+    "aws:docker:transfer": "docker save -o ./image.tar recweb-api && scp -i ./id_rsa ./image.tar ec2-user@recruitment.isfit.org:/home/ec2-user/image.tar && npm run aws:deploy:docker",
     "aws:deploy:docker": "ssh -i id_rsa ec2-user@recruitment.isfit.org ./deploy.sh"
   },
   "eslintConfig": {

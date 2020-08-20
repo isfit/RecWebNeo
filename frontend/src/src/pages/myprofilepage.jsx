@@ -7,11 +7,21 @@ import "../stylesheets/pages/flexgrid.css";
 import { useQuery } from "@apollo/client";
 import { ME } from "../requests/userRequests";
 
-const MyProfilePage = (props) => {
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { logOutUser } from "../redux/actions";
+import { getUserLogedIn } from "../redux/selectors";
+
+
+const MyProfilePage = ({logOutUser}) => {
 
     const { refetch, loading, error, data } = useQuery(ME);
-    console.log("My profile");
-    console.log(loading, error, data);
+    const history = useHistory();
+
+    const LogOutAndRedirect = () => {
+      logOutUser();
+      history.push("/");
+    };
 
     if (loading) {
       return (
@@ -46,7 +56,7 @@ const MyProfilePage = (props) => {
                       <h5>{ data.me.email }</h5>
                       <span>Birth date</span>
                       <h5>{ data?.me.birtDate }</h5>
-                      <button className="mt-5">Edit information</button>
+                      <button className="mt-5" onClick={() => LogOutAndRedirect()}>Log out</button>
                   </div>
               </div>
             </div>
@@ -56,5 +66,10 @@ const MyProfilePage = (props) => {
 
 };
 
+const mapStateToProps = state => {
+  return {
+    userLogedIn: getUserLogedIn(state),
+  };
+};
 
-export default MyProfilePage;
+export default connect(mapStateToProps, { logOutUser })(MyProfilePage);

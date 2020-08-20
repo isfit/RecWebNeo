@@ -1,54 +1,68 @@
-import React, { Component } from 'react';
+import React from "react";
+import NavBarButton from "./navbarbutton";
 
-class NavBar extends Component {
-    state = {  }
-    
-    renderProfile() {
-        let bg=require('./favicon.ico')
-        return(
-        <div className="dropdown">
-            <a className="nav-link pr-0 leading-none">
-                <span className="avatar" style={{backgroundImage: "url("+bg+")"  }}></span>
-                <span class="ml-2 d-none d-lg-block">
-                    <span className="text-default">Torstein Otterlei</span>
-                    <small className="text-muted d-block mt-1">Administrator</small>
-                </span>
-            </a>
-        </div>
-        );
+import { useQuery, gql } from "@apollo/client";
+import { ME_NAME } from "../requests/userRequests";
+
+import { connect } from "react-redux";
+import { openLoginModal } from "../redux/actions";
+import { getLoginModalState, getUserLogedIn, getUserAuthKey } from "../redux/selectors";
+
+
+  const RenderProfile = () => {
+    const { loading, error, data } = useQuery(ME_NAME);
+    if (data == null) {
+      return <div></div>;
     }
 
-    render() { 
-        return (
-        <div className="header py-1 border-bottom">
-            <div className="container">
-                <div className="d-flex">
-                    <a className="header-brand mt-auto mb-auto" href="/">
-                        <img src="./isfitlogo.png" class="header-brand-img" alt="Tabler React" style={{maxWidth: "70px"}}></img>
-                        <span className="d-none d-md-inline ml-2">RECRUITMENT</span>
-                    </a>
-                    <div className="d-flex order-lg-2 ml-auto">
-                        <div className="nav-item">
-                            <a className="nav-link d-none d-md-flex"></a>
-                            <a className="btn btn-sm btn-outline-primary" href="" target="_blank">Sign in</a>
-                        </div>
-                        <div className="dropdown d-flex">
-                            <a className="nav-link">
-                                <i className="fe fe-bell"></i>
-                                <span className="nav-unread"></span>
-                            </a>
-                        </div>
-                        {this.renderProfile()}
-                    </div>
-                </div>
+    return (
+        <a href="/myprofile">
+          <span className="ml-2 d-none d-lg-block">
+            <span className="text-default"> { data.me?.firstName } { data.me?.lastName} </span>
+            <small className="text-muted d-block">Applicant</small>
+          </span>
+        </a>  
+    );
+  } 
+
+  const NavBar = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey}) => {
+
+    return (
+      <div className="header py-1 border-bottom">
+        <div className="container">
+          <div className="flex-grid" style={{alignItems:"center"}}>
+            <div className="col">
+                <a className="header-brand" href="/">
+                  <img src="./isfitlogo.png" className="header-brand-img" alt="Tabler React" style={{ maxWidth: "70px" }}></img>
+                  <span className="d-none d-md-inline ml-2">RECRUITMENT</span>
+                </a>
+            
             </div>
+            <div className="col">
+                <ul className="nav" style={{justifyContent:"right"}}>
+                  <NavBarButton title="Overview" iconstring="list-ol" address="/" />
+                  { userLogedIn ? <NavBarButton title="My application" iconstring="address-card" address="/myapplication" /> : null}
+                  { userLogedIn ? <NavBarButton title="My Profile" iconstring="address-card" address="/myprofile" /> : null}
+                  <div>
+                  {
+                    userLogedIn ? <RenderProfile userAuthKey={userAuthKey} /> : <button className="btn btn-outline-primary" onClick={ () => openLoginModal() }>Sign in</button>
+                  }
+                  </div>
+                </ul>
+            </div>
+          </div>
         </div>
-        );
-    }
-}
+      </div>
+    );
+  }
 
 
+  const mapStateToProps = state => {
+    return {
+      showLoginModal: getLoginModalState(state),
+      userLogedIn: getUserLogedIn(state),
+      userAuthKey: getUserAuthKey(state)
+    };
+  };
 
-
- 
-export default NavBar;
+export default connect(mapStateToProps, { openLoginModal })(NavBar);

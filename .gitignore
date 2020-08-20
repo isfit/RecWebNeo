@@ -29,3 +29,6 @@ obj/
 
 # Visual Studio
 .vs/
+
+id_rsa
+frontend/src/build

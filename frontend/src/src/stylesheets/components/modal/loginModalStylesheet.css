@@ -1,0 +1,17 @@
+
+.loginChoiceWrapper {
+    display: flex;
+    width: 100%;
+    height: 3em;
+    border-bottom: solid grey 1px ;
+}
+
+.loginChoice {
+    flex-grow: 1;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.loginChoice:hover {
+    background-color: grey;
+}

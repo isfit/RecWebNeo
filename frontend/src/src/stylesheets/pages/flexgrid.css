@@ -1,0 +1,26 @@
+
+
+.flex-grid {
+  display: flex;
+}
+
+.flex-grid .col {
+  flex: 1;
+}
+
+
+.flex-grid .col-list {
+ flex-direction: column;
+}
+
+.flex-grid-third {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-grid-thirds .col {
+  width: 32%;
+}
+
+.middle { flex: 1; text-align: center; }
+.right {margin-left: auto; display:flex;}

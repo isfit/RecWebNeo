@@ -1,44 +1,101 @@
-import React, { Component } from 'react';
-import './App.css';
-import { render } from '@testing-library/react';
+import React from "react";
+import "./App.css";
+import "./stylesheets/pages/flexgrid.css";
 
-import NavBar from './components/navbar';
-import Positions from './components/positions';
-import SearchModule from './components/searchmodule';
-import ShoppingCart from './components/shoppingcart';
+import LogInModal from "./components/modal/loginmodal";
 
+import LandingPage from "./pages/landingpage";
+import ApplicationTextPage from "./pages/applicationtextpage";
+import AvailableTimesPage from "./pages/availabletimespage";
+import MyProfilePage from "./pages/myprofilepage";
+import MyApplicationPage from "./pages/myapplicationpage";
 
+import { ApolloProvider, ApolloClient, HttpLink, ApolloLink, InMemoryCache, concat } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 
+import { connect } from "react-redux";
+import { getUserAuthKey } from "./redux/selectors";
 
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faCheckSquare,
+  faCoffee,
+  faAddressCard,
+  faListOl,
+  faSignature,
+  faPhoneAlt,
+  faArrowUp,
+  faArrowDown,
+  faTrashAlt,
+} from "@fortawesome/free-solid-svg-icons";
 
-class App extends Component {
-  render() {
-    return (
-      <React.Fragment>
-      <div className="page">
-        <div className="page-main">
-          <NavBar />
-          <div className="page-content bg-light">
-            <div className="container">
-              <div className="page-header mt-3 mb-4">
-                <h4 className="page-title">Choose positions</h4>
-              </div>
-              <div className="row">
-                <div className="col">
-                <SearchModule />
-                <Positions />
-                </div>
-                <div className="col col-lg-4">
-                  <ShoppingCart />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      </React.Fragment>
-    );
+library.add(
+  faCheckSquare,
+  faCoffee,
+  faAddressCard,
+  faListOl,
+  faSignature,
+  faPhoneAlt,
+  faArrowUp,
+  faArrowDown,
+  faTrashAlt,
+);
+
+const httpLink = new HttpLink({ uri: 'https://recruitment.isfit.org:5000/'});
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('AuthorizationKey');
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    }
   }
-}
+});
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: authLink.concat(httpLink),
+});
+
+const App = () => {
+  //localStorage.setItem("applicationPositions", "");
+  let data = JSON.parse(localStorage.getItem('applicationPositions') || "[]");
+
+
+  return (
+    <ApolloProvider client={client}>
+      <React.Fragment>
+        <Router>
+          <Switch>
+            <Route path="/enterapplication">
+              {" "}
+              <ApplicationTextPage/>{" "}
+            </Route>
+            <Route path="/enteravailabletimes">
+              {" "}
+              <AvailableTimesPage />{" "}
+            </Route>
+            <Route path="/myprofile">
+              {" "}
+              <MyProfilePage />{" "}
+            </Route>
+            <Route path="/myapplication">
+              {" "}
+              <MyApplicationPage />{" "}
+            </Route>
+            <Route path="/">
+              {" "}
+              <LandingPage/>{" "}
+            </Route>
+          </Switch>
+        </Router>
+      </React.Fragment>
+    </ApolloProvider>
+  );
+};
 
 export default App;

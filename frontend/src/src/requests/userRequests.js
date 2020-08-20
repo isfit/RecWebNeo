@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 const LOGIN = gql`
   mutation login($email: String!, $password: String!) {
@@ -7,19 +7,19 @@ const LOGIN = gql`
 `;
 
 const ME_NAME = gql`
-    query me {
-      me {
-        firstName,
-        lastName,  
-      }
+  query me {
+    me {
+      firstName
+      lastName
     }
+  }
 `;
 
 const ME = gql`
   query me {
     me {
-      email,
-      firstName,
+      email
+      firstName
       lastName
     }
   }
@@ -42,20 +42,19 @@ const APPLY = gql`
 const MYAPPLICATION = gql`
   query myApplication {
     myApplication {
-      id,
-      applicationText,
-      positions {key, value},
-      prioritized,
+      id
+      applicationText
+      positions {
+        key
+        value {
+          id
+          name
+        }
+      }
+      prioritized
       interest
     }
   }
 `;
 
-export {
-    LOGIN,
-    ME,
-    ME_NAME,
-    REGISTER,
-    APPLY,
-    MYAPPLICATION
-};
+export { LOGIN, ME, ME_NAME, REGISTER, APPLY, MYAPPLICATION };

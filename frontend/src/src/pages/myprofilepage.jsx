@@ -23,6 +23,7 @@ const MyProfilePage = ({logOutUser}) => {
       history.push("/");
     };
 
+
     if (loading) {
       return (
         <div>Loading</div>

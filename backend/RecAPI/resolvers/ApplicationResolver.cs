@@ -13,19 +13,6 @@ using System.Threading.Tasks;
 
 namespace RecAPI.Resolvers
 {
-    public sealed class ApplicationApplicantResolver : ObjectFieldDescriptorAttribute
-    {
-        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
-        {
-            descriptor.Resolver(ctx =>
-            {
-                var application = ctx.Parent<Application>();
-                var repository = ctx.Service<IUserRepository>();
-                return repository.GetUserByAuth(application.Applicant);
-            });
-        }
-    }
-
     public sealed class PositionsApplicationResolver : ObjectFieldDescriptorAttribute
     {
         public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)

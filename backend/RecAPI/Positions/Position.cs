@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using RecAPI.Resolvers;
 using RecAPI.Sections.Models;
 using RecAPI.AdmisionPeriodes.Models;
+using RecAPI.Teams.Models;
 
 namespace RecAPI.Positions.Models
 {
-    public class Position : ISectionConnection, IAdmisionPeriodeConnection
+    public class Position : ISectionConnection, IAdmisionPeriodeConnection, ITeamConnection
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -26,7 +27,7 @@ namespace RecAPI.Positions.Models
         [SectionResolver]
         public string Section { get; set; }
 
-        [TeamResolverPosition]
+        [TeamResolver]
         public string Team { get; set; }
 
         public List<string> Tags { get; set; }

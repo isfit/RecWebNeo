@@ -10,33 +10,6 @@ using RecAPI.AdmisionPeriodes.Repositories;
 
 namespace RecAPI.Resolvers
 {
-    // Resolves section field in Organization
-    public sealed class OrganizationResolverAdmisionPeriode : ObjectFieldDescriptorAttribute
-    {
-        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
-        {
-            descriptor.Resolver(ctx =>
-            {
-                var admisionPeriode = ctx.Parent<AdmisionPeriode>();
-                var repository = ctx.Service<IOrganizationRepository>();
-                return repository.GetOrganization(admisionPeriode.Organization);
-            });
-        }
-    }
-    // Resolves AdmisionPeriodes field in Organization
-    public sealed class PositionResolverAdmisionPeriode : ObjectFieldDescriptorAttribute
-    {
-        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
-        {
-            descriptor.Resolver(ctx =>
-            {
-                var admisionPeriode = ctx.Parent<AdmisionPeriode>();
-                var repository = ctx.Service<IPositionRepository>();
-                return repository.GetPositionsByAdmisionPeriode(admisionPeriode.Id);
-            });
-        }
-    }
-
     public sealed class AdmisionPeriodeResolver : ObjectFieldDescriptorAttribute
     {
         public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
@@ -46,6 +19,20 @@ namespace RecAPI.Resolvers
                 var parrent = ctx.Parent<IAdmisionPeriodeConnection>();
                 var repository = ctx.Service<IAdmisionPeriodeRepository>();
                 return repository.GetAdmisionPeriode(parrent.AdmisionPeriode);
+            });
+        }
+    }
+
+    // Resolves AdmisionPeriodes field in Organization
+    public sealed class AdmisionPeriodeResolverOrganization : ObjectFieldDescriptorAttribute
+    {
+        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
+        {
+            descriptor.Resolver(ctx =>
+            {
+                var organization = ctx.Parent<Organization>();
+                var repository = ctx.Service<IAdmisionPeriodeRepository>();
+                return repository.GetAdmisionPeriodesByOrganization(organization.Id);
             });
         }
     }

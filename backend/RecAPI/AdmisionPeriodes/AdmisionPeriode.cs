@@ -8,22 +8,29 @@ using RecAPI.Resolvers;
 
 namespace RecAPI.AdmisionPeriodes.Models
 {
-    public class AdmisionPeriode
+    public class AdmisionPeriode : IOrganizationConnection
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonRequired]
         public string Id { get; set; }
+
         [BsonRequired]
-        [OrganizationResolverAdmisionPeriode]
+        [OrganizationResolver]
         public string Organization { get; set; }
+
         public DateTime StartDate { get; set; }
+
         public DateTime EndDate { get; set; }
 
+
         public DateTime StartInterviewDate { get; set; }
+
         public DateTime EndInterviewDate { get; set; }
 
+
         public int MinAppliedPositions { get; set; }
+
         public int MaxAppliedPositions { get; set; }
 
 

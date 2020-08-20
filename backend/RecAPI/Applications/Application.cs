@@ -5,6 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using RecAPI.Users.Models;
 using RecAPI.Resolvers;
 using RecAPI.AdmisionPeriodes.Models;
+using RecAPI.Applications.ErrorHandling;
 
 namespace RecAPI.Applications.Models
 {
@@ -20,6 +21,7 @@ namespace RecAPI.Applications.Models
         public Dictionary<string, string> Positions { get; set; }
 
         //[AdmisionPeriodeResolver]
+        // This is deffined with two ss-es insted of one. Fucked upp
         public string AdmissionPeriode { get; set; }
 
         public bool Prioritized { get; set; }
@@ -30,7 +32,7 @@ namespace RecAPI.Applications.Models
         public List<DateTime> Available { get; set; }
 
 
-        [ApplicationApplicantResolver]
+        [ApplicantResolver]
         public string Applicant { get; set; }
 
 
@@ -41,19 +43,18 @@ namespace RecAPI.Applications.Models
 
         public void setInterest(string interest)
         {
-            // This is possibly worst possible solution, and a horrible quick fix
-            // TODO!
-            if (interest == "OnlyPositions")
+            List<string> validInterests = new List<string>()
+                {
+                    "OnlyPositions",
+                    "Same",
+                    "Open"
+                };
+            if (validInterests.Contains(interest))
             {
-                Interest = "OnlyPositions";
-            }
-            if (interest == "Same")
+                Interest = interest;
+            } else
             {
-                Interest = "Same";
-            }
-            if (interest == "open")
-            {
-                Interest = "open";
+                ApplicationError.InvalidApplicationInterest();
             }
         }
 

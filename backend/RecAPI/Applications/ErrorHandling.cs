@@ -13,6 +13,11 @@ namespace RecAPI.Applications.ErrorHandling
     public class ApplicationError
     {
 
+        public static void InvalidApplicationInterest()
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("The given interest in invalid!").Build());
+        }
+
         public static void ValidAdmisionPeriode(IAdmisionPeriodeRepository repo, string admisionPeriodeId)
         {
             var admisionPeriode = repo.GetAdmisionPeriode(admisionPeriodeId);

@@ -8,31 +8,48 @@ using RecAPI.Positions.Models;
 using RecAPI.Sections.Repositories;
 using RecAPI.Teams.Repositories;
 using RecAPI.AdmisionPeriodes.Repositories;
+using RecAPI.AdmisionPeriodes.Models;
 
 namespace RecAPI.Resolvers
 {
-    // Reolves Team field in Position
-    public sealed class TeamResolverPosition : ObjectFieldDescriptorAttribute
+    // Resolves Positions field in Team
+    public sealed class PositionResolverTeam : ObjectFieldDescriptorAttribute
     {
         public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
         {
             descriptor.Resolver(ctx =>
             {
-                var position = ctx.Parent<Position>();
-                var repository = ctx.Service<ITeamRepository>();
-                return repository.GetTeam(position.Team);
+                Team team = ctx.Parent<Team>();
+                IPositionRepository repository = ctx.Service<IPositionRepository>();
+                return repository.GetTeamPositions(team.Id);
             });
         }
     }
-    public sealed class AdmisionPeriodeResolverPosition : ObjectFieldDescriptorAttribute
+
+    // Resolves Position field in Section
+    public sealed class PositionResolverSection : ObjectFieldDescriptorAttribute
     {
         public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
         {
             descriptor.Resolver(ctx =>
             {
-                var position = ctx.Parent<Position>();
-                var repository = ctx.Service<IAdmisionPeriodeRepository>();
-                return repository.GetAdmisionPeriode(position.AdmisionPeriode);
+                var section = ctx.Parent<Section>();
+                var repository = ctx.Service<IPositionRepository>();
+                return repository.GetSectionPositions(section.Id);
+            });
+        }
+    }
+    
+    // Resolves AdmisionPeriodes field in Organization
+    public sealed class PositionResolverAdmisionPeriode : ObjectFieldDescriptorAttribute
+    {
+        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
+        {
+            descriptor.Resolver(ctx =>
+            {
+                var admisionPeriode = ctx.Parent<AdmisionPeriode>();
+                var repository = ctx.Service<IPositionRepository>();
+                return repository.GetPositionsByAdmisionPeriode(admisionPeriode.Id);
             });
         }
     }

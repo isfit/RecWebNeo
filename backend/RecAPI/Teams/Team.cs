@@ -24,4 +24,9 @@ namespace RecAPI.Teams.Models
         [PositionResolverTeam]
         public List<Position> Positions { get; }
     }
+
+    public interface ITeamConnection
+    {
+        string Team { get; set; }
+    }
 }

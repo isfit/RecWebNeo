@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import "../stylesheets/components/availableTimesTable.css";
 
-import { APPLY } from "../requests/userRequests";
-import { useQuery, useMutation } from "@apollo/client";
-
-
 const AvailableTimeSlot = ({ date, time, timeSelected, selectTime }) => {
     const [selected, setSelected] = useState(timeSelected);
 
@@ -25,7 +21,7 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
     const existsInSelected = (date) => {
         let dato = new Date(date);
         dato.setHours(time.substring(0,2));
-        return timeSelected.some(x => (new Date(x)).toString() == dato.toString());
+        return timeSelected.some(x => (new Date(x)).toString() === dato.toString());
     }
 
   return(

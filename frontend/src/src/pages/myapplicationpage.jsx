@@ -17,10 +17,7 @@ const MyApplicationPage = (props) => {
   const [otherPositions, setOtherPositions] = useState(localStorage.getItem("otherPositions") || "OnlyPositions");
 
     const { refetch, loading, error, data } = useQuery(MYAPPLICATION);
-    console.log("My application");
-    console.log(loading, error, data);
 
-    console.log("myappplication", loading, error, data);
     if (loading) {  
         return (
           <div>Loading</div>

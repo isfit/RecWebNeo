@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import Modal from './modal';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMutation } from '@apollo/client';
-import { LOGIN } from '../../requests/userRequests';
 import LoginModalForm from './loginModalForm';
 import RegisterModalForm from './registerModalForm'
 import "../../stylesheets/components/modal/loginModalStylesheet.css";

@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import Positions from '../components/positionsModule';
-import SearchModule from '../components/searchModule';
+import React from 'react';
 import PageLayout from './pageLayout';
-
-import LogInModal from '../components/modal/loginmodal';
 import ErrorPage from './errorPage';
 
 import "../stylesheets/pages/flexgrid.css";
 
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { ME } from "../requests/userRequests";
 
 const MyProfilePage = (props) => {

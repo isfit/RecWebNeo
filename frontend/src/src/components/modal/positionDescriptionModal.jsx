@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
 import Modal from './modal';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMutation } from '@apollo/client';
-import { LOGIN } from '../../requests/userRequests';
-import LoginModalForm from './loginModalForm';
-import RegisterModalForm from './registerModalForm'
 
 import { connect } from "react-redux";
 import { closePositionModal, addPositionToApplication } from "../../redux/actions";
@@ -13,8 +8,6 @@ import { getPositionModalState,getUserLogedIn } from "../../redux/selectors";
 const PositionModal = ({position, showPositionModal, closePositionModal, addPositionToApplication}) =>  {
 
     const [alreadyUser, setAlreadyUser] = useState(true);
-
-    console.log("The position modal redux value is", showPositionModal);
 
     const addAndClose = (position) => {
         addPositionToApplication(position?.id, position?.name)

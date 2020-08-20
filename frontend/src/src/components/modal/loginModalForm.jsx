@@ -7,7 +7,7 @@ import { setUserLogin } from "../../redux/actions";
 
 const LoginModalForm = ({ setShowModal, setUserLogin }) => {
     
-    const [updateLogin, { data, error, loading}] = useMutation(LOGIN, { onError: () => {} });
+    const [updateLogin, { data, error }] = useMutation(LOGIN, { onError: () => {} });
     const [ emailInput, setEmailInput ] = useState("");
     const [ passwordInput, setPasswordInput ] = useState("");
 
@@ -38,7 +38,7 @@ const LoginModalForm = ({ setShowModal, setUserLogin }) => {
                 <div className="row d-flex justify-content-center mt-4">
                     <div className="container w-75">
                         <span className="ml-1">Password</span>
-                        <input className="navbar-search" type="password" placeholder="Type your password..." type="password" value={passwordInput} onChange={event => setPasswordInput(event.target.value)} />
+                        <input className="navbar-search" type="password" placeholder="Type your password..." value={passwordInput} onChange={event => setPasswordInput(event.target.value)} />
                     </div>
                 </div>
                 { error ? <div style={{color: "red"}}>The email or password is invalid</div> : null }

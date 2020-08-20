@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from "react-redux";
 import { addPositionToApplication, prioritizePosition, dePrioritizePosition, removePositionFromApplication } from "../redux/actions";
 import { getAppliedPositions } from "../redux/selectors";
@@ -24,8 +24,6 @@ const PositionChoiceField = ({id, title, prioritize, dePrioritize, remove}) => {
 }
 
 const PositionChoiceBox = ({positions, positionsUpdated, prioritizePosition, dePrioritizePosition, removePositionFromApplication}) => {
-    
-    console.log("Position box", positions[0]);
 
     return(
         <div className="card w-100 px-2">
@@ -55,7 +53,6 @@ const PositionChoiceBox = ({positions, positionsUpdated, prioritizePosition, deP
 };
 
 const mapStateToProps = state => {
-    console.log("State:", state.application.positionsUpdated);
     return {
       positions: getAppliedPositions(state),
       positionsUpdated: state.application.positionsUpdated

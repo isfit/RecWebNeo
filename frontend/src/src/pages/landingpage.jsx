@@ -10,11 +10,8 @@ const LandingPage = () => {
   const [sectionList, setSectionList] = useState([]);
 
   const updateSectionList = (sect) => {
-    console.log("Section list", sect);
     setSectionList(sect);
   }
-
-  console.log("Rerendering boiii", sectionList);
 
     return (
         <PageLayout>
@@ -25,11 +22,10 @@ const LandingPage = () => {
             <div className="row">
               <div className="col">
               <PositionTable sectionList={sectionList} />
-              { console.log("Section list", sectionList) }
               </div>
               <div className="col col-lg-4">
                 <PositionChoiceBox />
-                <buton className="btn btn-outline-success mt-1 mr-2 float-right" onClick={() => history.push("/enterapplication")}>Continue</buton>
+                <button className="btn btn-outline-success mt-1 mr-2 float-right" onClick={() => history.push("/enterapplication")}>Continue</button>
               </div>
             </div>
           </div>

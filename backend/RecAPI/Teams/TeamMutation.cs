@@ -17,7 +17,7 @@ namespace RecAPI.Teams.Mutations
     [ExtendObjectType(Name= "Mutation")]
     public class TeamMutations
     {
-        [Authorize(Policy = "administrator")]
+        [Authorize(Policy = "superuser")]
         public Team CreateTeam(
             CreateTeamInput input,
             [Service]ITeamRepository repository,
@@ -35,7 +35,7 @@ namespace RecAPI.Teams.Mutations
             return repository.AddTeam(team);
         }
 
-        [Authorize(Policy = "administrator")]
+        [Authorize(Policy = "superuser")]
         public Team UpdateTeam(
             UpdateTeamInput input,
             [Service]ITeamRepository repository,
@@ -54,7 +54,7 @@ namespace RecAPI.Teams.Mutations
             return repository.UpdateTeam(input.Id ,team);
         }
 
-        [Authorize(Policy = "administrator")]
+        [Authorize(Policy = "superuser")]
         public bool DeleteTeam(
             SingleModelInput input,
             [Service]ITeamRepository repository

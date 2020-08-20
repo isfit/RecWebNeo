@@ -23,7 +23,6 @@ namespace RecAPI.Applications.Queries
             ) =>
             repository.GetApplications();
 
-        // Get application from user id
         [Authorize(Policy = "administrator")]
         public Application GetApplication(
             SingleModelInput input,
@@ -32,7 +31,6 @@ namespace RecAPI.Applications.Queries
         {
             return repository.GetApplication(input.Id);
         }
-
         
         [Authorize]
         public Application GetMyApplication(

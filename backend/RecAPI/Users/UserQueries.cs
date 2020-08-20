@@ -16,6 +16,7 @@ namespace RecAPI.Users.Queries
     [ExtendObjectType(Name = "Query")]
     public class UserQueries
     {
+
         [Authorize(Policy = "administrator")]
         public IEnumerable<User> GetUsers(
             [Service]IUserRepository repository

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using RecAPI.Users.Models;
+using RecAPI.Resolvers;
 
 namespace RecAPI.Applications.Models
 {
@@ -12,6 +14,7 @@ namespace RecAPI.Applications.Models
         [BsonRequired]
         public string Id { get; set; }
         
+        [PositionsApplicationResolver]
         public Dictionary<string, string> Positions { get; set; }
         public string AdmissionPeriode { get; set; }
         public bool Prioritized { get; set; }
@@ -19,10 +22,12 @@ namespace RecAPI.Applications.Models
         public string ApplicationText { get; set;}
         public List<DateTime> Available { get; set; }
 
+        [ApplicationApplicantResolver]
         public string Applicant { get; set; }
 
         //public bool PreferDigital { get; set; }
         public string Interest { get; set; }
+
         public void setInterest(string interest)
         {
             // This is possibly worst possible solution, and a horrible quick fix
@@ -40,5 +45,7 @@ namespace RecAPI.Applications.Models
                 Interest = "open";
             }
         }
+
+
     }
 }

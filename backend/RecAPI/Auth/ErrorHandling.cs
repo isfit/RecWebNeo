@@ -19,5 +19,10 @@ namespace RecAPI.Auth.ErrorHandling
         {
             throw new QueryException(ErrorBuilder.New().SetMessage("The email or password is invalid").Build());
         }
+
+        public static void UserExistanceError()
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("The user does not exist").Build());
+        }
     } 
 }

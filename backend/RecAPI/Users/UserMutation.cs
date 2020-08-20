@@ -23,6 +23,7 @@ namespace RecAPI.Users.Mutations
         {
             return authService.Authenticate(email, password, authRepository);
         }
+
         public bool RegisterUser(
             RegisterUserInput registerUser,
             [Service] IAuthService authService,
@@ -38,7 +39,7 @@ namespace RecAPI.Users.Mutations
                 Email = registerUser.Email,
                 FirstName = registerUser.FirstName,
                 LastName = registerUser.LastName,
-                BirtDate = DateTime.Now
+                BirtDate = registerUser.BirtDate
             };
             var storedUser = userRepository.CreateUser(user);
             if (storedUser != null)
@@ -47,6 +48,7 @@ namespace RecAPI.Users.Mutations
             }
             return false;
         }
+
 
         [Authorize]
         public User EditUserInformation(
@@ -57,6 +59,7 @@ namespace RecAPI.Users.Mutations
             // TODO + Error handling
             return null;
         }
+
         [Authorize]
         public bool DeleteUser(
             [GlobalState("currentUser")] CurrentUser user,
@@ -67,7 +70,7 @@ namespace RecAPI.Users.Mutations
             return false;
         }
 
-        [Authorize(Policy = "superuser")]
+        [Authorize(Policy = "administrator")]
         public bool AddRole(
             string email,
             string role,

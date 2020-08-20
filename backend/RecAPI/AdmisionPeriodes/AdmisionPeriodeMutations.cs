@@ -11,9 +11,9 @@ using HotChocolate.AspNetCore.Authorization;
 namespace RecAPI.AdmisionPeriodes.Mutations
 {
     [ExtendObjectType(Name= "Mutation")]
-    //[Authorize(Policy = "administrator")]
     public class AdmisionPeriodeMutations
     {
+        [Authorize(Policy = "superuser")]
         public AdmisionPeriode CreateAdmisionPeriode(
             CreateAdmisionPeriodeInput input,
             [Service]IAdmisionPeriodeRepository repository,
@@ -37,6 +37,7 @@ namespace RecAPI.AdmisionPeriodes.Mutations
             return repository.CreateAdmisionPeriode(admisionPeriode);
         }
 
+        [Authorize(Policy = "superuser")]
         public AdmisionPeriode UpdateAdmisionPeriode(
             UpdateAdmisionPeriodesInput input,
             [Service]IAdmisionPeriodeRepository repository,
@@ -60,6 +61,7 @@ namespace RecAPI.AdmisionPeriodes.Mutations
             return repository.UpdateAdmisionPeriode(admisionPeriode.Id, admisionPeriode);
         }
 
+        [Authorize(Policy = "superuser")]
         public bool DeleteAdmisionPeriode(
             SingleModelInput input,
             [Service]IAdmisionPeriodeRepository repository

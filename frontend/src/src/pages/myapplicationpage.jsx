@@ -38,9 +38,11 @@ const MyApplicationPage = (props) => {
 
     if( data.myApplication == null ) {
       return(
+        <PageLayout>
         <div>
           You dont have an application registered.
         </div>
+        </PageLayout>
       )
     }
 

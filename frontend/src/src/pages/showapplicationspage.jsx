@@ -2,53 +2,74 @@ import React from "react";
 import ApplicationsModule from "../components/applicationsModule";
 import PageLayout from './pageLayout';
 import PositionChoiceBoxReadOnly from "../components/positionChoiceBoxReadOnly"
+import { useQuery } from "@apollo/client";
+import {APPLICATIONS} from '../requests/applicationRequests';
+import ErrorPage from './errorPage';
+
+const ApplicationRow = ({applicationData}) => {
+
+  const positions = applicationData.positions.map(x => x.value);
+
+  return (
+  <div className="position-entry py-2 px-2 mb-3">
+      <div className="flex-grid">
+        <div>
+          <h4> { applicationData.applicant.firstName } { applicationData.applicant.lastName } </h4>
+          <small> { applicationData.applicationText } </small>
+          <div className="flex-grid col-list border-top mt-3">
+            <div>
+              <input type="checkbox" checked={ applicationData.prioritized } readOnly={true}/>
+              <small className="ml-2">The positions in my application are prioritized</small>
+            </div>
+            <div>
+              <input type="radio" checked={ applicationData.interest === "OnlyPositions" } readOnly={true} />
+              <small className="ml-2">I am only interested in the positions I have entered</small>
+            </div>
+            <div>
+              <input type="radio" checked={ applicationData.interest === "Same" } readOnly={true} />
+              <small className="ml-2">I am open to other postions within the same genre of the positions I have entered</small>
+            </div> 
+            <div> 
+              <input type="radio" checked={ applicationData.interest === "open" } readOnly={true} />
+              <small className="ml-2">I am open to any other position in ISFiT, regardless of the positions I have entered</small>
+            </div>
+          </div>
+        </div>
+        <PositionChoiceBoxReadOnly positions={ positions } />
+      </div>
+  </div>
+  );
+};
 
 const ApplicationPage = () => {
 
-  const PositionsList = () => {
-    let list = new Array({ __typename:"Position", id:"1123123", name:"hei"},{ __typename:"Position", id:"2123123123123", name:"hei2"}, { __typename:"Position", id:"123123123123", name:"hei3"}) ;
-    return list;
-  };
-
-  const ApplicationRow = (props) => {
-    return (
-    <div className="position-entry py-2 px-2 mb-3">
-        <div className="flex-grid">
-          <div>
-            <h4>Torstein Otterlei</h4>
-            <small>Heisann, dette skal være en ganske lang tekst. Dette er en tekst og den skal være lang. Heisann, dette skal være en ganske lang tekst. Dette er en tekst og den skal være lang. Heisann, dette skal være en ganske lang tekst. Dette er en tekst og den skal være lang. Heisann, dette skal være en ganske lang tekst. Dette er en tekst og den skal være lang. Heisann, dette skal være en ganske lang tekst. Dette er en tekst og den skal være lang. </small>
-            <div className="flex-grid col-list border-top mt-3">
-              <div>
-                <input type="checkbox" checked={true} readOnly={true}/>
-                <small className="ml-2">The positions in my application are prioritized</small>
-              </div>
-              <div>
-                <input type="radio" checked={true} readOnly={true} />
-                <small className="ml-2">I am only interested in the positions I have entered</small>
-              </div>
-              <div>
-                <input type="radio" checked={false} readOnly={true} />
-                <small className="ml-2">I am open to other postions within the same genre of the positions I have entered</small>
-              </div> 
-              <div> 
-                <input type="radio" checked={false} readOnly={true} />
-                <small className="ml-2">I am open to any other position in ISFiT, regardless of the positions I have entered</small>
-              </div>
-            </div>
-          </div>
-          <PositionChoiceBoxReadOnly positions={PositionsList()} />
-          
-        </div>
-    </div>
-    );
-  };
+  const { data, error, loading} = useQuery(APPLICATIONS);
   
+  console.log(data, error, loading);
+
+  if (loading) {
+    return(
+      <div>
+        Loading
+      </div>
+    )
+  }
+
+  if (error) {
+    return <ErrorPage />
+  }
+
   return (
     <PageLayout>
       <div className="container pt-4">
         <h4 className="mb-4">View Applications</h4>
-        <ApplicationRow />
-        <ApplicationRow />
+        
+        {
+          data?.applications.nodes?.map(application => {
+            return(<ApplicationRow applicationData={application} />)
+          })
+        }
+
       </div>
     </PageLayout>
   );

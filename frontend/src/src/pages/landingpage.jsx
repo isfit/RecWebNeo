@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import PositionsModule from "../components/positionsModule";
-import SearchModule from "../components/searchModule";
 import PageLayout from "./pageLayout";
 import PositionChoiceBox from "../components/positionChoiceBox";
 import TextBox from "../components/textBoxModule";

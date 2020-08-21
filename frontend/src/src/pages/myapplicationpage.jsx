@@ -63,7 +63,7 @@ const MyApplicationPage = (props) => {
             <textarea className="w-100 h-100" readOnly={true} placeholder="You application text seems empty." type="text" value={data?.myApplication.applicationText}></textarea>
             </div>
             <div className="col col-lg-4">
-              <PositionChoiceBoxReadOnly positions={data?.myApplication.positions.map( pos => pos.value)} />
+              <PositionChoiceBoxReadOnly positions={data?.myApplication.positions.map( pos => pos.value)} title="My Positions"/>
             </div>
           </div>
           <div className="row">

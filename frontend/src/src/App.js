@@ -9,6 +9,10 @@ import ApplicationTextPage from "./pages/applicationtextpage";
 import AvailableTimesPage from "./pages/availabletimespage";
 import MyProfilePage from "./pages/myprofilepage";
 import MyApplicationPage from "./pages/myapplicationpage";
+import ApplicationPage from "./pages/showapplicationspage";
+import UserAdminPage from "./pages/useradminpage";
+
+
 
 import { ApolloProvider, ApolloClient, HttpLink, ApolloLink, InMemoryCache, concat } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
@@ -28,6 +32,7 @@ import {
   faArrowUp,
   faArrowDown,
   faTrashAlt,
+  faFileAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -40,6 +45,7 @@ library.add(
   faArrowUp,
   faArrowDown,
   faTrashAlt,
+  faFileAlt,
 );
 
 const httpLink = new HttpLink({ uri: 'https://recruitment.isfit.org:5000/'});
@@ -79,6 +85,10 @@ const App = () => {
               {" "}
               <AvailableTimesPage />{" "}
             </Route>
+            <Route path="/applications">
+              {" "}
+              <ApplicationPage />{" "}
+            </Route>
             <Route path="/myprofile">
               {" "}
               <MyProfilePage />{" "}
@@ -86,6 +96,10 @@ const App = () => {
             <Route path="/myapplication">
               {" "}
               <MyApplicationPage />{" "}
+            </Route>
+            <Route path="/useradminpage">
+              {" "}
+              <UserAdminPage />{" "}
             </Route>
             <Route path="/">
               {" "}

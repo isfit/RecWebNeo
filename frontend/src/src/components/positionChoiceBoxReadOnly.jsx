@@ -10,11 +10,10 @@ const PositionChoiceField = ({id, title}) => {
     )
 }
 
-const PositionChoiceBoxReadOnly = ({positions}) => {
-
+const PositionChoiceBoxReadOnly = ({positions, title}) => {
     return(
         <div className="card w-100 px-2">
-            <h5 className="page-title border-bottom ml-2 mt-2">My Positions</h5>
+            <h5 className="page-title border-bottom ml-2 mt-2">{title}</h5>
             <div className="flex-grid">
                 <div className="col" style={{flexGrow:1, padding:0}}>
                     <h5 className="mt-2">1.</h5>

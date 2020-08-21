@@ -37,6 +37,7 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
     <div>
       <PositionDescriptionModal position={positionData} />
       <div className="card w-100 px-3 py-3">
+        <small className="text-muted pl-2 pb-2">Click on the positions for more information.</small>
         {data.positions.nodes.map((position) => {
           return (
             <PositionRow
@@ -60,7 +61,8 @@ const PositionRow = ({ position, openPositionModal, addPositionToApplication }) 
         <div className="flex-grid">
          <a className="col" style={{flexGrow: 9}} onClick={() => openPositionModal(position)}>
                 <h4>{position?.name}</h4>
-                <span>{position?.team?.name}</span>
+                <span className="text-muted">Section: {position?.section?.name}</span>
+                <span className="text-muted pl-3">Team: {position?.team?.name}</span>
           </a>
           <div className="col" style={{flexGrow: 1}}>
           <button type="button" className="btn btn-outline-success w-100 h-100" onClick={() => addPositionToApplication(position.id, position.name)}>

@@ -76,6 +76,8 @@ Released 18.08
 ### Backend
 - Restructure resolvers in backend
 - Refresh token
+- Edit password
+- Clean error messages and error handeling
 - Authorization groups with different priviledges0
 - Authorization groups linked to sections and teams
 - Section leaders should be able to add users as a member and thus se applications
@@ -86,4 +88,4 @@ Released 18.08
 ### Frontend
 - Edit profile information
 - Edit application
-- 
+- Edit password

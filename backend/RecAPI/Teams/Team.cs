@@ -3,10 +3,11 @@ using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 using RecAPI.Resolvers;
 using RecAPI.Positions.Models;
+using RecAPI.Sections.Models;
 
 namespace RecAPI.Teams.Models
 {
-    public class Team
+    public class Team : ISectionConnection
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -17,10 +18,15 @@ namespace RecAPI.Teams.Models
         [BsonRequired]
         public string Description { get; set; }
         [BsonRequired]
-        [SectionResolverTeam]
+        [SectionResolver]
         public string Section { get; set; }
         
         [PositionResolverTeam]
         public List<Position> Positions { get; }
+    }
+
+    public interface ITeamConnection
+    {
+        string Team { get; set; }
     }
 }

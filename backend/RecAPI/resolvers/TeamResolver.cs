@@ -11,31 +11,30 @@ using RecAPI.Positions.Repositories;
 
 namespace RecAPI.Resolvers
 {
-    // Resolves Section field in Team
-    public sealed class SectionResolverTeam : ObjectFieldDescriptorAttribute
+    public sealed class TeamResolver : ObjectFieldDescriptorAttribute
     {
         public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
         {
             descriptor.Resolver(ctx =>
             {
-                Team team = ctx.Parent<Team>();
-                ISectionRepository repository = ctx.Service<ISectionRepository>();
-                return repository.GetSection(team.Section);
-            });
-        }
-    }
-    // Resolves Positions field in Team
-    public sealed class PositionResolverTeam : ObjectFieldDescriptorAttribute
-    {
-        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
-        {
-            descriptor.Resolver(ctx =>
-            {
-                Team team = ctx.Parent<Team>();
-                IPositionRepository repository = ctx.Service<IPositionRepository>();
-                return repository.GetTeamPositions(team.Id);
+                var parent = ctx.Parent<ITeamConnection>();
+                var repository = ctx.Service<ITeamRepository>();
+                return repository.GetTeam(parent.Team);
             });
         }
     }
 
+    // Resolves Teams field in Section
+    public sealed class TeamResolverSection : ObjectFieldDescriptorAttribute
+    {
+        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
+        {
+            descriptor.Resolver(ctx =>
+            {
+                var section = ctx.Parent<Section>();
+                var repository = ctx.Service<ITeamRepository>();
+                return repository.GetTeams(section.Id);
+            });
+        }
+    }
 }

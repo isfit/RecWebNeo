@@ -42,5 +42,15 @@ namespace RecAPI.Auth.Models
             }
             return Roles.Remove(oldRole);
         }
+        public bool SetRole(
+            string role
+            )
+        {
+            Roles = new List<string>()
+            {
+                role
+            };
+            return Roles.Contains(role);
+        }
     }
 }

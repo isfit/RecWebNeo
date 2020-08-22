@@ -52,12 +52,22 @@ namespace RecAPI.Users.Mutations
 
         [Authorize]
         public User EditUserInformation(
+            [GlobalState("currentUser")] CurrentUser user,
             UpdateUserInput input,
-            [Service] IUserRepository userRepository
+            [Service] IUserRepository userRepository,
+            [Service] IAuthRepository authRepository
         )
         {
-            // TODO + Error handling
-            return null;
+            var userEmail = authRepository.GetUserEmail(user.UserId);
+            var prevUser = userRepository.GetUserByEmail(userEmail);
+            User updatedUser = new User()
+            {
+                FirstName = input.FirstName ?? prevUser.FirstName,
+                LastName = input.LastName ?? prevUser.LastName,
+                BirtDate = input.BirtDate ?? prevUser.BirtDate,
+                BusyTime = input.BusyTime ?? prevUser.BusyTime
+            };
+            return userRepository.UpdateUser(prevUser.Id, updatedUser);
         }
 
         [Authorize]

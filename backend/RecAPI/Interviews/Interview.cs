@@ -19,7 +19,7 @@ namespace RecAPI.Interviews.Models
         public string Applicant { get; set; }
         public List<string> Interviewers { get; set; }
 
-        public string Type { get; set; } // Digital or Physical?
-        public string Location { get; set; }
+        //public string Type { get; set; } // Digital or Physical?
+        public string Location { get; set; }  // Physical address/room, or digital link
     }
 }

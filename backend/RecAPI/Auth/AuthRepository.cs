@@ -46,7 +46,7 @@ namespace RecAPI.Auth.Repositories
             var availableRoles = new Dictionary<string, List<string>>()
             {
                 { "superuser", new List<string>() { "internal", "admin", "superuser" } },
-                { "admin", new List<string>() { "internal"} }
+                { "admin", new List<string>() { "internal", "admin" } }
             };
 
             var user = GetAuthUserByEmail(email);
@@ -69,5 +69,11 @@ namespace RecAPI.Auth.Repositories
             }
             return false;
         }
+
+        public string GetUserEmail(string id)
+        {
+            return _authUsers.Find(user => user.Id == id).FirstOrDefault()?.Email;
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace RecAPI.Users.Input
@@ -23,8 +24,12 @@ namespace RecAPI.Users.Input
     
     public class UpdateUserInput
     {
+        public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime BirtDate { get; set; }
+        public DateTime? BirtDate { get; set; }
+
+        [Authorize(Policy = "internal")]
+        public List<string> BusyTime { get; set; }
     }
 }

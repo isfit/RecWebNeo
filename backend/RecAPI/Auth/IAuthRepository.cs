@@ -8,5 +8,6 @@ namespace RecAPI.Auth.Repositories
         AuthUser GetAuthUserByEmail(string email);
         AuthUser GetAuthUser(string userId);
         bool SetRoleOfUser(string email, string role);
+        string GetUserEmail(string id);
     }
 }

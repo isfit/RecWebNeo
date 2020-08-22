@@ -18,31 +18,19 @@ namespace RecAPI.Sections.InputType
             Organization = organization;
         }
         [GraphQLNonNullType]
-        public string Name { get; }
+        public string Name { get; set; }
         [GraphQLNonNullType]
-        public string Description { get; }
+        public string Description { get; set; }
         [GraphQLNonNullType]
-        public string Organization { get; }
+        public string Organization { get; set; }
     }
     public class UpdateSectionInput
     {
-        public UpdateSectionInput(
-            string id,
-            string name,
-            string description,
-            string organization
-        )
-        {
-            Id = id;
-            Name = name;
-            Description = description;
-            Organization = organization;
-        }
         [BsonId]
         [GraphQLNonNullType]
-        public string Id { get; }
-        public string Name { get; }
-        public string Description { get; }
-        public string Organization { get; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Organization { get; set; }
     }
 }

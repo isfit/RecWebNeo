@@ -140,7 +140,11 @@ namespace RecAPI.Users.Mutations
             if (user == null)
             {
                 UserError.UserExistError(email);
-            }
+            };
+            if (user.Sections == null)
+            {
+                user.Sections = new List<string>();
+            };
             sections.ForEach( section => {
                 var sectionObject = sectionRepository.GetSection(section);
                 if (sectionObject == null)
@@ -148,7 +152,10 @@ namespace RecAPI.Users.Mutations
                     SectionsError.SectionExistError(section);
                 } else
                 {
-                    user.AddSection(section);
+                    if (!sections.Contains(section))
+                    {
+                        user.Sections.Add(section);
+                    }
                 }
             });
             var updatedUser = userRepository.UpdateUser(user.Id, user);
@@ -166,10 +173,19 @@ namespace RecAPI.Users.Mutations
             if (user == null)
             {
                 UserError.UserExistError(email);
-            }
-            sections.ForEach(section => 
-                    user.RemoveSection(section)
-                    );
+            };
+            if (user.Sections == null)
+            {
+                user.Sections = new List<string>();
+            };
+            sections.ForEach(section =>
+                {
+                    if (user.Sections.Contains(section))
+                    {
+                        user.Sections.Remove(section);
+                    };
+                }
+            );
             var updatedUser = userRepository.UpdateUser(user.Id, user);
             return !sections.Any(sec => updatedUser.Sections.Contains(sec));
         }
@@ -189,6 +205,10 @@ namespace RecAPI.Users.Mutations
             {
                 UserError.UserExistError(email);
             }
+            if (user.Teams == null)
+            {
+                user.Teams = new List<string>();
+            }
             teams.ForEach(team => {
                 var teamObject = teamRepository.GetTeam(team);
                 if (teamObject == null)
@@ -197,7 +217,10 @@ namespace RecAPI.Users.Mutations
                 }
                 else
                 {
-                    user.AddTeam(team);
+                    if (!user.Teams.Contains(team))
+                    {
+                        user.Teams.Add(team);
+                    }
                 }
             });
             var updatedUser = userRepository.UpdateUser(user.Id, user);
@@ -215,10 +238,19 @@ namespace RecAPI.Users.Mutations
             if (user == null)
             {
                 UserError.UserExistError(email);
-            }
+            };
+            if (user.Teams == null)
+            {
+                user.Teams = new List<string>();
+            };
             teams.ForEach(team =>
-                    user.RemoveTeam(team)
-                    );
+                {
+                    if (user.Teams.Contains(team))
+                    {
+                        user.Teams.Remove(team);
+                    }
+                }
+            );
             var updatedUser = userRepository.UpdateUser(user.Id, user);
             return !teams.Any(team => updatedUser.Sections.Contains(team));
         }

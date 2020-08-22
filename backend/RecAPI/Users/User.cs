@@ -47,62 +47,7 @@ namespace RecAPI.Users.Models
         [Authorize(Policy = "internal")]
         public List<string> BusyTime { get; set; }
 
-
-        [Authorize(Policy = "administrator")]
-        public bool AddSection(string sectionId)
-        {
-            if (Sections == null)
-            {
-                Sections = new List<string>();
-            }
-            if (!Sections.Contains(sectionId))
-            {
-                Sections.Add(sectionId);
-                return true;
-            }
-            return false;
-        }
-        [Authorize(Policy = "administrator")]
-        public bool AddTeam(string teamId)
-        {
-            if (Teams == null)
-            {
-                Teams = new List<string>();
-            }
-            if (!Teams.Contains(teamId))
-            {
-                Teams.Add(teamId);
-                return true;
-            }
-            return false;
-        }
-        [Authorize(Policy = "administrator")]
-        public bool RemoveSection(string sectionId)
-        {
-            if (Sections == null)
-            {
-                Sections = new List<string>();
-            }
-            if (Sections.Contains(sectionId))
-            {
-                Sections.Remove(sectionId);
-                return true;
-            }
-            return false;
-        }
-        [Authorize(Policy = "administrator")]
-        public bool RemoveTeam(string teamId)
-        {
-            if (Teams == null)
-            {
-                Teams = new List<string>();
-            }
-            if (Teams.Contains(teamId))
-            {
-                Teams.Remove(teamId);
-                return true;
-            }
-            return false;
-        }
+        [Authorize(Policy = "internal")]
+        public List<string> InterviewTime { get; set; }
     }
 }

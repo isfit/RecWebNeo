@@ -24,6 +24,19 @@ namespace RecAPI.Resolvers
         }
     }
 
+    public sealed class TeamsResolver : ObjectFieldDescriptorAttribute
+    {
+        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
+        {
+            descriptor.Resolver(ctx =>
+            {
+                var parent = ctx.Parent<ITeamsConnection>();
+                var repository = ctx.Service<ITeamRepository>();
+                return repository.GetTeams(parent.Teams);
+            });
+        }
+    }
+
     // Resolves Teams field in Section
     public sealed class TeamResolverSection : ObjectFieldDescriptorAttribute
     {

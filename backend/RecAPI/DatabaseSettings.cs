@@ -12,6 +12,7 @@ namespace RecAPI.Database
         public string AuthCollectionName { get; set; }
         public string UserCollectionName { get; set; }
         public string ApplicationCollectionName { get; set; }
+        public string InterviewCollectionName { get; set; }
     }
     public interface IRecWebDatabaseSettings
     {
@@ -25,5 +26,6 @@ namespace RecAPI.Database
         string AuthCollectionName { get; set; }
         string UserCollectionName { get; set; }
         string ApplicationCollectionName { get; set; }
+        string InterviewCollectionName { get; set; }
     }
 }

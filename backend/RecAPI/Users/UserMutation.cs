@@ -1,10 +1,19 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using RecAPI.Auth.Models;
 using RecAPI.Auth.Repositories;
+using RecAPI.Generic.InputType;
+using RecAPI.Sections.ErrorHandling;
+using RecAPI.Sections.Models;
+using RecAPI.Sections.Repositories;
+using RecAPI.Teams.ErrorHandling;
+using RecAPI.Teams.Repositories;
+using RecAPI.Users.ErrorHandling;
 using RecAPI.Users.Input;
 using RecAPI.Users.Models;
 using RecAPI.Users.Repositories;
@@ -65,29 +74,153 @@ namespace RecAPI.Users.Mutations
                 FirstName = input.FirstName ?? prevUser.FirstName,
                 LastName = input.LastName ?? prevUser.LastName,
                 BirtDate = input.BirtDate ?? prevUser.BirtDate,
-                BusyTime = input.BusyTime ?? prevUser.BusyTime
+                BusyTime = input.BusyTime ?? prevUser.BusyTime,
+                Sections = prevUser.Sections,
+                Teams = prevUser.Teams
             };
             return userRepository.UpdateUser(prevUser.Id, updatedUser);
         }
 
-        [Authorize]
+
+
+        [Authorize(Policy ="superuser")]
         public bool DeleteUser(
-            [GlobalState("currentUser")] CurrentUser user,
-            [Service] IUserRepository userRepository
+            SingleModelInput input,
+            [Service] IUserRepository userRepository,
+            [Service] IAuthRepository authRepository
         )
         {
-            // TODO + Error handling
-            return false;
+            var user = userRepository.GetUser(input.Id);
+            var deletedAuthUser = authRepository.DeleteUser(user.AuthId);
+            if (!deletedAuthUser)
+            {
+                return false;
+            }
+            return userRepository.DeleteUser(input.Id);
+        }
+
+        [Authorize]
+        public bool DeleteMe(
+            [GlobalState("currentUser")] CurrentUser user,
+            [Service] IUserRepository userRepository,
+            [Service] IAuthRepository authRepository
+        )
+        {
+            var userEmail = authRepository.GetUserEmail(user.UserId);
+            var userId = userRepository.GetUserByEmail(userEmail).Id;
+            var deletedAuthUser = authRepository.DeleteUser(user.UserId);
+            if (!deletedAuthUser)
+            {
+                return false;
+            }
+            return userRepository.DeleteUser(userId);
         }
 
         [Authorize(Policy = "administrator")]
         public bool SetRole(
             string email,
             string role,
+            [GlobalState("currentUser")] CurrentUser user,
             [Service] IAuthRepository authRepository
         )
         {
-            return authRepository.SetRoleOfUser(email, role);
+            return authRepository.SetRoleOfUser(user.UserId, email, role);
+        }
+
+
+        [Authorize(Policy = "administrator")]
+        public bool AddSections(
+            string email,
+            List<string> sections,
+            [Service] IUserRepository userRepository,
+            [Service] ISectionRepository sectionRepository
+        )
+        {
+            var user = userRepository.GetUserByEmail(email);
+            if (user == null)
+            {
+                UserError.UserExistError(email);
+            }
+            sections.ForEach( section => {
+                var sectionObject = sectionRepository.GetSection(section);
+                if (sectionObject == null)
+                {
+                    SectionsError.SectionExistError(section);
+                } else
+                {
+                    user.AddSection(section);
+                }
+            });
+            var updatedUser = userRepository.UpdateUser(user.Id, user);
+            return !sections.Except(updatedUser.Sections).Any();
+        }
+
+        [Authorize(Policy = "administrator")]
+        public bool RemoveSections(
+            string email,
+            List<string> sections,
+            [Service] IUserRepository userRepository
+        )
+        {
+            var user = userRepository.GetUserByEmail(email);
+            if (user == null)
+            {
+                UserError.UserExistError(email);
+            }
+            sections.ForEach(section => 
+                    user.RemoveSection(section)
+                    );
+            var updatedUser = userRepository.UpdateUser(user.Id, user);
+            return !sections.Any(sec => updatedUser.Sections.Contains(sec));
+        }
+
+
+
+        [Authorize(Policy = "administrator")]
+        public bool AddTeams(
+            string email,
+            List<string> teams,
+            [Service] IUserRepository userRepository,
+            [Service] ITeamRepository teamRepository
+        )
+        {
+            var user = userRepository.GetUserByEmail(email);
+            if (user == null)
+            {
+                UserError.UserExistError(email);
+            }
+            teams.ForEach(team => {
+                var teamObject = teamRepository.GetTeam(team);
+                if (teamObject == null)
+                {
+                    TeamError.TeamExistError(team);
+                }
+                else
+                {
+                    user.AddTeam(team);
+                }
+            });
+            var updatedUser = userRepository.UpdateUser(user.Id, user);
+            return !teams.Except(updatedUser.Teams).Any();
+        }
+
+        [Authorize(Policy = "administrator")]
+        public bool RemoveTeams(
+            string email,
+            List<string> teams,
+            [Service] IUserRepository userRepository
+        )
+        {
+            var user = userRepository.GetUserByEmail(email);
+            if (user == null)
+            {
+                UserError.UserExistError(email);
+            }
+            teams.ForEach(team =>
+                    user.RemoveTeam(team)
+                    );
+            var updatedUser = userRepository.UpdateUser(user.Id, user);
+            return !teams.Any(team => updatedUser.Sections.Contains(team));
         }
 
     }

@@ -7,7 +7,8 @@ namespace RecAPI.Auth.Repositories
         string RegisterUser(AuthUser authUser);
         AuthUser GetAuthUserByEmail(string email);
         AuthUser GetAuthUser(string userId);
-        bool SetRoleOfUser(string email, string role);
+        bool SetRoleOfUser(string currentUser, string email, string role);
         string GetUserEmail(string id);
+        bool DeleteUser(string id);
     }
 }

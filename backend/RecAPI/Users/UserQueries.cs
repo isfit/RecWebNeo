@@ -18,6 +18,9 @@ namespace RecAPI.Users.Queries
     {
 
         [Authorize(Policy = "administrator")]
+        [UsePaging]
+        [UseFiltering]
+        [UseSorting]
         public IEnumerable<User> GetUsers(
             [Service]IUserRepository repository
         ) =>

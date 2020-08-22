@@ -5,6 +5,7 @@ using RecAPI.Resolvers;
 using RecAPI.Teams.Models;
 using RecAPI.Positions.Models;
 using RecAPI.Organizations.Models;
+using System;
 
 namespace RecAPI.Sections.Models
 {
@@ -34,5 +35,9 @@ namespace RecAPI.Sections.Models
     public interface ISectionConnection
     {
         string Section { get; set; }
+    }
+    public interface ISectionsConnection
+    {
+        List<string> Sections { get; set; }
     }
 }

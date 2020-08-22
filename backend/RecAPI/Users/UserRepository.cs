@@ -48,11 +48,13 @@ namespace RecAPI.Users.Repositories
         }
         public User UpdateUser(string id, User updatedUser)
         {
-            return null;
+            _users.ReplaceOne(user => user.Id == id, updatedUser);
+            return GetUser(id);
         }
         public bool DeleteUser(string id)
         {
-            return false;
+            var actionResult = _users.DeleteOne(user => user.Id == id);
+            return actionResult.IsAcknowledged && actionResult.DeletedCount > 0;
         }
     }
 }

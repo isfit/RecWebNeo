@@ -31,5 +31,9 @@ namespace RecAPI.Users.Input
 
         [Authorize(Policy = "internal")]
         public List<string> BusyTime { get; set; }
+        [Authorize(Policy = "internal")]
+        public List<string> Sections { get; set; }
+        [Authorize(Policy = "internal")]
+        public List<string> Teams { get; set; }
     }
 }

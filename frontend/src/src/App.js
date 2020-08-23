@@ -11,6 +11,8 @@ import MyProfilePage from "./pages/myprofilepage";
 import MyApplicationPage from "./pages/myapplicationpage";
 import ApplicationPage from "./pages/showapplicationspage";
 import UserAdminPage from "./pages/useradminpage";
+import InterviewsPage from "./pages/interviewspage";
+
 
 
 
@@ -33,6 +35,7 @@ import {
   faArrowDown,
   faTrashAlt,
   faFileAlt,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -46,6 +49,7 @@ library.add(
   faArrowDown,
   faTrashAlt,
   faFileAlt,
+  faUsers,
 );
 
 const httpLink = new HttpLink({ uri: 'https://recruitment.isfit.org:5000/'});
@@ -100,6 +104,10 @@ const App = () => {
             <Route path="/useradminpage">
               {" "}
               <UserAdminPage />{" "}
+            </Route>
+            <Route path="/manageinterviews">
+              {" "}
+              <InterviewsPage />{" "}
             </Route>
             <Route path="/">
               {" "}

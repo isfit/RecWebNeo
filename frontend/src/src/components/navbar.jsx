@@ -89,8 +89,9 @@ import { MYAPPLICATION } from "../requests/userRequests";
                 <ul className="nav" style={{justifyContent:"right"}}>
                   <NavBarButton title="Overview" iconstring="list-ol" address="/" />
                   { userLogedIn ? <RenderMyApplicationButton /> : null }
-                  { AccessLevel > 1 ? <NavBarButton title="View Applicaitons" iconstring="file-alt" address="/applications" /> : null}
-                  { AccessLevel > 1 ? <NavBarButton title="Upgrade users" iconstring="arrow-up" address="/useradminpage" /> : null}
+                  { AccessLevel > 2 ? <NavBarButton title="Manage interviews" iconstring="users" address="/manageinterviews" /> : null}
+                  { AccessLevel > 2 ? <NavBarButton title="View Applicaitons" iconstring="file-alt" address="/applications" /> : null}
+                  { AccessLevel > 2 ? <NavBarButton title="Administer users" iconstring="arrow-up" address="/useradminpage" /> : null}
                   {/* { userLogedIn ? <NavBarButton title="My Profile" iconstring="address-card" address="/myprofile" /> : null} */}
 
                   <div>

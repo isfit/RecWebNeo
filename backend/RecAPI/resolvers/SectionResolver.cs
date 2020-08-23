@@ -34,7 +34,7 @@ namespace RecAPI.Resolvers
             {
                 var parent = ctx.Parent<ISectionsConnection>();
                 var repository = ctx.Service<ISectionRepository>();
-                return repository.GetSections(parent.Sections);
+                return parent.Sections != null ? repository.GetSections(parent.Sections) : null;
             });
         }
     }

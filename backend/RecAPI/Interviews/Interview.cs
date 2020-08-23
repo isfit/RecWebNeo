@@ -16,14 +16,14 @@ namespace RecAPI.Interviews.Models
         public DateTime End { get; set; }
 
         public string Application { get; set; }
-        public InterviewConnection Applicant { get; set; }
-        public List<InterviewConnection> Interviewers { get; set; }
+        public InterviewConnections Applicant { get; set; }
+        public List<InterviewConnections> Interviewers { get; set; }
 
         //public string Type { get; set; } // Digital or Physical?
         public string Location { get; set; }  // Physical address/room, or digital link
     }
 
-    public class InterviewConnection
+    public class InterviewConnections
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

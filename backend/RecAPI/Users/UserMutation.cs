@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
@@ -46,6 +47,7 @@ namespace RecAPI.Users.Mutations
             {
                 AuthId = authUserId,
                 Email = registerUser.Email,
+                PhoneNumber = registerUser.PhoneNumber,
                 FirstName = registerUser.FirstName,
                 LastName = registerUser.LastName,
                 BirtDate = registerUser.BirtDate
@@ -69,8 +71,16 @@ namespace RecAPI.Users.Mutations
         {
             var userEmail = authRepository.GetUserEmail(user.UserId);
             var prevUser = userRepository.GetUserByEmail(userEmail);
+            if (prevUser == null)
+            {
+                UserError.UserExistError(userEmail);
+            }
             User updatedUser = new User()
             {
+                Id = prevUser.Id,
+                Email = prevUser.Email,
+                AuthId = prevUser.AuthId,
+                PhoneNumber = input.PhoneNumber ?? prevUser.PhoneNumber,
                 FirstName = input.FirstName ?? prevUser.FirstName,
                 LastName = input.LastName ?? prevUser.LastName,
                 BirtDate = input.BirtDate ?? prevUser.BirtDate,
@@ -81,6 +91,41 @@ namespace RecAPI.Users.Mutations
             return userRepository.UpdateUser(prevUser.Id, updatedUser);
         }
 
+
+        // Edit password
+        [Authorize]
+        public bool UpdateMyPassword(
+            [GlobalState("currentUser")] CurrentUser user,
+            UserUpdatePasswordInput passwordInput,
+            [Service] IAuthService authService,
+            [Service] IAuthRepository authRepository
+        )
+        {
+            return authService.EditPassword(user.UserId, passwordInput.oldPassword, passwordInput.newPassword, authRepository);
+        }
+
+        [Authorize(Policy = "administrator")]
+        public bool UpdateUserPassword(
+            [GlobalState("currentUser")] CurrentUser user,
+            string email,
+            string newPassword,
+            [Service] IAuthService authService,
+            [Service] IUserRepository userRepository,
+            [Service] IAuthRepository authRepository
+        )
+        {
+            var requestingUser = authRepository.GetAuthUser(user.UserId);
+            var updatingUser = authRepository.GetAuthUserByEmail(email);
+            if (requestingUser == null || updatingUser == null)
+            {
+                UserError.UserExistError(email);
+            }
+            if (updatingUser.Roles != null && (updatingUser.Roles.Contains("superuser") && !requestingUser.Roles.Contains("superuser")))
+            {
+                UserError.UserExistError(email);
+            }
+            return authService.EditPassword(email, newPassword, authRepository);
+        }
 
 
         [Authorize(Policy ="superuser")]
@@ -116,8 +161,9 @@ namespace RecAPI.Users.Mutations
             return userRepository.DeleteUser(userId);
         }
 
+
         [Authorize(Policy = "administrator")]
-        public bool SetRole(
+        public bool SetUserRole(
             string email,
             string role,
             [GlobalState("currentUser")] CurrentUser user,
@@ -127,9 +173,8 @@ namespace RecAPI.Users.Mutations
             return authRepository.SetRoleOfUser(user.UserId, email, role);
         }
 
-
         [Authorize(Policy = "administrator")]
-        public bool AddSections(
+        public bool SetSectionsToUser(
             string email,
             List<string> sections,
             [Service] IUserRepository userRepository,
@@ -150,50 +195,15 @@ namespace RecAPI.Users.Mutations
                 if (sectionObject == null)
                 {
                     SectionsError.SectionExistError(section);
-                } else
-                {
-                    if (!sections.Contains(section))
-                    {
-                        user.Sections.Add(section);
-                    }
                 }
             });
+            user.Sections = sections;
             var updatedUser = userRepository.UpdateUser(user.Id, user);
             return !sections.Except(updatedUser.Sections).Any();
         }
 
         [Authorize(Policy = "administrator")]
-        public bool RemoveSections(
-            string email,
-            List<string> sections,
-            [Service] IUserRepository userRepository
-        )
-        {
-            var user = userRepository.GetUserByEmail(email);
-            if (user == null)
-            {
-                UserError.UserExistError(email);
-            };
-            if (user.Sections == null)
-            {
-                user.Sections = new List<string>();
-            };
-            sections.ForEach(section =>
-                {
-                    if (user.Sections.Contains(section))
-                    {
-                        user.Sections.Remove(section);
-                    };
-                }
-            );
-            var updatedUser = userRepository.UpdateUser(user.Id, user);
-            return !sections.Any(sec => updatedUser.Sections.Contains(sec));
-        }
-
-
-
-        [Authorize(Policy = "administrator")]
-        public bool AddTeams(
+        public bool SetTeamsToUser(
             string email,
             List<string> teams,
             [Service] IUserRepository userRepository,
@@ -215,45 +225,10 @@ namespace RecAPI.Users.Mutations
                 {
                     TeamError.TeamExistError(team);
                 }
-                else
-                {
-                    if (!user.Teams.Contains(team))
-                    {
-                        user.Teams.Add(team);
-                    }
-                }
             });
+            user.Teams = teams;
             var updatedUser = userRepository.UpdateUser(user.Id, user);
             return !teams.Except(updatedUser.Teams).Any();
         }
-
-        [Authorize(Policy = "administrator")]
-        public bool RemoveTeams(
-            string email,
-            List<string> teams,
-            [Service] IUserRepository userRepository
-        )
-        {
-            var user = userRepository.GetUserByEmail(email);
-            if (user == null)
-            {
-                UserError.UserExistError(email);
-            };
-            if (user.Teams == null)
-            {
-                user.Teams = new List<string>();
-            };
-            teams.ForEach(team =>
-                {
-                    if (user.Teams.Contains(team))
-                    {
-                        user.Teams.Remove(team);
-                    }
-                }
-            );
-            var updatedUser = userRepository.UpdateUser(user.Id, user);
-            return !teams.Any(team => updatedUser.Sections.Contains(team));
-        }
-
     }
 }

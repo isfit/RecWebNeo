@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using HotChocolate.AspNetCore.Authorization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -22,6 +23,9 @@ namespace RecAPI.Users.Models
 
         [BsonRequired]
         public string Email { get; set; }
+
+        [Phone]
+        public string PhoneNumber { get; set; }
 
         [BsonRequired]
         public List<string> Groups { get; set; }
@@ -49,5 +53,9 @@ namespace RecAPI.Users.Models
 
         [Authorize(Policy = "internal")]
         public List<string> InterviewTime { get; set; }
+
+        [Authorize(Policy = "administrator")]
+        [UserRolesResolver]
+        public List<string> Roles { get; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using RecAPI.Users.Models;
 using MongoDB.Driver;
 using RecAPI.Database;
+using System.Linq;
 
 namespace RecAPI.Users.Repositories
 {
@@ -41,6 +42,15 @@ namespace RecAPI.Users.Repositories
         {
             return _users.Find(user => user.Email == email).FirstOrDefault();
         }
+
+        public List<User> GetAllAvailableUsers(DateTime date)
+        {
+            var noe = date.ToString();
+            return _users.Find(user =>
+                user.BusyTime.Any(time => time != date.ToString())) // && !user.InterviewTime.Contains(date.ToString()))
+                .ToList();
+        }
+
         public User CreateUser(User user)
         {
             _users.InsertOne(user);

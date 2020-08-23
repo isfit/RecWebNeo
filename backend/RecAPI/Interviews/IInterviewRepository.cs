@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace RecAPI.Interviews.Repositories
 {
-    interface IInterviewRepository
+    public interface IInterviewRepository
     {
 
         List<Interview> GetInterviews();
         Interview GetInterview(string id);
-        Interview GetApplicationInterview(string userId);
+        Interview GetApplicationInterview(string applicationId);
+        List<Interview> GetUserInterviews(string userId);
 
         Interview CreateInterview(Interview interview);
         Interview UpdateInterview(string id, Interview interview);

@@ -51,7 +51,7 @@ namespace RecAPI.Teams.Mutations
             team.Name = input.Name ?? team.Name;
             team.Description = input.Description ?? team.Description;
             team.Section = input.Section ?? team.Section;
-            return repository.UpdateTeam(input.Id ,team);
+            return repository.UpdateTeam(team.Id ,team);
         }
 
         [Authorize(Policy = "superuser")]

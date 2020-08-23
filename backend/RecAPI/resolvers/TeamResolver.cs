@@ -32,7 +32,7 @@ namespace RecAPI.Resolvers
             {
                 var parent = ctx.Parent<ITeamsConnection>();
                 var repository = ctx.Service<ITeamRepository>();
-                return repository.GetTeams(parent.Teams);
+                return parent.Teams != null ? repository.GetTeams(parent.Teams) : null;
             });
         }
     }

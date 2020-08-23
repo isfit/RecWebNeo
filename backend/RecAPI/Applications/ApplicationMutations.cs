@@ -65,6 +65,9 @@ namespace RecAPI.Applications.Mutations
             }
             var updateApplication = new Application()
             {
+                Id = application.Id,
+                Applicant = application.Applicant,
+                AdmissionPeriode = application.AdmissionPeriode,
                 Positions = input.Positions ?? application.Positions,
                 Prioritized = input.Prioritized ?? application.Prioritized,
                 ApplicationText = input.ApplicationText ?? application.ApplicationText,

@@ -54,6 +54,7 @@ namespace RecAPI.AdmisionPeriodes.Mutations
 
             var updateAdmisionPeriode = new AdmisionPeriode()
             {
+                Id = admisionPeriode.Id,
                 Organization = input.Organization ?? admisionPeriode.Organization,
                 StartDate = startDate,
                 EndDate = endDate

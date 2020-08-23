@@ -13,6 +13,8 @@ namespace RecAPI.Users.Repositories
         User GetUserByEmail(string email);
         User GetUserByAuth(string authId);
 
+        List<User> GetAllAvailableUsers(DateTime date);
+
         User CreateUser(User user);
         User UpdateUser(string id, User updatedUser);
         bool DeleteUser(string id);

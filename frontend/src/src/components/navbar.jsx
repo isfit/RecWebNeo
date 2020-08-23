@@ -73,7 +73,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
   const NavBar = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey}) => {
     const RolesArray = GetRolesFromToken(userAuthKey)
     const AccessLevel = getAccessLevel(RolesArray);
-    console.log("Denne brukeren har tilgangsnivå ", AccessLevel)
+    
 
     return (
       <div className="header py-1 border-bottom">

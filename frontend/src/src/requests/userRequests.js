@@ -58,4 +58,50 @@ const MYAPPLICATION = gql`
   }
 `;
 
-export { LOGIN, ME, ME_NAME, REGISTER, APPLY, MYAPPLICATION };
+
+const GET_ISFIT_USERS = gql`
+  query users {
+    users {
+      nodes {
+        firstName
+        lastName
+        email
+      }
+    }
+  }
+`;
+
+
+const GET_SECTIONS = gql`
+  query sections{
+    sections {
+      name
+      id
+      teams {
+        name
+        id
+      }
+    }
+  }
+`;
+
+const SET_ROLE = gql`
+  mutation setRole($email: String!, $role: String!) {
+    setRole(email: $email, role: $role)
+  }
+`;
+
+const ADD_SECTION_TO_USER = gql`
+  mutation addSections($email: String!, $sections: [String]!) {
+    addSections(email: $email, sections: $sections)
+  }
+`;
+
+const ADD_TEAM_TO_USER = gql`
+  mutation addTeams($email: String!, $teams: [String]!) {
+    addTeams(email: $email, teams: $teams)
+  }
+`;
+
+
+export { LOGIN, ME, ME_NAME, REGISTER, APPLY, MYAPPLICATION, GET_ISFIT_USERS, GET_SECTIONS, SET_ROLE, ADD_SECTION_TO_USER, ADD_TEAM_TO_USER };

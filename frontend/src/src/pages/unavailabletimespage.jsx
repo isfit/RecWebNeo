@@ -3,15 +3,13 @@ import PageLayout from './pageLayout';
 import AvailableTimesFom from '../components/availableTimesForm';
 import ErrorPage from './errorPage';
 
-import { APPLY } from "../requests/userRequests";
+import { APPLY, EDIT_USER_INFORMATION } from "../requests/userRequests";
 import { useQuery, useMutation } from "@apollo/client";
 
 
 const UnavailableTimesPage = (props) => {
 
-  const [updateRegistration, { data, error, loading }] = useMutation(APPLY, {
-    onError: () => {},
-  });
+  const [editUserInformation, { data, error, loading }] = useMutation(EDIT_USER_INFORMATION);
 
   console.log(error);
 
@@ -23,15 +21,16 @@ const UnavailableTimesPage = (props) => {
   };
 
   const variableData = {
-    variables: {
-      input: {
-        available: getBusyTimes(),
+      variables: {
+          "input": {
+          "busyTime": getBusyTimes()
       }
     }
   };
 
   const submitUnavailableTimes = () => {
-      updateRegistration(variableData);
+      console.log(variableData);
+      editUserInformation(variableData);
     };
 
   if (loading) {

@@ -63,7 +63,7 @@ const PositionRow = ({ position, openPositionModal, addPositionToApplication }) 
          <a className="col" style={{flexGrow: 9}} onClick={() => openPositionModal(position)}>
                 <h4>{position?.name}</h4>
                 <span className="text-muted">Section: {position?.section?.name}</span>
-                <span className="text-muted pl-3">Team: {position?.team?.name}</span>
+           <span className="text-muted pl-3"> <br></br>Team: {position?.team?.name}</span>
           </a>
           <div className="col" style={{flexGrow: 2}}>
           <button type="button" className="btn btn-outline-success w-100 h-100" onClick={() => addPositionToApplication(position.id, position.name)}>

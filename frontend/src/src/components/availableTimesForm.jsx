@@ -93,15 +93,33 @@ const AvailableTimesForm = (props, hours) => {
         if (selected) {
             console.log("Dato:", dato.toString());
             if (!busy.some(x => (new Date(x)).toString() == dato.toString())){
-                busy.push(dato);
-            }
-        } else{
+                addDate(busy, dato);
+                }
+        }else{
             if (busy.some(x => (new Date(x)).toString() == dato.toString())) {
-                busy.pop(dato);
+                removeDate(busy, dato)
             }
         }
-        localStorage.setItem("busyTimes", JSON.stringify(busy));
-        setBusyTimes(busy);
+    }
+
+    const addDate = (busy, dato) => {
+        let copyBusy = [...busy];
+        copyBusy.push(dato);
+        localStorage.setItem("busyTimes", JSON.stringify(copyBusy));
+        setBusyTimes(copyBusy);
+    }
+
+    const removeDate = (busy, dato) => {
+        
+        let copyBusy = [...busy];
+        const date = dato.toISOString();
+        const index = copyBusy.indexOf(date);
+        if (index > -1) {
+            copyBusy.splice(index, 1)
+        }
+        localStorage.setItem("busyTimes", JSON.stringify(copyBusy));
+        setBusyTimes(copyBusy)
+
     }
     
     const times = (props.hours == "everyHour") ? ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"] : ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00"]; 

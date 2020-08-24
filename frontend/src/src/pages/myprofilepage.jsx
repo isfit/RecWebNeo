@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import PageLayout from './pageLayout';
 import ErrorPage from './errorPage';
 
@@ -21,6 +21,16 @@ const MyProfilePage = ({logOutUser}) => {
     const LogOutAndRedirect = () => {
       logOutUser();
       history.push("/");
+    };
+
+    const [showPasswordbox, setShowPasswordbox] = useState(false);
+    const [chosenPassword, setChosenPassword] = useState("");
+
+    const changePassword = (chosenPassword) => {
+      console.log(chosenPassword)
+      if (!(chosenPassword === "")){
+        
+      }
     };
 
 
@@ -55,14 +65,14 @@ const MyProfilePage = ({logOutUser}) => {
                       <h5> { data.me.firstName } { data.me.lastName } </h5>
                       <span>E-mail</span>
                       <h5>{ data.me.email }</h5>
-                      <span>Birth date</span>
                       <h5>{ data?.me.birtDate }</h5>
+                      {showPasswordbox ? <div><input type="text" onChange={e => setChosenPassword(e.target.value) }/><button className="mt-5" onClick={() => changePassword(chosenPassword)}>Set password</button></div> : <button className="mt-5" onClick={() => setShowPasswordbox(true)}>Change password</button> }
                       <button className="mt-5" onClick={() => LogOutAndRedirect()}>Log out</button>
                   </div>
               </div>
             </div>
           </div>
-          </PageLayout>
+        </PageLayout>
     );
 
 };

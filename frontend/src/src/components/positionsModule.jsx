@@ -10,7 +10,7 @@ import { openPositionModal, addPositionToApplication } from "../redux/actions";
 import { getPositionModalState } from "../redux/selectors";
 
 const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApplication, sectionList }) => {
-  
+
   const positionQuery = () => {
     if (sectionList.length === 0) {
       return null
@@ -36,8 +36,9 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
   return (
     <div>
       <PositionDescriptionModal position={positionData} />
-      <div className="card w-100 px-3 py-3">
-        <small className="text-muted pl-2 pb-2">Click on the positions for more information.</small>
+      <small className="text-dark pl-2 pb-2">Click on the positions for more information.</small>
+
+      <div className="card px-3 py-3 card-group">
         {data.positions.nodes.map((position) => {
           return (
             <PositionRow
@@ -58,13 +59,13 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
 const PositionRow = ({ position, openPositionModal, addPositionToApplication }) => {
   return (
     <div className="position-entry py-2 px-2 mb-2">
-        <div className="flex-grid">
+      <div className="flex-grid" style={{height: '200px'}}>
          <a className="col" style={{flexGrow: 9}} onClick={() => openPositionModal(position)}>
                 <h4>{position?.name}</h4>
                 <span className="text-muted">Section: {position?.section?.name}</span>
                 <span className="text-muted pl-3">Team: {position?.team?.name}</span>
           </a>
-          <div className="col" style={{flexGrow: 1}}>
+          <div className="col" style={{flexGrow: 2}}>
           <button type="button" className="btn btn-outline-success w-100 h-100" onClick={() => addPositionToApplication(position.id, position.name)}>
               +
             </button>

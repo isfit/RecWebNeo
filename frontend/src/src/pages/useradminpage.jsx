@@ -112,7 +112,7 @@ const UserAdminPage = () => {
                                             section={user.section} 
                                             team={user.team}
                                             email={user.email}>
-                                            <button type="button" className="btn btn-outline-success my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
+                                            <button type="button" className="btn btn-continue my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
                                         </UserEntry>
                                     )
                                 }
@@ -132,7 +132,7 @@ const UserAdminPage = () => {
                                             section={user.section} 
                                             team={user.team}
                                             email={user.email}>
-                                            <button type="button" className="btn btn-outline-success my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
+                                            <button type="button" className="btn btn-continue my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
                                         </UserEntry>
                                     )
                                 }

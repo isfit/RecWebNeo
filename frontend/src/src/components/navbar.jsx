@@ -39,7 +39,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
     const userHasApplication = Boolean(myApplicationData?.data?.myApplication);
 
     if (userHasApplication) {
-      return (<NavBarButton title="My application" iconstring="address-card" address="/myapplication" />);
+      return (<NavBarButton title="n" iconstring="address-card" address="/myapplication" />);
     }
 
     return (
@@ -76,13 +76,13 @@ import { MYAPPLICATION } from "../requests/userRequests";
     
 
     return (
-      <div className="header py-1 border-bottom">
+      <div className="header py-1 border-bottom py-2">
         <div className="container">
           <div className="flex-grid" style={{alignItems:"center"}}>
             <div>
                 <a className="header-brand" href="/">
-                  <img src="./isfitlogo.png" className="header-brand-img" alt="Tabler React" style={{ maxWidth: "70px" }}></img>
-                  <span className="d-none d-md-inline ml-2">RECRUITMENT</span>
+                  <img src="./Gråtekst_pa_gjennomsiktig.png" className="header-brand-img" alt="Tabler React" style={{ maxWidth: "70px" }}></img>
+                  <span className="d-none d-md-inline ml-4" style={{color: "#ED7F66"}}>RECRUITMENT WEB</span>
                 </a>
             </div>
             <div className="col">
@@ -90,12 +90,12 @@ import { MYAPPLICATION } from "../requests/userRequests";
                   <NavBarButton title="Overview" iconstring="list-ol" address="/" />
                   { userLogedIn ? <RenderMyApplicationButton /> : null }
                   { AccessLevel > 2 ? <NavBarButton title="Manage interviews" iconstring="users" address="/manageinterviews" /> : null}
-                  { AccessLevel > 2 ? <NavBarButton title="View Applicaitons" iconstring="file-alt" address="/applications" /> : null}
+                  { AccessLevel > 2 ? <NavBarButton title="View Applications" iconstring="file-alt" address="/applications" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="Administer users" iconstring="arrow-up" address="/useradminpage" /> : null}
                   {/* { userLogedIn ? <NavBarButton title="My Profile" iconstring="address-card" address="/myprofile" /> : null} */}
 
                   <div>
-                  { userLogedIn ? <RenderProfile accessLevel={AccessLevel} /> : <button className="btn btn-outline-primary" onClick={ () => openLoginModal() }>Sign in</button> }
+                  { userLogedIn ? <RenderProfile accessLevel={AccessLevel} /> : <button className="btn btn-outline-success"  onClick={ () => openLoginModal() }>Sign in</button> }
                   </div>
                 </ul>
             </div>

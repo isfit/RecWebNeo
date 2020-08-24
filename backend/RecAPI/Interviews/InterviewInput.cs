@@ -18,7 +18,6 @@ namespace RecAPI.Interviews.Input
         [GraphQLNonNullType]
         public DateTime Start { get; set; }
 
-        [GraphQLNonNullType]
         public string Location { get; set; }
     }
 
@@ -30,16 +29,15 @@ namespace RecAPI.Interviews.Input
 
         public List<string> InterviewerEmails { get; set; }
 
-        public DateTime Start { get; set; }
+        public DateTime? Start { get; set; }
 
         public string Location { get; set; }
     }
 
-    public class InterviewerInput
+    public class InterviewerAtInterviewInput
     {
         [GraphQLNonNullType]
-        [BsonId]
-        public string User { get; set; }
+        public string UserEmail { get; set; }
 
         [GraphQLNonNullType]
         [BsonId]

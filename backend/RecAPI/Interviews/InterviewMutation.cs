@@ -11,6 +11,9 @@ using RecAPI.Users.Repositories;
 using RecAPI.Applications.Repositories;
 using RecAPI.Users.ErrorHandling;
 using RecAPI.Applications.ErrorHandling;
+using HotChocolate.AspNetCore.Authorization;
+using HotChocolate.Types;
+using HotChocolate.Types.Relay;
 
 namespace RecAPI.Interviews.Mutations
 {
@@ -28,15 +31,24 @@ namespace RecAPI.Interviews.Mutations
             {
                 user.InterviewTime.Add(date);
             }
-            return false;
+            return userRepository.UpdateUser(userId, user).InterviewTime.Contains(date);
         }
 
-        private bool UserDeleteInterviewTime()
+        private bool UserDeleteInterviewTime(string userId, DateTime date, [Service] IUserRepository userRepository)
         {
-            return false;
+            var user = userRepository.GetUser(userId);
+            if (user.InterviewTime == null) {
+                return true;
+            }
+            if(user.InterviewTime.Contains(date) )
+            {
+                user.InterviewTime.Remove(date);
+            }
+            return !userRepository.UpdateUser(userId, user).InterviewTime.Contains(date);
         }
 
         // Create interview
+        [Authorize(Policy = "administrator")]
         public Interview CreateInterview(
             CreateInterviewInput input,
             [Service] IInterviewRepository interviewRepository,
@@ -51,7 +63,7 @@ namespace RecAPI.Interviews.Mutations
             }
             // Check that Application does not already have an Interview
             var interview = interviewRepository.GetApplicationInterview(input.Application);
-            if (interview == null) {
+            if (interview != null) {
                 InterviewError.InterviewAlreadyExistsError();
             }
             List<InterviewConnections> interviewers = new List<InterviewConnections>();
@@ -64,27 +76,31 @@ namespace RecAPI.Interviews.Mutations
                     if (interviewer != null){
                         // Check that the users are available at that time
                         bool userAvailable = userRepository.CheckUserAvailable(interviewer.Id, input.Start);
-                        if (userAvailable)
+                        if (!userAvailable)
                         {
-                            // Add time to users interview times
-                            UserAddInterviewTime(interviewer.Id, input.Start, userRepository);
-                            // Create InterviewConnections object and add to list
-                            InterviewConnections interviewConnection = new InterviewConnections()
-                            {
-                                User = interviewer.Id,
-                                Accepted = false
-                            };
-                            interviewers.Add(interviewConnection);
+                            UserError.UserNotAvailableError(userEmail);
                         }
-                        UserError.UserNotAvailableError(userEmail);
                     } else{
                         UserError.UserExistError(userEmail);
                     }
                 }
+                foreach(string userEmail in input.InterviewerEmails){
+                    var interviewer = userRepository.GetUserByEmail(userEmail);
+                    // Add time to users interview times
+                    UserAddInterviewTime(interviewer.Id, input.Start, userRepository);
+                    // Create InterviewConnections object and add to list
+                    InterviewConnections interviewConnection = new InterviewConnections()
+                    {
+                        User = interviewer.Id,
+                        Accepted = false
+                    };
+                    interviewers.Add(interviewConnection);
+                }
             }
             // Create Interview
+            var applicantUserObject = userRepository.GetUserByAuth(application.Applicant);
             InterviewConnections applicant = new InterviewConnections(){
-                User = application.Applicant,
+                User = applicantUserObject.Id,
                 Accepted = false
             };
             var newInterview = new Interview()
@@ -93,32 +109,105 @@ namespace RecAPI.Interviews.Mutations
                 Application = input.Application,
                 Applicant = applicant,
                 Interviewers = interviewers,
-                Location = input.Location
+                Location = input.Location ?? ""
             };
             return interviewRepository.CreateInterview(newInterview);
         }
 
         // Update interview
+        [Authorize(Policy = "administrator")]
         public Interview UpdateInterview(
-            [Service] IInterviewRepository interviewRepository
+            UpdateInterviewInput input,
+            [Service] IInterviewRepository interviewRepository,
+            [Service] IUserRepository userRepository,
+            [Service]IApplicationRepository applicationRepository
             )
         {
-            // Check that the Interview exists
+            // Check that Application does not already have an Interview
+            var interview = interviewRepository.GetInterview(input.Id);
+            if (interview == null) {
+                InterviewError.InterviewDoesNotExistsError();
+            }
             // Check that users exists
             // Check that the users are available at that time
             // Add the times to the users Interview times
+            List<InterviewConnections> oldInterviewConnections = interview.Interviewers;
+            List<InterviewConnections> newInterviewConnections = new List<InterviewConnections>();
+            if (input.InterviewerEmails != null && input.InterviewerEmails.Count() > 0)
+            {
+                foreach(string userEmail in input.InterviewerEmails)
+                {
+                    var interviewer = userRepository.GetUserByEmail(userEmail);
+                    if (interviewer != null){
+                        var userConnection = oldInterviewConnections.Find(userConn => userConn.User == interviewer.Id);
+                        bool userAvailable = userRepository.CheckUserAvailable(interviewer.Id, input.Start ?? interview.Start);
+                        if (userConnection != null && (interview.Start == null || input.Start.Equals(interview.Start) )) {
+                            newInterviewConnections.Add(userConnection);
+                        }
+                        // Check that the users are available at that time
+                        else if (!userAvailable)
+                        {
+                            UserError.UserNotAvailableError(userEmail);
+                        }
+                    } else{
+                        UserError.UserExistError(userEmail);
+                    }
+                }
+                foreach(string userEmail in input.InterviewerEmails){
+                    var interviewer = userRepository.GetUserByEmail(userEmail);
+                    var userConnection = oldInterviewConnections.Find(userConn => userConn.User == interviewer.Id);
+                    if (userConnection == null) {
+                        // Add time to users interview times
+                        UserAddInterviewTime(interviewer.Id, input.Start ?? interview.Start, userRepository);
+                        // Create InterviewConnections object and add to list
+                        InterviewConnections interviewConnection = new InterviewConnections()
+                        {
+                            User = interviewer.Id,
+                            Accepted = false
+                        };
+                        newInterviewConnections.Add(interviewConnection);
+                    }
+                }
+            }
+            List<InterviewConnections> removedInterviewConnections = oldInterviewConnections
+                                                                        .Where(
+                                                                            x => !newInterviewConnections.Any(y => y.User == x.User)
+                                                                        )
+                                                                        .ToList();
+            foreach(InterviewConnections user in removedInterviewConnections){
+                UserDeleteInterviewTime(user.User, input.Start ?? interview.Start, userRepository);
+            }
+
+            // Create Interview
             // Remove the Interview times from the prev users
             // Create Interview
             // Save Interview
-            return null;
+            var newInterview = new Interview()
+            {
+                Id = interview.Id,
+                Start = input.Start ?? interview.Start,
+                Application = interview.Application,
+                Applicant = interview.Applicant,
+                Interviewers = newInterviewConnections,
+                Location = input.Location ?? interview.Location
+            };
+            return interviewRepository.UpdateInterview(interview.Id, newInterview);
         }
 
         // Add interviewer
+        [Authorize(Policy = "administrator")]
         public bool AddInterviewerToInterview(
-            [Service] IInterviewRepository interviewRepository
+            InterviewerAtInterviewInput input,
+            [Service] IInterviewRepository interviewRepository,
+            [Service] IUserRepository userRepository,
+            [Service]IApplicationRepository applicationRepository
         )
         {
             // Check that the Interview exists
+            var interview = interviewRepository.GetInterview(input.Interview);
+            if (interview == null) {
+                InterviewError.InterviewDoesNotExistsError();
+            }
             // Check that the user exists
             // Check that the user is available
             // Add the user to the Interview
@@ -127,7 +216,8 @@ namespace RecAPI.Interviews.Mutations
         }
 
         // Remove interviewer
-        public bool RemoveInterviewerToInterview(
+        [Authorize(Policy = "administrator")]
+        public bool RemoveInterviewerFromInterview(
             [Service] IInterviewRepository interviewRepository
         )
         {
@@ -140,6 +230,7 @@ namespace RecAPI.Interviews.Mutations
         }
 
         // Accept and Reject Interview
+        [Authorize]
         public bool AcceptInterview(
             [Service] IInterviewRepository interviewRepository
         )
@@ -151,7 +242,23 @@ namespace RecAPI.Interviews.Mutations
         }
 
         // Delte interview
-
+        [Authorize(Policy = "superuser")]
+        public bool DeleteInterview(
+            SingleModelInput input,
+            [Service] IInterviewRepository interviewRepository,
+            [Service] IUserRepository userRepository
+        )
+        {
+            var interview = interviewRepository.GetInterview(input.Id);
+            if (interview == null) {
+                InterviewError.InterviewDoesNotExistsError();
+            }
+            foreach (InterviewConnections interviewUser in interview.Interviewers)
+            {
+                UserDeleteInterviewTime(interviewUser.User, interview.Start, userRepository);
+            }
+            return interviewRepository.DeleteInterview(interview.Id);
+        }
 
         // Hente ut fra application hvilke seksjoner / teams det tilhører ?
     }

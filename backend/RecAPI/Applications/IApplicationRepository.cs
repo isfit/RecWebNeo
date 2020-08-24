@@ -9,6 +9,7 @@ namespace RecAPI.Applications.Repositories
         List<Application> GetApplications();
         Application GetApplication(string id);
         Application GetUserApplication(string userId);
+        List<Application> GetApplicationWithout(List<string> applicationIds);
         
         Application CreateApplication(Application application);
         Application UpdateApplication(string applicationId, Application application);

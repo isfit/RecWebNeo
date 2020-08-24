@@ -4,6 +4,7 @@ using RecAPI.Users.Models;
 using MongoDB.Driver;
 using RecAPI.Database;
 using System.Linq;
+using RecAPI.Users.ErrorHandling;
 
 namespace RecAPI.Users.Repositories
 {
@@ -23,11 +24,11 @@ namespace RecAPI.Users.Repositories
         }
         public List<User> GetUsers(List<string> ids)
         {
-            return null;
+            return _users.Find(user => ids.Contains(user.Id)).ToList();
         }
         public List<User> GetUsersByEmail(List<string> email)
         {
-            return null;
+            return _users.Find(user => email.Contains(user.Email)).ToList();;
         }
         public User GetUser(string id)
         {
@@ -55,12 +56,14 @@ namespace RecAPI.Users.Repositories
             var user = GetUser(id);
             if (user != null)
             {
-                if (user.BusyTime != null && user.InterviewTime != null)
+                if (user.BusyTime != null)
                 {
-                    return !user.BusyTime.Contains(date) && !user.InterviewTime.Contains(date);
+                    return !user.BusyTime.Contains(date) && !(user.InterviewTime != null ? user.InterviewTime.Contains(date) : false);
                 }
+                UserError.UserNotAvailableError("Bare tull og tøys");
                 return false;
             }
+            UserError.UserNotAvailableError("User is null");
             return false;
         }
 

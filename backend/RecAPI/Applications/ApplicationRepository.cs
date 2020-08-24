@@ -32,6 +32,11 @@ namespace RecAPI.Applications.Repositories
             return application;
         }
 
+        public List<Application> GetApplicationWithout(List<string> applicationIds)
+        {
+            return _applications.Find(application => !applicationIds.Contains(application.Id)).ToList();
+        }
+
         public Application CreateApplication(Application application)
         {
             _applications.InsertOne(application);

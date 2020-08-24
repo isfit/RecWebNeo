@@ -4,8 +4,12 @@ import PositionsModule from "../components/positionsModule";
 import PageLayout from "./pageLayout";
 import PositionChoiceBox from "../components/positionChoiceBox";
 import TextBox from "../components/textBoxModule";
+import {openLoginModal} from "../redux/actions";
+import {getLoginModalState, getUserAuthKey, getUserLogedIn} from "../redux/selectors";
+import {connect} from "react-redux";
 
-const LandingPage = () => {
+
+const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})  => {
   const history = useHistory();
   const [sectionList, setSectionList] = useState([]);
 
@@ -38,12 +42,12 @@ const LandingPage = () => {
           </div>
           <div className="shopping-box-right">
             <PositionChoiceBox />
-            <button
-              className="btn btn-continue mt-1 mr-2 float-right"
-              onClick={() => history.push("/enterapplication")}
-            >
-              Continue
-            </button>
+            {  userLogedIn ? <button
+                className="btn btn-continue mt-1 mr-2 float-right"
+                onClick={() => history.push("/enterapplication")}
+              > Continue</button> :
+              <button className="btn btn-success"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess
+              </button>}
           </div>
         </div>
       </div>
@@ -51,4 +55,14 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+
+const mapStateToProps = state => {
+  return {
+    showLoginModal: getLoginModalState(state),
+    userLogedIn: getUserLogedIn(state),
+    userAuthKey: getUserAuthKey(state)
+  };
+};
+
+
+export default  connect(mapStateToProps, { openLoginModal })(LandingPage);

@@ -45,9 +45,8 @@ namespace RecAPI.Users.Repositories
 
         public List<User> GetAllAvailableUsers(DateTime date)
         {
-            var noe = date.ToString();
             return _users.Find(user =>
-                user.BusyTime.Any(time => time != date.ToString())) // && !user.InterviewTime.Contains(date.ToString()))
+                user.BusyTime != null && !user.BusyTime.Contains(date) && !user.InterviewTime.Contains(date))
                 .ToList();
         }
 

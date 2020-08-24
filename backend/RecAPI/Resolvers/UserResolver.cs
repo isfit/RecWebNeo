@@ -21,6 +21,19 @@ namespace RecAPI.Resolvers
         }
     }
 
+    public sealed class UserResolver : ObjectFieldDescriptorAttribute
+    {
+        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
+        {
+            descriptor.Resolver(ctx =>
+            {
+                var userConnection = ctx.Parent<IUserConnection>();
+                var repository = ctx.Service<IUserRepository>();
+                return repository.GetUser(userConnection.User);
+            });
+        }
+    }
+
     public sealed class UserRolesResolver : ObjectFieldDescriptorAttribute
     {
         public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)

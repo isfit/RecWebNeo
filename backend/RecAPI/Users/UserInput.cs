@@ -37,7 +37,7 @@ namespace RecAPI.Users.Input
         public DateTime? BirtDate { get; set; }
 
         [Authorize(Policy = "internal")]
-        public List<string> BusyTime { get; set; }
+        public List<DateTime> BusyTime { get; set; }
         [Authorize(Policy = "internal")]
         public List<string> Sections { get; set; }
         [Authorize(Policy = "internal")]

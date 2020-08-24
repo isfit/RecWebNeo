@@ -49,13 +49,18 @@ namespace RecAPI.Users.Models
         public List<string> Sections { get; set; }
 
         [Authorize(Policy = "internal")]
-        public List<string> BusyTime { get; set; }
+        public List<DateTime> BusyTime { get; set; }
 
         [Authorize(Policy = "internal")]
-        public List<string> InterviewTime { get; set; }
+        public List<DateTime> InterviewTime { get; set; }
 
         [Authorize(Policy = "administrator")]
         [UserRolesResolver]
         public List<string> Roles { get; }
+    }
+
+    public interface IUserConnection
+    {
+        public string User { get; set; }
     }
 }

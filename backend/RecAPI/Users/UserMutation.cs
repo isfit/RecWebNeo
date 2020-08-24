@@ -78,13 +78,14 @@ namespace RecAPI.Users.Mutations
             User updatedUser = new User()
             {
                 Id = prevUser.Id,
-                Email = prevUser.Email,
                 AuthId = prevUser.AuthId,
+                Email = prevUser.Email,
                 PhoneNumber = input.PhoneNumber ?? prevUser.PhoneNumber,
                 FirstName = input.FirstName ?? prevUser.FirstName,
                 LastName = input.LastName ?? prevUser.LastName,
                 BirtDate = input.BirtDate ?? prevUser.BirtDate,
                 BusyTime = input.BusyTime ?? prevUser.BusyTime,
+                InterviewTime = prevUser.InterviewTime,
                 Sections = prevUser.Sections,
                 Teams = prevUser.Teams
             };

@@ -48,6 +48,9 @@ namespace RecAPI.Users.Queries
         // Get available user at a given time
         // Get available user at a given time given teams and sections
         [Authorize(Policy = "administrator")]
+        [UsePaging]
+        [UseFiltering]
+        [UseSorting]
         public List<User> GetAllAvailableUsers(
             SingleDateTimeInput input,
             [Service] IUserRepository userRepository
@@ -56,5 +59,7 @@ namespace RecAPI.Users.Queries
             // Check if user is also a internal or admin
             return userRepository.GetAllAvailableUsers(input.date);
         }
+
+        // Reply to accept an interview ???
     }
 }

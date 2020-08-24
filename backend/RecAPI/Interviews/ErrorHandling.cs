@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HotChocolate;
+using HotChocolate.Execution;
+using RecAPI.Sections.Repositories;
+using RecAPI.Organizations.Repositories;
 
 namespace RecAPI.Interviews
 {
-    public class ErrorHandling
+    public class InterviewError
     {
+        public static void InterviewAlreadyExistsError()
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("The interview already exists.").Build());
+        }
     }
 }

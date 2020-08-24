@@ -70,7 +70,6 @@ namespace RecAPI
 {
     public class Startup
     {
-        readonly string AllowSpecificOrigins = "_allowSpecificOrigins";
         private readonly IConfiguration Configuration;
         public Startup(IConfiguration configuration)
         {

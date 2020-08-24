@@ -14,6 +14,7 @@ namespace RecAPI.Users.Repositories
         User GetUserByAuth(string authId);
 
         List<User> GetAllAvailableUsers(DateTime date);
+        bool CheckUserAvailable(string id, DateTime date);
 
         User CreateUser(User user);
         User UpdateUser(string id, User updatedUser);

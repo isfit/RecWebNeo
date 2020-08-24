@@ -71,5 +71,11 @@ namespace RecAPI.Applications.ErrorHandling
         {
             throw new QueryException(ErrorBuilder.New().SetMessage("The user has not registered an application for this admision periode yet.").Build());
         }
+
+        public static void ApplicationExistError()
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("The given application does not exist.").Build());
+        }
+
     }
 }

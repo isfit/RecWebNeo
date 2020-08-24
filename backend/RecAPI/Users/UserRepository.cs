@@ -46,8 +46,22 @@ namespace RecAPI.Users.Repositories
         public List<User> GetAllAvailableUsers(DateTime date)
         {
             return _users.Find(user =>
-                user.BusyTime != null && !user.BusyTime.Contains(date) && !user.InterviewTime.Contains(date))
+                user.BusyTime != null && user.InterviewTime != null && !user.BusyTime.Contains(date) && !user.InterviewTime.Contains(date))
                 .ToList();
+        }
+
+        public bool CheckUserAvailable(string id, DateTime date)
+        {
+            var user = GetUser(id);
+            if (user != null)
+            {
+                if (user.BusyTime != null && user.InterviewTime != null)
+                {
+                    return !user.BusyTime.Contains(date) && !user.InterviewTime.Contains(date);
+                }
+                return false;
+            }
+            return false;
         }
 
         public User CreateUser(User user)

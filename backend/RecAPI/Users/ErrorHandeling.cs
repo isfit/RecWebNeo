@@ -10,5 +10,10 @@ namespace RecAPI.Users.ErrorHandling
         {
             throw new QueryException(ErrorBuilder.New().SetMessage("The user "+ email.ToString() +" does not exist!").Build());
         }
+
+        public static void UserNotAvailableError(string email)
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("The user "+ email.ToString() +" is not available at that time.").Build());
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace RecAPI.Interviews.Input
         [BsonId]
         public string Application { get; set; }
 
-        public List<string> Interviewers { get; set; }
+        public List<string> InterviewerEmails { get; set; }
 
         [GraphQLNonNullType]
         public DateTime Start { get; set; }
@@ -28,7 +28,7 @@ namespace RecAPI.Interviews.Input
         [BsonId]
         public string Id { get; set; }
 
-        public List<string> Interviewers { get; set; }
+        public List<string> InterviewerEmails { get; set; }
 
         public DateTime Start { get; set; }
 

@@ -21,6 +21,7 @@ const ME = gql`
       email
       firstName
       lastName
+      phoneNumber
     }
   }
 `;
@@ -59,13 +60,19 @@ const MYAPPLICATION = gql`
 `;
 
 
-const GET_ISFIT_USERS = gql`
+const GET_ALL_USERS = gql`
   query users {
     users {
       nodes {
         firstName
         lastName
         email
+        sections {
+          name
+        }
+        teams {
+          name
+        }
       }
     }
   }
@@ -85,23 +92,35 @@ const GET_SECTIONS = gql`
   }
 `;
 
-const SET_ROLE = gql`
-  mutation setRole($email: String!, $role: String!) {
-    setRole(email: $email, role: $role)
+const SET_USER_ROLE = gql`
+  mutation setUserRole($email: String!, $role: String!) {
+    setUserRole(email: $email, role: $role)
   }
 `;
 
-const ADD_SECTION_TO_USER = gql`
-  mutation addSections($email: String!, $sections: [String]!) {
-    addSections(email: $email, sections: $sections)
+const SET_SECTIONS_TO_USER = gql`
+  mutation setSectionsToUser($email: String!, $sections: [String]!) {
+    setSectionsToUser(email: $email, sections: $sections)
   }
 `;
 
-const ADD_TEAM_TO_USER = gql`
-  mutation addTeams($email: String!, $teams: [String]!) {
-    addTeams(email: $email, teams: $teams)
+const SET_TEAMS_TO_USER = gql`
+  mutation setTeamsToUser($email: String!, $teams: [String]!) {
+    setTeamsToUser(email: $email, teams: $teams)
+  }
+`;
+
+const UPDATE_MY_PASSWORD = gql`
+  mutation UpdateMyPassword($input: UserUpdatePasswordInput) {
+    updateMyPassword(passwordInput: $input)
+  }
+`;
+
+const UPDATE_USER_PASSWORD = gql`
+  mutation UpdateUserPassword($email: String!, $password: String!) {
+    updateUserPassword(email: $email, newPassword: $password)
   }
 `;
 
 
-export { LOGIN, ME, ME_NAME, REGISTER, APPLY, MYAPPLICATION, GET_ISFIT_USERS, GET_SECTIONS, SET_ROLE, ADD_SECTION_TO_USER, ADD_TEAM_TO_USER };
+export { LOGIN, ME, ME_NAME, REGISTER, APPLY, MYAPPLICATION, GET_ALL_USERS, GET_SECTIONS, SET_USER_ROLE, SET_SECTIONS_TO_USER, SET_TEAMS_TO_USER, UPDATE_MY_PASSWORD, UPDATE_USER_PASSWORD };

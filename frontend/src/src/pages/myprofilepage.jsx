@@ -4,8 +4,8 @@ import ErrorPage from './errorPage';
 
 import "../stylesheets/pages/flexgrid.css";
 
-import { useQuery } from "@apollo/client";
-import { ME } from "../requests/userRequests";
+import { useQuery, useMutation } from "@apollo/client";
+import { ME, UPDATE_MY_PASSWORD} from "../requests/userRequests";
 
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -23,14 +23,22 @@ const MyProfilePage = ({logOutUser}) => {
       history.push("/");
     };
 
+    const [updatePassword, updatePasswordData] = useMutation(UPDATE_MY_PASSWORD);
+
     const [showPasswordbox, setShowPasswordbox] = useState(false);
     const [chosenPassword, setChosenPassword] = useState("");
+    const [currentPassword,setCurrentPassword] = useState("");
+    const [updatePasswordSuccess, setUpdatePasswordSuccess] = useState(null);
 
-    const changePassword = (chosenPassword) => {
-      console.log(chosenPassword)
+    const changePassword = (chosenPassword, currentPassword) => {
       if (!(chosenPassword === "")){
-        
+        console.log("SENDING PASSWORD QUERY",chosenPassword,currentPassword)
+        console.log("OLD PASSWORD",currentPassword)
+        console.log("NEW PASSWORD",chosenPassword)
+        updatePassword({variables:{input: {newPassword: chosenPassword, oldPassword: currentPassword}}});
+        console.log("QUERY DATA: ",updatePasswordData?.data)
       }
+      setUpdatePasswordSuccess(updatePasswordData?.data?.updateMyPassword === true)
     };
 
 
@@ -52,6 +60,18 @@ const MyProfilePage = ({logOutUser}) => {
       )
     }
 
+    if (updatePasswordData?.error != null) {
+      return (
+        <PageLayout>
+          <ErrorPage 
+            errorMessage={"Error when trying to change password "}
+            errorType={"AuthenticationError"}
+            refetch={() => refetch()}
+          />
+        </PageLayout>
+      )
+    }
+
     return (
         <PageLayout>
           <div className="container w-50">
@@ -65,8 +85,11 @@ const MyProfilePage = ({logOutUser}) => {
                       <h5> { data.me.firstName } { data.me.lastName } </h5>
                       <span>E-mail</span>
                       <h5>{ data.me.email }</h5>
-                      <h5>{ data?.me.birtDate }</h5>
-                      {showPasswordbox ? <div><input type="text" onChange={e => setChosenPassword(e.target.value) }/><button className="mt-5" onClick={() => changePassword(chosenPassword)}>Set password</button></div> : <button className="mt-5" onClick={() => setShowPasswordbox(true)}>Change password</button> }
+                      <span>Phone Number</span>
+                      <h5>{ data?.me.phoneNumber }</h5>
+                      {showPasswordbox ? <div><div><span>Enter old password:</span><input type="text" onChange={e => setCurrentPassword(e.target.value) }/></div><span>Enter new password:</span><input type="text" onChange={e => setChosenPassword(e.target.value) }/><button className="mt-5" onClick={() => changePassword(chosenPassword, currentPassword)}>Set password</button></div> : <button className="mt-5" onClick={() => setShowPasswordbox(true)}>Change password</button> }
+                      {updatePasswordSuccess === true ? <span>Password changed successfully</span> : null}
+                      {updatePasswordSuccess === false ? <span>Failure when trying to change password</span> : null}
                       <button className="mt-5" onClick={() => LogOutAndRedirect()}>Log out</button>
                   </div>
               </div>

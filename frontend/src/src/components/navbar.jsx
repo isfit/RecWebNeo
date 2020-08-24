@@ -26,7 +26,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
 
     return (
         <a href="/myprofile">
-          <span className="ml-2 d-none d-lg-block">
+          <span className="ml-2 d-lg-block">
             <span className="text-default"> { data.me?.firstName } { data.me?.lastName} </span>
             <small className="text-muted d-block">{RoleName}</small>
           </span>
@@ -39,7 +39,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
     const userHasApplication = Boolean(myApplicationData?.data?.myApplication);
 
     if (userHasApplication) {
-      return (<NavBarButton title="n" iconstring="address-card" address="/myapplication" />);
+      return (<NavBarButton title="My Application" iconstring="address-card" address="/myapplication" />);
     }
 
     return (
@@ -66,18 +66,18 @@ import { MYAPPLICATION } from "../requests/userRequests";
   const getAccessLevel = (RolesArray) => {
     if (RolesArray.includes("superuser")) {return 4;}
       else if (RolesArray.includes("admin")) {  return 3; }
-      else if (RolesArray.includes("internal")) { return 2 ;}
+      else if (RolesArray.includes("insider")) { return 2 ;}
       else { return 1;}
   }
 
   const NavBar = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey}) => {
-    const RolesArray = GetRolesFromToken(userAuthKey)
+    const RolesArray = GetRolesFromToken(userAuthKey);
     const AccessLevel = getAccessLevel(RolesArray);
     
 
     return (
       <div className="header py-1 border-bottom py-2">
-        <div className="container">
+        <div className="ml-4">
           <div className="flex-grid" style={{alignItems:"center"}}>
             <div>
                 <a className="header-brand" href="/">
@@ -86,7 +86,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
                 </a>
             </div>
             <div className="col">
-                <ul className="nav" style={{justifyContent:"right"}}>
+                <ul className="nav" style={{justifyContent:"right", width: "100%"}}>
                   <NavBarButton title="Overview" iconstring="list-ol" address="/" />
                   { userLogedIn ? <RenderMyApplicationButton /> : null }
                   { AccessLevel > 2 ? <NavBarButton title="Manage interviews" iconstring="users" address="/manageinterviews" /> : null}

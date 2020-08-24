@@ -110,7 +110,6 @@ namespace RecAPI.Users.Mutations
             string email,
             string newPassword,
             [Service] IAuthService authService,
-            [Service] IUserRepository userRepository,
             [Service] IAuthRepository authRepository
         )
         {
@@ -144,6 +143,7 @@ namespace RecAPI.Users.Mutations
             return userRepository.DeleteUser(input.Id);
         }
 
+        /*
         [Authorize]
         public bool DeleteMe(
             [GlobalState("currentUser")] CurrentUser user,
@@ -160,6 +160,7 @@ namespace RecAPI.Users.Mutations
             }
             return userRepository.DeleteUser(userId);
         }
+        */
 
 
         [Authorize(Policy = "administrator")]

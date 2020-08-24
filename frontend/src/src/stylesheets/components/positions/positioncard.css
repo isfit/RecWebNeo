@@ -34,9 +34,22 @@
 }
 
 .customAccordian{
+  width: 55vw;
   min-width: 50vw;
-  max-width: 90vw;
+  max-width: 60vw;
 }
+
+
+@media (max-width: 1200px) {
+
+  .customAccordian{
+    width: 85vw;
+    max-width: 90vw;
+
+  }
+
+}
+
 
 @media (max-width: 600px) {
   .some-pic  {
@@ -53,17 +66,11 @@
     width: 90vw;
   }
 
-  .landingAccordion{
+  .customAccordian{
     width: 90vw;
+    max-width: 95vw;
+
   }
 
 }
 
-
-@media (max-width: 1200px) {
-
-  .landingAccordion{
-    width: 80vw;
-  }
-
-}

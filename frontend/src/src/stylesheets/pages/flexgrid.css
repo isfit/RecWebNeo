@@ -1,5 +1,4 @@
 
-
 .flex-grid {
   display: flex;
 }
@@ -38,8 +37,8 @@
 .flex-grid-adaptive .right {order:3; flex-basis:100%}
 
 
-.flex-grid-adaptive .position-box-left {order:2; flex-basis:100%; min-height:300px;}
-.flex-grid-adaptive .shopping-box-right {order:1; flex-basis:100%; margin-bottom:20px;}
+.flex-grid-adaptive .position-box-left {order:1; flex-basis:100%; min-height:300px;}
+.flex-grid-adaptive .shopping-box-right {order:0; flex-basis:100%; margin-bottom:20px; padding-left: 2vw}
 
 
 @media screen and (min-width:1200px) {
@@ -63,16 +62,20 @@
     }
 
     .flex-grid-adaptive .position-box-left {
-	order:1;
+	order:2;
 	flex-basis:100%;
 	margin-right:20px;
 	min-height:10px;
     }
 
     .flex-grid-adaptive .shopping-box-right {
-	order:2;
-	flex-basis:40%;
-	margin-bottom:0px;
+	    order:1;
+	    flex-basis:20%;
+	    margin-bottom:0px;
+        margin-left: 5vw;
+        min-width: 25vw;
+
+
     }
 
 }

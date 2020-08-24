@@ -68,7 +68,7 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
           <Card.Body>
             <div className="card-group">
             <ScrollList>
-              <div className="row ml-1">
+              <div className="row">
                 {data.positions.nodes.filter(position => position?.section?.id === sectionId).map((position) => {
                   return (
                     <PositionRow
@@ -112,7 +112,7 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
   return (
 
     <div>
-      <small className="text-dark pl-2 pb-2 ml-4">Click for more information about the positions.</small>
+      <small className="text-dark pl-2 pb-2">Click for more information about the positions.</small>
       <PositionDescriptionModal position={positionData} />
       <div>
         <Accordion className="customAccordian">
@@ -136,7 +136,7 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
 
 const PositionRow = ({ position, openPositionModal, addPositionToApplication }) => {
   return (
-    <div className="position-entry py-2 px-2 mb-2">
+    <div className="position-entry py-2 px-2 mb-2 ml-1">
       <div className="flex-grid" style={{height: '200px'}}>
          <a className="col" style={{flexGrow: 9}} onClick={() => openPositionModal(position)}>
                 <h4>{position?.name}</h4>

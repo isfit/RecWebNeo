@@ -66,12 +66,12 @@ import { MYAPPLICATION } from "../requests/userRequests";
   const getAccessLevel = (RolesArray) => {
     if (RolesArray.includes("superuser")) {return 4;}
       else if (RolesArray.includes("admin")) {  return 3; }
-      else if (RolesArray.includes("internal")) { return 2 ;}
+      else if (RolesArray.includes("insider")) { return 2 ;}
       else { return 1;}
   }
 
   const NavBar = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey}) => {
-    const RolesArray = GetRolesFromToken(userAuthKey)
+    const RolesArray = GetRolesFromToken(userAuthKey);
     const AccessLevel = getAccessLevel(RolesArray);
     
 

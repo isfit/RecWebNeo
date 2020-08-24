@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "../stylesheets/components/availableTimesTable.css";
 
+import {ME_BUSY_TIMES} from "../requests/userRequests";
+import { useQuery } from "@apollo/client";
+
 const AvailableTimeSlot = ({ date, time, timeSelected, selectTime, readOnly }) => {
     const [selected, setSelected] = useState(timeSelected);
 
@@ -41,9 +44,13 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
 };
 
 
-const AvailableTimesForm = (props, hours) => {
+
+
+const AvailableTimesForm = (props) => {
     //console.log("Busy storage",localStorage.getItem("busyTimes"));
     //localStorage.removeItem("busyTimes");
+    
+
   const startInterview = new Date("2020-08-27T00:00:00.000Z");
   const endInterview = new Date("2020-09-10T00:00:00.000Z");
   //localStorage.setItem("busyTimes",);
@@ -90,17 +97,21 @@ const AvailableTimesForm = (props, hours) => {
         const hour = parseInt(time.substring(0,2));
         dato.setHours(hour);
         const busy = busyTimes;
+        const test = testTime;
+        console.log("TEST", testTime)
+        console.log("TESTTIMEBSY", busy)
         if (selected) {
             console.log("Dato:", dato.toString());
             if (!busy.some(x => (new Date(x)).toString() == dato.toString())){
                 addDate(busy, dato);
                 }
-        }else{
+        } else {
             if (busy.some(x => (new Date(x)).toString() == dato.toString())) {
                 removeDate(busy, dato)
             }
         }
     }
+
 
     const addDate = (busy, dato) => {
         let copyBusy = [...busy];
@@ -110,7 +121,6 @@ const AvailableTimesForm = (props, hours) => {
     }
 
     const removeDate = (busy, dato) => {
-        
         let copyBusy = [...busy];
         const date = dato.toISOString();
         const index = copyBusy.indexOf(date);
@@ -119,17 +129,19 @@ const AvailableTimesForm = (props, hours) => {
         }
         localStorage.setItem("busyTimes", JSON.stringify(copyBusy));
         setBusyTimes(copyBusy)
-
     }
     
-    const times = (props.hours == "everyHour") ? ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"] : ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00"]; 
-    
-  const daysName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    console.log(props.data)
+    const times = (props.data.hours == "everyHour") ? ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"] : ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00"]; 
+    const daysName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const test = props.data.busyTimes;
+    const [testTime, setTestTime] = useState(test);
+    const [busyTimes, setBusyTimes] = useState(JSON.parse(localStorage.getItem("busyTimes") || "[]"));
+    const [busyTimesDict, setBusyTimesDict] = useState(getWeeks());
 
-  const [busyTimes, setBusyTimes] = useState(JSON.parse(localStorage.getItem("busyTimes") || "[]"));
-  const [busyTimesDict, setBusyTimesDict] = useState(getWeeks());
-
-
+    console.log("props", test)
+    console.log("TestTime", testTime);
+    console.log("busyTime", JSON.parse(localStorage.getItem("busyTimes")));
 
   return(
       <div>

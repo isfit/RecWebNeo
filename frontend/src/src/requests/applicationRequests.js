@@ -12,7 +12,8 @@ const APPLICATIONS = gql`
                     id,
                     email,
                     firstName,
-                    lastName
+                    lastName,
+                    phoneNumber
                 },
                 positions {
                     key,

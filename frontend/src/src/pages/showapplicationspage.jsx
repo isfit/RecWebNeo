@@ -11,12 +11,13 @@ const ApplicationRow = ({applicationData}) => {
   const positions = applicationData.positions.map(x => x.value);
 
   return (
-  <div className="position-entry py-2 px-2 mb-3">
+  <div className="card py-2 px-2 mb-3">
       <div className="flex-grid">
         <div className="col-list w-100" style={{display:"flex"}}>
           <h4> { applicationData.applicant.firstName } { applicationData.applicant.lastName } </h4>
-          <h6 className="text-muted">Email: { applicationData?.applicant?.email }</h6>
-          <small> { applicationData.applicationText } </small>
+          <strong className="text-muted">Email: { applicationData?.applicant?.email }</strong>
+          <strong className="text-muted">Phone Number: {applicationData?.applicant?.phoneNumber} </strong>
+          <small><br></br> { applicationData.applicationText } </small>
           <div className="flex-grid border-top mt-2 pt-2">
             <div className="col">
               <div className="flex-grid col-list mt-3">
@@ -31,7 +32,7 @@ const ApplicationRow = ({applicationData}) => {
                 <div>
                   <input type="radio" checked={ applicationData.interest === "Same" } readOnly={true} />
                   <small className="ml-2">I am open to other postions within the same genre of the positions I have entered</small>
-                </div> 
+                </div>
                 <div> 
                   <input type="radio" checked={ applicationData.interest === "open" } readOnly={true} />
                   <small className="ml-2">I am open to any other position in ISFiT, regardless of the positions I have entered</small>

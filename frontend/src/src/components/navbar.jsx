@@ -26,7 +26,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
 
     return (
         <a href="/myprofile">
-          <span className="ml-2 d-none d-lg-block">
+          <span className="ml-2 d-lg-block">
             <span className="text-default"> { data.me?.firstName } { data.me?.lastName} </span>
             <small className="text-muted d-block">{RoleName}</small>
           </span>
@@ -77,7 +77,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
 
     return (
       <div className="header py-1 border-bottom py-2">
-        <div className="container">
+        <div className="ml-4 w-100">
           <div className="flex-grid" style={{alignItems:"center"}}>
             <div>
                 <a className="header-brand" href="/">
@@ -86,7 +86,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
                 </a>
             </div>
             <div className="col">
-                <ul className="nav" style={{justifyContent:"right"}}>
+                <ul className="nav" style={{justifyContent:"right", width: "100%"}}>
                   <NavBarButton title="Overview" iconstring="list-ol" address="/" />
                   { userLogedIn ? <RenderMyApplicationButton /> : null }
                   { AccessLevel > 2 ? <NavBarButton title="Manage interviews" iconstring="users" address="/manageinterviews" /> : null}

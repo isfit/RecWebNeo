@@ -32,7 +32,7 @@ const PositionModal = ({position, showPositionModal, closePositionModal, addPosi
             </div>
             <div className="flex-grid mt-4 mx-5">
                 <button type="button" className="btn btn-outline-secondary mr-2 mb-2" onClick={ () => closePositionModal() }>Back</button>
-                <button type="button" className="btn btn-outline-success ml-auto mr-2 mb-2" onClick={() => addAndClose(position) }>Add to application</button>
+                <button type="button" className="btn btn-continue ml-auto mr-2 mb-2" onClick={() => addAndClose(position) }>Add to application</button>
             </div>
         </Modal>
     );

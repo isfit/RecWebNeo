@@ -34,7 +34,7 @@ const ApplicationTextPage = (props) => {
           <div className="page-header pt-3 mb-4">
             <h4 className="page-title">Enter application details</h4>
           </div>
-          <div className="flex-grid-adaptive">
+          <div className="-adaptive">
             <div className="position-box-left">
               <textarea className="w-100 h-100" placeholder="Please write a short application about why you would like to apply for these positions..." value={text} onChange={e => changeText( e.target.value )} type="text" />
             </div>
@@ -77,7 +77,7 @@ const ApplicationTextPage = (props) => {
           <div className="row">
             <div className="col mt-2">
                 <button className="btn btn-outline-secondary float-left" onClick={() => goBach()}>Back</button>
-                <button className="btn btn-outline-success float-right" onClick={() => continueWithApplication()}>Continue</button>
+                <button className="btn btn-continue float-right" onClick={() => continueWithApplication()}>Continue</button>
               </div>
           </div>
         

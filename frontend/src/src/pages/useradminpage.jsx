@@ -93,7 +93,7 @@ const UserAdminPage = () => {
 
     return (
         <PageLayout>
-                <div className="flex-grid-adaptive pt-4">
+                <div className="flex-grid-adaptive pt-4 pb-4">
                     <div className="left mx-3" style={{flexBasis:"30%", flexDirection:"column"}}>
                         <div className="card w-100 h-100 px-3 py-3">
                             <h4>Applicants/Other users</h4>

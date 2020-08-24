@@ -8,11 +8,37 @@ import PositionDescriptionModal from "./modal/positionDescriptionModal";
 import { connect } from "react-redux";
 import { openPositionModal, addPositionToApplication } from "../redux/actions";
 import { getPositionModalState } from "../redux/selectors";
+import ScrollList from "./scrollList";
+import SearchModule from "./searchmodule";
+import {GET_SECTIONS} from "../requests/userRequests";
+import {Promise as resolve} from "q";
+import Button from 'react-bootstrap/Button';
+import Fade from "react-bootstrap/Fade";
+import Accordion from "react-bootstrap/Accordion";
+import Card from "react-bootstrap/Card";
 
-const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApplication, sectionList }) => {
+
+const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApplication}) => {
+
+  const [positionData, setPositionData] = useState(null);
+
+  const sectionQuery = useQuery(GET_SECTIONS);
+
+  const sectionList = sectionQuery?.data?.sections?.map(e => e.id);
+
+  
+
+  const [nee, setSectionList] = useState([]);
+
+  function getSectionList() {
+    return sectionList;
+  }
+
+  const addSectionList = () => setSectionList([...sectionList, {}]);
+
 
   const positionQuery = () => {
-    if (sectionList.length === 0) {
+    if (sectionList?.length === 0) {
       return null
     }
     const queryArguments = {
@@ -21,37 +47,86 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
           section_in: sectionList
         }
       }
-    }
+    };
     return queryArguments;
-  }
+  };
 
   const {data} = useQuery(FILTER_POSITIONS, positionQuery());
 
-  const [positionData, setPositionData] = useState(null);
+  const [open, setOpen] = useState(false);
+
+
+  console.log(sectionList);
+
+  
+  const sectionCards = (sectionId, eventKey) => {
+    return (
+      <Card className="card-group">
+        <Card.Header>
+          <Accordion.Toggle as={Button} variant="link" eventKey={""+ eventKey}>
+            <p>{data.positions.nodes.find(e => e.section.id == sectionId).section.name}  </p>
+          </Accordion.Toggle>
+        </Card.Header>
+        <Accordion.Collapse eventKey={""+ eventKey}>
+          <Card.Body><div className="px-1 py-3 w-50">
+            {data.positions.nodes.filter(position => position?.section?.id === sectionId).map((position) => {
+              return (
+                <PositionRow
+                  position={position}
+                  openPositionModal={(position) => {
+                    setPositionData(position);
+                    openPositionModal();
+                  }}
+                  addPositionToApplication={(id, name) => addPositionToApplication(id, name)}
+                />
+              );
+            })}
+          </div></Card.Body>
+        </Accordion.Collapse>
+      </Card>
+
+    )
+  }
+
+
+  const allSectionCards = () => {
+      let cards = [];
+      for (var i = 0; i < sectionList; i++) {
+          cards.push(sectionCards(sectionList[i], i));
+      }
+      return (
+        <div>
+          {cards}
+        </div>
+      )
+  }
 
   if (data == null) {
     return <div></div>;
   }
 
+
   return (
     <div>
       <PositionDescriptionModal position={positionData} />
-      <small className="text-dark pl-2 pb-2">Click on the positions for more information.</small>
+      <small className="text-dark pl-2 pb-2">Click for more information about the positions.</small>
+      <div>
 
-      <div className="card px-3 py-3 card-group">
-        {data.positions.nodes.map((position) => {
-          return (
-            <PositionRow
-              position={position}
-              openPositionModal={(position) => {
-                setPositionData(position);
-                openPositionModal();
-              }}
-              addPositionToApplication={(id, name) => addPositionToApplication(id, name)}
-            />
-          );
-        })}
+        <Accordion defaultActiveKey="none" style={{width: "70vw"}}>
+          <div>
+            {sectionCards(sectionList[0], 0)}
+            {sectionCards(sectionList[1], 1)}
+            {sectionCards(sectionList[2], 2)}
+            {sectionCards(sectionList[3], 3)}
+            {sectionCards(sectionList[4], 4)}
+            {sectionCards(sectionList[5], 5)}
+          </div>
+
+        </Accordion>
+        <br></br>
+
       </div>
+
     </div>
   );
 };
@@ -80,6 +155,8 @@ const PositionRow = ({ position, openPositionModal, addPositionToApplication }) 
 const mapStateToProps = (state) => {
   return {
     showPositionModal: getPositionModalState(state),
+    openPositionModal: openPositionModal(state),
+
   };
 };
 

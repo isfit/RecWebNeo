@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import PageLayout from './pageLayout';
-import PositionChoiceBoxReadOnly from "../components/positionChoiceBoxReadOnly"
-import { prioritizePosition } from "../redux/actions";
-import positionsModule from "../components/positionsModule";
+import ScrollList from '../components/scrollList';
 
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { GET_ISFIT_USERS, GET_SECTIONS, SET_ROLE, ADD_SECTION_TO_USER, ADD_TEAM_TO_USER  } from "../requests/userRequests";
@@ -37,6 +35,8 @@ const UserAdminPage = () => {
     const [chosenSection, setChosenSection] = useState({teams:[]});
     const [chosenTeam, setChosenTeam] = useState(null);
     const [chosenRole, setChosenRole] = useState("");
+    const [chosenPassword, setChosenPassword] = useState("");
+
 
     const [addedUsers, setAddedUsers] = useState([]);
 
@@ -61,34 +61,38 @@ const UserAdminPage = () => {
         setAddedUsers(copyList);
     };
 
+    
+    const updateUserSectionTeam = (event, addedUsers, chosenSection, chosenTeam) => {
+        if (!(chosenSection?.teams === undefined|| chosenSection?.teams.length == 0) ) {
+            if ( Boolean(chosenTeam) ) {
+                addedUsers.map( user => {
+                    addedUsers.map( user => {
+                        event.preventDefault();
+                        updateSections({variables: {email: user?.email, sections: [chosenSection?.id] }});
+                        updateTeams({variables: {email: user?.email, teams: [chosenTeam?.id] }});
+                    })
+                })
+            };
+        };
+    };
+    
     const updateUsersRole = (event, addedUsers, newRole) => {
+        if (!(newRole === "")) {
             addedUsers.map( user => {
                 /* console.log("USER AND NEWROLE: ", user?.email, newRole) */
                 event.preventDefault();
                 updateRole({variables: {email: user?.email, role: newRole}});
             })
-    };
-
-    const updateUserSectionTeam = (event, chosenSection, chosenTeam) => {
-        addedUsers.map( user => {
-            addedUsers.map( user => {
-                event.preventDefault();
-                updateSections({variables: {email: user?.email, sections: [chosenSection?.id] }});
-                updateTeams({variables: {email: user?.email, teams: [chosenTeam?.id] }});
-            })
-        })
-    };
-
-
-    const updateRoleTeamSection = (event, addedUsers, newRole, chosenSection, chosenTeam ) => {
-        if (!(newRole === "")) {
-            updateUsersRole(event, addedUsers, newRole);
         };
+    };
 
-        if (!(chosenSection?.teams === undefined|| chosenSection?.teams.length == 0) ) {
-            if ( Boolean(chosenTeam) ) {
-                updateUserSectionTeam(event, chosenSection, chosenTeam);
-            };
+    const updateUsersPassword = (event, addedUsers, chosenPassword) => {
+        if(!(chosenPassword === "")){
+            addedUsers.map( user => {
+                console.log("USER AND NEWPASSWORD: ", user?.email, chosenPassword)
+                /* event.preventDefault(); */
+                /* updateRole({variables: {email: user?.email, password: chosenPassword}}); */
+            })
         };
     };
 
@@ -98,25 +102,48 @@ const UserAdminPage = () => {
                 <div className="flex-grid-adaptive pt-4">
                     <div className="left mx-3" style={{flexBasis:"30%", flexDirection:"column"}}>
                         <div className="card w-100 h-100 px-3 py-3">
-                            <h4>ISFiT Users</h4>
-                            { users.map( user => {
-                                return (
-                                    <UserEntry 
-                                        firstName={user.firstName}
-                                        lastName={user.lastName}
-                                        section={user.section} 
-                                        team={user.team}
-                                        email={user.email}>
-                                        <button type="button" className="btn btn-outline-success my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
-                                    </UserEntry>
-                                )
-                            }
-                            )}
+                            <h4>Bare users</h4>
+                            <ScrollList>
+                                { users.map( user => {
+                                    return (
+                                        <UserEntry 
+                                            firstName={user.firstName}
+                                            lastName={user.lastName}
+                                            section={user.section} 
+                                            team={user.team}
+                                            email={user.email}>
+                                            <button type="button" className="btn btn-outline-success my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
+                                        </UserEntry>
+                                    )
+                                }
+                                )}
+                            </ScrollList>
                         </div>
                     </div>
-                    <div className="middle mx-3" style={{flexBasis:"40%", textAlign:"left"}}>
-                         <div className="card w-100 px-3 py-3" style={{minHeight:"3%"}}>
-                            <h4>Users to be upgraded</h4>
+                    <div className="middle mx-3" style={{flexBasis:"30%", textAlign:"left"}}>
+                        <div className="card w-100 h-100 px-3 py-3">
+                            <h4>Upgraded Users</h4>
+                            <ScrollList>
+                                { users.map( user => {
+                                    return (
+                                        <UserEntry 
+                                            firstName={user.firstName}
+                                            lastName={user.lastName}
+                                            section={user.section} 
+                                            team={user.team}
+                                            email={user.email}>
+                                            <button type="button" className="btn btn-outline-success my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
+                                        </UserEntry>
+                                    )
+                                }
+                                )}
+                            </ScrollList>
+                        </div>
+                    </div>
+
+                    <div className="right mx-3" style={{flexBasis:"40%", flexDirection:"column"}}>
+                         <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
+                            <h4>Users to be changed</h4>
                             { addedUsers.map( user => {
                                 return (
                                     <UserEntry 
@@ -132,62 +159,67 @@ const UserAdminPage = () => {
                             )}
                         </div>
                         <div className="card w-100 px-3 py-3">
-                            <div className="flex-grid">
-                                <div className="col">
-                                    <small>Section</small>
-                                    <form action="">
-                                    <select className="w-100" id="sections" name="sections">
-                                        <option value={"none"} onClick={() => setChosenSection({teams:[]})}>{"none"}</option>
-                                        {sectionsData?.data?.sections.map( section => {
-                                            return (
-                                                <option value={section.name} onClick={() => setChosenSection(section)}>{section.name} </option>
-                                            )
-                                        })}
-                                    </select>
-                                    </form>
+                            <div className="flex-grid" style={{flexDirection:"column"}}>
+                                <div className="flex-grid border-bottom pb-3">
+                                    <div className="col">
+                                        <small>Section</small>
+                                        <form action="">
+                                        <select className="w-100" id="sections" name="sections">
+                                            <option value={"none"} onClick={() => setChosenSection({teams:[]})}>{"none"}</option>
+                                            {sectionsData?.data?.sections.map( section => {
+                                                return (
+                                                    <option value={section.name} onClick={() => setChosenSection(section)}>{section.name} </option>
+                                                    )
+                                                })}
+                                        </select>
+                                        </form>
+                                    </div>
+                                    <div className="col">
+                                        <small>Team</small>
+                                        <form action="">
+                                        <select className="w-100" id="teams" name="teams">
+                                            <option value={"none"} onClick={() => setChosenTeam(null)}>{"none"}</option>
+                                            {chosenSection?.teams?.map( team => {
+                                                return (
+                                                    <option value={team.name} onClick={() => setChosenTeam(team)}>{team.name}</option>
+                                                    )
+                                                })}
+                                        </select>
+                                        </form>
+                                    </div>
+                                    <div className="col" style={{flexBasis:"10%"}}>
+                                        <button type="button" className="btn btn-outline-success mt-2" style={{float:"right"}} onClick={event => updateUserSectionTeam(event, addedUsers, chosenSection, chosenTeam)}>Set section/team</button>
+                                    </div>
                                 </div>
-                                <div className="col">
-                                    <small>Team</small>
-                                    <form action="">
-                                    <select className="w-100" id="teams" name="teams">
-                                        <option value={"none"} onClick={() => setChosenTeam(null)}>{"none"}</option>
-                                        {chosenSection?.teams?.map( team => {
-                                            return (
-                                                <option value={team.name} onClick={() => setChosenTeam(team)}>{team.name}</option>
-                                            )
-                                        })}
-                                    </select>
-                                    </form>
+                                        
+                                <div className="flex-grid border-bottom pb-3">
+                                    <div className="col">
+                                        <small>Access Level</small>
+                                        <form action="">
+                                        <select className="w-100" id="sections" name="sections">
+                                            <option onClick={() => setChosenRole("")} value={"none"}>{"none"}</option>
+                                            <option onClick={() => setChosenRole("admin")}>{"Admin"}</option>
+                                            <option onClick={() => setChosenRole("insider")}>{"ISFiT Member / Interviewer"}</option>
+                                        </select>
+                                        </form>
+                                    </div>
+                                    <div className="col" style={{flexBasis:"10%"}}>
+                                        <button type="button" className="btn btn-outline-success mt-2" style={{float:"right"}} onClick={event => updateUsersRole(event, addedUsers, chosenRole)}>Set access level</button>
+                                    </div>
                                 </div>
-                                <div className="col">
-                                    <small>Access Level</small>
-                                    <form action="">
-                                    <select className="w-100" id="sections" name="sections">
-                                        <option onClick={() => setChosenRole("")} value={"none"}>{"none"}</option>
-                                        <option onClick={() => setChosenRole("admin")}>{"Admin"}</option>
-                                        <option onClick={() => setChosenRole("insider")}>{"ISFiT Member / Interviewer"}</option>
-                                    </select>
-                                    </form>
+
+                                <div className="flex-grid border-bottom pb-3">
+                                    <div className="col">
+                                        <small>Change password</small>
+                                        <form>
+                                            <input type="text" onChange={e => setChosenPassword(e.target.value) }/>
+                                        </form>           
+                                    </div>
+                                    <div className="col" style={{flexBasis:"10%"}}>
+                                        <button type="button" className="btn btn-outline-success mt-2" style={{float:"right"}} onClick={event => updateUsersPassword(event, addedUsers, chosenPassword)}>Set password</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <button type="button" className="btn btn-outline-success mt-2" style={{float:"right"}} onClick={event => updateRoleTeamSection(event, addedUsers, chosenRole, chosenSection, chosenTeam)}>Upgrade Users</button>
-                    </div>
-                    <div className="right mx-3" style={{flexBasis:"30%"}}>
-                        <div className="card w-100 h-100 px-3 py-3">
-                            <h4>Upgraded Users</h4>
-                            { users.map( user => {
-                                return (
-                                    <UserEntry 
-                                        firstName={user.firstName}
-                                        lastName={user.lastName}
-                                        section={user.section} 
-                                        team={user.team}
-                                        email={user.email}>
-                                    </UserEntry>
-                                )
-                            }
-                            )}
                         </div>
                     </div>
                 </div>

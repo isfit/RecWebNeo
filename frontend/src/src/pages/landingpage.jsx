@@ -36,11 +36,9 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
         <div className="page-header pt-3 mb-4">
           <h4 className="page-title px-1">Choose positions</h4>
         </div>
-        <div className="flex-grid-adaptive">
-          <div className="position-box-left">
-            <PositionsModule sectionList={sectionList} />
-          </div>
-          <div className="shopping-box-right">
+        <div>
+        <div>
+          <div className="">
             <PositionChoiceBox />
             {  userLogedIn ? <button
                 className="btn btn-continue mt-1 mr-2 float-right"
@@ -49,6 +47,13 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
               <button className="btn btn-success"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess
               </button>}
           </div>
+        </div>
+          <div>
+            <div className="accordionCustom">
+              <PositionsModule sectionList={sectionList} />
+            </div>
+          </div>
+
         </div>
       </div>
     </PageLayout>

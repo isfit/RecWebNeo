@@ -41,6 +41,7 @@
 .flex-grid-adaptive .position-box-left {order:2; flex-basis:100%; min-height:300px;}
 .flex-grid-adaptive .shopping-box-right {order:1; flex-basis:100%; margin-bottom:20px;}
 
+
 @media screen and (min-width:1200px) {
    .flex-grid-adaptive {
        flex-wrap:nowrap;

@@ -55,33 +55,36 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
 
   const [open, setOpen] = useState(false);
 
-
-  console.log(sectionList);
-
   
   const sectionCards = (sectionId, eventKey) => {
     return (
-      <Card className="card-group">
+      <Card>
         <Card.Header>
-          <Accordion.Toggle as={Button} variant="link" eventKey={""+ eventKey}>
-            <p>{data.positions.nodes.find(e => e.section.id == sectionId).section.name}  </p>
+          <Accordion.Toggle as={Button} variant="outline-success" eventKey={""+ eventKey}>
+            <p >{data.positions.nodes.find(e => e.section.id == sectionId).section.name}</p>
           </Accordion.Toggle>
         </Card.Header>
         <Accordion.Collapse eventKey={""+ eventKey}>
-          <Card.Body><div className="px-1 py-3 w-50">
-            {data.positions.nodes.filter(position => position?.section?.id === sectionId).map((position) => {
-              return (
-                <PositionRow
-                  position={position}
-                  openPositionModal={(position) => {
-                    setPositionData(position);
-                    openPositionModal();
-                  }}
-                  addPositionToApplication={(id, name) => addPositionToApplication(id, name)}
-                />
-              );
-            })}
-          </div></Card.Body>
+          <Card.Body>
+            <div className="card-group">
+            <ScrollList>
+              <div className="row ml-1">
+                {data.positions.nodes.filter(position => position?.section?.id === sectionId).map((position) => {
+                  return (
+                    <PositionRow
+                      position={position}
+                      openPositionModal={(position) => {
+                        setPositionData(position);
+                        openPositionModal();
+                      }}
+                      addPositionToApplication={(id, name) => addPositionToApplication(id, name)}
+                    />
+                  );
+                })}
+              </div>
+            </ScrollList>
+            </div>
+          </Card.Body>
         </Accordion.Collapse>
       </Card>
 
@@ -107,12 +110,12 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
 
 
   return (
-    <div>
-      <PositionDescriptionModal position={positionData} />
-      <small className="text-dark pl-2 pb-2">Click for more information about the positions.</small>
-      <div>
 
-        <Accordion defaultActiveKey="none" style={{width: "70vw"}}>
+    <div>
+      <small className="text-dark pl-2 pb-2 ml-4">Click for more information about the positions.</small>
+      <PositionDescriptionModal position={positionData} />
+      <div>
+        <Accordion className="customAccordian">
           <div>
             {sectionCards(sectionList[0], 0)}
             {sectionCards(sectionList[1], 1)}

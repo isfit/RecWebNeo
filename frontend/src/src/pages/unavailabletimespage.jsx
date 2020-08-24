@@ -3,34 +3,36 @@ import PageLayout from './pageLayout';
 import AvailableTimesFom from '../components/availableTimesForm';
 import ErrorPage from './errorPage';
 
-import { APPLY, EDIT_USER_INFORMATION } from "../requests/userRequests";
+import { APPLY, EDIT_USER_INFORMATION, ME_BUSY_TIMES} from "../requests/userRequests";
 import { useQuery, useMutation } from "@apollo/client";
 
 
 const UnavailableTimesPage = (props) => {
 
   const [editUserInformation, { data, error, loading }] = useMutation(EDIT_USER_INFORMATION);
+  const busyTimes = useQuery(ME_BUSY_TIMES);
 
   console.log(error);
 
   const getBusyTimes = () => {
-      const busy = JSON.parse(localStorage.getItem("busyTimes") || "[]");
-      let busyTime = [];
-      busy.map(x => busyTime.push(new Date(x)));
+      const busy = busyTimes.data?.me.busyTime;
+      //const busy = JSON.parse(localStorage.getItem("busyTimes") || "[]");
+      console.log("Buuusy", busy)
+      //let busyTime = [];
+      //busy.map(x => busyTime.push(new Date(x)));
       return busy;
   };
-
-  const variableData = {
-      variables: {
-          "input": {
-          "busyTime": getBusyTimes()
-      }
-    }
-  };
+  //const variableData = (busyTimesArray) => {
+    //variables: {
+      //    "input": {
+      //    "busyTime": busyTimesArray
+     // }
+   // }
+ // };
 
   const submitUnavailableTimes = () => {
-      console.log(variableData);
-      editUserInformation(variableData);
+      let busyTimesData = getBusyTimes();
+      editUserInformation({variables: {"input": {"busyTime": busyTimesData}}});
     };
 
   if (loading) {
@@ -47,7 +49,13 @@ const UnavailableTimesPage = (props) => {
         </div>
         
         <AvailableTimesFom 
-        hours = "everyHour" />
+        data = {
+            {hours: "everyHour",
+            busyTimes: getBusyTimes()
+        }
+
+        }
+         />
 
         <div className="row">
           <div className="col mb-3">

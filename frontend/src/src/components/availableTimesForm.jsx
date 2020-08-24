@@ -41,7 +41,7 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
 };
 
 
-const AvailableTimesForm = (props) => {
+const AvailableTimesForm = (props, hours) => {
     //console.log("Busy storage",localStorage.getItem("busyTimes"));
     //localStorage.removeItem("busyTimes");
   const startInterview = new Date("2020-08-27T00:00:00.000Z");
@@ -103,8 +103,9 @@ const AvailableTimesForm = (props) => {
         localStorage.setItem("busyTimes", JSON.stringify(busy));
         setBusyTimes(busy);
     }
-
-  const times = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00"];
+    
+    const times = (props.hours == "everyHour") ? ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"] : ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00"]; 
+    
   const daysName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
   const [busyTimes, setBusyTimes] = useState(JSON.parse(localStorage.getItem("busyTimes") || "[]"));

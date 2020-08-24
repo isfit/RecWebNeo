@@ -104,7 +104,8 @@ const AvailableTimesPage = (props) => {
           <h4 className="page-title">Enter the hours you are busy</h4>
         </div>
         
-        <AvailableTimesFom />
+        <AvailableTimesFom 
+          hours = "everyOtherHour" />
 
         <div className="row">
           <div className="col mb-3">

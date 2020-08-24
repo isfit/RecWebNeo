@@ -39,7 +39,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
     const userHasApplication = Boolean(myApplicationData?.data?.myApplication);
 
     if (userHasApplication) {
-      return (<NavBarButton title="n" iconstring="address-card" address="/myapplication" />);
+      return (<NavBarButton title="My Application" iconstring="address-card" address="/myapplication" />);
     }
 
     return (

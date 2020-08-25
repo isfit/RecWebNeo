@@ -40,10 +40,11 @@ const UserAdminPage = () => {
 
     const [addedUsers, setAddedUsers] = useState([]);
 
-    const [updateRole, { data, error }] = useMutation(SET_USER_ROLE);
+    const [updateRole, setUserRoleData] = useMutation(SET_USER_ROLE);
     const [updateSections, { setSectionsData }] = useMutation(SET_SECTIONS_TO_USER);
     const [updateTeams, { setTeamsData }] = useMutation(SET_TEAMS_TO_USER);
     const [updatePassword, {setPasswordData}] = useMutation(UPDATE_USER_PASSWORD);
+    console.log("QUERY DATA ", setUserRoleData)
 
     const addToUserList = (user) => {
         let copyList = [...addedUsers]
@@ -78,7 +79,6 @@ const UserAdminPage = () => {
     const updateUsersRole = (event, addedUsers, newRole) => {
         addedUsers.map( user => {
             /* console.log("USER AND NEWROLE: ", user?.email, newRole) */
-            event.preventDefault();
             updateRole({variables: {email: user?.email, role: newRole}});
         })
     };
@@ -196,7 +196,7 @@ const UserAdminPage = () => {
                                         <form action="">
                                         <select className="w-100" id="sections" name="sections">
                                             <option onClick={() => setChosenRole("")} value={"Applicant"}>{"Applicant"}</option>
-                                            <option onClick={() => setChosenRole("insider")}>{"ISFiT Member / Interviewer"}</option>
+                                            <option onClick={() => setChosenRole("internal")}>{"ISFiT Member / Interviewer"}</option>
                                             <option onClick={() => setChosenRole("admin")}>{"Admin"}</option>
                                         </select>
                                         </form>

@@ -66,14 +66,13 @@ import { MYAPPLICATION } from "../requests/userRequests";
   const getAccessLevel = (RolesArray) => {
     if (RolesArray.includes("superuser")) {return 4;}
       else if (RolesArray.includes("admin")) {  return 3; }
-      else if (RolesArray.includes("insider")) { return 2 ;}
+      else if (RolesArray.includes("internal")) { return 2 ;}
       else { return 1;}
   }
 
   const NavBar = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey}) => {
     const RolesArray = GetRolesFromToken(userAuthKey);
     const AccessLevel = getAccessLevel(RolesArray);
-    
 
     return (
       <div className="header py-1 border-bottom py-2">
@@ -90,6 +89,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
                   <NavBarButton title="Overview" iconstring="list-ol" address="/" />
                   { (userLogedIn && (AccessLevel === 1)) ? <RenderMyApplicationButton /> : null }
                   { userLogedIn ? <NavBarButton title="My Interviews" iconstring="arrow-up" address="/myinterviews" /> : null}
+                  { AccessLevel > 2 ? <NavBarButton title="All Interviews" iconstring="users" address="/allinterviews" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="Manage interviews" iconstring="users" address="/manageinterviews" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="View Applications" iconstring="file-alt" address="/applications" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="Administer users" iconstring="arrow-up" address="/useradminpage" /> : null}

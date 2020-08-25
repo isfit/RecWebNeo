@@ -36,10 +36,14 @@ namespace RecAPI.Interviews.Repositories
 
         public List<Interview> GetUserInterviews(string userId)
         {
-            return _interviews.Find(interview => 
-                interview.Interviewers != null ? interview.Interviewers.Any(inter => inter.User == userId) : false
+            return _interviews.Find(interview =>
+                interview.Interviewers != null
+                &&
+                interview.Applicant != null
+                &&
+                interview.Interviewers.Any(inter => inter.User == userId)
                 ||
-                interview.Applicant != null ? interview.Applicant.User == userId : false
+                interview.Applicant.User == userId
             ).ToList();
         }
 

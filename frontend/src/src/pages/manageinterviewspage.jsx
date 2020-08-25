@@ -73,6 +73,9 @@ const InterviewsPage = () => {
     const applicationArray = Boolean(applicationsQuery?.data) ? applicationsQuery?.data?.applicationWithoutInterview?.nodes : [] ;
 
     const [createInterview, { createInterviewData }] = useMutation(CREATE_INTERVIEW);
+
+    const startInterview = new Date("2020-08-27T00:00:00.000Z");
+    const endInterview = new Date("2020-09-10T00:00:00.000Z");
     
     /* const users = [{firstName:"Torstein", lastName:"Otterlei", sections:["Organizational Resources"], teams:["IT"], email:"torstein@otterlei.no"}] */
     const usersQuery = useQuery(GET_ISFIT_USERS);
@@ -101,7 +104,7 @@ const InterviewsPage = () => {
         let emailArray = addedUsers.map(user => {return user.email})
         console.log("EMAILARRAY: ", emailArray)
         console.log("APPLICATION ID: ", application[0].id)
-        /* createInterview({variables: {application: application.id, interviewerEmails: emailArray, start: startTime}}); */
+        createInterview({variables: {application: application.id, interviewerEmails: emailArray, start: startTime}});
     };
 
     return (
@@ -156,8 +159,7 @@ const InterviewsPage = () => {
                                 )
                             }
                         )}
-
-                        <h5>Time: 25</h5>
+                        <h5>Interview time: { chosenTime?.toString() ?? "Select a time from the table" } </h5>
 
                     </div>
                     <button className="btn btn-secondary mt-1 mr-2">See possible hours</button>
@@ -185,7 +187,19 @@ const InterviewsPage = () => {
                 </div>
 
             </div>
-            <AvailableTimesForm />
+            <AvailableTimesForm
+                busyTimes={ [] ?? []}
+                setBusyTimes={busy => {
+                    setChosenTime(busy)
+                }}
+                getTime={true}
+                startDate = {startInterview}
+                endDate = {endInterview}
+                hourDiff={1}
+                firstTimeSlot={8}
+                lastTimeSlot={20}
+                readOnly = { false }
+            />
         </PageLayout>
 
     );

@@ -46,7 +46,7 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
 
 
 
-const AvailableTimesForm = ({busyTimes, setBusyTimes, startDate, endDate, hourDiff, firstTimeSlot, lastTimeSlot, readOnly}) => {
+const AvailableTimesForm = ({busyTimes, setBusyTimes, startDate, endDate, hourDiff, firstTimeSlot, lastTimeSlot, readOnly, getTime}) => {
   
     const ReadOnly = readOnly ? true : false;
     const daysName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -88,10 +88,14 @@ const AvailableTimesForm = ({busyTimes, setBusyTimes, startDate, endDate, hourDi
     }
 
     const selectTime = (date, time, selected, weekIndex) => {
-
         let dato = new Date(date);
         const hour = parseInt(time.substring(0,2));
         dato.setHours(hour);
+        if (getTime != undefined && getTime) {
+            setBusyTimesUpdated([dato]);
+            setBusyTimes(dato);
+            return dato;
+        }
         let busy = busyTimesUpdated;
         if (selected) {
             if (!busy.some(x => (new Date(x)).toString() == dato.toString())){
@@ -102,26 +106,6 @@ const AvailableTimesForm = ({busyTimes, setBusyTimes, startDate, endDate, hourDi
         }
         setBusyTimesUpdated(busy);
         setBusyTimes(busy);
-    }
-
-
-    const addDate = (busy, dato) => {
-        let copyBusy = [...busy];
-        copyBusy.push(dato);
-        localStorage.setItem("busyTimes", JSON.stringify(copyBusy));
-        setBusyTimes(copyBusy);
-    }
-
-    const removeDate = (busy, dato) => {
-        let copyBusy = [...busy];
-        const date = dato.toISOString();
-        const index = copyBusy.indexOf(date);
-        if (index > -1) {
-            copyBusy.splice(index, 1)
-        }
-        localStorage.setItem("busyTimes", JSON.stringify(copyBusy));
-        setBusyTimes(copyBusy);
-        setBusyTimes(copyBusy);
     }
 
     const generateTimePeriodes = (hourDiff, firstTimeSlot, lastTimeSlot) => {

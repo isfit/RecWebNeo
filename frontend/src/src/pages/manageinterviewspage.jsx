@@ -63,17 +63,6 @@ const UserEntry = (props) => {
 };
 
 
-function BusyHoursQuery({addedApplication, addedUsers}) {
-    let emailArray = addedUsers.map(user => {return user.email})
-
-    console.log("EMAILARRAY: ", emailArray)
-    console.log("APPLICATION ID: ", addedApplication[0].id)
-    const { called, loading, data } = useQuery(APPLICATION_BUSY_HOURS, {variables: {application: addedApplication[0].id, interviewerEmail: emailArray}});
-    console.log("RETURNDATA", data)
-    return data
-};
-
-
 const InterviewsPage = () => {
 
     const [addedUsers, setAddedUsers] = useState([]);
@@ -84,6 +73,9 @@ const InterviewsPage = () => {
     const applicationArray = Boolean(applicationsQuery?.data) ? applicationsQuery?.data?.applicationWithoutInterview?.nodes : [] ;
 
     const [createInterview, { createInterviewData }] = useMutation(CREATE_INTERVIEW);
+
+    const [getBusyHours, getBusyHoursData] = useMutation(APPLICATION_BUSY_HOURS);
+
     
     /* const users = [{firstName:"Torstein", lastName:"Otterlei", sections:["Organizational Resources"], teams:["IT"], email:"torstein@otterlei.no"}] */
     const usersQuery = useQuery(GET_ISFIT_USERS);
@@ -116,10 +108,12 @@ const InterviewsPage = () => {
         /* createInterview({variables: {application: application.id, interviewerEmails: emailArray, start: startTime}}); */
     };
 
-    /* function myFunction(application, addedUsers){
-        const returnData = BusyHoursQuery(application, addedUsers);
-        console.log("RETURNDATA", returnData)
-    } */
+
+    const getBusyHoursMutation = (addedApplication, addedUsers) => {
+        let emailArray = addedUsers.map(user => {return user.email});
+        getBusyHours({variables: { input: {application: addedApplication[0].id, interviewerEmail: emailArray}}});
+    };  
+
 
 
     return (
@@ -178,7 +172,7 @@ const InterviewsPage = () => {
                         <h5>Time: 25</h5>
 
                     </div>
-                    <button className="btn btn-secondary mt-1 mr-2" onClick={() => BusyHoursQuery({addedApplication, addedUsers})}>See possible hours</button>
+                    <button className="btn btn-secondary mt-1 mr-2" onClick={() => getBusyHoursMutation(addedApplication, addedUsers)}>See possible hours</button>
                     <button className="btn btn-success mt-1 mr-2 float-right" onClick={() => createInterviewMutation(addedApplication, addedUsers, chosenTime)}>Confirm interview</button>
                 </div>
                 <div className="right mx-3" style={{flexBasis:"30%", flexDirection:"column"}}>
@@ -203,7 +197,7 @@ const InterviewsPage = () => {
                 </div>
 
             </div>
-            <AvailableTimesForm />
+            <AvailableTimesForm getBusyHoursData/>
         </PageLayout>
 
     );

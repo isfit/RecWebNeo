@@ -126,7 +126,7 @@ const ALL_INTERVIEWS = gql`
 `;
 
 const APPLICATION_BUSY_HOURS = gql`
-    query applicationBusyTimes($input: ApplicationBusyTimesInput) {
+    mutation applicationBusyTimes($input: ApplicationBusyTimesInput) {
         applicationBusyTimes(input: $input)
       }
 

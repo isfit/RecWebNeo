@@ -19,7 +19,13 @@ const APPLICATIONS = gql`
                     key,
                     value {
                         id,
-                        name
+                        name,
+                        section {
+                            name
+                        }
+                        team {
+                            name
+                        }
                     }
                 }              
             },

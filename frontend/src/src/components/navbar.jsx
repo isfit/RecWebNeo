@@ -88,12 +88,12 @@ import { MYAPPLICATION } from "../requests/userRequests";
             <div className="col">
                 <ul className="nav" style={{justifyContent:"right", width: "100%"}}>
                   <NavBarButton title="Overview" iconstring="list-ol" address="/" />
-                  { userLogedIn ? <RenderMyApplicationButton /> : null }
+                  { (userLogedIn && (AccessLevel === 1)) ? <RenderMyApplicationButton /> : null }
+                  { userLogedIn ? <NavBarButton title="My Interviews" iconstring="arrow-up" address="/myinterviews" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="Manage interviews" iconstring="users" address="/manageinterviews" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="View Applications" iconstring="file-alt" address="/applications" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="Administer users" iconstring="arrow-up" address="/useradminpage" /> : null}
                   {/* { userLogedIn ? <NavBarButton title="My Profile" iconstring="address-card" address="/myprofile" /> : null} */}
-
                   <div>
                   { userLogedIn ? <RenderProfile accessLevel={AccessLevel} /> : <button className="btn btn-outline-success"  onClick={ () => openLoginModal() }>Sign in</button> }
                   </div>

@@ -79,6 +79,24 @@ const GET_ALL_USERS = gql`
   }
 `;
 
+const GET_ISFIT_USERS = gql`
+  query users {
+    users (where:{email_contains:"@isfit.no"}) {
+      nodes {
+        firstName
+        lastName
+        email
+        sections {
+          name
+        }
+        teams {
+          name
+        }
+      }
+    }
+  }
+`;
+
 
 const GET_SECTIONS = gql`
   query sections{
@@ -124,4 +142,4 @@ const UPDATE_USER_PASSWORD = gql`
 `;
 
 
-export { LOGIN, ME, ME_NAME, REGISTER, APPLY, MYAPPLICATION, GET_ALL_USERS, GET_SECTIONS, SET_USER_ROLE, SET_SECTIONS_TO_USER, SET_TEAMS_TO_USER, UPDATE_MY_PASSWORD, UPDATE_USER_PASSWORD };
+export { LOGIN, ME, ME_NAME, REGISTER, APPLY, MYAPPLICATION, GET_ALL_USERS, GET_SECTIONS, SET_USER_ROLE, SET_SECTIONS_TO_USER, SET_TEAMS_TO_USER, UPDATE_MY_PASSWORD, UPDATE_USER_PASSWORD, GET_ISFIT_USERS };

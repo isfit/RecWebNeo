@@ -57,7 +57,7 @@ const InterviewCard = (props) => {
 
 
 const MyInterviewsPage = () => {
-    const myIntervewsQuery = useQuery(MY_INTERVIEWS);
+    const myIntervewsQuery = useQuery(MY_INTERVIEWS, {fetchPolicy: "no-cache"});
     /* const myInterviewsData = Boolean(myIntervewsQuery?.data) ? myIntervewsQuery?.data?.myIntervews : []; */
     const myInterviews = myIntervewsQuery?.data?.myInterviews?.nodes ?? [];
 

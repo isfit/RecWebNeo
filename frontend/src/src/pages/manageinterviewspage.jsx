@@ -7,18 +7,6 @@ import { useQuery,useLazyQuery, useMutation } from "@apollo/client";
 import AvailableTimesForm from '../components/availableTimesForm';
 import { CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW, APPLICATION_BUSY_HOURS } from "../requests/interviewRequests";
 import { GET_ISFIT_USERS } from "../requests/userRequests";
-import { onError } from "@apollo/client/link/error";
-
-const link = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.map(({ message, locations, path }) =>
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-      ),
-    );
-
-  if (networkError) console.log(`[Network error]: ${networkError}`);
-});
 
 
 const ApplicationEntry = (props) => {
@@ -83,12 +71,9 @@ const InterviewsPage = () => {
 
     const applicationsQuery = useQuery(GET_APPLICATIONS_WITHOUT_INTERVIEW);
     const applicationArray = Boolean(applicationsQuery?.data) ? applicationsQuery?.data?.applicationWithoutInterview?.nodes : [] ;
-
   
-    const [getBusyHours, getBusyHoursData] = useMutation(APPLICATION_BUSY_HOURS);
+    const [getBusyHours, busyHoursData] = useMutation(APPLICATION_BUSY_HOURS);
 
-    
-    const [createInterviewSuccess, setCreateInterviewSuccess] = useState(null);
     const [createInterviewError, setCreateInterviewError] = useState(null);
 
     const [createInterview, { data }] = useMutation(CREATE_INTERVIEW, {
@@ -133,7 +118,6 @@ const InterviewsPage = () => {
         //console.log("EMAILARRAY: ", emailArray)
         //console.log("APPLICATION ID: ", application[0]?.id)
         //console.log("Form of input", {application: application[0]?.id, interviewerEmails: emailArray, start: startTime})
-        setCreateInterviewSuccess(null);
         setCreateInterviewError(null);
         createInterview({
             variables: {input: {application: application[0]?.id, interviewerEmails: emailArray, start: startTime?.toISOString()}},
@@ -229,11 +213,10 @@ const InterviewsPage = () => {
                             </ScrollList>
                     </div>
                 </div>
-
             </div>
 
             <AvailableTimesForm
-                busyTimes={ [getBusyHoursData] ?? []}
+                busyTimes={busyHoursData?.data?.applicationBusyTimes ?? []}
                 setBusyTimes={busy => {
                     setChosenTime(busy)
                 }}
@@ -244,6 +227,7 @@ const InterviewsPage = () => {
                 firstTimeSlot={8}
                 lastTimeSlot={20}
                 readOnly = { false }
+                selectable = { false }
             />
         </PageLayout>
 

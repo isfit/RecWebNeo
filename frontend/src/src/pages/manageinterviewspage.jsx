@@ -7,6 +7,18 @@ import { useQuery, useMutation } from "@apollo/client";
 import AvailableTimesForm from '../components/availableTimesForm';
 import { CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW } from "../requests/interviewRequests";
 import { GET_ISFIT_USERS } from "../requests/userRequests";
+import { onError } from "@apollo/client/link/error";
+
+const link = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.map(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+      ),
+    );
+
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
 
 
 const ApplicationEntry = (props) => {
@@ -72,7 +84,19 @@ const InterviewsPage = () => {
     const applicationsQuery = useQuery(GET_APPLICATIONS_WITHOUT_INTERVIEW);
     const applicationArray = Boolean(applicationsQuery?.data) ? applicationsQuery?.data?.applicationWithoutInterview?.nodes : [] ;
 
-    const [createInterview, { createInterviewData }] = useMutation(CREATE_INTERVIEW);
+    const [createInterviewSuccess, setCreateInterviewSuccess] = useState(null);
+    const [createInterviewError, setCreateInterviewError] = useState(null);
+
+    const [createInterview, { data }] = useMutation(CREATE_INTERVIEW, {
+        onError: ({ graphQLErrors, networkError }) => {
+            graphQLErrors.map(({ message, locations, path }) => {
+                setCreateInterviewError(message);
+            }
+            );
+
+            if (networkError) console.log(`[Network error]: ${networkError}`);
+        },
+      });
 
     const startInterview = new Date("2020-08-27T00:00:00.000Z");
     const endInterview = new Date("2020-09-10T00:00:00.000Z");
@@ -102,14 +126,22 @@ const InterviewsPage = () => {
 
     const createInterviewMutation = (application, addedUsers, startTime) => {
         let emailArray = addedUsers.map(user => {return user.email})
-        console.log("EMAILARRAY: ", emailArray)
-        console.log("APPLICATION ID: ", application[0].id)
-        console.log("Form of input", {application: application[0].id, interviewerEmails: emailArray, start: startTime})
-        createInterview({variables: {input: {application: application[0].id, interviewerEmails: emailArray, start: startTime.toISOString()}}});
+        //console.log("EMAILARRAY: ", emailArray)
+        //console.log("APPLICATION ID: ", application[0]?.id)
+        //console.log("Form of input", {application: application[0]?.id, interviewerEmails: emailArray, start: startTime})
+        setCreateInterviewSuccess(null);
+        setCreateInterviewError(null);
+        createInterview({
+            variables: {input: {application: application[0]?.id, interviewerEmails: emailArray, start: startTime?.toISOString()}},
+        });
     };
 
     return (
         <PageLayout>
+            <div style={{width: "100%", textAlign: "center", fontSize: "2em"}}>
+                { createInterviewError }
+                { data != null ? "The interview was created" : "" }
+            </div>
             <div className="flex-grid-adaptive pt-4 pb-4">
                 <div className="left mx-3" style={{flexBasis:"30%", flexDirection:"column"}}>
                     <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>

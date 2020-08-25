@@ -8,7 +8,7 @@ const AvailableTimeSlot = ({ date, time, timeSelected, selectTime, readOnly }) =
     const [selected, setSelected] = useState(timeSelected);
 
     const selectTimePeriode = () => {
-        setSelected(!selected);
+        //setSelected(!selected);
         selectTime(date, time, selected)
     };
   if (readOnly) {

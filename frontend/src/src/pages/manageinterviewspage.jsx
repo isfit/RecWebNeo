@@ -74,9 +74,13 @@ const InterviewsPage = () => {
 
     const [createInterview, { createInterviewData }] = useMutation(CREATE_INTERVIEW);
   
-    const [getBusyHours, getBusyHoursData] = useMutation(APPLICATION_BUSY_HOURS);
+    const [getBusyHours, busyHoursData] = useMutation(APPLICATION_BUSY_HOURS);
+    /* console.log("BUSY HOURS DATA", busyHoursData?.data?.applicationBusyTimes) */
+    /* console.log("BUSY HOURS HOOK", busyHoursHook) */
 
-    
+    const startInterview = new Date("2020-08-27T00:00:00.000Z");
+    const endInterview = new Date("2020-09-10T00:00:00.000Z");
+
     /* const users = [{firstName:"Torstein", lastName:"Otterlei", sections:["Organizational Resources"], teams:["IT"], email:"torstein@otterlei.no"}] */
     const usersQuery = useQuery(GET_ISFIT_USERS);
     const users = Boolean(applicationsQuery?.data) ? usersQuery?.data?.users?.nodes : [];
@@ -195,11 +199,10 @@ const InterviewsPage = () => {
                             </ScrollList>
                     </div>
                 </div>
-
             </div>
 
             <AvailableTimesForm
-                busyTimes={ [getBusyHoursData] ?? []}
+                busyTimes={busyHoursData?.data?.applicationBusyTimes ?? []}
                 setBusyTimes={busy => {
                     setChosenTime(busy)
                 }}

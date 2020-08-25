@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../stylesheets/components/availableTimesTable.css";
 
 import {ME_BUSY_TIMES} from "../requests/userRequests";
@@ -51,6 +51,15 @@ const AvailableTimesForm = ({busyTimes, setBusyTimes, startDate, endDate, hourDi
     const ReadOnly = readOnly ? true : false;
     const daysName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const [busyTimesUpdated, setBusyTimesUpdated] = useState(busyTimes.slice());
+
+     useEffect(() => {
+        setBusyTimesDict((busyTimes != null && busyTimes.length > 0) ?  getWeeks() : [])
+        console.log(busyTimes);
+    }, [busyTimes]);
+
+    console.log("Kun busyTimes", busyTimes.slice())
+    console.log("busyTimesUpdated HOOK", busyTimesUpdated);
+
 
     Date.prototype.addDays = function(days) {
         var date = new Date(this.valueOf());
@@ -121,7 +130,7 @@ const AvailableTimesForm = ({busyTimes, setBusyTimes, startDate, endDate, hourDi
     } 
     
     const [times] = useState(generateTimePeriodes(hourDiff, firstTimeSlot, lastTimeSlot));
-    const [busyTimesDict] = useState(getWeeks());
+    const [busyTimesDict, setBusyTimesDict] = useState([]);
 
   return(
       <div>

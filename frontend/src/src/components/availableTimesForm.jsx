@@ -50,7 +50,7 @@ const AvailableTimesForm = ({busyTimes, setBusyTimes, startDate, endDate, hourDi
   
     const ReadOnly = readOnly ? true : false;
     const daysName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const [busyTimesUpdated, setBusyTimesUpdated] = useState(busyTimes);
+    const [busyTimesUpdated, setBusyTimesUpdated] = useState(busyTimes.slice());
 
     Date.prototype.addDays = function(days) {
         var date = new Date(this.valueOf());
@@ -92,21 +92,13 @@ const AvailableTimesForm = ({busyTimes, setBusyTimes, startDate, endDate, hourDi
         let dato = new Date(date);
         const hour = parseInt(time.substring(0,2));
         dato.setHours(hour);
-        const busy = busyTimesUpdated;
+        let busy = busyTimesUpdated;
         if (selected) {
-            console.log("Dato:", dato.toString());
             if (!busy.some(x => (new Date(x)).toString() == dato.toString())){
-                //addDate(busy, dato);
-                busy.push(dato);
+                    busy.push(dato);
                 }
         } else {
-            if (busy.some(x => (new Date(x)).toString() == dato.toString())) {
-                const index = busy.indexOf(dato);
-                if (index > -1) {
-                    busy.splice(index, 1);
-                }
-                //removeDate(busy, dato)
-            }
+            busy = busy.filter(x => (new Date(x)).toString() != dato.toString());
         }
         setBusyTimesUpdated(busy);
         setBusyTimes(busy);
@@ -149,9 +141,6 @@ const AvailableTimesForm = ({busyTimes, setBusyTimes, startDate, endDate, hourDi
 
   return(
       <div>
-          <div>
-           { console.log("BUSY TIMES", busyTimes) }
-          </div>
           {
               busyTimesDict.map( days => {
                   return(

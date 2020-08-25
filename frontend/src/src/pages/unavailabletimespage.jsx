@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import PageLayout from './pageLayout';
-import AvailableTimesFom from '../components/availableTimesForm';
+import AvailableTimesForm from '../components/availableTimesForm';
 import ErrorPage from './errorPage';
 
 import { APPLY, EDIT_USER_INFORMATION, ME_BUSY_TIMES} from "../requests/userRequests";
@@ -46,10 +46,9 @@ const UnavailableTimesPage = (props) => {
           <h4 className="page-title">Enter the hours you are busy</h4>
         </div>
         
-        <AvailableTimesFom 
+        <AvailableTimesForm 
           busyTimes={data?.me.busyTime ?? []}
           setBusyTimes={busy => {
-            console.log(busy);
             setUpdatedBusyTimes(busy);
           }}
           startDate = {startInterview}

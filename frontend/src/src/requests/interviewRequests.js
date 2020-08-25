@@ -2,8 +2,10 @@ import { gql } from '@apollo/client';
 
 
 const CREATE_INTERVIEW = gql`
-  mutation CreateInterview($input: CreateInterviewInput) {
-    createInterview(input: $input)
+  mutation CreateInterview($input: CreateInterviewInput){
+    createInterview(input: $input) {
+        id
+    }
   }
 `;
 

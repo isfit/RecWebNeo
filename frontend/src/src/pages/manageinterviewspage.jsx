@@ -104,7 +104,8 @@ const InterviewsPage = () => {
         let emailArray = addedUsers.map(user => {return user.email})
         console.log("EMAILARRAY: ", emailArray)
         console.log("APPLICATION ID: ", application[0].id)
-        createInterview({variables: {application: application.id, interviewerEmails: emailArray, start: startTime}});
+        console.log("Form of input", {application: application[0].id, interviewerEmails: emailArray, start: startTime})
+        createInterview({variables: {input: {application: application[0].id, interviewerEmails: emailArray, start: startTime.toISOString()}}});
     };
 
     return (

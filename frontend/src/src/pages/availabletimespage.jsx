@@ -1,6 +1,6 @@
 import React from "react";
 import PageLayout from './pageLayout';
-import AvailableTimesFom from '../components/availableTimesForm';
+import AvailableTimesForm from '../components/availableTimesForm';
 import ErrorPage from './errorPage';
 
 import { APPLY } from "../requests/userRequests";
@@ -13,7 +13,13 @@ const AvailableTimesPage = (props) => {
     onError: () => {},
   });
 
-  console.log(error);
+  const startInterview = new Date("2020-08-27T00:00:00.000Z");
+  const endInterview = new Date("2020-09-10T00:00:00.000Z");
+
+
+  const updateStoredBusyTimes = (busy) => {
+    localStorage.setItem("busyTimes", JSON.stringify(busy));
+  }
 
   const getBusyTimes = () => {
       const busy = JSON.parse(localStorage.getItem("busyTimes") || "[]");
@@ -47,6 +53,7 @@ const AvailableTimesPage = (props) => {
   };
 
   const submitApplication = () => {
+    console.log("These are the saved times:", getBusyTimes());
       updateRegistration(variableData);
     };
 
@@ -104,7 +111,19 @@ const AvailableTimesPage = (props) => {
           <h4 className="page-title">Enter the hours you are busy</h4>
         </div>
         
-        <AvailableTimesFom />
+        <AvailableTimesForm 
+          busyTimes={getBusyTimes() ?? []}
+          setBusyTimes={busy => {
+            updateStoredBusyTimes(busy)
+          }}
+          startDate = {startInterview}
+          endDate = {endInterview}
+          hourDiff={2}
+          firstTimeSlot={8}
+          lastTimeSlot={20}
+          readOnly = { false }
+          selectable = { true }
+         />
 
         <div className="row">
           <div className="col mb-3">
@@ -117,7 +136,7 @@ const AvailableTimesPage = (props) => {
             </a>
             <a
               type="button"
-              className="btn btn-outline-success float-right"
+              className="btn btn-continue float-right"
               onClick={() => submitApplication()}
             >
               Continue

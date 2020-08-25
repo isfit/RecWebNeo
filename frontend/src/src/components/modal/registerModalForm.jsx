@@ -10,6 +10,7 @@ const RegisterModalForm = () => {
     onError: () => {},
   });
   const [emailInput, setEmailInput] = useState("");
+  const [phonenumberInput, setPhonenumberInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [firstNameInput, setFirstNameInput] = useState("");
   const [lastNameInput, setLastNameInput] = useState("");
@@ -21,6 +22,7 @@ const RegisterModalForm = () => {
       variables: {
         input: {
           email: emailInput,
+          phoneNumber: phonenumberInput,
           firstName: firstNameInput,
           lastName: lastNameInput,
           password: passwordInput,
@@ -47,6 +49,19 @@ const RegisterModalForm = () => {
               value={emailInput}
               onChange={(event) => {
                 setEmailInput(event.target.value);
+              }}
+            ></input>
+          </div>
+        </div>
+        <div className="row d-flex justify-content-center mt-5">
+          <div className="container w-75">
+            <span className="ml-1">Phone Number</span>
+            <input
+              className="navbar-search"
+              placeholder="Type your phonenumber"
+              value={phonenumberInput}
+              onChange={(event) => {
+                setPhonenumberInput(event.target.value);
               }}
             ></input>
           </div>

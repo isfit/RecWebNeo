@@ -1,9 +1,8 @@
 import React, { useState, Component } from 'react';
-import PositionChoicBox from '../components/positionChoiceBox';
+import PositionChoiceBoxReadOnly from '../components/positionChoiceBoxReadOnly';
 import PageLayout from './pageLayout';
 import ErrorPage from './errorPage';
-import AvailableTimesFom from '../components/availableTimesForm';
-
+import AvailableTimesForm from '../components/availableTimesForm';
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -16,7 +15,13 @@ const MyApplicationPage = (props) => {
   const [prioritized, setPrioritized] = useState(localStorage.getItem("prioritized") || true);
   const [otherPositions, setOtherPositions] = useState(localStorage.getItem("otherPositions") || "OnlyPositions");
 
-    const { refetch, loading, error, data } = useQuery(MYAPPLICATION);
+  const { refetch, loading, error, data } = useQuery(MYAPPLICATION);
+  const PositionsArePrioritized = data?.myApplication?.prioritized;
+  const InterestedInOtherPositionsString = data?.myApplication?.interest ;
+  const startInterview = new Date("2020-08-27T00:00:00.000Z");
+  const endInterview = new Date("2020-09-10T00:00:00.000Z");
+
+  
 
     if (loading) {  
         return (
@@ -39,9 +44,9 @@ const MyApplicationPage = (props) => {
     if( data.myApplication == null ) {
       return(
         <PageLayout>
-        <div>
-          You dont have an application registered.
-        </div>
+          <div>
+            You dont have an application registered.
+          </div>
         </PageLayout>
       )
     }
@@ -53,26 +58,15 @@ const MyApplicationPage = (props) => {
             <h4 className="page-title">My application</h4>
           </div>
           <div className="row">
-            <div className="col">
-             {/*  <textarea readOnly="true" className="w-100 h-100" placeholder="My application text" type="text"> {data.myApplication.applicationText} </textarea> */}
-            </div>
-            <div className="col col-lg-4">
-               {/*  <PositionChoiceBox positions={data.myApplication.positions} /> */}
-            </div>
-          </div>
-          <div className="row">
             <div className="col mt-3">
               
             <div className="container">
-          <div className="page-header pt-3 mb-4">
-            <h4 className="page-title">Enter application text</h4>
-          </div>
           <div className="row">
             <div className="col">
-              <textarea className="w-100 h-100" placeholder="Please write a short application about why you would like to apply for these positions..." value={text} onChange={e => changeText( e.target.value )} type="text" />
+            <textarea className="w-100 h-100" readOnly={true} placeholder="You application text seems empty." type="text" value={data?.myApplication.applicationText}></textarea>
             </div>
             <div className="col col-lg-4">
-              <PositionChoicBox />
+              <PositionChoiceBoxReadOnly positions={data?.myApplication.positions.map( pos => pos.value)} title="My Positions"/>
             </div>
           </div>
           <div className="row">
@@ -80,37 +74,52 @@ const MyApplicationPage = (props) => {
 
               <div className="card mb-2 w-100">
                 <div className="ml-3 mt-3 mr-4">
-                  <p>We understand that it might be hard to prioritize the positons you want to apply for. By checking the box below, we know that you don't have any specific preference between the positions you have entered. We can talk about which of the positions suits you best during the interview. </p>
                   <div className="row pl-3 mb-4">
-                    <input type="checkbox" checked={prioritized} onChange={() => setPrioritized(!prioritized)} />
+                    <input type="checkbox" checked={PositionsArePrioritized} readOnly={true}/>
                     <h6 className="page-title ml-2 mb-0">The positions in my application are prioritized</h6>
                   </div>
+                  { PositionsArePrioritized ? <p>You have entered that the prioritization of the positions in your application matter.</p> : <p>You have entered that the prioritization of your positions are not that important.</p> }
                 </div>
               </div>
 
-              <div className="card w-100">
+              <div className="card w-100 mb-3">
                 <div className="ml-3 mt-3 mr-4">
-                  <p>During the application process, we might discover that you are a good fit for a different position than those you have applied for. Would you be open to get an offer for a position different from the ones you have entered? </p>
                   <div className="row pl-3">
-                    <input type="radio" checked={otherPositions == "OnlyPositions"} onChange={() => setOtherPositions("OnlyPositions")} />
+                    <input type="radio" checked={InterestedInOtherPositionsString === "OnlyPositions"} readOnly={true} />
                     <h6 className="page-title ml-2 mb-0">I am only interested in the positions I have entered</h6>
                   </div>
                   <div className="row pl-3">
-                    <input type="radio" checked={otherPositions == "Same"} onChange={() => setOtherPositions("Same")} />
+                    <input type="radio" checked={InterestedInOtherPositionsString === "Same"} readOnly={true} />
                     <h6 className="page-title ml-2 mb-0">I am open to other postions within the same genre of the positions I have entered</h6>
                   </div>
                   <div className="row pl-3 mb-4">
-                    <input type="radio" checked={otherPositions == "open"} onChange={() => setOtherPositions("open")} />
+                    <input type="radio" checked={InterestedInOtherPositionsString === "open"} readOnly={true} />
                     <h6 className="page-title ml-2 mb-0">I am open to any other position in ISFiT, regardless of the positions I have entered</h6>
                   </div>
+                  {InterestedInOtherPositionsString === "OnlyPositions" ? <p>You have entered that you are only interested in the positions you have entered above.</p> : null} 
+                  {InterestedInOtherPositionsString === "Same" ? <p>You have entered that you are also interested in positions within the same genre as those you have entered above.</p> : null} 
+                  {InterestedInOtherPositionsString === "open" ? <p>This means you have entered that you are open to other positions in ISFiT.</p> : null} 
                 </div>
               </div>
-
+              <h5>Your Schedule</h5>
+              { console.log("Dideli da",data?.myApplication?.available) }
+              <AvailableTimesForm 
+                busyTimes={data?.myApplication?.available ?? []}
+                setBusyTimes={busy => {
+                  console.log("Hello there");
+                }}
+                startDate = {startInterview}
+                endDate = {endInterview}
+                hourDiff={2}
+                firstTimeSlot={8}
+                lastTimeSlot={20}
+                readOnly = { true }
+                selectable = { true }
+              />
             </div>
           </div>
         
-        </div>
-
+            </div>
             </div>
           </div>
         </div>

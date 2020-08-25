@@ -19,7 +19,7 @@ const UserLogin = (state = initialState, action) => {
         };
         case LOG_OUT_USER: {
             const { userLogedIn } = action.payload;
-            localStorage.setItem("AuthorizationKey", "")
+            localStorage.clear()
             return {
                 ...state,
                 userLogedIn: userLogedIn,

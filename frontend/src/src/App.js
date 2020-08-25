@@ -9,6 +9,15 @@ import ApplicationTextPage from "./pages/applicationtextpage";
 import AvailableTimesPage from "./pages/availabletimespage";
 import MyProfilePage from "./pages/myprofilepage";
 import MyApplicationPage from "./pages/myapplicationpage";
+import ApplicationPage from "./pages/showapplicationspage";
+import UserAdminPage from "./pages/useradminpage";
+import InterviewsPage from "./pages/manageinterviewspage";
+import MyInterviewsPage from "./pages/myinterviewspage";
+import AllInterviewsPage from "./pages/allinterviewspage";
+import Unavailabletimes from "./pages/unavailabletimespage";
+
+
+
 
 import { ApolloProvider, ApolloClient, HttpLink, ApolloLink, InMemoryCache, concat } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
@@ -28,6 +37,8 @@ import {
   faArrowUp,
   faArrowDown,
   faTrashAlt,
+  faFileAlt,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -40,6 +51,8 @@ library.add(
   faArrowUp,
   faArrowDown,
   faTrashAlt,
+  faFileAlt,
+  faUsers,
 );
 
 const httpLink = new HttpLink({ uri: 'https://recruitment.isfit.org:5000/'});
@@ -79,6 +92,10 @@ const App = () => {
               {" "}
               <AvailableTimesPage />{" "}
             </Route>
+            <Route path="/applications">
+              {" "}
+              <ApplicationPage />{" "}
+            </Route>
             <Route path="/myprofile">
               {" "}
               <MyProfilePage />{" "}
@@ -86,6 +103,26 @@ const App = () => {
             <Route path="/myapplication">
               {" "}
               <MyApplicationPage />{" "}
+            </Route>
+            <Route path="/useradminpage">
+              {" "}
+              <UserAdminPage />{" "}
+            </Route>
+            <Route path="/allinterviews">
+              {" "}
+              <AllInterviewsPage />{" "}
+            </Route>
+            <Route path="/myinterviews">
+              {" "}
+              <MyInterviewsPage />{" "}
+            </Route>
+            <Route path="/manageinterviews">
+              {" "}
+              <InterviewsPage />{" "}
+            </Route>
+            <Route path="/unavailabletimes">
+              {" "}
+              <Unavailabletimes />{" "}
             </Route>
             <Route path="/">
               {" "}

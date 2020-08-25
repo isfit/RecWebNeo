@@ -16,6 +16,7 @@ const ErrorPage = ( { errorMessage, errorType, refetch, userLogedIn, logOutUser,
     return(
         <div>
             <h1>ISFIT 2021</h1>
+            <p>{errorMessage}</p>
             <p> You are not authorized to access this resource. </p>
             <p> Please go pack to the front page and sign in :) </p>
             <button onClick={() => something() }>Back</button>

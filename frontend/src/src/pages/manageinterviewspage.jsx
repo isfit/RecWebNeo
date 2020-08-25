@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import PageLayout from './pageLayout';
 import ScrollList from '../components/scrollList';
 
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery,useLazyQuery, useMutation } from "@apollo/client";
 
 import AvailableTimesForm from '../components/availableTimesForm';
-import { CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW } from "../requests/interviewRequests";
+import { CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW, APPLICATION_BUSY_HOURS } from "../requests/interviewRequests";
 import { GET_ISFIT_USERS } from "../requests/userRequests";
 import { onError } from "@apollo/client/link/error";
 
@@ -84,6 +84,10 @@ const InterviewsPage = () => {
     const applicationsQuery = useQuery(GET_APPLICATIONS_WITHOUT_INTERVIEW);
     const applicationArray = Boolean(applicationsQuery?.data) ? applicationsQuery?.data?.applicationWithoutInterview?.nodes : [] ;
 
+  
+    const [getBusyHours, getBusyHoursData] = useMutation(APPLICATION_BUSY_HOURS);
+
+    
     const [createInterviewSuccess, setCreateInterviewSuccess] = useState(null);
     const [createInterviewError, setCreateInterviewError] = useState(null);
 
@@ -135,6 +139,13 @@ const InterviewsPage = () => {
             variables: {input: {application: application[0]?.id, interviewerEmails: emailArray, start: startTime?.toISOString()}},
         });
     };
+
+    const getBusyHoursMutation = (addedApplication, addedUsers) => {
+        let emailArray = addedUsers.map(user => {return user.email});
+        getBusyHours({variables: { input: {application: addedApplication[0].id, interviewerEmail: emailArray}}});
+    };  
+
+
 
     return (
         <PageLayout>
@@ -195,7 +206,7 @@ const InterviewsPage = () => {
                         <h5>Interview time: { chosenTime?.toString() ?? "Select a time from the table" } </h5>
 
                     </div>
-                    <button className="btn btn-secondary mt-1 mr-2">See possible hours</button>
+                    <button className="btn btn-secondary mt-1 mr-2" onClick={() => getBusyHoursMutation(addedApplication, addedUsers)}>See possible hours</button>
                     <button className="btn btn-success mt-1 mr-2 float-right" onClick={() => createInterviewMutation(addedApplication, addedUsers, chosenTime)}>Confirm interview</button>
                 </div>
                 <div className="right mx-3" style={{flexBasis:"30%", flexDirection:"column"}}>
@@ -220,8 +231,9 @@ const InterviewsPage = () => {
                 </div>
 
             </div>
+
             <AvailableTimesForm
-                busyTimes={ [] ?? []}
+                busyTimes={ [getBusyHoursData] ?? []}
                 setBusyTimes={busy => {
                     setChosenTime(busy)
                 }}

@@ -10,36 +10,31 @@ import { useQuery, useMutation } from "@apollo/client";
 const UnavailableTimesPage = (props) => {
 
   const [editUserInformation, { data, error, loading }] = useMutation(EDIT_USER_INFORMATION);
-  const busyTimes = useQuery(ME_BUSY_TIMES);
+  const {busyTimesData, busyTimesError, busyTimesLoading} = useQuery(ME_BUSY_TIMES);
+  const [busyTimes, setBusyTimes] = useState(data ?? ( busyTimesData ?? [] ));
 
-  console.log(error);
-
-  const getBusyTimes = () => {
-      const busy = busyTimes.data?.me.busyTime;
-      //const busy = JSON.parse(localStorage.getItem("busyTimes") || "[]");
-      console.log("Buuusy", busy)
-      //let busyTime = [];
-      //busy.map(x => busyTime.push(new Date(x)));
-      return busy;
-  };
-  //const variableData = (busyTimesArray) => {
-    //variables: {
-      //    "input": {
-      //    "busyTime": busyTimesArray
-     // }
-   // }
- // };
-
-  const submitUnavailableTimes = () => {
-      let busyTimesData = getBusyTimes();
-      editUserInformation({variables: {"input": {"busyTime": busyTimesData}}});
-    };
-
-  if (loading) {
-    return (
-      <div>Loading</div>
+  // Loading sceen while loading new data!
+  if (busyTimesLoading) {
+    return(
+      <div>
+        Loading
+      </div>
     )
   }
+
+  if (error || busyTimesError) {
+    return (
+      <div>
+        There occured an error. Please contact the Recruitment web team, to see whan can be done.
+      </div>
+    )
+  }
+
+
+
+  const submitUnavailableTimes = () => {
+      editUserInformation({variables: {"input": {"busyTime": busyTimes}}});
+  };
 
   return (
     <PageLayout>

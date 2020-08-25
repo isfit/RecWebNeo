@@ -77,7 +77,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
 
     return (
       <div className="header py-1 border-bottom py-2">
-        <div className="ml-4 w-100">
+        <div className="ml-4">
           <div className="flex-grid" style={{alignItems:"center"}}>
             <div>
                 <a className="header-brand" href="/">

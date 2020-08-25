@@ -15,10 +15,13 @@ const MyApplicationPage = (props) => {
   const [prioritized, setPrioritized] = useState(localStorage.getItem("prioritized") || true);
   const [otherPositions, setOtherPositions] = useState(localStorage.getItem("otherPositions") || "OnlyPositions");
 
-    const { refetch, loading, error, data } = useQuery(MYAPPLICATION);
-    const PositionsArePrioritized = data?.myApplication?.prioritized;
-    const InterestedInOtherPositionsString = data?.myApplication?.interest ;
-    const HoursNotAvailable = data?.myApplication?.available
+  const { refetch, loading, error, data } = useQuery(MYAPPLICATION);
+  const PositionsArePrioritized = data?.myApplication?.prioritized;
+  const InterestedInOtherPositionsString = data?.myApplication?.interest ;
+  const startInterview = new Date("2020-08-27T00:00:00.000Z");
+  const endInterview = new Date("2020-09-10T00:00:00.000Z");
+
+  
 
     if (loading) {  
         return (
@@ -99,7 +102,19 @@ const MyApplicationPage = (props) => {
                 </div>
               </div>
               <h5>Your Schedule</h5>
-              <AvailableTimesForm busyTimes={HoursNotAvailable} readOnly={true}/>
+              { console.log("Dideli da",data?.myApplication?.available) }
+              <AvailableTimesForm 
+                busyTimes={data?.myApplication?.available ?? []}
+                setBusyTimes={busy => {
+                  console.log("Hello there");
+                }}
+                startDate = {startInterview}
+                endDate = {endInterview}
+                hourDiff={2}
+                firstTimeSlot={8}
+                lastTimeSlot={20}
+                readOnly = { true }
+              />
             </div>
           </div>
         

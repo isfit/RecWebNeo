@@ -26,6 +26,15 @@ const ME = gql`
   }
 `;
 
+const ME_BUSY_TIMES = gql`
+  query me {
+    me {
+      busyTime
+    }
+  }
+  
+`;
+
 const REGISTER = gql`
   mutation registerUser($input: RegisterUserInput) {
     registerUser(registerUser: $input)
@@ -141,5 +150,14 @@ const UPDATE_USER_PASSWORD = gql`
   }
 `;
 
+const EDIT_USER_INFORMATION = gql`
+  mutation EditUserInformation($input: UpdateUserInput!) {
+    editUserInformation(input: $input) {
+      id,
+      email 
+    }
+  }
+  `;
 
-export { LOGIN, ME, ME_NAME, REGISTER, APPLY, MYAPPLICATION, GET_ALL_USERS, GET_SECTIONS, SET_USER_ROLE, SET_SECTIONS_TO_USER, SET_TEAMS_TO_USER, UPDATE_MY_PASSWORD, UPDATE_USER_PASSWORD, GET_ISFIT_USERS };
+
+export { LOGIN, ME, ME_NAME, REGISTER, APPLY, MYAPPLICATION, GET_ALL_USERS, GET_SECTIONS, SET_USER_ROLE, SET_SECTIONS_TO_USER, SET_TEAMS_TO_USER, UPDATE_MY_PASSWORD, UPDATE_USER_PASSWORD, EDIT_USER_INFORMATION, ME_BUSY_TIMES, GET_ISFIT_USERS };

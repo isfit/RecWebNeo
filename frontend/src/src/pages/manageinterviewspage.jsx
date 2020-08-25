@@ -73,7 +73,7 @@ const InterviewsPage = () => {
     const applicationArray = Boolean(applicationsQuery?.data) ? applicationsQuery?.data?.applicationWithoutInterview?.nodes : [] ;
 
     const [createInterview, { createInterviewData }] = useMutation(CREATE_INTERVIEW);
-
+  
     const [getBusyHours, getBusyHoursData] = useMutation(APPLICATION_BUSY_HOURS);
 
     
@@ -106,6 +106,7 @@ const InterviewsPage = () => {
         /* console.log("EMAILARRAY: ", emailArray)
         console.log("APPLICATION ID: ", application[0].id) */
         /* createInterview({variables: {application: application.id, interviewerEmails: emailArray, start: startTime}}); */
+
     };
 
 
@@ -168,8 +169,7 @@ const InterviewsPage = () => {
                                 )
                             }
                         )}
-
-                        <h5>Time: 25</h5>
+                        <h5>Interview time: { chosenTime?.toString() ?? "Select a time from the table" } </h5>
 
                     </div>
                     <button className="btn btn-secondary mt-1 mr-2" onClick={() => getBusyHoursMutation(addedApplication, addedUsers)}>See possible hours</button>
@@ -197,7 +197,20 @@ const InterviewsPage = () => {
                 </div>
 
             </div>
-            <AvailableTimesForm getBusyHoursData/>
+
+            <AvailableTimesForm
+                busyTimes={ [getBusyHoursData] ?? []}
+                setBusyTimes={busy => {
+                    setChosenTime(busy)
+                }}
+                getTime={true}
+                startDate = {startInterview}
+                endDate = {endInterview}
+                hourDiff={1}
+                firstTimeSlot={8}
+                lastTimeSlot={20}
+                readOnly = { false }
+            />
         </PageLayout>
 
     );

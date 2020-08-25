@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "../stylesheets/components/availableTimesTable.css";
 
+import {ME_BUSY_TIMES} from "../requests/userRequests";
+import { useQuery } from "@apollo/client";
+
 const AvailableTimeSlot = ({ date, time, timeSelected, selectTime, readOnly }) => {
     const [selected, setSelected] = useState(timeSelected);
 
@@ -41,13 +44,13 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
 };
 
 
-const AvailableTimesForm = (props) => {
-    //console.log("Busy storage",localStorage.getItem("busyTimes"));
-    //localStorage.removeItem("busyTimes");
-  const startInterview = new Date("2020-08-27T00:00:00.000Z");
-  const endInterview = new Date("2020-09-10T00:00:00.000Z");
-  //localStorage.setItem("busyTimes",);
-  const ReadOnly = props.readOnly ? true : false;
+
+
+const AvailableTimesForm = ({busyTimes, setBusyTimes, startDate, endDate, hourDiff, firstTimeSlot, lastTimeSlot, readOnly, getTime}) => {
+  
+    const ReadOnly = readOnly ? true : false;
+    const daysName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const [busyTimesUpdated, setBusyTimesUpdated] = useState(busyTimes.slice());
 
     Date.prototype.addDays = function(days) {
         var date = new Date(this.valueOf());
@@ -66,7 +69,7 @@ const AvailableTimesForm = (props) => {
     }
 
     const getWeeks = () => {
-        const dates = getDates(startInterview, endInterview);
+        const dates = getDates(startDate, endDate);
         const weeks = new Array();
         let currentWeek = new Array();
         dates.map(day => {
@@ -85,32 +88,40 @@ const AvailableTimesForm = (props) => {
     }
 
     const selectTime = (date, time, selected, weekIndex) => {
-
         let dato = new Date(date);
         const hour = parseInt(time.substring(0,2));
         dato.setHours(hour);
-        const busy = busyTimes;
-        if (selected) {
-            console.log("Dato:", dato.toString());
-            if (!busy.some(x => (new Date(x)).toString() == dato.toString())){
-                busy.push(dato);
-            }
-        } else{
-            if (busy.some(x => (new Date(x)).toString() == dato.toString())) {
-                busy.pop(dato);
-            }
+        if (getTime != undefined && getTime) {
+            setBusyTimesUpdated([dato]);
+            setBusyTimes(dato);
+            return dato;
         }
-        localStorage.setItem("busyTimes", JSON.stringify(busy));
+        let busy = busyTimesUpdated;
+        if (selected) {
+            if (!busy.some(x => (new Date(x)).toString() == dato.toString())){
+                    busy.push(dato);
+                }
+        } else {
+            busy = busy.filter(x => (new Date(x)).toString() != dato.toString());
+        }
+        setBusyTimesUpdated(busy);
         setBusyTimes(busy);
     }
 
-  const times = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00"];
-  const daysName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-  const [busyTimes, setBusyTimes] = useState(JSON.parse(localStorage.getItem("busyTimes") || "[]"));
-  const [busyTimesDict, setBusyTimesDict] = useState(getWeeks());
-
-
+    const generateTimePeriodes = (hourDiff, firstTimeSlot, lastTimeSlot) => {
+        let times = [];
+        let timeCounter = firstTimeSlot;
+        while (timeCounter <= lastTimeSlot)
+        {
+            times.push( (timeCounter < 10 ?  "0" + String(timeCounter) : String(timeCounter) ) + ":00" );
+            timeCounter += hourDiff;
+        }
+        return times;
+        
+    } 
+    
+    const [times] = useState(generateTimePeriodes(hourDiff, firstTimeSlot, lastTimeSlot));
+    const [busyTimesDict] = useState(getWeeks());
 
   return(
       <div>
@@ -144,7 +155,7 @@ const AvailableTimesForm = (props) => {
                                         time={ times[index] } 
                                         timePeriode={timePeriode} 
                                         days={days} 
-                                        timeSelected={ Boolean(props.busyTimes) ? props.busyTimes : busyTimes }
+                                        timeSelected={ busyTimes }
                                         selectTime={(date, time, selected) => selectTime(date, time, !selected)}
                                         readOnly = {ReadOnly}
                                     />

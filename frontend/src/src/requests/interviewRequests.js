@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 
 const CREATE_INTERVIEW = gql`
   mutation CreateInterview($input: CreateInterviewInput) {
-    createInterview(input: $input)
+    CreateInterview(input: $input)
   }
 `;
 
@@ -125,7 +125,13 @@ const ALL_INTERVIEWS = gql`
     }
 `;
 
+const APPLICATION_BUSY_HOURS = gql`
+    query applicationBusyTimes($input: ApplicationBusyTimesInput) {
+        applicationBusyTimes(input: $input)
+      }
+
+`;
 
 
 
-export {CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW,MY_INTERVIEWS,ALL_INTERVIEWS}
+export {CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW,MY_INTERVIEWS,ALL_INTERVIEWS,APPLICATION_BUSY_HOURS}

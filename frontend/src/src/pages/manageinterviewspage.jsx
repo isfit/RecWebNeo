@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import PageLayout from './pageLayout';
 import ScrollList from '../components/scrollList';
 
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery,useLazyQuery, useMutation } from "@apollo/client";
 
 import AvailableTimesForm from '../components/availableTimesForm';
-import { CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW } from "../requests/interviewRequests";
+import { CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW, APPLICATION_BUSY_HOURS } from "../requests/interviewRequests";
 import { GET_ISFIT_USERS } from "../requests/userRequests";
 
 
@@ -63,6 +63,17 @@ const UserEntry = (props) => {
 };
 
 
+function BusyHoursQuery({addedApplication, addedUsers}) {
+    let emailArray = addedUsers.map(user => {return user.email})
+
+    console.log("EMAILARRAY: ", emailArray)
+    console.log("APPLICATION ID: ", addedApplication[0].id)
+    const { called, loading, data } = useQuery(APPLICATION_BUSY_HOURS, {variables: {application: addedApplication[0].id, interviewerEmail: emailArray}});
+    console.log("RETURNDATA", data)
+    return data
+};
+
+
 const InterviewsPage = () => {
 
     const [addedUsers, setAddedUsers] = useState([]);
@@ -99,10 +110,17 @@ const InterviewsPage = () => {
 
     const createInterviewMutation = (application, addedUsers, startTime) => {
         let emailArray = addedUsers.map(user => {return user.email})
-        console.log("EMAILARRAY: ", emailArray)
-        console.log("APPLICATION ID: ", application[0].id)
+
+        /* console.log("EMAILARRAY: ", emailArray)
+        console.log("APPLICATION ID: ", application[0].id) */
         /* createInterview({variables: {application: application.id, interviewerEmails: emailArray, start: startTime}}); */
     };
+
+    /* function myFunction(application, addedUsers){
+        const returnData = BusyHoursQuery(application, addedUsers);
+        console.log("RETURNDATA", returnData)
+    } */
+
 
     return (
         <PageLayout>
@@ -160,7 +178,7 @@ const InterviewsPage = () => {
                         <h5>Time: 25</h5>
 
                     </div>
-                    <button className="btn btn-secondary mt-1 mr-2">See possible hours</button>
+                    <button className="btn btn-secondary mt-1 mr-2" onClick={() => BusyHoursQuery({addedApplication, addedUsers})}>See possible hours</button>
                     <button className="btn btn-success mt-1 mr-2 float-right" onClick={() => createInterviewMutation(addedApplication, addedUsers, chosenTime)}>Confirm interview</button>
                 </div>
                 <div className="right mx-3" style={{flexBasis:"30%", flexDirection:"column"}}>

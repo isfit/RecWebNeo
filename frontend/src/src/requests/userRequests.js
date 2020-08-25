@@ -67,6 +67,7 @@ const GET_ALL_USERS = gql`
         firstName
         lastName
         email
+        roles
         sections {
           name
         }

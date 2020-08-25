@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import PageLayout from './pageLayout';
 import AvailableTimesFom from '../components/availableTimesForm';
 import ErrorPage from './errorPage';
@@ -9,12 +9,15 @@ import { useQuery, useMutation } from "@apollo/client";
 
 const UnavailableTimesPage = (props) => {
 
-  const [editUserInformation, { data, error, loading }] = useMutation(EDIT_USER_INFORMATION);
-  const {busyTimesData, busyTimesError, busyTimesLoading} = useQuery(ME_BUSY_TIMES);
-  const [busyTimes, setBusyTimes] = useState(data ?? ( busyTimesData ?? [] ));
+  const [editUserInformation] = useMutation(EDIT_USER_INFORMATION);
+  const {data, error, loading} = useQuery(ME_BUSY_TIMES);
+  const [updatedBusyTimes, setUpdatedBusyTimes] = useState(data?.me.busyTime ?? []);
+  const startInterview = new Date("2020-08-27T00:00:00.000Z");
+  const endInterview = new Date("2020-09-10T00:00:00.000Z");
 
+  console.log(data, error, loading);
   // Loading sceen while loading new data!
-  if (busyTimesLoading) {
+  if (loading) {
     return(
       <div>
         Loading
@@ -22,7 +25,7 @@ const UnavailableTimesPage = (props) => {
     )
   }
 
-  if (error || busyTimesError) {
+  if (error) {
     return (
       <div>
         There occured an error. Please contact the Recruitment web team, to see whan can be done.
@@ -33,7 +36,7 @@ const UnavailableTimesPage = (props) => {
 
 
   const submitUnavailableTimes = () => {
-      editUserInformation({variables: {"input": {"busyTime": busyTimes}}});
+      editUserInformation({variables: {"input": {"busyTime": updatedBusyTimes == null || updatedBusyTimes.length == 0 ? data?.me.busyTime ?? [] : updatedBusyTimes }}});
   };
 
   return (
@@ -44,12 +47,17 @@ const UnavailableTimesPage = (props) => {
         </div>
         
         <AvailableTimesFom 
-        data = {
-            {hours: "everyHour",
-            busyTimes: getBusyTimes()
-        }
-
-        }
+          busyTimes={data?.me.busyTime ?? []}
+          setBusyTimes={busy => {
+            console.log(busy);
+            setUpdatedBusyTimes(busy);
+          }}
+          startDate = {startInterview}
+          endDate = {endInterview}
+          hourDiff={1}
+          firstTimeSlot={8}
+          lastTimeSlot={20}
+          readOnly = { false }
          />
 
         <div className="row">

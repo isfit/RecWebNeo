@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import PageLayout from './pageLayout';
 import ScrollList from '../components/scrollList';
 
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery,useLazyQuery, useMutation } from "@apollo/client";
 
 import AvailableTimesForm from '../components/availableTimesForm';
-import { CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW } from "../requests/interviewRequests";
+import { CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW, APPLICATION_BUSY_HOURS } from "../requests/interviewRequests";
 import { GET_ISFIT_USERS } from "../requests/userRequests";
 
 
@@ -73,9 +73,9 @@ const InterviewsPage = () => {
     const applicationArray = Boolean(applicationsQuery?.data) ? applicationsQuery?.data?.applicationWithoutInterview?.nodes : [] ;
 
     const [createInterview, { createInterviewData }] = useMutation(CREATE_INTERVIEW);
+  
+    const [getBusyHours, getBusyHoursData] = useMutation(APPLICATION_BUSY_HOURS);
 
-    const startInterview = new Date("2020-08-27T00:00:00.000Z");
-    const endInterview = new Date("2020-09-10T00:00:00.000Z");
     
     /* const users = [{firstName:"Torstein", lastName:"Otterlei", sections:["Organizational Resources"], teams:["IT"], email:"torstein@otterlei.no"}] */
     const usersQuery = useQuery(GET_ISFIT_USERS);
@@ -102,11 +102,20 @@ const InterviewsPage = () => {
 
     const createInterviewMutation = (application, addedUsers, startTime) => {
         let emailArray = addedUsers.map(user => {return user.email})
-        console.log("EMAILARRAY: ", emailArray)
-        console.log("APPLICATION ID: ", application[0].id)
-        console.log("Form of input", {application: application[0].id, interviewerEmails: emailArray, start: startTime})
-        createInterview({variables: {input: {application: application[0].id, interviewerEmails: emailArray, start: startTime.toISOString()}}});
+
+        /* console.log("EMAILARRAY: ", emailArray)
+        console.log("APPLICATION ID: ", application[0].id) */
+        /* createInterview({variables: {application: application.id, interviewerEmails: emailArray, start: startTime}}); */
+
     };
+
+
+    const getBusyHoursMutation = (addedApplication, addedUsers) => {
+        let emailArray = addedUsers.map(user => {return user.email});
+        getBusyHours({variables: { input: {application: addedApplication[0].id, interviewerEmail: emailArray}}});
+    };  
+
+
 
     return (
         <PageLayout>
@@ -163,7 +172,7 @@ const InterviewsPage = () => {
                         <h5>Interview time: { chosenTime?.toString() ?? "Select a time from the table" } </h5>
 
                     </div>
-                    <button className="btn btn-secondary mt-1 mr-2">See possible hours</button>
+                    <button className="btn btn-secondary mt-1 mr-2" onClick={() => getBusyHoursMutation(addedApplication, addedUsers)}>See possible hours</button>
                     <button className="btn btn-success mt-1 mr-2 float-right" onClick={() => createInterviewMutation(addedApplication, addedUsers, chosenTime)}>Confirm interview</button>
                 </div>
                 <div className="right mx-3" style={{flexBasis:"30%", flexDirection:"column"}}>
@@ -188,8 +197,9 @@ const InterviewsPage = () => {
                 </div>
 
             </div>
+
             <AvailableTimesForm
-                busyTimes={ [] ?? []}
+                busyTimes={ [getBusyHoursData] ?? []}
                 setBusyTimes={busy => {
                     setChosenTime(busy)
                 }}

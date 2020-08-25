@@ -13,6 +13,7 @@ import ApplicationPage from "./pages/showapplicationspage";
 import UserAdminPage from "./pages/useradminpage";
 import InterviewsPage from "./pages/manageinterviewspage";
 import MyInterviewsPage from "./pages/myinterviewspage";
+import AllInterviewsPage from "./pages/allinterviewspage";
 import Unavailabletimes from "./pages/unavailabletimespage";
 
 
@@ -106,6 +107,10 @@ const App = () => {
             <Route path="/useradminpage">
               {" "}
               <UserAdminPage />{" "}
+            </Route>
+            <Route path="/allinterviews">
+              {" "}
+              <AllInterviewsPage />{" "}
             </Route>
             <Route path="/myinterviews">
               {" "}

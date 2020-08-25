@@ -6,6 +6,7 @@ const CREATE_INTERVIEW = gql`
     createInterview(input: $input) {
         id
     }
+
   }
 `;
 
@@ -85,7 +86,55 @@ const MY_INTERVIEWS = gql`
     }
 `;
 
+const ALL_INTERVIEWS = gql`
+    query interviews {
+        interviews {
+            nodes {
+                id
+                start
+                interviewers {
+                    user {
+                        firstName
+                        lastName
+                        email
+                    }
+                }
+                application {
+                    positions {
+                        key
+                        value {
+                            name
+                            section {
+                                name
+                            }
+                            team {
+                                name
+                            }
+                        }
+                    }
+                }
+                applicant {
+                    accepted
+                    id
+                    user {
+                        firstName
+                        lastName
+                        email
+                        phoneNumber
+                    }
+                }
+            }
+        }
+    }
+`;
+
+const APPLICATION_BUSY_HOURS = gql`
+    mutation applicationBusyTimes($input: ApplicationBusyTimesInput) {
+        applicationBusyTimes(input: $input)
+      }
+
+`;
 
 
 
-export {CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW,MY_INTERVIEWS}
+export {CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW,MY_INTERVIEWS,ALL_INTERVIEWS,APPLICATION_BUSY_HOURS}

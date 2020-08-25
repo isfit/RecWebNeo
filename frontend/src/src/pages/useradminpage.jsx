@@ -16,6 +16,7 @@ const UserEntry = (props) => {
                     <div>
                         { Boolean(props.sections) ? <p className="text-muted mb-0">Section: {props.sections[0].name}</p> : <p className="text-muted mb-0">Section: none</p> }
                         { Boolean(props.teams) ? <p className="text-muted mb-0">Team: {props.teams[0].name}</p> : <p className="text-muted mb-0">Team: none</p> }
+                        { Boolean(props.roles) ? <p className="text-muted mb-0">Role: {props.roles[0]}</p> : <p className="text-muted mb-0">Role: none</p> }
                     </div>
                 </div>
                 <div className="col" style={{flex:"2 1 20%", display:"flex", justifyContent:"center"}}>
@@ -106,7 +107,9 @@ const UserAdminPage = () => {
                                                 lastName={user.lastName}
                                                 sections={user.sections} 
                                                 teams={user.teams}
-                                                email={user.email}>
+                                                email={user.email}
+                                                roles={user.roles}
+                                            >
                                                 <button type="button" className="btn btn-outline-success my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
                                             </UserEntry>
                                         )
@@ -128,7 +131,10 @@ const UserAdminPage = () => {
                                                 lastName={user.lastName}
                                                 sections={user.sections} 
                                                 teams={user.teams}
-                                                email={user.email}>
+                                                email={user.email}
+                                                roles={user.roles}
+                                                >
+                                                    
                                                 <button type="button" className="btn btn-outline-success my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
                                             </UserEntry>
                                         )

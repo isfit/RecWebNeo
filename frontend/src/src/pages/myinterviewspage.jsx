@@ -8,10 +8,6 @@ import { MY_INTERVIEWS } from "../requests/interviewRequests";
 
 
 const InterviewCard = (props) => {
-    console.log("STARTTIME ", props.startTime)
-    console.log("APPLICANT ", props.applicant)
-    console.log("POSITIONS ", props.positions)
-    console.log("INTERVIEWERS ", props.interviewers)
     const datTime = new Date(props.startTime)
 
     return (
@@ -64,7 +60,6 @@ const MyInterviewsPage = () => {
     const myIntervewsQuery = useQuery(MY_INTERVIEWS);
     /* const myInterviewsData = Boolean(myIntervewsQuery?.data) ? myIntervewsQuery?.data?.myIntervews : []; */
     const myInterviews = myIntervewsQuery?.data?.myInterviews?.nodes ?? [];
-    /* console.log("MY INTERVIEWS ", myInterviews) */
 
     return(
         <PageLayout>

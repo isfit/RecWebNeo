@@ -82,7 +82,5 @@ namespace RecAPI.Interviews.Queries
             return interviewRepository.GetUserInterviews(user.Id);
         }
 
-        // TODO: Accept or Reject interview
-
     }
 }

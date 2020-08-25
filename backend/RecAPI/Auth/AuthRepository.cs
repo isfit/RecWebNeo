@@ -55,7 +55,7 @@ namespace RecAPI.Auth.Repositories
                 AuthError.UserExistanceError();
             }
             var roles = authUser.Roles;
-            if (roles != null && roles.Any(role => availableRoles.ContainsKey(role) && availableRoles[role].Contains(role)))
+            if (roles != null && roles.Any(ro => availableRoles.ContainsKey(ro) && availableRoles[ro].Contains(role)))
             {
                 var updateUserRole = user.SetRole(role);
                 if (updateUserRole)

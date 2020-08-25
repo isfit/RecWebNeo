@@ -66,6 +66,9 @@ namespace RecAPI.Interviews.Mutations
             if (interview != null) {
                 InterviewError.InterviewAlreadyExistsError();
             }
+            var applicantUserObject = userRepository.GetUserByAuth(application.Applicant);
+            // TODO: Check if applicant is available at this time
+
             List<InterviewConnections> interviewers = new List<InterviewConnections>();
             // Check that users exists
             if (input.InterviewerEmails != null && input.InterviewerEmails.Count() > 0)
@@ -98,7 +101,6 @@ namespace RecAPI.Interviews.Mutations
                 }
             }
             // Create Interview
-            var applicantUserObject = userRepository.GetUserByAuth(application.Applicant);
             InterviewConnections applicant = new InterviewConnections(){
                 User = applicantUserObject.Id,
                 Accepted = false

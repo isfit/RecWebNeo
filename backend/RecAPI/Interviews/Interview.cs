@@ -16,6 +16,7 @@ namespace RecAPI.Interviews.Models
         
         public DateTime Start { get; set; }
 
+        [ApplicationResolver]
         public string Application { get; set; }
         public InterviewConnections Applicant { get; set; }
         public List<InterviewConnections> Interviewers { get; set; }

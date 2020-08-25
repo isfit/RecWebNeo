@@ -2,6 +2,8 @@
 using HotChocolate.Types.Descriptors;
 using MongoDB.Driver.Core.Operations;
 using RecAPI.Applications.Models;
+using RecAPI.Applications.Repositories;
+using RecAPI.Interviews.Models;
 using RecAPI.Positions.Models;
 using RecAPI.Positions.Repositories;
 using RecAPI.Users.Repositories;
@@ -28,6 +30,19 @@ namespace RecAPI.Resolvers
                     positionsResolved.Add(priority.Key, repository.GetPosition(priority.Value)); 
                 }
                 return positionsResolved;
+            });
+        }
+    }
+
+    public sealed class ApplicationResolver : ObjectFieldDescriptorAttribute
+    {
+        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
+        {
+            descriptor.Resolver(ctx =>
+            {
+                var interview = ctx.Parent<Interview>();
+                var repository = ctx.Service<IApplicationRepository>();
+                return repository.GetApplication(interview.Application);
             });
         }
     }

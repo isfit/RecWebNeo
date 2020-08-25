@@ -60,7 +60,6 @@ namespace RecAPI.Users.Repositories
                 {
                     return !user.BusyTime.Contains(date) && !(user.InterviewTime != null ? user.InterviewTime.Contains(date) : false);
                 }
-                UserError.UserNotAvailableError("Bare tull og tøys");
                 return false;
             }
             UserError.UserNotAvailableError("User is null");

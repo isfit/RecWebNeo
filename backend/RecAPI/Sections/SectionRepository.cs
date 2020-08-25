@@ -19,7 +19,7 @@ namespace RecAPI.Sections.Repositories
             return _sections.Find(section => true).ToList();
         }
         public IEnumerable<Section> GetSections(List<string> ids) {
-            return _sections.Find(section => ids.Contains(section.Id)).ToList();
+            return ids != null ? _sections.Find(section => ids.Contains(section.Id)).ToList() : null;
         }
         public IEnumerable<Section> GetSectionsByOrganization(string organizationId)
         {

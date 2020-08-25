@@ -26,6 +26,19 @@ namespace RecAPI.Resolvers
         }
     }
 
+    public sealed class SectionsResolver : ObjectFieldDescriptorAttribute
+    {
+        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
+        {
+            descriptor.Resolver(ctx =>
+            {
+                var parent = ctx.Parent<ISectionsConnection>();
+                var repository = ctx.Service<ISectionRepository>();
+                return parent.Sections != null ? repository.GetSections(parent.Sections) : null;
+            });
+        }
+    }
+
     // Resolves section field in Organization
     public sealed class SectionResolverOrganization : ObjectFieldDescriptorAttribute
     {

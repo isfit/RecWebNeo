@@ -23,5 +23,10 @@ namespace RecAPI.Teams.ErrorHandling
                 throw new QueryException(ErrorBuilder.New().SetMessage("The given section does not exist").Build());
             }
         }
+
+        public static void TeamExistError(string teamId)
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("The given team " + teamId.ToString() + " does not exist").Build());
+        }
     } 
 }

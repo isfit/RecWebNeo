@@ -23,5 +23,10 @@ namespace RecAPI.Sections.ErrorHandling
                 throw new QueryException(ErrorBuilder.New().SetMessage("The given section does not exist").Build());
             }
         }
+
+        public static void SectionExistError(string sectionId)
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("The given section " + sectionId.ToString() + " does not exist").Build());
+        }
     } 
 }

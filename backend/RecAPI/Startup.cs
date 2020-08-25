@@ -49,6 +49,11 @@ using RecAPI.Users.Mutations;
 using RecAPI.Auth.Repositories;
 using RecAPI.Auth.Models;
 
+using RecAPI.Interviews.Queries;
+using RecAPI.Interviews.Mutations;
+using RecAPI.Interviews.Repositories;
+using RecAPI.Interviews.Models;
+
 using RecAPI.Database;
 
 using HotChocolate.AspNetCore.Authorization;
@@ -65,9 +70,7 @@ namespace RecAPI
 {
     public class Startup
     {
-
         readonly string AllowSpecificOrigins = "_allowSpecificOrigins";
-
         private readonly IConfiguration Configuration;
         public Startup(IConfiguration configuration)
         {
@@ -157,6 +160,7 @@ namespace RecAPI
             services.AddSingleton<IAuthRepository, AuthRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IAdmisionPeriodeRepository, AdmisionPeriodeRepository>();
+            services.AddSingleton<IInterviewRepository, InterviewRepository>();
 
 
             // GraphQL Schema
@@ -172,6 +176,7 @@ namespace RecAPI
                 .AddType<AdmisionPeriodeQueries>()
                 .AddType<ApplicationQueries>()
                 .AddType<UserQueries>()
+                .AddType<InterviewQueries>()
                 // Add mutations
                 .AddType<PositionMutations>()
                 .AddType<TeamMutations>()
@@ -180,6 +185,7 @@ namespace RecAPI
                 .AddType<AdmisionPeriodeMutations>()
                 .AddType<ApplicationMutations>()
                 .AddType<UserMutation>()
+                .AddType<InterviewMutations>()
                 // Add Model type
                 .AddType<Position>()
                 .AddType<Team>()
@@ -188,6 +194,8 @@ namespace RecAPI
                 .AddType<AdmisionPeriode>()
                 .AddType<Application>()
                 .AddType<User>()
+                .AddType<InterviewConnections>()
+                .AddType<Interview>()
                 .AddAuthorizeDirectiveType()
                 .Create()
             );

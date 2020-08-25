@@ -32,8 +32,8 @@ namespace RecAPI.Teams.Repositories
         // Get temas gived a list of Ids
         public IEnumerable<Team> GetTeams(List<string> ids)
         {
-            var data = _teams.Find(team => ids.Contains(team.Id)).ToList();
-            return data;
+            return _teams.Find(team => ids.Contains(team.Id)).ToList();
+            
         }
         // Get single team
         public Team GetTeam(string teamId)

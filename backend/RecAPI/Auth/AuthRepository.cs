@@ -40,8 +40,7 @@ namespace RecAPI.Auth.Repositories
             return authUser;
         }
 
-        // Clean the code!
-        public bool SetRoleOfUser(string email, string role)
+        public bool SetRoleOfUser(string currentUser, string email, string role)
         {
             var availableRoles = new Dictionary<string, List<string>>()
             {
@@ -49,15 +48,14 @@ namespace RecAPI.Auth.Repositories
                 { "admin", new List<string>() { "internal", "admin" } }
             };
 
+            var authUser = GetAuthUser(currentUser);
             var user = GetAuthUserByEmail(email);
-            if (user == null)
+            if (user == null || authUser == null)
             {
-                // Check if user exists
                 AuthError.UserExistanceError();
             }
-            var roles = user.Roles;
-            Console.WriteLine(roles);
-            if (roles != null && roles.Any( role => availableRoles.ContainsKey(role) && availableRoles[role].Contains(role) ))
+            var roles = authUser.Roles;
+            if (roles != null && roles.Any(ro => availableRoles.ContainsKey(ro) && availableRoles[ro].Contains(role)))
             {
                 var updateUserRole = user.SetRole(role);
                 if (updateUserRole)
@@ -75,5 +73,16 @@ namespace RecAPI.Auth.Repositories
             return _authUsers.Find(user => user.Id == id).FirstOrDefault()?.Email;
         }
 
+        public AuthUser UpdateAuthUser(string id, AuthUser user)
+        {
+            _authUsers.ReplaceOne(auth => auth.Id == id, user);
+            return GetAuthUser(id);
+        }
+
+        public bool DeleteUser(string id)
+        {
+            var actionResult = _authUsers.DeleteOne(user => user.Id == id);
+            return actionResult.IsAcknowledged && actionResult.DeletedCount > 0;
+        }
     }
 }

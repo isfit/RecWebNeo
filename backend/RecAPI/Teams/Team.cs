@@ -29,4 +29,8 @@ namespace RecAPI.Teams.Models
     {
         string Team { get; set; }
     }
+    public interface ITeamsConnection
+    {
+        List<string> Teams { get; set; }
+    }
 }

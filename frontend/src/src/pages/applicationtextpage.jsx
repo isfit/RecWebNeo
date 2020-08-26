@@ -35,8 +35,8 @@ const ApplicationTextPage = (props) => {
             <h4 className="page-title">Enter application details</h4>
           </div>
           <div className="-adaptive">
-            <div className="position-box-left">
-              <textarea className="w-100 h-100" placeholder="Please write a short application about why you would like to apply for these positions..." value={text} onChange={e => changeText( e.target.value )} type="text" />
+            <div className="position-box-left mb-2">
+              <textarea className="w-100 h-100" placeholder="Please write a short application about why you would like to apply for these positions..." value={text} onChange={e => changeText( e.target.value )} type="text" style={{minHeight:"200px"}} />
             </div>
             <div className="shopping-box-right w-100 h-100">
               <PositionChoiceBox />

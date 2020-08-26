@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import PageLayout from './pageLayout';
-import AvailableTimesForm from '../components/availableTimesForm';
+import AvailableTimesFormSimple from '../components/availableTimesFormSimple';
 import ErrorPage from './errorPage';
 
 import { APPLY, EDIT_USER_INFORMATION, ME_BUSY_TIMES} from "../requests/userRequests";
@@ -10,12 +10,14 @@ import { useQuery, useMutation } from "@apollo/client";
 const UnavailableTimesPage = (props) => {
 
   const [editUserInformation] = useMutation(EDIT_USER_INFORMATION);
-  const {data, error, loading} = useQuery(ME_BUSY_TIMES);
+
+  const {data, error, loading} = useQuery(ME_BUSY_TIMES, {fetchPolicy: "no-cache"});
   const [updatedBusyTimes, setUpdatedBusyTimes] = useState(data?.me.busyTime ?? []);
   const startInterview = new Date("2020-08-27T00:00:00.000Z");
   const endInterview = new Date("2020-09-10T00:00:00.000Z");
 
-  console.log(data, error, loading);
+  /* console.log("UPDATEDBUSYTIMES", updatedBusyTimes); */
+
   // Loading sceen while loading new data!
   if (loading) {
     return(
@@ -34,7 +36,6 @@ const UnavailableTimesPage = (props) => {
   }
 
 
-
   const submitUnavailableTimes = () => {
       editUserInformation({variables: {"input": {"busyTime": updatedBusyTimes == null || updatedBusyTimes.length == 0 ? data?.me.busyTime ?? [] : updatedBusyTimes }}});
   };
@@ -46,7 +47,8 @@ const UnavailableTimesPage = (props) => {
           <h4 className="page-title">Enter the hours you are busy</h4>
         </div>
         
-        <AvailableTimesForm 
+
+        <AvailableTimesFormSimple
           busyTimes={data?.me.busyTime ?? []}
           setBusyTimes={busy => {
             setUpdatedBusyTimes(busy);

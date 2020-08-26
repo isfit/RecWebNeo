@@ -66,7 +66,7 @@ const ApplicationTextPage = (props) => {
                   <h6 className="page-title ml-2 mb-0">I am open to other postions within the same genre of the positions I have entered</h6>
                 </div>
                 <div className="flex-grid mt-3">
-                  <input type="radio" checked={otherPositions === "open"} onChange={() => setOtherPositions("open")} />
+                  <input type="radio" checked={otherPositions === "Open"} onChange={() => setOtherPositions("Open")} />
                   <h6 className="page-title ml-2 mb-0">I am open to any other position in ISFiT, regardless of the positions I have entered</h6>
                 </div> 
               

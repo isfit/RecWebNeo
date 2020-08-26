@@ -2,7 +2,9 @@ import React, { useState, Component } from 'react';
 import PositionChoiceBoxReadOnly from '../components/positionChoiceBoxReadOnly';
 import PageLayout from './pageLayout';
 import ErrorPage from './errorPage';
-import AvailableTimesForm from '../components/availableTimesForm';
+
+import AvailableTimesFormSimple from '../components/availableTimesFormSimple';
+
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -93,17 +95,19 @@ const MyApplicationPage = (props) => {
                     <h6 className="page-title ml-2 mb-0">I am open to other postions within the same genre of the positions I have entered</h6>
                   </div>
                   <div className="row pl-3 mb-4">
-                    <input type="radio" checked={InterestedInOtherPositionsString === "open"} readOnly={true} />
+                    <input type="radio" checked={(InterestedInOtherPositionsString === "open" || InterestedInOtherPositionsString === "Open")} readOnly={true} />
                     <h6 className="page-title ml-2 mb-0">I am open to any other position in ISFiT, regardless of the positions I have entered</h6>
                   </div>
                   {InterestedInOtherPositionsString === "OnlyPositions" ? <p>You have entered that you are only interested in the positions you have entered above.</p> : null} 
                   {InterestedInOtherPositionsString === "Same" ? <p>You have entered that you are also interested in positions within the same genre as those you have entered above.</p> : null} 
-                  {InterestedInOtherPositionsString === "open" ? <p>This means you have entered that you are open to other positions in ISFiT.</p> : null} 
+                  {(InterestedInOtherPositionsString === "open" || InterestedInOtherPositionsString === "Open") ? <p>This means you have entered that you are open to other positions in ISFiT.</p> : null} 
+
                 </div>
               </div>
               <h5>Your Schedule</h5>
               { console.log("Dideli da",data?.myApplication?.available) }
-              <AvailableTimesForm 
+
+              <AvailableTimesFormSimple 
                 busyTimes={data?.myApplication?.available ?? []}
                 setBusyTimes={busy => {
                   console.log("Hello there");

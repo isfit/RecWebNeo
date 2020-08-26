@@ -92,7 +92,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
                   { AccessLevel > 2 ? <NavBarButton title="All Interviews" iconstring="users" address="/allinterviews" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="Manage interviews" iconstring="users" address="/manageinterviews" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="View Applications" iconstring="file-alt" address="/applications" /> : null}
-                  { AccessLevel > 2 ? <NavBarButton title="Unavailable hours" iconstring="arrow-up" address="/unavailabletimes" /> : null}
+                  { AccessLevel > 1 ? <NavBarButton title="Unavailable hours" iconstring="arrow-up" address="/unavailabletimes" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="Administer users" iconstring="arrow-up" address="/useradminpage" /> : null}
                   {/* { userLogedIn ? <NavBarButton title="My Profile" iconstring="address-card" address="/myprofile" /> : null} */}
                   <div>

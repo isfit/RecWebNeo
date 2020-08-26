@@ -155,7 +155,9 @@ const UserAdminPage = () => {
                                         lastName={user.lastName}
                                         section={user.section} 
                                         team={user.team}
-                                        email={user.email}>
+                                        email={user.email}
+                                        roles = {user.roles}
+                                        >
                                         <button type="button" className="btn btn-outline-danger my-4 mx-2" onClick={() => removeFromUserList(user)}>-</button>
                                     </UserEntry>
                                 )
@@ -200,10 +202,10 @@ const UserAdminPage = () => {
                                     <div className="col">
                                         <small>Access Level</small>
                                         <form action="">
-                                        <select className="w-100" id="sections" name="sections">
-                                            <option onClick={() => setChosenRole("")} value={"Applicant"}>{"Applicant"}</option>
-                                            <option onClick={() => setChosenRole("internal")}>{"ISFiT Member / Interviewer"}</option>
-                                            <option onClick={() => setChosenRole("admin")}>{"Admin"}</option>
+                                        <select className="w-100" id="sections" name="sections" onChange={(e) => { setChosenRole(e.target.value) }} >
+                                            <option value={""}>{"Applicant"}</option>
+                                            <option value={"internal"} >{"ISFiT Member / Interviewer"}</option>
+                                            <option value={"admin"} >{"Admin"}</option>
                                         </select>
                                         </form>
                                     </div>

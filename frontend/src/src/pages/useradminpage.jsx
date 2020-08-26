@@ -29,7 +29,7 @@ const UserEntry = (props) => {
 
 
 const UserAdminPage = () => {
-    const userData = useQuery(GET_ALL_USERS);
+    const userData = useQuery(GET_ALL_USERS, {fetchPolicy: "no-cache"});
     let users = Boolean(userData?.data) ? userData?.data?.users?.nodes : [] ;
 
     const sectionsData = useQuery(GET_SECTIONS);
@@ -42,10 +42,11 @@ const UserAdminPage = () => {
     const [addedUsers, setAddedUsers] = useState([]);
 
     const [updateRole, setUserRoleData] = useMutation(SET_USER_ROLE);
-    const [updateSections, { setSectionsData }] = useMutation(SET_SECTIONS_TO_USER);
-    const [updateTeams, { setTeamsData }] = useMutation(SET_TEAMS_TO_USER);
-    const [updatePassword, {setPasswordData}] = useMutation(UPDATE_USER_PASSWORD);
-    console.log("QUERY DATA ", setUserRoleData)
+    const [updateSections, updateSectionsData] = useMutation(SET_SECTIONS_TO_USER);
+    const [updateTeams, updateTeamsData] = useMutation(SET_TEAMS_TO_USER);
+    const [updatePassword, updatePasswordData] = useMutation(UPDATE_USER_PASSWORD);
+    console.log("QUERY DATA SECTION ", updateSectionsData)
+    console.log("QUERY DATA TEAM ", updateTeamsData)
 
     const addToUserList = (user) => {
         let copyList = [...addedUsers]
@@ -79,7 +80,7 @@ const UserAdminPage = () => {
     
     const updateUsersRole = (event, addedUsers, newRole) => {
         addedUsers.map( user => {
-            /* console.log("USER AND NEWROLE: ", user?.email, newRole) */
+            /* console.log("USER AND NEWROLE: ", user?.email, newRole) */   
             updateRole({variables: {email: user?.email, role: newRole}});
         })
     };

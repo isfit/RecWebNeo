@@ -2,7 +2,9 @@ import React, { useState, Component } from 'react';
 import PositionChoiceBoxReadOnly from '../components/positionChoiceBoxReadOnly';
 import PageLayout from './pageLayout';
 import ErrorPage from './errorPage';
+
 import AvailableTimesFormSimple from '../components/availableTimesFormSimple';
+
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -99,10 +101,12 @@ const MyApplicationPage = (props) => {
                   {InterestedInOtherPositionsString === "OnlyPositions" ? <p>You have entered that you are only interested in the positions you have entered above.</p> : null} 
                   {InterestedInOtherPositionsString === "Same" ? <p>You have entered that you are also interested in positions within the same genre as those you have entered above.</p> : null} 
                   {(InterestedInOtherPositionsString === "open" || InterestedInOtherPositionsString === "Open") ? <p>This means you have entered that you are open to other positions in ISFiT.</p> : null} 
+
                 </div>
               </div>
               <h5>Your Schedule</h5>
               { console.log("Dideli da",data?.myApplication?.available) }
+
               <AvailableTimesFormSimple 
                 busyTimes={data?.myApplication?.available ?? []}
                 setBusyTimes={busy => {

@@ -2,25 +2,39 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 using RecAPI.Resolvers;
+using RecAPI.Sections.Models;
+using RecAPI.AdmisionPeriodes.Models;
+using RecAPI.Teams.Models;
 
 namespace RecAPI.Positions.Models
 {
-    public class Position
+    public class Position : ISectionConnection, IAdmisionPeriodeConnection, ITeamConnection
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonRequired]
         public string Id { get; set; }
+
         [BsonRequired]
         public string Name { get; set; }
+
         [BsonRequired]
         public string Description { get; set; }
-        [AdmisionPeriodeResolverPosition]
+
+        [AdmisionPeriodeResolver]
         public string AdmisionPeriode { get; set; }
-        [SectionResolverPosition]
+
+        [SectionResolver]
         public string Section { get; set; }
-        [TeamResolverPosition]
+
+        [TeamResolver]
         public string Team { get; set; }
+
         public List<string> Tags { get; set; }
+    }
+
+    public interface IPositionConnection
+    {
+        string Positions { get; set; }
     }
 }

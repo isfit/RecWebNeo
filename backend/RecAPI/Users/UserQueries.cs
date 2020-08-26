@@ -10,6 +10,7 @@ using RecAPI.Generic.InputType;
 using HotChocolate.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using RecAPI.Auth.Models;
+using RecAPI.Users.Input;
 
 namespace RecAPI.Users.Queries
 {
@@ -18,6 +19,9 @@ namespace RecAPI.Users.Queries
     {
 
         [Authorize(Policy = "administrator")]
+        [UsePaging]
+        [UseFiltering]
+        [UseSorting]
         public IEnumerable<User> GetUsers(
             [Service]IUserRepository repository
         ) =>
@@ -40,5 +44,22 @@ namespace RecAPI.Users.Queries
         {
             return repository.GetUserByAuth(user.UserId);
         }
+
+        // Get available user at a given time
+        // Get available user at a given time given teams and sections
+        [Authorize(Policy = "administrator")]
+        [UsePaging]
+        [UseFiltering]
+        [UseSorting]
+        public List<User> GetAllAvailableUsers(
+            SingleDateTimeInput input,
+            [Service] IUserRepository userRepository
+        )
+        {
+            // Check if user is also a internal or admin
+            return userRepository.GetAllAvailableUsers(input.date);
+        }
+
+        // Reply to accept an interview ???
     }
 }

@@ -40,27 +40,24 @@ namespace RecAPI.Auth.Repositories
             return authUser;
         }
 
-        // Clean the code!
-        public bool AddRoleToUser(string email, string role)
+        public bool SetRoleOfUser(string currentUser, string email, string role)
         {
             var availableRoles = new Dictionary<string, List<string>>()
             {
                 { "superuser", new List<string>() { "internal", "admin", "superuser" } },
-                { "admin", new List<string>() { "internal", "admin"} }
+                { "admin", new List<string>() { "internal", "admin" } }
             };
 
+            var authUser = GetAuthUser(currentUser);
             var user = GetAuthUserByEmail(email);
-            if (user == null)
+            if (user == null || authUser == null)
             {
-                // Check if user exists
                 AuthError.UserExistanceError();
             }
-            /*
-            var roles = user.Roles;
-            Console.WriteLine(roles);
-            if (roles != null && roles.Any( role => availableRoles.ContainsKey(role) && availableRoles[role].Contains(role) ))
+            var roles = authUser.Roles;
+            if (roles != null && roles.Any(ro => availableRoles.ContainsKey(ro) && availableRoles[ro].Contains(role)))
             {
-                var updateUserRole = user.AddRole(role);
+                var updateUserRole = user.SetRole(role);
                 if (updateUserRole)
                 {
                     _authUsers.FindOneAndReplace(u => u.Id == user.Id, user);
@@ -68,24 +65,24 @@ namespace RecAPI.Auth.Repositories
                     return updatedUser.Roles?.Contains(role) ?? false;
                 }
             }
-            */
             return false;
         }
-        public bool RemoveRoleFromUser(string email, string role)
+
+        public string GetUserEmail(string id)
         {
-            var user = GetAuthUserByEmail(email);
-            if (user == null)
-            {
-                return false;
-            }
-            var updateUserRole = user.AddRole(role);
-            if (updateUserRole)
-            {
-                _authUsers.FindOneAndReplace(u => u.Id == user.Id, user);
-                var updatedUser = GetAuthUserByEmail(email);
-                return updatedUser.Roles?.Contains(role) ?? false;
-            }
-            return false;
+            return _authUsers.Find(user => user.Id == id).FirstOrDefault()?.Email;
+        }
+
+        public AuthUser UpdateAuthUser(string id, AuthUser user)
+        {
+            _authUsers.ReplaceOne(auth => auth.Id == id, user);
+            return GetAuthUser(id);
+        }
+
+        public bool DeleteUser(string id)
+        {
+            var actionResult = _authUsers.DeleteOne(user => user.Id == id);
+            return actionResult.IsAcknowledged && actionResult.DeletedCount > 0;
         }
     }
 }

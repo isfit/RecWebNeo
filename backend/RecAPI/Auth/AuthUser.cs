@@ -18,29 +18,15 @@ namespace RecAPI.Auth.Models
         public byte[] Salt { get; set; }
         public List<string> Roles { get; set; }
 
-        public bool AddRole(
-            string newRole
+        public bool SetRole(
+            string role
             )
         {
-            if (Roles == null)
+            Roles = new List<string>()
             {
-                Roles = new List<string>();
-            }
-            if (!Roles.Contains(newRole))
-            {
-                Roles.Add(newRole);
-            }
-            return Roles.Contains(newRole);
-        }
-        public bool RemoveRole(
-            string oldRole
-            )
-        {
-            if (Roles == null || !Roles.Contains(oldRole))
-            {
-                return false;
-            }
-            return Roles.Remove(oldRole);
+                role
+            };
+            return Roles.Contains(role);
         }
     }
 }

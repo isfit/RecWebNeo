@@ -11,29 +11,15 @@ using RecAPI.AdmisionPeriodes.Repositories;
 
 namespace RecAPI.Resolvers
 {
-    // Resolves section field in Organization
-    public sealed class SectionResolverOrganization : ObjectFieldDescriptorAttribute
+    public sealed class OrganizationResolver : ObjectFieldDescriptorAttribute
     {
         public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
         {
             descriptor.Resolver(ctx =>
             {
-                var organization = ctx.Parent<Organization>();
-                var repository = ctx.Service<ISectionRepository>();
-                return repository.GetSectionsByOrganization(organization.Id);
-            });
-        }
-    }
-    // Resolves AdmisionPeriodes field in Organization
-    public sealed class AdmisionPeriodeResolverOrganization : ObjectFieldDescriptorAttribute
-    {
-        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
-        {
-            descriptor.Resolver(ctx =>
-            {
-                var organization = ctx.Parent<Organization>();
-                var repository = ctx.Service<IAdmisionPeriodeRepository>();
-                return repository.GetAdmisionPeriodesByOrganization(organization.Id);
+                var parent = ctx.Parent<IOrganizationConnection>();
+                var repository = ctx.Service<IOrganizationRepository>();
+                return repository.GetOrganization(parent.Organization);
             });
         }
     }

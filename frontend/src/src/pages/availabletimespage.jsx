@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 import PageLayout from './pageLayout';
+
 import AvailableTimesFormSimple from '../components/availableTimesFormSimple';
+
 import ErrorPage from './errorPage';
 
 import { APPLY } from "../requests/userRequests";
@@ -15,6 +17,7 @@ const AvailableTimesPage = (props) => {
 
   const startInterview = new Date("2020-08-27T00:00:00.000Z");
   const endInterview = new Date("2020-09-10T00:00:00.000Z");
+
 
 
   /* const updateStoredBusyTimes = (busy) => {
@@ -55,7 +58,7 @@ const AvailableTimesPage = (props) => {
 
   const submitApplication = () => {
       console.log("These are the saved times:", enteredBusyTimes);
-      console.log("VARIABLE DATA ",variableData )
+      console.log("VARIABLE DATA ",variableData );
       updateRegistration(variableData);
     };
 
@@ -114,6 +117,7 @@ const AvailableTimesPage = (props) => {
           <h4 className="page-title">Enter the hours you are busy</h4>
         </div>
         
+
         <AvailableTimesFormSimple 
           busyTimes={[]}
           setBusyTimes={busy => {

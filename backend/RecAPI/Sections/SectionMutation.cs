@@ -49,7 +49,7 @@ namespace RecAPI.Sections.Mutations
         {
             // Error handling
             var section = repository.GetSection(input.Id);
-            SectionsError.UniqueNameError(repository, section.Name, input.Name);
+            SectionsError.UniqueNameError(repository, input.Name, section.Name);
             if (input.Organization != null)
             {
                 SectionsError.OrganizationExists(_organization, input.Organization);

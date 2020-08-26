@@ -13,6 +13,11 @@ namespace RecAPI.Applications.ErrorHandling
     public class ApplicationError
     {
 
+        public static void InvalidApplicationInterest()
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("The given interest in invalid!").Build());
+        }
+
         public static void ValidAdmisionPeriode(IAdmisionPeriodeRepository repo, string admisionPeriodeId)
         {
             var admisionPeriode = repo.GetAdmisionPeriode(admisionPeriodeId);
@@ -66,5 +71,11 @@ namespace RecAPI.Applications.ErrorHandling
         {
             throw new QueryException(ErrorBuilder.New().SetMessage("The user has not registered an application for this admision periode yet.").Build());
         }
+
+        public static void ApplicationExistError()
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("The given application does not exist.").Build());
+        }
+
     }
 }

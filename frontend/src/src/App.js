@@ -39,6 +39,10 @@ import {
   faTrashAlt,
   faFileAlt,
   faUsers,
+  faCalendarTimes,
+  faUsersCog,
+  faTasks,
+  faUserTie,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -53,6 +57,10 @@ library.add(
   faTrashAlt,
   faFileAlt,
   faUsers,
+  faCalendarTimes,
+  faUsersCog,
+  faTasks,
+  faUserTie,
 );
 
 const httpLink = new HttpLink({ uri: 'https://recruitment.isfit.org:5000/'});

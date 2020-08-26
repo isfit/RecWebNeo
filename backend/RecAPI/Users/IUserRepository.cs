@@ -7,6 +7,8 @@ namespace RecAPI.Users.Repositories
     public interface IUserRepository
     {
         List<User> GetUsers();
+        List<User> GetApprovedUsers();
+        List<User> GetAllUsersNotApproved();
         List<User> GetUsers(List<string> ids);
         List<User> GetUsersByEmail(List<string> email);
         User GetUser(string id);

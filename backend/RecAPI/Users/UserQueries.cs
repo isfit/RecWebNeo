@@ -6,6 +6,7 @@ using HotChocolate.Types.Relay;
 using RecAPI.Users.Repositories;
 using RecAPI.Users.Models;
 using RecAPI.Generic.InputType;
+using RecAPI.Auth.Repositories;
 
 using HotChocolate.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -23,9 +24,18 @@ namespace RecAPI.Users.Queries
         [UseFiltering]
         [UseSorting]
         public IEnumerable<User> GetUsers(
-            [Service]IUserRepository repository
-        ) =>
-        repository.GetUsers();
+            [GlobalState("currentUser")] CurrentUser user,
+            [Service]IAuthRepository authRepository,
+            [Service]IUserRepository userRepository
+        )
+        {
+            var currentUser = authRepository.GetAuthUser(user.UserId);
+            if (currentUser.Roles.Contains("superuser"))
+            {
+                return userRepository.GetUsers();
+            }
+            return userRepository.GetApprovedUsers();
+        }
 
         [Authorize(Policy = "administrator")]
         public User GetUser(
@@ -60,6 +70,17 @@ namespace RecAPI.Users.Queries
             return userRepository.GetAllAvailableUsers(input.date);
         }
 
-        // Reply to accept an interview ???
+
+        [Authorize(Policy = "superuser")]
+        [UsePaging]
+        [UseFiltering]
+        [UseSorting]
+        public IEnumerable<User> GetAllNotApprovedUsers(
+            [Service] IUserRepository userRepository
+            )
+        {
+            return userRepository.GetAllUsersNotApproved();
+        }
+
     }
 }

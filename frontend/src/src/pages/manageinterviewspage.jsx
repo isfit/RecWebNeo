@@ -71,16 +71,25 @@ const InterviewsPage = () => {
 
     const applicationsQuery = useQuery(GET_APPLICATIONS_WITHOUT_INTERVIEW);
     const applicationArray = Boolean(applicationsQuery?.data) ? applicationsQuery?.data?.applicationWithoutInterview?.nodes : [] ;
-
-    const [createInterview, { createInterviewData }] = useMutation(CREATE_INTERVIEW);
   
     const [getBusyHours, busyHoursData] = useMutation(APPLICATION_BUSY_HOURS);
-    /* console.log("BUSY HOURS DATA", busyHoursData?.data?.applicationBusyTimes) */
-    /* console.log("BUSY HOURS HOOK", busyHoursHook) */
+
+    const [createInterviewError, setCreateInterviewError] = useState(null);
+
+    const [createInterview, { data }] = useMutation(CREATE_INTERVIEW, {
+        onError: ({ graphQLErrors, networkError }) => {
+            graphQLErrors.map(({ message, locations, path }) => {
+                setCreateInterviewError(message);
+            }
+            );
+
+            if (networkError) console.log(`[Network error]: ${networkError}`);
+        },
+      });
 
     const startInterview = new Date("2020-08-27T00:00:00.000Z");
     const endInterview = new Date("2020-09-10T00:00:00.000Z");
-
+    
     /* const users = [{firstName:"Torstein", lastName:"Otterlei", sections:["Organizational Resources"], teams:["IT"], email:"torstein@otterlei.no"}] */
     const usersQuery = useQuery(GET_ISFIT_USERS);
     const users = Boolean(applicationsQuery?.data) ? usersQuery?.data?.users?.nodes : [];
@@ -106,13 +115,14 @@ const InterviewsPage = () => {
 
     const createInterviewMutation = (application, addedUsers, startTime) => {
         let emailArray = addedUsers.map(user => {return user.email})
-
-        /* console.log("EMAILARRAY: ", emailArray)
-        console.log("APPLICATION ID: ", application[0].id) */
-        /* createInterview({variables: {application: application.id, interviewerEmails: emailArray, start: startTime}}); */
-
+        //console.log("EMAILARRAY: ", emailArray)
+        //console.log("APPLICATION ID: ", application[0]?.id)
+        //console.log("Form of input", {application: application[0]?.id, interviewerEmails: emailArray, start: startTime})
+        setCreateInterviewError(null);
+        createInterview({
+            variables: {input: {application: application[0]?.id, interviewerEmails: emailArray, start: startTime?.toISOString()}},
+        });
     };
-
 
     const getBusyHoursMutation = (addedApplication, addedUsers) => {
         let emailArray = addedUsers.map(user => {return user.email});
@@ -123,6 +133,10 @@ const InterviewsPage = () => {
 
     return (
         <PageLayout>
+            <div style={{width: "100%", textAlign: "center", fontSize: "2em"}}>
+                { createInterviewError }
+                { data != null ? "The interview was created" : "" }
+            </div>
             <div className="flex-grid-adaptive pt-4 pb-4">
                 <div className="left mx-3" style={{flexBasis:"30%", flexDirection:"column"}}>
                     <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
@@ -213,6 +227,7 @@ const InterviewsPage = () => {
                 firstTimeSlot={8}
                 lastTimeSlot={20}
                 readOnly = { false }
+                selectable = { false }
             />
         </PageLayout>
 

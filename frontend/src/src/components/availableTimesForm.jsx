@@ -4,11 +4,13 @@ import "../stylesheets/components/availableTimesTable.css";
 import {ME_BUSY_TIMES} from "../requests/userRequests";
 import { useQuery } from "@apollo/client";
 
-const AvailableTimeSlot = ({ date, time, timeSelected, selectTime, readOnly }) => {
+const AvailableTimeSlot = ({ date, time, timeSelected, selectTime, readOnly, selectable }) => {
     const [selected, setSelected] = useState(timeSelected);
 
     const selectTimePeriode = () => {
-        setSelected(!selected);
+        if(selectable != null && selectable){
+            setSelected(!selected);
+        }
         selectTime(date, time, selected)
     };
   if (readOnly) {
@@ -19,7 +21,7 @@ const AvailableTimeSlot = ({ date, time, timeSelected, selectTime, readOnly }) =
   };
 };
 
-const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTime, readOnly}) => {
+const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTime, readOnly, selectable}) => {
 
     const existsInSelected = (date) => {
         let dato = new Date(date);
@@ -35,7 +37,7 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
       {
         days?.map(date => {
           return(
-            <AvailableTimeSlot date={date} time={time} timeSelected={ existsInSelected(date) } selectTime={(d, t, selected) => selectTime(d, t, selected)} readOnly={readOnly} />
+            <AvailableTimeSlot date={date} time={time} timeSelected={ existsInSelected(date) } selectTime={(d, t, selected) => selectTime(d, t, selected)} readOnly={readOnly} selectable={selectable} />
           )
         })
       }
@@ -46,7 +48,7 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
 
 
 
-const AvailableTimesForm = ({busyTimes, setBusyTimes, startDate, endDate, hourDiff, firstTimeSlot, lastTimeSlot, readOnly, getTime}) => {
+const AvailableTimesForm = ({busyTimes, setBusyTimes, startDate, endDate, hourDiff, firstTimeSlot, lastTimeSlot, readOnly, getTime, selectable}) => {
   
     const ReadOnly = readOnly ? true : false;
     const daysName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -167,6 +169,7 @@ const AvailableTimesForm = ({busyTimes, setBusyTimes, startDate, endDate, hourDi
                                         timeSelected={ busyTimes }
                                         selectTime={(date, time, selected) => selectTime(date, time, !selected)}
                                         readOnly = {ReadOnly}
+                                        selectable = {selectable}
                                     />
                                 )
                                 })

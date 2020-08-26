@@ -114,6 +114,7 @@ const MyApplicationPage = (props) => {
                 firstTimeSlot={8}
                 lastTimeSlot={20}
                 readOnly = { true }
+                selectable = { true }
               />
             </div>
           </div>

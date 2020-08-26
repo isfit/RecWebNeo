@@ -100,6 +100,7 @@ const ALL_INTERVIEWS = gql`
                     }
                 }
                 application {
+                    id
                     positions {
                         key
                         value {
@@ -117,6 +118,7 @@ const ALL_INTERVIEWS = gql`
                     accepted
                     id
                     user {
+                        id
                         firstName
                         lastName
                         email

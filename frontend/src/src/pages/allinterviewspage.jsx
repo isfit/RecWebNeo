@@ -57,12 +57,13 @@ const InterviewCard = (props) => {
 
 
 const AllInterviewsPage = () => {
-    const allIntervewsQuery = useQuery(ALL_INTERVIEWS);
+    const allIntervewsQuery = useQuery(ALL_INTERVIEWS, {fetchPolicy: "no-cache"});
     /* const myInterviewsData = Boolean(myIntervewsQuery?.data) ? myIntervewsQuery?.data?.myIntervews : []; */
     const allInterviews = allIntervewsQuery?.data?.interviews?.nodes ?? [];
 
     return(
         <PageLayout>
+            { console.log(allInterviews) }
             <div className="container">
                 <div className="flex-grid px-5 py-5" style={{flexDirection:"column"}}>
                     <div className="card py-3 px-5 mb-2 w-100">

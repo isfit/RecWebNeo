@@ -125,6 +125,7 @@ const AvailableTimesPage = (props) => {
           firstTimeSlot={8}
           lastTimeSlot={20}
           readOnly = { false }
+          selectable = { true }
          />
 
         <div className="row">

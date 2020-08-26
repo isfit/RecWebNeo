@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useState} from "react";
 import PageLayout from './pageLayout';
-import AvailableTimesForm from '../components/availableTimesForm';
+import AvailableTimesFormSimple from '../components/availableTimesFormSimple';
 import ErrorPage from './errorPage';
 
 import { APPLY } from "../requests/userRequests";
@@ -17,16 +17,17 @@ const AvailableTimesPage = (props) => {
   const endInterview = new Date("2020-09-10T00:00:00.000Z");
 
 
-  const updateStoredBusyTimes = (busy) => {
+  /* const updateStoredBusyTimes = (busy) => {
     localStorage.setItem("busyTimes", JSON.stringify(busy));
-  }
+  } */
 
-  const getBusyTimes = () => {
+  /* const getBusyTimes = () => {
       const busy = JSON.parse(localStorage.getItem("busyTimes") || "[]");
       let busyTime = [];
       busy.map(x => busyTime.push(new Date(x)));
       return busy;
-  };
+  }; */
+  const [enteredBusyTimes, setEnteredBusyTimes] = useState([]);
 
   const getPositions = () => {
     const positions = JSON.parse(localStorage.getItem('applicationPositions') || "[]");
@@ -43,7 +44,7 @@ const AvailableTimesPage = (props) => {
       input: {
         admissionPeriode: "5f396eebd2042f000149a790",
         applicationText: localStorage.getItem("applicationText") || "",
-        available: getBusyTimes(),
+        available: enteredBusyTimes,
         interest: localStorage.getItem("otherPositions") || "OnlyPositions",
         positions: getPositions(),
         preferDigital: true,
@@ -53,7 +54,8 @@ const AvailableTimesPage = (props) => {
   };
 
   const submitApplication = () => {
-    console.log("These are the saved times:", getBusyTimes());
+      console.log("These are the saved times:", enteredBusyTimes);
+      console.log("VARIABLE DATA ",variableData )
       updateRegistration(variableData);
     };
 
@@ -91,6 +93,7 @@ const AvailableTimesPage = (props) => {
   };
 
   if (error != null) {
+    console.log("ERROR: ", error)
     return (
       <PageLayout>
         <ErrorPage 
@@ -111,10 +114,10 @@ const AvailableTimesPage = (props) => {
           <h4 className="page-title">Enter the hours you are busy</h4>
         </div>
         
-        <AvailableTimesForm 
-          busyTimes={getBusyTimes() ?? []}
+        <AvailableTimesFormSimple 
+          busyTimes={[]}
           setBusyTimes={busy => {
-            updateStoredBusyTimes(busy)
+            setEnteredBusyTimes(busy);
           }}
           startDate = {startInterview}
           endDate = {endInterview}

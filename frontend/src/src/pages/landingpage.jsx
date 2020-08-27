@@ -19,7 +19,7 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
 
   return (
     <PageLayout>
-      <div className="container">
+      <div className="container main-container">
         <div className="flex-grid-adaptive mb-3 pt-3">
           <TextBox>
             <h1 style={{textAlign:"center", color: "#983c2e"}}>ISFiT is recruiting!</h1>
@@ -37,10 +37,13 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
           <h4 className="page-title px-1">Choose positions</h4>
         </div>
         <div className="flex-grid-adaptive">
-          <div className="position-box-left">
-            <PositionsModule sectionList={sectionList} />
+          <div className="order-1 customAccordian">
+            <div className="position-box-left">
+              <PositionsModule sectionList={sectionList} />
+            </div>
           </div>
-          <div className="shopping-box-right">
+
+          <div className="shopping-box-right order-0">
             <PositionChoiceBox />
             {  userLogedIn ? <button
                 className="btn btn-continue mt-1 mr-2 float-right"
@@ -49,6 +52,8 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
               <button className="btn btn-success"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess
               </button>}
           </div>
+
+
         </div>
       </div>
     </PageLayout>

@@ -45,7 +45,7 @@ const UserAdminPage = () => {
     const [updateRole, setUserRoleData] = useMutation(SET_USER_ROLE);
     const [updateSections, updateSectionsData] = useMutation(SET_SECTIONS_TO_USER);
     const [updateTeams, updateTeamsData] = useMutation(SET_TEAMS_TO_USER);
-    const [updatePassword, {setPasswordData}] = useMutation(UPDATE_USER_PASSWORD);
+    const [updatePassword, updatePasswordData] = useMutation(UPDATE_USER_PASSWORD);
 
     const addToUserList = (user) => {
         let copyList = [...addedUsers]
@@ -77,7 +77,7 @@ const UserAdminPage = () => {
     
     const updateUsersRole = (event, addedUsers, newRole) => {
         addedUsers.map( user => {
-            /* console.log("USER AND NEWROLE: ", user?.email, newRole) */
+            /* console.log("USER AND NEWROLE: ", user?.email, newRole) */   
             updateRole({variables: {email: user?.email, role: newRole}});
         })
     };

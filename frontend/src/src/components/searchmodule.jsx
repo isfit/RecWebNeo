@@ -8,23 +8,22 @@ const FilterCheckbox = (props) => {
             <h6 className="page-title ml-2 mb-0">{props.children}</h6>
         </div>
     );
-}
+};
 
-const SearchModule = ({sectionList, setSectionList}) => {
+const SearchModule = (onAddSectionList, onGetSectionList) => {
 
-    const addToSectionList = (section) => {
-        let copyList = [...sectionList]
+    const checkboxSection = (section) => {
+        let copyList = onGetSectionList();
         if (copyList.includes(section)) {
             const index = copyList.indexOf(section);
             if (index > -1) {
                 copyList.splice(index, 1);
+            } else {
+                copyList.push(section);
             }
-        }else {
-            copyList.push(section);
+            onAddSectionList(copyList);
         }
-        setSectionList(copyList);
     };
-
 
     return (
     <div className="row">
@@ -32,16 +31,16 @@ const SearchModule = ({sectionList, setSectionList}) => {
             <h5 className="page-title ml-2 mt-3 mb-3">Filter by section</h5>
             <div className="row">
                 <div className="col ml-5">
-                    <FilterCheckbox func={() => addToSectionList("5f3a7eb10276b000016a0edc")}>Administration</FilterCheckbox>
-                    <FilterCheckbox func={() => addToSectionList("5f3a7eaf0276b000016a0ed0")}>Communication</FilterCheckbox>
+                    <FilterCheckbox func={() => checkboxSection("5f3a7eb10276b000016a0edc")}>Administration</FilterCheckbox>
+                    <FilterCheckbox func={() => checkboxSection("5f3a7eaf0276b000016a0ed0")}>Communication</FilterCheckbox>
                 </div>
                 <div className="col">
-                    <FilterCheckbox func={() => addToSectionList("5f3a7eb30276b000016a0eee")}>Participants</FilterCheckbox>
-                    <FilterCheckbox func={() => addToSectionList("5f3a7eb30276b000016a0ee9")}>Organizational Resources</FilterCheckbox>
+                    <FilterCheckbox func={() => checkboxSection("5f3a7eb30276b000016a0eee")}>Participants</FilterCheckbox>
+                    <FilterCheckbox func={() => checkboxSection("5f3a7eb30276b000016a0ee9")}>Organizational Resources</FilterCheckbox>
                 </div>
                 <div className="col">
-                    <FilterCheckbox func={() => addToSectionList("5f3a7eb10276b000016a0ee0")}>Culture</FilterCheckbox>
-                    <FilterCheckbox func={() => addToSectionList("5f3a7eb00276b000016a0ed7")}>Student Peace Prize</FilterCheckbox>
+                    <FilterCheckbox func={() => checkboxSection("5f3a7eb10276b000016a0ee0")}>Culture</FilterCheckbox>
+                    <FilterCheckbox func={() => checkboxSection("5f3a7eb00276b000016a0ed7")}>Student Peace Prize</FilterCheckbox>
                 </div>
             </div>
         </div> 
@@ -49,6 +48,5 @@ const SearchModule = ({sectionList, setSectionList}) => {
     );
 
 };
-
 
 export default SearchModule;

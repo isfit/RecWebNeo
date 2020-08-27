@@ -12,7 +12,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  min-width: 300px;
+  min-width: 270px;
   width: 25vw;
   min-height: 200px;
   word-wrap: break-word;
@@ -33,6 +33,23 @@
   padding-left: 20px;
 }
 
+.customAccordian{
+  width: 55vw;
+  min-width: 50vw;
+  max-width: 60vw;
+}
+
+
+@media (max-width: 1200px) {
+
+  .customAccordian{
+    width: 85vw;
+    max-width: 90vw;
+
+  }
+
+}
+
 
 @media (max-width: 600px) {
   .some-pic  {
@@ -46,7 +63,14 @@
   }
 
   .position-entry{
-    width: 85vw;
+    width: 90vw;
+  }
+
+  .customAccordian{
+    width: 90vw;
+    max-width: 95vw;
 
   }
+
 }
+

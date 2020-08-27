@@ -88,12 +88,12 @@ import { MYAPPLICATION } from "../requests/userRequests";
                 <ul className="nav" style={{justifyContent:"right", width: "100%"}}>
                   <NavBarButton title="Overview" iconstring="list-ol" address="/" />
                   { (userLogedIn && (AccessLevel === 1)) ? <RenderMyApplicationButton /> : null }
-                  { userLogedIn ? <NavBarButton title="My Interviews" iconstring="arrow-up" address="/myinterviews" /> : null}
+                  { userLogedIn ? <NavBarButton title="My Interviews" iconstring="user-tie" address="/myinterviews" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="All Interviews" iconstring="users" address="/allinterviews" /> : null}
-                  { AccessLevel > 2 ? <NavBarButton title="Manage interviews" iconstring="users" address="/manageinterviews" /> : null}
+                  { AccessLevel > 2 ? <NavBarButton title="Manage interviews" iconstring="users-cog" address="/manageinterviews" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="View Applications" iconstring="file-alt" address="/applications" /> : null}
-                  { AccessLevel > 1 ? <NavBarButton title="Unavailable hours" iconstring="arrow-up" address="/unavailabletimes" /> : null}
-                  { AccessLevel > 2 ? <NavBarButton title="Administer users" iconstring="arrow-up" address="/useradminpage" /> : null}
+                  { AccessLevel > 1 ? <NavBarButton title="Unavailable hours" iconstring="calendar-times" address="/unavailabletimes" /> : null}
+                  { AccessLevel > 2 ? <NavBarButton title="Administer users" iconstring="tasks" address="/useradminpage" /> : null}
                   {/* { userLogedIn ? <NavBarButton title="My Profile" iconstring="address-card" address="/myprofile" /> : null} */}
                   <div>
                   { userLogedIn ? <RenderProfile accessLevel={AccessLevel} /> : <button className="btn btn-outline-success"  onClick={ () => openLoginModal() }>Sign in</button> }

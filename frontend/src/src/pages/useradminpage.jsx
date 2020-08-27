@@ -34,6 +34,7 @@ const UserAdminPage = () => {
 
     const sectionsData = useQuery(GET_SECTIONS);
     const [chosenSection, setChosenSection] = useState({teams:[]});
+
     const [chosenTeam, setChosenTeam] = useState(null);
     const [chosenRole, setChosenRole] = useState("");
     const [chosenPassword, setChosenPassword] = useState("");
@@ -45,8 +46,6 @@ const UserAdminPage = () => {
     const [updateSections, updateSectionsData] = useMutation(SET_SECTIONS_TO_USER);
     const [updateTeams, updateTeamsData] = useMutation(SET_TEAMS_TO_USER);
     const [updatePassword, updatePasswordData] = useMutation(UPDATE_USER_PASSWORD);
-    console.log("QUERY DATA SECTION ", updateSectionsData)
-    console.log("QUERY DATA TEAM ", updateTeamsData)
 
     const addToUserList = (user) => {
         let copyList = [...addedUsers]
@@ -65,16 +64,14 @@ const UserAdminPage = () => {
 
     
     const updateUserSectionTeam = (event, addedUsers, chosenSection, chosenTeam) => {
-        if (!(chosenSection?.teams === undefined|| chosenSection?.teams.length == 0) ) {
-            if ( Boolean(chosenTeam) ) {
+        if (Boolean(chosenSection) && Boolean(chosenTeam) ) {
                 addedUsers.map( user => {
                     addedUsers.map( user => {
                         event.preventDefault();
-                        updateSections({variables: {email: user?.email, sections: [chosenSection?.id] }});
-                        updateTeams({variables: {email: user?.email, teams: [chosenTeam?.id] }});
+                        updateSections({variables: {email: user?.email, sections: [chosenSection] }});
+                        updateTeams({variables: {email: user?.email, teams: [chosenTeam] }});
                     })
                 })
-            };
         };
     };
     
@@ -92,6 +89,20 @@ const UserAdminPage = () => {
             })
         };
     };
+
+    const getSectionFromID = (sectionsData, sectionId) => {
+        let sectionsArray = sectionsData?.sections ?? [];
+        let sectionObject = null;
+
+        sectionsArray.map( section => {
+            if (section.id === sectionId) {
+                sectionObject = section
+            }
+        })
+
+        return sectionObject ?? {teams:[]}
+    };
+
 
     return (
         <PageLayout>
@@ -154,9 +165,11 @@ const UserAdminPage = () => {
                                     <UserEntry 
                                         firstName={user.firstName}
                                         lastName={user.lastName}
-                                        section={user.section} 
-                                        team={user.team}
-                                        email={user.email}>
+                                        sections={user.sections} 
+                                        teams={user.teams}
+                                        email={user.email}
+                                        roles = {user.roles}
+                                        >
                                         <button type="button" className="btn btn-outline-danger my-4 mx-2" onClick={() => removeFromUserList(user)}>-</button>
                                     </UserEntry>
                                 )
@@ -169,11 +182,11 @@ const UserAdminPage = () => {
                                     <div className="col">
                                         <small>Section</small>
                                         <form action="">
-                                        <select className="w-100" id="sections" name="sections">
-                                            <option value={"none"} onClick={() => setChosenSection({teams:[]})}>{"none"}</option>
+                                        <select className="w-100" id="sections" name="sections" onChange={(e) => { setChosenSection(e.target.value) }}>
+                                            <option value={{teams:[]}}>{"none"}</option>
                                             {sectionsData?.data?.sections.map( section => {
                                                 return (
-                                                    <option value={section.name} onClick={() => setChosenSection(section)}>{section.name} </option>
+                                                    <option value={section.id}>{section.name}</option>
                                                     )
                                                 })}
                                         </select>
@@ -182,12 +195,12 @@ const UserAdminPage = () => {
                                     <div className="col">
                                         <small>Team</small>
                                         <form action="">
-                                        <select className="w-100" id="teams" name="teams">
-                                            <option value={"none"} onClick={() => setChosenTeam(null)}>{"none"}</option>
-                                            {chosenSection?.teams?.map( team => {
+                                        <select className="w-100" id="teams" name="teams" onChange={(e) => { setChosenTeam(e.target.value) }} >
+                                            <option value={null}>{"none"}</option>
+                                            {getSectionFromID(sectionsData?.data, chosenSection).teams?.map( team => {
                                                 return (
-                                                    <option value={team.name} onClick={() => setChosenTeam(team)}>{team.name}</option>
-                                                    )
+                                                    <option value={team.id}>{team.name}</option>
+                                                )
                                                 })}
                                         </select>
                                         </form>
@@ -201,10 +214,10 @@ const UserAdminPage = () => {
                                     <div className="col">
                                         <small>Access Level</small>
                                         <form action="">
-                                        <select className="w-100" id="sections" name="sections">
-                                            <option onClick={() => setChosenRole("")} value={"Applicant"}>{"Applicant"}</option>
-                                            <option onClick={() => setChosenRole("internal")}>{"ISFiT Member / Interviewer"}</option>
-                                            <option onClick={() => setChosenRole("admin")}>{"Admin"}</option>
+                                        <select className="w-100" id="roles" name="roles" onChange={(e) => { setChosenRole(e.target.value) }} >
+                                            <option value={""}>{"Applicant"}</option>
+                                            <option value={"internal"} >{"ISFiT Member / Interviewer"}</option>
+                                            <option value={"admin"} >{"Admin"}</option>
                                         </select>
                                         </form>
                                     </div>

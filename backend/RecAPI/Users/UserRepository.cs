@@ -22,6 +22,16 @@ namespace RecAPI.Users.Repositories
         {
             return _users.Find(user => true).ToList();
         }
+        public List<User> GetApprovedUsers()
+        {
+            return _users.Find(user => user.Approved == true).ToList();
+        }
+
+        public List<User> GetAllUsersNotApproved()
+        {
+            return _users.Find(user => user.Approved == false).ToList();
+        }
+
         public List<User> GetUsers(List<string> ids)
         {
             return _users.Find(user => ids.Contains(user.Id)).ToList();

@@ -50,7 +50,8 @@ namespace RecAPI.Users.Mutations
                 PhoneNumber = registerUser.PhoneNumber,
                 FirstName = registerUser.FirstName,
                 LastName = registerUser.LastName,
-                BirtDate = registerUser.BirtDate
+                BirtDate = registerUser.BirtDate,
+                Approved = false
             };
             var storedUser = userRepository.CreateUser(user);
             if (storedUser != null)
@@ -75,19 +76,20 @@ namespace RecAPI.Users.Mutations
             {
                 UserError.UserExistError(userEmail);
             }
-            User updatedUser = new User()
-            {
-                Id = prevUser.Id,
-                AuthId = prevUser.AuthId,
-                Email = prevUser.Email,
-                PhoneNumber = input.PhoneNumber ?? prevUser.PhoneNumber,
-                FirstName = input.FirstName ?? prevUser.FirstName,
-                LastName = input.LastName ?? prevUser.LastName,
-                BirtDate = input.BirtDate ?? prevUser.BirtDate,
-                BusyTime = input.BusyTime ?? prevUser.BusyTime,
-                InterviewTime = prevUser.InterviewTime,
-                Sections = prevUser.Sections,
-                Teams = prevUser.Teams
+        User updatedUser = new User()
+        {
+            Id = prevUser.Id,
+            AuthId = prevUser.AuthId,
+            Email = prevUser.Email,
+            PhoneNumber = input.PhoneNumber ?? prevUser.PhoneNumber,
+            FirstName = input.FirstName ?? prevUser.FirstName,
+            LastName = input.LastName ?? prevUser.LastName,
+            BirtDate = input.BirtDate ?? prevUser.BirtDate,
+            BusyTime = input.BusyTime ?? prevUser.BusyTime,
+            InterviewTime = prevUser.InterviewTime,
+            Sections = prevUser.Sections,
+            Teams = prevUser.Teams,
+            Approved = prevUser.Approved
             };
             return userRepository.UpdateUser(prevUser.Id, updatedUser);
         }
@@ -232,5 +234,41 @@ namespace RecAPI.Users.Mutations
             var updatedUser = userRepository.UpdateUser(user.Id, user);
             return !teams.Except(updatedUser.Teams).Any();
         }
+
+        [Authorize(Policy = "superuser")]
+        public bool setUserApproved(
+                string email,
+                bool approved,
+                [Service] IUserRepository userRepository
+            )
+        {
+            var user = userRepository.GetUserByEmail(email);
+            if (user == null)
+            {
+                UserError.UserExistError(email);
+            }
+            user.Approved = approved;
+            var updatedUser = userRepository.UpdateUser(user.Id, user);
+            return updatedUser.Approved == approved;
+        }
+
+        [Authorize(Policy = "superuser")]
+        public bool setAllUsersApproved(
+                [Service] IUserRepository userRepository
+            )
+        {
+            var users = userRepository.GetUsers();
+            if (users == null && users.Count() == 0)
+            {
+                UserError.NoUsersExist();
+            }
+            foreach(User user in users)
+            {
+                user.Approved = true;
+                var updatedUser = userRepository.UpdateUser(user.Id, user);
+            }
+            return true;
+        }
+
     }
 }

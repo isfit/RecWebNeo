@@ -57,6 +57,9 @@ namespace RecAPI.Users.Models
         [Authorize(Policy = "administrator")]
         [UserRolesResolver]
         public List<string> Roles { get; }
+
+        [Authorize(Policy = "superuser")]
+        public bool Approved { get; set; }
     }
 
     public interface IUserConnection

@@ -14,6 +14,7 @@ namespace RecAPI.Users.Repositories
         User GetUser(string id);
         User GetUserByEmail(string email);
         User GetUserByAuth(string authId);
+        List<User> GetAllUsersExceptByAuth(List<string> authIds);
 
         List<User> GetAllAvailableUsers(DateTime date);
         bool CheckUserAvailable(string id, DateTime date);

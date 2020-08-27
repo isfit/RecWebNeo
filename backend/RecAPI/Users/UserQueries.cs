@@ -12,6 +12,7 @@ using HotChocolate.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using RecAPI.Auth.Models;
 using RecAPI.Users.Input;
+using RecAPI.Applications.Repositories;
 
 namespace RecAPI.Users.Queries
 {
@@ -82,5 +83,17 @@ namespace RecAPI.Users.Queries
             return userRepository.GetAllUsersNotApproved();
         }
 
+        [Authorize(Policy = "administrator")]
+        [UsePaging]
+        [UseFiltering]
+        [UseSorting]
+        public IEnumerable<User> GetUserWithoutApplication(
+            [Service] IUserRepository userRepository,
+            [Service] IApplicationRepository applicationRepository
+            )
+        {
+            List<string> applicationUsers = applicationRepository.GetApplicants();
+            return userRepository.GetAllUsersExceptByAuth(applicationUsers);
+        }
     }
 }

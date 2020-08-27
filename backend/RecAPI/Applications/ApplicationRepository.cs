@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using RecAPI.Applications.Models;
 using MongoDB.Driver;
 using RecAPI.Database;
+using System.Linq;
 
 namespace RecAPI.Applications.Repositories
 {
@@ -35,6 +36,11 @@ namespace RecAPI.Applications.Repositories
         public List<Application> GetApplicationWithout(List<string> applicationIds)
         {
             return _applications.Find(application => !applicationIds.Contains(application.Id)).ToList();
+        }
+
+        public List<string> GetApplicants()
+        {
+            return GetApplications().Select(appl => appl.Applicant).ToList();
         }
 
         public Application CreateApplication(Application application)

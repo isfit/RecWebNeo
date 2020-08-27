@@ -51,7 +51,7 @@ namespace RecAPI.Users.Mutations
                 FirstName = registerUser.FirstName,
                 LastName = registerUser.LastName,
                 BirtDate = registerUser.BirtDate,
-                Approved = false
+                Approved = registerUser.Email.Contains("@isfit.no")
             };
             var storedUser = userRepository.CreateUser(user);
             if (storedUser != null)

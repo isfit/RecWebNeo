@@ -105,12 +105,8 @@ const MyApplicationPage = (props) => {
           </div>
           <div className="row">
             <div className="col mt-3">
-              The value of prioritized: { prioritized?.toString() }
               <PrioritizedCard prioritizedValue={prioritized} setPrioritized={(pri) => setPrioritized(pri)} />
-
-              The value of other positions: { otherPositions?.toString() }
               <InterestApplicationCard readOnly={true} interest={otherPositions} setInterest={otherPos => setOtherPositions(otherPos)} />
-
               <h5>Your Schedule</h5>
               <AvailableTimesFormSimple 
                 busyTimes={data?.myApplication?.available ?? []}

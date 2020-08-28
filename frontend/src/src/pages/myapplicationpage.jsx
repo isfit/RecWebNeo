@@ -1,29 +1,52 @@
-import React, { useState, Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PositionChoiceBoxReadOnly from '../components/positionChoiceBoxReadOnly';
 import PageLayout from './pageLayout';
 import ErrorPage from './errorPage';
-
 import AvailableTimesFormSimple from '../components/availableTimesFormSimple';
-
-
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { MYAPPLICATION } from "../requests/userRequests";
+import PrioritizedCard from '../components/application/prioritizedCard';
+import InterestApplicationCard from '../components/application/interestApplicationCard';
+import { UPDATE_APPLICATION } from "../requests/applicationRequests";
 
 const MyApplicationPage = (props) => {
 
-  const [text, changeText] = useState(localStorage.getItem("applicationText") || '');
-  const [prioritized, setPrioritized] = useState(localStorage.getItem("prioritized") || true);
-  const [otherPositions, setOtherPositions] = useState(localStorage.getItem("otherPositions") || "OnlyPositions");
-
   const { refetch, loading, error, data } = useQuery(MYAPPLICATION);
-  const PositionsArePrioritized = data?.myApplication?.prioritized;
-  const InterestedInOtherPositionsString = data?.myApplication?.interest ;
+  const [updateApplicationMutation, { updatedData, updateError, updateLoading }] = useMutation(UPDATE_APPLICATION, {
+    onError: () => {},
+    onCompleted: () => {alert("Your application is now updated!")}
+  });
+
+  const [applicationText, changeText] = useState('');
+  const [prioritized, setPrioritized] = useState(true);
+  const [otherPositions, setOtherPositions] = useState("OnlyPositions");
+  const [enteredBusyTimes, setEnteredBusyTimes] = useState([]);
+
   const startInterview = new Date("2020-08-27T00:00:00.000Z");
   const endInterview = new Date("2020-09-10T00:00:00.000Z");
 
-  
+  useEffect( () => {
+    changeText(data?.myApplication?.applicationText);
+    setPrioritized(data?.myApplication?.prioritized);
+    setOtherPositions(data?.myApplication?.interest);
+    setEnteredBusyTimes(data?.myApplication?.available);
+  }, [data]);
+
+  const updateApplication = () => {
+    const variableData = {
+      variables: {
+        input: {
+          applicationText: applicationText,
+          prioritized: prioritized,
+          interest: otherPositions,
+          available: enteredBusyTimes,
+          //positions: data?.myApplication.positions.map( pos => pos.value),
+        }
+      }
+    };
+    updateApplicationMutation(variableData);
+  };
 
     if (loading) {  
         return (
@@ -31,6 +54,7 @@ const MyApplicationPage = (props) => {
         )
     }
 
+    
     if (error != null) {
         return (
           <PageLayout>
@@ -42,6 +66,7 @@ const MyApplicationPage = (props) => {
           </PageLayout>
         )
     }
+    
 
     if( data.myApplication == null ) {
       return(
@@ -65,7 +90,14 @@ const MyApplicationPage = (props) => {
             <div className="container">
           <div className="row">
             <div className="col">
-            <textarea className="w-100 h-100" readOnly={true} placeholder="You application text seems empty." type="text" value={data?.myApplication.applicationText}></textarea>
+             <textarea 
+                className="w-100 h-100" 
+                placeholder="You application text seems empty." 
+                type="text" 
+                value={applicationText}
+                onChange={e => changeText( e.target.value )} >
+
+              </textarea>
             </div>
             <div className="col col-lg-4">
               <PositionChoiceBoxReadOnly positions={data?.myApplication.positions.map( pos => pos.value)} title="My Positions"/>
@@ -73,54 +105,32 @@ const MyApplicationPage = (props) => {
           </div>
           <div className="row">
             <div className="col mt-3">
+              The value of prioritized: { prioritized?.toString() }
+              <PrioritizedCard prioritizedValue={prioritized} setPrioritized={(pri) => setPrioritized(pri)} />
 
-              <div className="card mb-2 w-100">
-                <div className="ml-3 mt-3 mr-4">
-                  <div className="row pl-3 mb-4">
-                    <input type="checkbox" checked={PositionsArePrioritized} readOnly={true}/>
-                    <h6 className="page-title ml-2 mb-0">The positions in my application are prioritized</h6>
-                  </div>
-                  { PositionsArePrioritized ? <p>You have entered that the prioritization of the positions in your application matter.</p> : <p>You have entered that the prioritization of your positions are not that important.</p> }
-                </div>
-              </div>
+              The value of other positions: { otherPositions?.toString() }
+              <InterestApplicationCard readOnly={true} interest={otherPositions} setInterest={otherPos => setOtherPositions(otherPos)} />
 
-              <div className="card w-100 mb-3">
-                <div className="ml-3 mt-3 mr-4">
-                  <div className="row pl-3">
-                    <input type="radio" checked={InterestedInOtherPositionsString === "OnlyPositions"} readOnly={true} />
-                    <h6 className="page-title ml-2 mb-0">I am only interested in the positions I have entered</h6>
-                  </div>
-                  <div className="row pl-3">
-                    <input type="radio" checked={InterestedInOtherPositionsString === "Same"} readOnly={true} />
-                    <h6 className="page-title ml-2 mb-0">I am open to other postions within the same genre of the positions I have entered</h6>
-                  </div>
-                  <div className="row pl-3 mb-4">
-                    <input type="radio" checked={(InterestedInOtherPositionsString === "open" || InterestedInOtherPositionsString === "Open")} readOnly={true} />
-                    <h6 className="page-title ml-2 mb-0">I am open to any other position in ISFiT, regardless of the positions I have entered</h6>
-                  </div>
-                  {InterestedInOtherPositionsString === "OnlyPositions" ? <p>You have entered that you are only interested in the positions you have entered above.</p> : null} 
-                  {InterestedInOtherPositionsString === "Same" ? <p>You have entered that you are also interested in positions within the same genre as those you have entered above.</p> : null} 
-                  {(InterestedInOtherPositionsString === "open" || InterestedInOtherPositionsString === "Open") ? <p>This means you have entered that you are open to other positions in ISFiT.</p> : null} 
-
-                </div>
-              </div>
               <h5>Your Schedule</h5>
-              { console.log("Dideli da",data?.myApplication?.available) }
-
               <AvailableTimesFormSimple 
                 busyTimes={data?.myApplication?.available ?? []}
                 setBusyTimes={busy => {
-                  console.log("Hello there");
+                  setEnteredBusyTimes(busy);
                 }}
                 startDate = {startInterview}
                 endDate = {endInterview}
                 hourDiff={2}
                 firstTimeSlot={8}
                 lastTimeSlot={20}
-                readOnly = { true }
+                readOnly = { false }
                 selectable = { true }
               />
+
             </div>
+          </div>
+
+          <div className="flex-grid pt-2 px-2" style={{justifyContent: "space-between"}}>
+            <button type="button" className="btn btn-secondary" onClick={() => updateApplication()}>Update Application</button>
           </div>
         
             </div>

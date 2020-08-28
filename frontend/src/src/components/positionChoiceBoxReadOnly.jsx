@@ -11,7 +11,6 @@ const PositionChoiceField = ({id, title}) => {
 }
 
 const PositionChoiceBoxReadOnly = ({positions, title}) => {
-    console.log(positions);
     return(
         <div className="card w-100 px-2">
             <h5 className="page-title border-bottom ml-2 mt-2">{title}</h5>

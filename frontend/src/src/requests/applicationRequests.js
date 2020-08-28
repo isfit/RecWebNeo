@@ -34,6 +34,18 @@ const APPLICATIONS = gql`
     }
 `;
 
+const UPDATE_APPLICATION = gql`
+mutation updateApplication($input: UpdateApplicationInput) {
+    updateApplication(input: $input) {
+        id,
+        applicationText,
+        prioritized,
+        interest
+    }
+}
+`;
+
 export {
-    APPLICATIONS
+    APPLICATIONS,
+    UPDATE_APPLICATION
 }

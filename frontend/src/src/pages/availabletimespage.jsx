@@ -146,7 +146,7 @@ const AvailableTimesPage = (props) => {
               className="btn btn-continue float-right"
               onClick={() => submitApplication()}
             >
-              Continue
+              Submit My Application
             </a>
           </div>
         </div>

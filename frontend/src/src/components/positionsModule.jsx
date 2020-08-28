@@ -54,19 +54,6 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
   const {data} = useQuery(FILTER_POSITIONS, positionQuery());
 
   const [open, setOpen] = useState(false);
-
-
-  function pairwise(arr, func){
-    for(var i=0; i < arr.length - 1; i=i+2){
-        func(arr[i], arr[i + 1])
-    }
-  }
-
-  let arr = [1, 2, 3, 4];
-
-  pairwise(arr, function(current, next){
-      console.log(current, next)
-  })
   
   const sectionCards = (sectionId, eventKey) => {
     return (

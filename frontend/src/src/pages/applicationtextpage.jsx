@@ -46,12 +46,9 @@ const ApplicationTextPage = (props) => {
           </div>
           <div className="row">
             <div className="col mt-3">
-
-              The value of prioritized: { prioritized.toString() }
               <PrioritizedCard prioritizedValue={prioritized} setPrioritized={(pri) => setPrioritized(pri)} />
 
-              The value of other positions: { otherPositions.toString() }
-              <InterestApplicationCard positions={otherPositions} setPositions={otherPos => setOtherPositions(otherPos)} />
+              <InterestApplicationCard interest={otherPositions} setInterest={otherPos => setOtherPositions(otherPos)} />
 
             </div>
           </div>

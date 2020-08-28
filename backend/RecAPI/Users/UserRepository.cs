@@ -61,6 +61,11 @@ namespace RecAPI.Users.Repositories
                 .ToList();
         }
 
+        public List<User> GetAllUsersExceptByAuth(List<string> authIds)
+        {
+            return _users.Find(user => !authIds.Contains(user.AuthId)).ToList();
+        }
+
         public bool CheckUserAvailable(string id, DateTime date)
         {
             var user = GetUser(id);

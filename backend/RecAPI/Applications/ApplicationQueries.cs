@@ -16,13 +16,15 @@ using RecAPI.Interviews.Models;
 using RecAPI.Interviews.Repositories;
 using RecAPI.Applications.ErrorHandling;
 using RecAPI.Auth.Repositories;
+using RecAPI.Positions.Models;
+using RecAPI.Positions.Repositories;
 
 namespace RecAPI.Applications.Queries
 {
     [ExtendObjectType(Name = "Query")]
     public class ApplicationQueries
     {
-        [Authorize(Policy = "administrator")]
+        [Authorize(Policy = "internal")]
         [UsePaging]
         [UseFiltering]
         [UseSorting]
@@ -30,7 +32,8 @@ namespace RecAPI.Applications.Queries
             [GlobalState("currentUser")] CurrentUser user,
             [Service] IAuthRepository authRepository,
             [Service] IUserRepository userRepository,
-            [Service]IApplicationRepository applicationRepository
+            [Service]IApplicationRepository applicationRepository,
+            [Service]IPositionRepository positionRepository
             )
         {
             var currentUser = authRepository.GetAuthUser(user.UserId);
@@ -39,14 +42,36 @@ namespace RecAPI.Applications.Queries
             {
                 return applications;
             }
-            User user2 = null;
             var filteredApplicationsList = applications.Where(appl =>
             {
-                var user = userRepository.GetUserByAuth(appl.Applicant);
-                user2 = user;
-                return (user?.Approved ?? false) == true;
+                var applicant = userRepository.GetUserByAuth(appl.Applicant);
+                return (applicant?.Approved ?? false) == true;
             }).ToList();
-            return filteredApplicationsList;
+            if (currentUser.Roles.Contains("admin"))
+            {
+                return filteredApplicationsList;
+            }
+            // After this is internal user
+            var givenUser = userRepository.GetUserByAuth(user.UserId);
+            var userTeams = givenUser.Teams;
+            if (userTeams == null || userTeams.Count() <= 0)
+            {
+                return null;
+            }
+            var filteredApplicationsByTeams = applications.Where(appl =>
+            {
+                foreach(var posId in appl.Positions.Values)
+                {
+                    Position position = positionRepository.GetPosition(posId);
+                    if (position != null && userTeams.Contains(position.Team))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+
+            }).ToList();
+            return filteredApplicationsByTeams;
         }
 
         [Authorize(Policy = "administrator")]

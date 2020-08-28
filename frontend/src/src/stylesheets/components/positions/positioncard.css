@@ -8,13 +8,14 @@
   color: #E8E4D3 !important;
 }
 
+a:hover {
+ cursor:pointer;
+}
+
 .position-entry {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-width: 270px;
-  width: 25vw;
-  min-height: 200px;
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
@@ -34,9 +35,7 @@
 }
 
 .customAccordian{
-  width: 55vw;
-  min-width: 50vw;
-  max-width: 60vw;
+  flex-basis:80%;
 }
 
 
@@ -62,9 +61,6 @@
     padding-right: 0 !important;
   }
 
-  .position-entry{
-    width: 90vw;
-  }
 
   .customAccordian{
     width: 90vw;

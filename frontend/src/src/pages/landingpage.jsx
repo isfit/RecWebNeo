@@ -22,34 +22,40 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
       <div className="container main-container">
         <div className="flex-grid-adaptive mb-3 pt-3">
           <TextBox>
-            <h1 style={{textAlign:"center", color: "#983c2e"}}>ISFiT is recruiting!</h1>
-            <div className="flex-grid flex-row">
-              <img src="./Gråtekst_pa_gjennomsiktig.png" className='flex-sm-shrink-1 w-10 my-4 some-pic' alt="Tabler React" style={{width: '20vw', height: 'auto'}}></img>
-              <p className="py-4 landing-text">
-                We are looking for more motivated and excited students to join us! Whether you like to communicate through different media platforms, plan an event from start to end, book performers, handle the economy or organize, we have a position for you!
-                ISFiT is much more than just a festival. We gather international students from different backgrounds for discussions and debates. In addition, we have a wide Cultural Program that you can benefit from as a student or citizen of Trondheim. To make this happen, we need people like you to join us!
-                Apply before the 31th of August for a chance to gain new skills, meet other volunteers and get the experience of a lifetime!
-              </p>
+            <div className="flex-grid-adaptive">
+              <div className="image-left">
+                <img src="./Gråtekst_pa_gjennomsiktig.png" className='flex-sm-shrink-1 w-10 my-4 some-pic' alt="No image" style={{width: '100%', height: 'auto'}}></img>
+              </div>
+              <div className="text-right">
+                <div className="flex-grid" style={{flexDirection:"column"}}>
+                  <h1 style={{textAlign:"center", color: "#983c2e"}}>ISFiT is recruiting!</h1>
+                  <p style={{textAlign:"center"}}>
+                    We are looking for more motivated and excited students to join us! Whether you like to communicate through different media platforms, plan an event from start to end, book performers, handle the economy or organize, we have a position for you!
+                    ISFiT is much more than just a festival. We gather international students from different backgrounds for discussions and debates. In addition, we have a wide Cultural Program that you can benefit from as a student or citizen of Trondheim. To make this happen, we need people like you to join us!
+                    Apply before the 31th of August for a chance to gain new skills, meet other volunteers and get the experience of a lifetime!
+                  </p>
+                </div>
+              </div>
             </div>
           </TextBox>
         </div>
-        <div className="page-header pt-3 mb-4">
+        <div className="page-header">
           <h4 className="page-title px-1">Choose positions</h4>
         </div>
         <div className="flex-grid-adaptive">
-          <div className="order-1 customAccordian">
+  
             <div className="position-box-left">
               <PositionsModule sectionList={sectionList} />
             </div>
-          </div>
+      
 
-          <div className="shopping-box-right order-0">
+          <div className="shopping-box-right mt-4">
             <PositionChoiceBox />
             {  userLogedIn ? <button
                 className="btn btn-continue mt-1 mr-2 float-right"
                 onClick={() => history.push("/enterapplication")}
               > Continue</button> :
-              <button className="btn btn-success"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess
+              <button className="btn btn-success w-100"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess
               </button>}
           </div>
 

@@ -91,7 +91,7 @@ import { MYAPPLICATION } from "../requests/userRequests";
                   { userLogedIn ? <NavBarButton title="My Interviews" iconstring="user-tie" address="/myinterviews" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="All Interviews" iconstring="users" address="/allinterviews" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="Manage interviews" iconstring="users-cog" address="/manageinterviews" /> : null}
-                  { AccessLevel > 2 ? <NavBarButton title="View Applications" iconstring="file-alt" address="/applications" /> : null}
+                  { AccessLevel > 1 ? <NavBarButton title="View Applications" iconstring="file-alt" address="/applications" /> : null}
                   { AccessLevel > 1 ? <NavBarButton title="Unavailable hours" iconstring="calendar-times" address="/unavailabletimes" /> : null}
                   { AccessLevel > 2 ? <NavBarButton title="Administer users" iconstring="tasks" address="/useradminpage" /> : null}
                   {/* { userLogedIn ? <NavBarButton title="My Profile" iconstring="address-card" address="/myprofile" /> : null} */}

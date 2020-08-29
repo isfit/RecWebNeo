@@ -8,6 +8,8 @@ import ErrorPage from './errorPage';
 import { APPLY } from "../requests/userRequests";
 import { useQuery, useMutation } from "@apollo/client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 const AvailableTimesPage = (props) => {
 
@@ -72,8 +74,21 @@ const AvailableTimesPage = (props) => {
   if (data != null ){
     return (
       <PageLayout>
-        <span>Application entered successfully. Thank you!</span>
-      </PageLayout>
+            <div className="container pt-5">
+                <div className="flex-grid-adaptive py-5" style={{flexDirection:"column", justifyContent:"center",textAlign:"center"}}>
+                    <div>
+                        <span style={{fontSize: "2em", color: "#1bae91"}}>
+                            <FontAwesomeIcon className="fas check-circle fa-10x" icon="check-circle" />
+                        </span>
+                    </div>
+                    <div className="mb-5">
+                        <h1 style={{color:"#1bae91"}}>Application entered successfully</h1>
+                        <h1 style={{color:"#1bae91"}}>Thank you!</h1>
+                        <small className="text-muted">You can view and edit your application under the My Application tab.</small>
+                    </div>
+                </div>
+            </div>
+        </PageLayout>
     );
   };
 

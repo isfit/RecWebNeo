@@ -44,6 +44,7 @@ import {
   faUsersCog,
   faTasks,
   faUserTie,
+  faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -62,6 +63,7 @@ library.add(
   faUsersCog,
   faTasks,
   faUserTie,
+  faCheckCircle,
 );
 
 const httpLink = new HttpLink({ uri: 'https://recruitment.isfit.org:5000/'});

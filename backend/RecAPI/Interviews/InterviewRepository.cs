@@ -47,6 +47,11 @@ namespace RecAPI.Interviews.Repositories
             ).ToList();
         }
 
+        public Interview GetInterviewByApplication(string applicationId)
+        {
+            return _interviews.Find(interview => interview.Application == applicationId).FirstOrDefault();
+        }
+
         public Interview CreateInterview(Interview interview)
         {
             _interviews.InsertOne(interview);

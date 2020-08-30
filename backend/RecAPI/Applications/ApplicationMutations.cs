@@ -88,11 +88,21 @@ namespace RecAPI.Applications.Mutations
         [Authorize(Policy = "superuser")]
         public bool DeleteUserApplication(
             SingleModelInput input,
-            [Service]IApplicationRepository repository,
+            [Service] IApplicationRepository applicationRepository,
+            [Service] IInterviewRepository interviewRepository,
             [Service] IUserRepository userRepository
         )
         {
-            return repository.DeleteApplication(input.Id);
+            // Find an interview assossiated with the application
+            var interview = interviewRepository.GetInterviewByApplication(input.Id);
+            if (interview != null) {
+                foreach (InterviewConnections interviewUser in interview.Interviewers)
+                {
+                    UserDeleteInterviewTime(interviewUser.User, interview.Start, userRepository);
+                }
+                interviewRepository.DeleteInterview(interview.Id);
+            }
+            return applicationRepository.DeleteApplication(input.Id);
         }
 
         [Authorize(Policy = "administrator")]

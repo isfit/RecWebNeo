@@ -13,6 +13,7 @@ namespace RecAPI.Interviews.Repositories
         Interview GetInterview(string id);
         Interview GetApplicationInterview(string applicationId);
         List<Interview> GetUserInterviews(string userId);
+        Interview GetInterviewByApplication(string applicationId);
 
         Interview CreateInterview(Interview interview);
         Interview UpdateInterview(string id, Interview interview);

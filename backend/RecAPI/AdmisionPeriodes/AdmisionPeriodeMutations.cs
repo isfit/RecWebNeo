@@ -45,7 +45,7 @@ namespace RecAPI.AdmisionPeriodes.Mutations
         )
         {
             //TODO: Update admision periode
-            AdmisionPeriodeError.OrganizationExists(_organization, input.Organization);
+            //AdmisionPeriodeError.OrganizationExists(_organization, input.Organization);
             var admisionPeriode = repository.GetAdmisionPeriode(input.Id);
 
             var startDate = input.StartDate ?? admisionPeriode.StartDate;
@@ -55,7 +55,7 @@ namespace RecAPI.AdmisionPeriodes.Mutations
             var updateAdmisionPeriode = new AdmisionPeriode()
             {
                 Id = admisionPeriode.Id,
-                Organization = input.Organization ?? admisionPeriode.Organization,
+                Organization = admisionPeriode.Organization,
                 StartDate = startDate,
                 EndDate = endDate,
                 StartInterviewDate = admisionPeriode.StartInterviewDate,

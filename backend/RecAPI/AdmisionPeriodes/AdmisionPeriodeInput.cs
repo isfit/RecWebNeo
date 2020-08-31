@@ -27,10 +27,10 @@ namespace RecAPI.AdmisionPeriodes.InputType
         [GraphQLNonNullType]
         public string Id { get; set; }
         public string Organization { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public DateTime StartInterviewDate { get; set; }
-        public DateTime EndInterviewDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public DateTime? StartInterviewDate { get; set; }
+        public DateTime? EndInterviewDate { get; set; }
         public int MinAppliedPositions { get; set; }
         public int MaxAppliedPositions { get; set; }
     }

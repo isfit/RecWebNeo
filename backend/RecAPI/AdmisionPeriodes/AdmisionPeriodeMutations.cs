@@ -48,8 +48,8 @@ namespace RecAPI.AdmisionPeriodes.Mutations
             AdmisionPeriodeError.OrganizationExists(_organization, input.Organization);
             var admisionPeriode = repository.GetAdmisionPeriode(input.Id);
 
-            var startDate = input.StartDate != null ? input.StartDate : admisionPeriode.StartDate;
-            var endDate = input.EndDate != null ? input.EndDate : admisionPeriode.EndDate;
+            var startDate = input.StartDate ?? admisionPeriode.StartDate;
+            var endDate = input.EndDate ?? admisionPeriode.EndDate;
             AdmisionPeriodeError.ValidDates(startDate, endDate);
 
             var updateAdmisionPeriode = new AdmisionPeriode()
@@ -57,15 +57,19 @@ namespace RecAPI.AdmisionPeriodes.Mutations
                 Id = admisionPeriode.Id,
                 Organization = input.Organization ?? admisionPeriode.Organization,
                 StartDate = startDate,
-                EndDate = endDate
+                EndDate = endDate,
+                StartInterviewDate = admisionPeriode.StartInterviewDate,
+                EndInterviewDate = admisionPeriode.EndInterviewDate,
+                MinAppliedPositions = admisionPeriode.MinAppliedPositions,
+                MaxAppliedPositions = admisionPeriode.MaxAppliedPositions
             };
-            return repository.UpdateAdmisionPeriode(admisionPeriode.Id, admisionPeriode);
+            return repository.UpdateAdmisionPeriode(admisionPeriode.Id, updateAdmisionPeriode);
         }
 
         [Authorize(Policy = "superuser")]
         public bool DeleteAdmisionPeriode(
             SingleModelInput input,
-            [Service]IAdmisionPeriodeRepository repository
+            [Service] IAdmisionPeriodeRepository repository
         )
         {
             return repository.DeleteAdmisionPeriode(input.Id);

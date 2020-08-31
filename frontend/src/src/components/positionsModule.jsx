@@ -59,7 +59,7 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
     return (
       <Card>
         <Card.Header>
-          <Accordion.Toggle as={Button} variant="btn btn-success dropdown-toggle w-100" eventKey={""+ eventKey}>
+          <Accordion.Toggle as={Button} variant="btn btn-success dropdown-toggle ml-0 w-100" eventKey={""+ eventKey}>
             <p >{data.positions.nodes.find(e => e.section.id == sectionId).section.name}</p>
           </Accordion.Toggle>
         </Card.Header>

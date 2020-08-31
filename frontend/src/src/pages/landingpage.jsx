@@ -55,7 +55,7 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
                 className="btn btn-continue mt-1 mr-2 float-right"
                 onClick={() => history.push("/enterapplication")}
               > Continue</button> :
-              <button className="btn btn-success w-100"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess
+              <button className="btn btn-success ml-0 w-100"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess
               </button>}
           </div>
 

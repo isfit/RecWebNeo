@@ -9,10 +9,11 @@ import { MYAPPLICATION } from "../requests/userRequests";
 import PrioritizedCard from '../components/application/prioritizedCard';
 import InterestApplicationCard from '../components/application/interestApplicationCard';
 import { UPDATE_APPLICATION } from "../requests/applicationRequests";
+import { faLessThanEqual } from '@fortawesome/free-solid-svg-icons';
 
 const MyApplicationPage = (props) => {
 
-  const { refetch, loading, error, data } = useQuery(MYAPPLICATION);
+  const { refetch, loading, error, data } = useQuery(MYAPPLICATION, {fetchPolicy: "no-cache"});
   const [updateApplicationMutation, { updatedData, updateError, updateLoading }] = useMutation(UPDATE_APPLICATION, {
     onError: () => {},
     onCompleted: () => {alert("Your application is now updated!")}
@@ -22,6 +23,8 @@ const MyApplicationPage = (props) => {
   const [prioritized, setPrioritized] = useState(true);
   const [otherPositions, setOtherPositions] = useState("OnlyPositions");
   const [enteredBusyTimes, setEnteredBusyTimes] = useState([]);
+
+  const [editMode, setEditMode] = useState(false);
 
   const startInterview = new Date("2020-08-27T00:00:00.000Z");
   const endInterview = new Date("2020-09-10T00:00:00.000Z");
@@ -46,6 +49,7 @@ const MyApplicationPage = (props) => {
       }
     };
     updateApplicationMutation(variableData);
+    setEditMode(false);
   };
 
     if (loading) {  
@@ -81,8 +85,9 @@ const MyApplicationPage = (props) => {
     return (
       <PageLayout userLogedIn={ props.userLogedIn }  setUserLogedIn={ userLoginValue => props.setUserLogedIn(userLoginValue) }>
         <div className="container">
-          <div className="page-header pt-3 mb-4">
+          <div className="flex-grid pt-2 px-2" style={{justifyContent: "space-between"}}>
             <h4 className="page-title">My application</h4>
+            { editMode ? <div><small className="mr-2">You can now edit the fields below.</small><button type="button" className="btn btn-secondary mr-2" onClick={() => setEditMode(false)}>Cancel editing</button><button type="button" className="btn btn-success" onClick={() => updateApplication()}>Update Application</button></div> : <button type="button" className="btn btn-secondary" onClick={() => setEditMode(true)}>Edit</button> }
           </div>
           <div className="row">
             <div className="col mt-3">
@@ -91,12 +96,12 @@ const MyApplicationPage = (props) => {
           <div className="row">
             <div className="col">
              <textarea 
-                className="w-100 h-100" 
+                className="w-100 h-100"
+                readOnly = {!editMode}
                 placeholder="You application text seems empty." 
                 type="text" 
                 value={applicationText}
                 onChange={e => changeText( e.target.value )} >
-
               </textarea>
             </div>
             <div className="col col-lg-4">
@@ -105,8 +110,8 @@ const MyApplicationPage = (props) => {
           </div>
           <div className="row">
             <div className="col mt-3">
-              <PrioritizedCard prioritizedValue={prioritized} setPrioritized={(pri) => setPrioritized(pri)} />
-              <InterestApplicationCard readOnly={true} interest={otherPositions} setInterest={otherPos => setOtherPositions(otherPos)} />
+              <PrioritizedCard readOnly={!editMode} prioritizedValue={prioritized} setPrioritized={(pri) => setPrioritized(pri)} />
+              <InterestApplicationCard readOnly={!editMode} interest={otherPositions} setInterest={otherPos => setOtherPositions(otherPos)} />
               <h5>Your Schedule</h5>
               <AvailableTimesFormSimple 
                 busyTimes={data?.myApplication?.available ?? []}
@@ -118,17 +123,12 @@ const MyApplicationPage = (props) => {
                 hourDiff={2}
                 firstTimeSlot={8}
                 lastTimeSlot={20}
-                readOnly = { false }
+                readOnly = { !editMode }
                 selectable = { true }
               />
 
             </div>
           </div>
-
-          <div className="flex-grid pt-2 px-2" style={{justifyContent: "space-between"}}>
-            <button type="button" className="btn btn-secondary" onClick={() => updateApplication()}>Update Application</button>
-          </div>
-        
             </div>
             </div>
           </div>

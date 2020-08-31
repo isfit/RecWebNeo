@@ -21,9 +21,11 @@ const APPLICATIONS = gql`
                         id,
                         name,
                         section {
+                            id
                             name
                         }
                         team {
+                            id
                             name
                         }
                     }

@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationsModule from "../components/applicationsModule";
 import PageLayout from './pageLayout';
 import PositionChoiceBoxReadOnly from "../components/positionChoiceBoxReadOnly"
 import { useQuery } from "@apollo/client";
 import {APPLICATIONS} from '../requests/applicationRequests';
 import ErrorPage from './errorPage';
+import ScrollList from '../components/scrollList';
+
 
 import { GET_SECTIONS } from "../requests/userRequests";
 import { POSITIONS } from "../requests/positionRequests";
@@ -76,52 +78,79 @@ const ApplicationPage = () => {
   
 
   const [chosenSection, setChosenSection] = useState("");
-  const [chosenTeam, setChosenTeam] = useState(null);
-  const [chosenPosition, setChosenPosition] = useState(null);
+  const [chosenTeam, setChosenTeam] = useState("");
+  const [chosenPosition, setChosenPosition] = useState("");
+
+  let applications = applicationsData?.data?.applications?.nodes;
+  let numApplications = 0;
 
 
-  const applyFilters = (applications) => {
-    let resultList = [];
+  const ApplyFilters = (applications) => {
+    let resultList = [...applications];
 
     let hasChosenSection = Boolean(chosenSection);
     let hasChosenTeam = Boolean(chosenTeam);
     let hasChosenPosition = Boolean(chosenPosition);
 
-    console.log("Section chosen? ", hasChosenSection)
-    console.log("Team chosen? ", hasChosenTeam)
-    console.log("Position chosen? ", hasChosenPosition)
-
-    if (!hasChosenSection && !hasChosenTeam && !hasChosenPosition ){ //Has not chosen neither section, team or position
-      console.log("NUM ALL APPLICATIONS: ", [...applications].length)
-      return [...applications]
-    }
-
-    resultList = applications.filter(function(application) {
-      for (var i = 0; i < application.positions.length; i++) {
-        if (application.positions[i].value.section.id === chosenSection){
-          return true;
-        }
-      }
-      return false;
-    });
-    console.log("NUM RESULTS: ", resultList)
-    /* if (hasChosenSection) {
-      applications.map(application => {
+    if (hasChosenSection) {
+      resultList = resultList.filter(function(application) {
         for (var i = 0; i < application.positions.length; i++) {
-          if (application.positions[i].value.section.id === chosenSection) {
-            resultList.push(application)
-            break;
+          if (application.positions[i].value.section.id === chosenSection){
+            return true;
           }
         }
-      })
-    } */
+        return false;
+      });
+    }
+
+    if (hasChosenTeam) {
+      resultList = resultList.filter(function(application) {
+        for (var i = 0; i < application.positions.length; i++) {
+          if (application.positions[i].value.team.id === chosenTeam){
+            return true;
+          }
+        }
+        return false;
+      });
+    }
+
+    if (hasChosenPosition){
+      resultList = resultList.filter(function(application) {
+        for (var i = 0; i < application.positions.length; i++) {
+          if (application.positions[i].value.id === chosenPosition){
+            return true;
+          }
+        }
+        return false;
+      }
+    )}
 
     return(
-        resultList
+        [resultList, resultList.length]
     );
   };
 
 
+
+  const filterPositionsResults = (positions) => {
+    let resultList = [...positions];
+
+    if (Boolean(chosenSection)) {
+      resultList = resultList.filter(function(position) {
+          return position.section.id === chosenSection
+      });
+    }
+
+    if (Boolean(chosenTeam)) {
+      resultList = resultList.filter(function(position) {
+          return position.team.id === chosenTeam
+      });
+    }
+
+    return (
+      resultList
+    )
+  }
 
   if (applicationsData.loading) {
     return(
@@ -157,7 +186,7 @@ const ApplicationPage = () => {
                 <small>Team</small>
                   <form action="">
                     <select className="w-100" id="teams" name="teams" onChange={(e) => { setChosenTeam(e.target.value) }} >
-                        <option value={null}>{"All"}</option>
+                        <option value={""}>{"All"}</option>
                         {getSectionFromID(sectionsData?.data, chosenSection).teams?.map( team => {
                             return (
                                 <option value={team.id}>{team.name}</option>
@@ -168,22 +197,29 @@ const ApplicationPage = () => {
                 <small>Position</small>
                 <form action="">
                   <select className="w-100" id="positions" name="positions" onChange={(e) => { setChosenPosition(e.target.value) }} >
-                      <option value={null}>{"none"}</option>
-                      {positionsData?.data?.positions.nodes.map( position => {
+                      <option value={""}>{"All"}</option>
+                      {filterPositionsResults(positionsData?.data?.positions?.nodes).map( position => {
                           return (
                               <option value={position.id}>{position.name}</option>
                           )
-                          })}
+                      })}
                   </select>
                 </form>
+                <small className="mt-2" style={{textAlign:"center"}}>Number of applications matching your filters:</small>
+                <h5 style={{textAlign:"center"}}>{ApplyFilters(applications)[1]} </h5>
+                <small className="mt-2" style={{textAlign:"center"}}>Please note that unless you are an administrator, you can only see the applications that includes a position associated with your team.</small>
               </div>
             </div>
             <div className="col pl-0" style={{flexBasis:"80%"}}>
-            {
-              applyFilters(applicationsData?.data?.applications?.nodes).map(application => {
-                return(<ApplicationRow applicationData={application} />)
-              })
-            }
+              <div className="card w-100 h-100 px-3 py-3">
+                <ScrollList minHeight="700px">
+                {
+                  ApplyFilters(applications)[0].map(application => {
+                    return(<ApplicationRow applicationData={application} />)
+                  })
+                }
+                </ScrollList>
+              </div>
           </div>
         </div>
       </div>

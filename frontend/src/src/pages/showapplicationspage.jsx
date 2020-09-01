@@ -73,7 +73,7 @@ const ApplicationRow = ({applicationData}) => {
 const ApplicationPage = () => {
   
   const sectionsData = useQuery(GET_SECTIONS);
-  const applicationsData = useQuery(APPLICATIONS);
+  const applicationsData = useQuery(APPLICATIONS, {fetchPolicy: "no-cache"});
   const positionsData = useQuery(POSITIONS);
   
 

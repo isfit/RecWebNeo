@@ -90,6 +90,14 @@ const UserAdminPage = () => {
         };
     };
 
+    const setUsersNotApproved = (addedUsers) => {
+        addedUsers.map( user => {
+            console.log("ADDED USERS EMAIL", user.email)
+            //Run setApproved mutation with user.email and false
+            /* updatePassword({variables: {email: user?.email, password: chosenPassword}}); */
+        })
+    };
+
     const getSectionFromID = (sectionsData, sectionId) => {
         let sectionsArray = sectionsData?.sections ?? [];
         let sectionObject = null;
@@ -235,6 +243,11 @@ const UserAdminPage = () => {
                                     </div>
                                     <div className="col" style={{flexBasis:"10%"}}>
                                         <button type="button" className="btn btn-outline-success mt-2" style={{float:"right"}} onClick={event => updateUsersPassword(event, addedUsers, chosenPassword)}>Set password</button>
+                                    </div>
+                                </div>
+                                <div className="flex-grid border-bottom pb-3">
+                                    <div className="col" style={{flexBasis:"10%"}}>
+                                        <button type="button" className="btn btn-danger mt-2" style={{float:"right"}} onClick={() => setUsersNotApproved(addedUsers)}>Remove users</button>
                                     </div>
                                 </div>
                             </div>

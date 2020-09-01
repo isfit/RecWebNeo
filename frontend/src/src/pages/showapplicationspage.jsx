@@ -81,7 +81,8 @@ const ApplicationPage = () => {
   const [chosenTeam, setChosenTeam] = useState("");
   const [chosenPosition, setChosenPosition] = useState("");
 
-  let applications = applicationsData?.data?.applications?.nodes;
+  let applications = applicationsData?.data?.applications?.nodes ?? [];
+  let positions = positionsData?.data?.positions?.nodes ?? [];
   let numApplications = 0;
 
 
@@ -198,7 +199,7 @@ const ApplicationPage = () => {
                 <form action="">
                   <select className="w-100" id="positions" name="positions" onChange={(e) => { setChosenPosition(e.target.value) }} >
                       <option value={""}>{"All"}</option>
-                      {filterPositionsResults(positionsData?.data?.positions?.nodes).map( position => {
+                      {filterPositionsResults(positions).map( position => {
                           return (
                               <option value={position.id}>{position.name}</option>
                           )
@@ -207,7 +208,7 @@ const ApplicationPage = () => {
                 </form>
                 <small className="mt-2" style={{textAlign:"center"}}>Number of applications matching your filters:</small>
                 <h5 style={{textAlign:"center"}}>{ApplyFilters(applications)[1]} </h5>
-                <small className="mt-2" style={{textAlign:"center"}}>Please note that unless you are an administrator, you can only see the applications that includes a position associated with your team.</small>
+                <small className="mt-2" style={{textAlign:"center"}}>Please note that unless you are an administrator, you can only see the applications that includes a position associated with your team. If you are not yet associated with a team, you will not be able to see any applications.</small>
               </div>
             </div>
             <div className="col pl-0" style={{flexBasis:"80%"}}>

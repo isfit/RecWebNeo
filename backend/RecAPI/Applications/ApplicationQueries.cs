@@ -58,7 +58,7 @@ namespace RecAPI.Applications.Queries
             {
                 return null;
             }
-            var filteredApplicationsByTeams = applications.Where(appl =>
+            var filteredApplicationsByTeams = filteredApplicationsList?.Where(appl =>
             {
                 foreach(var posId in appl.Positions.Values)
                 {

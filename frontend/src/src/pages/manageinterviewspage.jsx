@@ -15,6 +15,7 @@ const ApplicationEntry = (props) => {
             <div className="flex-grid">
                 <div className="col" style={{flex:"1 1 80%", display:"flex",flexDirection:"column"}}>
                     <h4 className="mb-0" >{props?.applicant?.firstName} {props?.applicant?.lastName} </h4>
+                    <small className="text-muted">{props?.applicant?.email}</small>
                     <div>
                         {/* {console.log("PROPS ", props)} */}
                         { props.positions.map( position => {
@@ -38,19 +39,20 @@ const ApplicationEntry = (props) => {
 
 
 const UserEntry = (props) => {
+
     return (
         <div className="card w-100 h-10 mb-2 py-1">
             <div className="flex-grid">
                 <div className="col" style={{flex:"1 1 80%", display:"flex",flexDirection:"column"}}>
                     <h4 className="mb-0" >{props.firstName} {props.lastName}</h4>
                     <div className="flex-grid">
-                        <div className="col pl-0">
+                        <div className="col pl-0" style={{flexBasis:"50%"}}>
                             <p className="text-muted mb-0">Section:</p>
-                            { Boolean(props?.sections?.name) ? <p className="text-muted mb-0">{props?.sections?.name}</p> : <p className="text-muted mb-0">none</p> }
+                            { Boolean(props.sections) ? <p className="text-muted mb-0">{props.sections[0].name}</p> : <p className="text-muted mb-0">none</p> }
                         </div>
-                        <div className="col">
+                        <div className="col" style={{flexBasis:"50%"}}>
                             <p className="text-muted mb-0">Team:</p>
-                            { Boolean(props?.teams?.name) ? <p className="text-muted mb-0">{props?.teams?.name}</p> : <p className="text-muted mb-0">none</p> }
+                            { Boolean(props.teams) ? <p className="text-muted mb-0">{props.teams[0].name}</p> : <p className="text-muted mb-0">none</p> }
                         </div>
                     </div>
                 </div>
@@ -92,7 +94,7 @@ const InterviewsPage = () => {
     
     /* const users = [{firstName:"Torstein", lastName:"Otterlei", sections:["Organizational Resources"], teams:["IT"], email:"torstein@otterlei.no"}] */
     const usersQuery = useQuery(GET_ISFIT_USERS);
-    const users = Boolean(applicationsQuery?.data) ? usersQuery?.data?.users?.nodes : [];
+    const users = usersQuery?.data?.users?.nodes ?? [];
 
     const addToUserList = (user) => {
         let copyList = [...addedUsers]

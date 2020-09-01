@@ -28,12 +28,11 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
               </div>
               <div className="text-right">
                 <div className="flex-grid" style={{flexDirection:"column"}}>
-                  <h1 style={{textAlign:"center", color: "#983c2e"}}>ISFiT is recruiting!</h1>
-                  <p style={{textAlign:"center"}}>
-                    We are looking for more motivated and excited students to join us! Whether you like to communicate through different media platforms, plan an event from start to end, book performers, handle the economy or organize, we have a position for you!
-                    ISFiT is much more than just a festival. We gather international students from different backgrounds for discussions and debates. In addition, we have a wide Cultural Program that you can benefit from as a student or citizen of Trondheim. To make this happen, we need people like you to join us!
-                    Apply before the 31th of August for a chance to gain new skills, meet other volunteers and get the experience of a lifetime!
-                  </p>
+                  <div className="pt-5">
+                    <h1 style={{textAlign:"center", color: "#983c2e"}}>Applications are closed</h1>
+                    <p className="mb-1" style={{textAlign:"center"}}>Sadly, this recruitment period is over, but we are not done recruiting just yet.</p>
+                    <p style={{textAlign:"center"}}>Stay tuned to apply for ISFiT 21 in our next recruitment period!</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -51,12 +50,13 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
 
           <div className="shopping-box-right mt-4">
             <PositionChoiceBox />
-            {  userLogedIn ? <button
+            {/* {  userLogedIn ? <button
                 className="btn btn-continue mt-1 mr-2 float-right"
                 onClick={() => history.push("/enterapplication")}
               > Continue</button> :
               <button className="btn btn-success ml-0 w-100"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess
-              </button>}
+              </button>} */}
+            <button className="btn btn-success ml-0 w-100" >Application period is over</button>
           </div>
 
 

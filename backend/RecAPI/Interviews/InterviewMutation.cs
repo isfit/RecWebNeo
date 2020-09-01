@@ -244,7 +244,7 @@ namespace RecAPI.Interviews.Mutations
         }
 
         // Delte interview
-        [Authorize(Policy = "superuser")]
+        [Authorize(Policy = "administrator")]
         public bool DeleteInterview(
             SingleModelInput input,
             [Service] IInterviewRepository interviewRepository,

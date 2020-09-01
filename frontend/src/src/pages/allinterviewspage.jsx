@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import PageLayout from './pageLayout';
+import { connect } from "react-redux";
 
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 
-import { ALL_INTERVIEWS } from "../requests/interviewRequests";
+import { ALL_INTERVIEWS, DELETE_INTERVIEW } from "../requests/interviewRequests";
 
+import { getUserAuthKey } from "../redux/selectors";
+
+import { getRolesFromToken, getAccessLevel } from "../components/navbar/navbarHelperFunctions";
 
 
 const InterviewCard = (props) => {
-    const datTime = new Date(props.startTime)
+    const datTime = new Date(props.startTime);
 
     return (
         <div className="card mb-2 px-3 py-2 w-100">
@@ -33,11 +37,11 @@ const InterviewCard = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="col" style={{display:"flex", justifyContent:"right", flexBasis:"10%"}}>
-                    { true ? <p className="text-success  my-4 mx-2">Approved</p> : <button type="button" className="btn btn-outline-success my-4 mx-2">Approve</button> }
-                </div>
             </div>
-            <h5 className="my-1">Interview time: {datTime.toDateString()} {datTime.toTimeString().slice(0,2)}:15 (Digital interview)</h5>
+            <div className="flex-grid w-100 mb-1" style={{justifyContent:"space-between"}}>
+                <h5 className="my-1">Interview time: {datTime.toDateString()} {datTime.toTimeString().slice(0,2)}:15 (Digital interview)</h5>
+                {props.children}
+            </div>
             <div className="border-top">
                 <h5 className="mb-0 mt-2">Interviewers</h5>
                     { props.interviewers.map( interviewer => {
@@ -56,14 +60,26 @@ const InterviewCard = (props) => {
 
 
 
-const AllInterviewsPage = () => {
+const AllInterviewsPage = ({userAuthKey}) => {
+    const RolesArray = getRolesFromToken(userAuthKey);
+    const AccessLevel = getAccessLevel(RolesArray); 
+
+    const [deleteInterviewMutation, deleteInterviewMutationData] = useMutation(DELETE_INTERVIEW);
+    const [deleteConfirm, setDeleteConfirm] = useState(false);
+
+    const deleteInterview = (event, interviewId) => { 
+        console.log("INTERVIEW ID:",interviewId)
+        deleteInterviewMutation({variables: {input: {id: interviewId}}});
+        setDeleteConfirm(false)
+    };
+
+
     const allIntervewsQuery = useQuery(ALL_INTERVIEWS, {fetchPolicy: "no-cache"});
     /* const myInterviewsData = Boolean(myIntervewsQuery?.data) ? myIntervewsQuery?.data?.myIntervews : []; */
     const allInterviews = allIntervewsQuery?.data?.interviews?.nodes ?? [];
 
     return(
         <PageLayout>
-            { console.log(allInterviews) }
             <div className="container">
                 <div className="flex-grid px-5 py-5" style={{flexDirection:"column"}}>
                     <div className="card py-3 px-5 mb-2 w-100">
@@ -75,7 +91,9 @@ const AllInterviewsPage = () => {
                                     applicant = {interview.applicant}
                                     positions = {interview.application.positions}
                                     interviewers = {interview.interviewers}
-                                />
+                                >
+                                   {(AccessLevel>2) ? deleteConfirm ? <div><button className="btn btn-secondary mr-1" onClick={() => setDeleteConfirm(false)}>Cancel</button><button className="btn btn-danger" onClick={(event) => deleteInterview(event, interview.id)}>DELETE</button></div> : <button className="btn btn-danger" onClick={() => setDeleteConfirm(true)}>Delete</button> : null}
+                                </InterviewCard>
                             )
                         }
                         )}
@@ -86,4 +104,12 @@ const AllInterviewsPage = () => {
     );
 };
 
-export default AllInterviewsPage;
+
+const mapStateToProps = state => {
+    return {
+      userAuthKey: getUserAuthKey(state)
+    };
+};
+
+/* export default AllInterviewsPage; */
+export default connect(mapStateToProps)(AllInterviewsPage);

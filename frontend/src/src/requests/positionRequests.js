@@ -8,9 +8,11 @@ const POSITIONS = gql`
             name,
             description,
             team {
+                id
                 name
             },
             section {
+                id
                 name
             }
             

@@ -21,9 +21,11 @@ const APPLICATIONS = gql`
                         id,
                         name,
                         section {
+                            id
                             name
                         }
                         team {
+                            id
                             name
                         }
                     }
@@ -45,7 +47,16 @@ mutation updateApplication($input: UpdateApplicationInput) {
 }
 `;
 
+const GET_APPLICATION_COUNT = gql`
+    query applications {
+        applications {
+            totalCount
+        }
+    }
+`;
+
 export {
     APPLICATIONS,
-    UPDATE_APPLICATION
+    UPDATE_APPLICATION,
+    GET_APPLICATION_COUNT
 }

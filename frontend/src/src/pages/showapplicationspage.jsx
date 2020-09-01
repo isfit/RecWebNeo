@@ -1,10 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ApplicationsModule from "../components/applicationsModule";
 import PageLayout from './pageLayout';
 import PositionChoiceBoxReadOnly from "../components/positionChoiceBoxReadOnly"
 import { useQuery } from "@apollo/client";
 import {APPLICATIONS} from '../requests/applicationRequests';
 import ErrorPage from './errorPage';
+import ScrollList from '../components/scrollList';
+
+
+import { GET_SECTIONS } from "../requests/userRequests";
+import { POSITIONS } from "../requests/positionRequests";
+
+
+
+const getSectionFromID = (sectionsData, sectionId) => {
+  let sectionsArray = sectionsData?.sections ?? [];
+  let sectionObject = null;
+
+  sectionsArray.map( section => {
+      if (section.id === sectionId) {
+          sectionObject = section
+      }
+  })
+
+  return sectionObject ?? {teams:[]}
+};
+
 
 const ApplicationRow = ({applicationData}) => {
 
@@ -50,20 +71,97 @@ const ApplicationRow = ({applicationData}) => {
 };
 
 const ApplicationPage = () => {
-
-  const { data, error, loading} = useQuery(APPLICATIONS);
   
-  console.log(data, error, loading);
+  const sectionsData = useQuery(GET_SECTIONS);
+  const applicationsData = useQuery(APPLICATIONS);
+  const positionsData = useQuery(POSITIONS);
+  
 
-  if (loading) {
+  const [chosenSection, setChosenSection] = useState("");
+  const [chosenTeam, setChosenTeam] = useState("");
+  const [chosenPosition, setChosenPosition] = useState("");
+
+  let applications = applicationsData?.data?.applications?.nodes ?? [];
+  let positions = positionsData?.data?.positions?.nodes ?? [];
+  let numApplications = 0;
+
+
+  const ApplyFilters = (applications) => {
+    let resultList = [...applications];
+
+    let hasChosenSection = Boolean(chosenSection);
+    let hasChosenTeam = Boolean(chosenTeam);
+    let hasChosenPosition = Boolean(chosenPosition);
+
+    if (hasChosenSection) {
+      resultList = resultList.filter(function(application) {
+        for (var i = 0; i < application.positions.length; i++) {
+          if (application.positions[i].value.section.id === chosenSection){
+            return true;
+          }
+        }
+        return false;
+      });
+    }
+
+    if (hasChosenTeam) {
+      resultList = resultList.filter(function(application) {
+        for (var i = 0; i < application.positions.length; i++) {
+          if (application.positions[i].value.team.id === chosenTeam){
+            return true;
+          }
+        }
+        return false;
+      });
+    }
+
+    if (hasChosenPosition){
+      resultList = resultList.filter(function(application) {
+        for (var i = 0; i < application.positions.length; i++) {
+          if (application.positions[i].value.id === chosenPosition){
+            return true;
+          }
+        }
+        return false;
+      }
+    )}
+
     return(
-      <div>
-        Loading
-      </div>
+        [resultList, resultList.length]
+    );
+  };
+
+
+
+  const filterPositionsResults = (positions) => {
+    let resultList = [...positions];
+
+    if (Boolean(chosenSection)) {
+      resultList = resultList.filter(function(position) {
+          return position.section.id === chosenSection
+      });
+    }
+
+    if (Boolean(chosenTeam)) {
+      resultList = resultList.filter(function(position) {
+          return position.team.id === chosenTeam
+      });
+    }
+
+    return (
+      resultList
     )
   }
 
-  if (error) {
+  if (applicationsData.loading) {
+    return(
+      <PageLayout>
+        Loading
+      </PageLayout>
+    )
+  }
+
+  if (applicationsData.error) {
     return <ErrorPage />
   }
 
@@ -71,13 +169,60 @@ const ApplicationPage = () => {
     <PageLayout>
       <div className="container pt-4">
         <h4 className="mb-4">View Applications</h4>
-        
-        {
-          data?.applications.nodes?.map(application => {
-            return(<ApplicationRow applicationData={application} />)
-          })
-        }
-
+          <div className="flex-grid-adaptive">
+            <div className="col pl-0" style={{flexBasis:"20%"}}>
+              <div className="card py-2 px-2 mb-3">
+                <h6>Filters</h6>
+                <small>Section</small>
+                <form action="">
+                  <select className="w-100" id="sections" name="sections" onChange={(e) => { setChosenSection(e.target.value) }}>
+                      <option value={""}>{"All"}</option>
+                      {sectionsData?.data?.sections.map( section => {
+                        return (
+                            <option value={section.id}>{section.name}</option>
+                        )
+                      })}
+                  </select>
+                </form>
+                <small>Team</small>
+                  <form action="">
+                    <select className="w-100" id="teams" name="teams" onChange={(e) => { setChosenTeam(e.target.value) }} >
+                        <option value={""}>{"All"}</option>
+                        {getSectionFromID(sectionsData?.data, chosenSection).teams?.map( team => {
+                            return (
+                                <option value={team.id}>{team.name}</option>
+                            )
+                            })}
+                    </select>
+                  </form>
+                <small>Position</small>
+                <form action="">
+                  <select className="w-100" id="positions" name="positions" onChange={(e) => { setChosenPosition(e.target.value) }} >
+                      <option value={""}>{"All"}</option>
+                      {filterPositionsResults(positions).map( position => {
+                          return (
+                              <option value={position.id}>{position.name}</option>
+                          )
+                      })}
+                  </select>
+                </form>
+                <small className="mt-2" style={{textAlign:"center"}}>Number of applications matching your filters:</small>
+                <h5 style={{textAlign:"center"}}>{ApplyFilters(applications)[1]} </h5>
+                <small className="mt-2" style={{textAlign:"center"}}>Please note that unless you are an administrator, you can only see the applications that includes a position associated with your team. If you are not yet associated with a team, you will not be able to see any applications.</small>
+              </div>
+            </div>
+            <div className="col pl-0" style={{flexBasis:"80%"}}>
+              <div className="card w-100 h-100 px-3 py-3">
+                <ScrollList minHeight="700px">
+                {
+                  ApplyFilters(applications)[0].map(application => {
+                    return(<ApplicationRow applicationData={application} />)
+                  })
+                }
+                </ScrollList>
+              </div>
+          </div>
+        </div>
       </div>
     </PageLayout>
   );

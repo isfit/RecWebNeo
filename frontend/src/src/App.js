@@ -16,6 +16,8 @@ import MyInterviewsPage from "./pages/myinterviewspage";
 import AllInterviewsPage from "./pages/allinterviewspage";
 import Unavailabletimes from "./pages/unavailabletimespage";
 import UsersWithoutApplication from "./pages/userswithoutapplicationpage";
+import Pling from "./pages/plingpage";
+
 
 
 
@@ -138,6 +140,10 @@ const App = () => {
             <Route path="/userswithoutapplication">
               {" "}
               <UsersWithoutApplication />{" "}
+            </Route>
+            <Route path="/pling">
+              {" "}
+              <Pling />{" "}
             </Route>
             <Route path="/">
               {" "}

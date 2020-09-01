@@ -35,6 +35,16 @@ namespace RecAPI.Applications.Mutations
             ApplicationError.AlreadyRegisteredApplication(applicationRepository, user.UserId, input.AdmissionPeriode);
             ApplicationError.ValidAdmisionPeriode(admisionPeriodeRepository, input.AdmissionPeriode);
             ApplicationError.ValidPositions(positionRepository, admisionPeriodeRepository, input.Positions, input.AdmissionPeriode);
+            
+            // Check if application is after ended application periode
+            var admisionPeriode = admisionPeriodeRepository.GetAdmisionPeriode(input.admisionPeriode);
+            DateTime now = DateTime.UtcNow;
+            if (admisionPeriode.StartDate > now) {
+                ApplicationError.ApplicationPeriodeNotStartedError();
+            } else if(admisionPeriode.EndDate < now) {
+                ApplicationError.ApplicationPeriodeEndError();
+            }
+
             var application = new Application()
             {
                 Positions = input.Positions,

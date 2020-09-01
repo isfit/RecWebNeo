@@ -77,5 +77,15 @@ namespace RecAPI.Applications.ErrorHandling
             throw new QueryException(ErrorBuilder.New().SetMessage("The given application does not exist.").Build());
         }
 
+        public static void ApplicationPeriodeNotStartedError()
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("The application periode has not started yet.").Build());
+        }
+
+        public static void ApplicationPeriodeEndError()
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("The application periode has ended.").Build());
+        }
+
     }
 }

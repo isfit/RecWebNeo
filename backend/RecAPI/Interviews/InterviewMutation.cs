@@ -222,7 +222,7 @@ namespace RecAPI.Interviews.Mutations
             if (user == null || authUser == null){
                 UserError.NoUsersExist();
             }
-            if (user.Roles.Contains("internal"))
+            if (authUser.Roles.Contains("internal"))
             {
                 Boolean connectedInterview = interview.Interviewers.Any(x => x.User == user.Id) || interview.Applicant.User == user.Id;
                 AuthError.AuthorizationError();

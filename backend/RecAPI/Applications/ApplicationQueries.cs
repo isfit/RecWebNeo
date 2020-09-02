@@ -24,6 +24,17 @@ namespace RecAPI.Applications.Queries
     [ExtendObjectType(Name = "Query")]
     public class ApplicationQueries
     {
+
+        private IEnumerable<Application> FilterApplicationsApproved(IEnumerable<Application> applications, IUserRepository userRepository)
+        {
+            return applications.Where(appl =>
+            {
+                var applicant = userRepository.GetUserByAuth(appl.Applicant);
+                return (applicant?.Approved ?? false) == true;
+            }).ToList();
+        }
+
+
         [Authorize(Policy = "internal")]
         [UsePaging]
         [UseFiltering]
@@ -42,11 +53,7 @@ namespace RecAPI.Applications.Queries
             {
                 return applications;
             }
-            var filteredApplicationsList = applications.Where(appl =>
-            {
-                var applicant = userRepository.GetUserByAuth(appl.Applicant);
-                return (applicant?.Approved ?? false) == true;
-            }).ToList();
+            var filteredApplicationsList = FilterApplicationsApproved(applications, userRepository);
             if (currentUser.Roles.Contains("admin"))
             {
                 return filteredApplicationsList;
@@ -88,7 +95,7 @@ namespace RecAPI.Applications.Queries
         [UsePaging]
         [UseFiltering]
         [UseSorting]
-        public List<Application> GetApplicationWithoutInterview(
+        public IEnumerable<Application> GetApplicationWithoutInterview(
             [GlobalState("currentUser")] CurrentUser user,
             [Service] IAuthRepository authRepository,
             [Service] IUserRepository userRepository,
@@ -104,11 +111,7 @@ namespace RecAPI.Applications.Queries
             {
                 return applications;
             }
-            var filteredApplicationsList = applications.Where(appl =>
-            {
-                var user = userRepository.GetUserByAuth(appl.Applicant);
-                return (user?.Approved ?? false) == true;
-            }).ToList();
+            var filteredApplicationsList = FilterApplicationsApproved(applications, userRepository);
             return filteredApplicationsList;
         }
 

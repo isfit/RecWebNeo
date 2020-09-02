@@ -17,6 +17,7 @@ using HotChocolate.Types.Relay;
 using RecAPI.Auth.Repositories;
 using RecAPI.Auth.Models;
 using RecAPI.Users.Models;
+using RecAPI.Auth.ErrorHandling;
 
 
 namespace RecAPI.Interviews.Mutations
@@ -201,10 +202,10 @@ namespace RecAPI.Interviews.Mutations
             return interviewRepository.UpdateInterview(interview.Id, newInterview);
         }
 
-        [Authorize(Policy = "administrator")]
+        [Authorize(Policy = "internal")]
         public Interview SetInterviewStatus(
-            string interviewId,
-            string interviewStatus,
+            [GraphQLNonNullType] string interviewId,
+            [GraphQLNonNullType] string interviewStatus,
             [GlobalState("currentUser")] CurrentUser currentUser,
             [Service] IAuthRepository authRepository,
             [Service] IUserRepository userRepository,
@@ -224,9 +225,11 @@ namespace RecAPI.Interviews.Mutations
             if (user.Roles.Contains("internal"))
             {
                 Boolean connectedInterview = interview.Interviewers.Any(x => x.User == user.Id) || interview.Applicant.User == user.Id;
-                return connectedInterview ? interview : null;
+                AuthError.AuthorizationError();
+                return null;
             }
-            return interview;
+            interview.Status = interviewStatus;
+            return interviewRepository.UpdateInterview(interview.Id, interview);
         }
 
         // Add interviewer

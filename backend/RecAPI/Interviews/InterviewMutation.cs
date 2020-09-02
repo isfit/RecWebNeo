@@ -14,6 +14,10 @@ using RecAPI.Applications.ErrorHandling;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
+using RecAPI.Auth.Repositories;
+using RecAPI.Auth.Models;
+using RecAPI.Users.Models;
+
 
 namespace RecAPI.Interviews.Mutations
 {
@@ -191,9 +195,38 @@ namespace RecAPI.Interviews.Mutations
                 Application = interview.Application,
                 Applicant = interview.Applicant,
                 Interviewers = newInterviewConnections,
-                Location = input.Location ?? interview.Location
+                Location = input.Location ?? interview.Location,
+                Status = interview.Status
             };
             return interviewRepository.UpdateInterview(interview.Id, newInterview);
+        }
+
+        [Authorize(Policy = "administrator")]
+        public Interview SetInterviewStatus(
+            string interviewId,
+            string interviewStatus,
+            [GlobalState("currentUser")] CurrentUser currentUser,
+            [Service] IAuthRepository authRepository,
+            [Service] IUserRepository userRepository,
+            [Service] IInterviewRepository interviewRepository
+        )
+        {
+            var interview = interviewRepository.GetInterview(interviewId);
+            if (interview == null){
+                InterviewError.InterviewDoesNotExistsError();
+            }
+            // Check that if internal, you have access to the interview
+            var authUser = authRepository.GetAuthUser(currentUser.UserId);
+            var user = userRepository.GetUserByAuth(currentUser.UserId);
+            if (user == null || authUser == null){
+                UserError.NoUsersExist();
+            }
+            if (user.Roles.Contains("internal"))
+            {
+                Boolean connectedInterview = interview.Interviewers.Any(x => x.User == user.Id) || interview.Applicant.User == user.Id;
+                return connectedInterview ? interview : null;
+            }
+            return interview;
         }
 
         // Add interviewer

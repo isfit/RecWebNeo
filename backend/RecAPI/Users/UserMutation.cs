@@ -238,8 +238,8 @@ namespace RecAPI.Users.Mutations
 
         [Authorize(Policy = "administrator")]
         public bool setUserApproved(
-                string email,
-                bool approved,
+                [GraphQLNonNullType] string email,
+                [GraphQLNonNullType] bool approved,
                 [GlobalState("currentUser")] CurrentUser currentUser,
                 [Service] IUserRepository userRepository,
                 [Service] IAuthRepository authRepository

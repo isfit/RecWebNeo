@@ -23,6 +23,8 @@ namespace RecAPI.Interviews.Models
 
         //public string Type { get; set; } // Digital or Physical?
         public string Location { get; set; }  // Physical address/room, or digital link
+
+        public string Status { get; set; }
     }
 
     public class InterviewConnections : IUserConnection

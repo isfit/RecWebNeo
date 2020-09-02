@@ -3,7 +3,7 @@ import PageLayout from './pageLayout';
 import ScrollList from '../components/scrollList';
 
 import { useQuery, useMutation, gql } from "@apollo/client";
-import { GET_ALL_USERS, GET_SECTIONS, SET_USER_ROLE, SET_SECTIONS_TO_USER, SET_TEAMS_TO_USER, UPDATE_USER_PASSWORD  } from "../requests/userRequests";
+import { GET_ALL_USERS, GET_SECTIONS, SET_USER_ROLE, SET_SECTIONS_TO_USER, SET_TEAMS_TO_USER, UPDATE_USER_PASSWORD, SET_USER_APPROVED  } from "../requests/userRequests";
 
 
 const UserEntry = (props) => {
@@ -46,6 +46,8 @@ const UserAdminPage = () => {
     const [updateSections, updateSectionsData] = useMutation(SET_SECTIONS_TO_USER);
     const [updateTeams, updateTeamsData] = useMutation(SET_TEAMS_TO_USER);
     const [updatePassword, updatePasswordData] = useMutation(UPDATE_USER_PASSWORD);
+    const [userApproved, userApprovedData] = useMutation(SET_USER_APPROVED);
+
 
     const addToUserList = (user) => {
         let copyList = [...addedUsers]
@@ -88,6 +90,12 @@ const UserAdminPage = () => {
                 updatePassword({variables: {email: user?.email, password: chosenPassword}});
             })
         };
+    };
+
+    const setUsersNotApproved = (addedUsers) => {
+        addedUsers.map( user => {
+            userApproved({variables: {approved: false, email: user?.email}})
+        })
     };
 
     const getSectionFromID = (sectionsData, sectionId) => {
@@ -235,6 +243,14 @@ const UserAdminPage = () => {
                                     </div>
                                     <div className="col" style={{flexBasis:"10%"}}>
                                         <button type="button" className="btn btn-outline-success mt-2" style={{float:"right"}} onClick={event => updateUsersPassword(event, addedUsers, chosenPassword)}>Set password</button>
+                                    </div>
+                                </div>
+                                <div className="flex-grid border-bottom pb-3">
+                                    <div className="col pr-0" style={{flexBasis:"70%"}}>
+                                        <small style={{fontSize:"11px"}}>This will remove a user and his/her application, but not any interview given to that person. That will have to be deleted separately.</small>
+                                    </div>
+                                    <div className="col pl-0" style={{flexBasis:"30%"}}>
+                                        <button type="button" className="btn btn-danger mt-2" style={{float:"right"}} onClick={() => setUsersNotApproved(addedUsers)}>Remove users</button>
                                     </div>
                                 </div>
                             </div>

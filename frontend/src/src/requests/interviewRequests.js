@@ -50,6 +50,7 @@ const MY_INTERVIEWS = gql`
             nodes {
                 id
                 start
+                status
                 interviewers {
                     user {
                         firstName
@@ -92,6 +93,7 @@ const ALL_INTERVIEWS = gql`
             nodes {
                 id
                 start
+                status
                 interviewers {
                     user {
                         firstName
@@ -143,6 +145,15 @@ const DELETE_INTERVIEW = gql`
     }
 `;
 
+const SET_INTERVIEW_STATUS = gql`
+  mutation setInterviewStatus($interviewId: String!, $interviewStatus: String!) {
+    setInterviewStatus(interviewId: $interviewId, interviewStatus: $interviewStatus){
+        id
+        status
+    }
+  }
+`;
 
 
-export {CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW,MY_INTERVIEWS,ALL_INTERVIEWS,APPLICATION_BUSY_HOURS, DELETE_INTERVIEW}
+
+export {CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW,MY_INTERVIEWS,ALL_INTERVIEWS,APPLICATION_BUSY_HOURS, DELETE_INTERVIEW, SET_INTERVIEW_STATUS}

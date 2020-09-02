@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import PageLayout from './pageLayout';
+import { connect } from "react-redux";
 
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation  } from "@apollo/client";
 
-import { MY_INTERVIEWS } from "../requests/interviewRequests";
+import { MY_INTERVIEWS, SET_INTERVIEW_STATUS } from "../requests/interviewRequests";
 
+import { getUserAuthKey } from "../redux/selectors";
+
+import { getRolesFromToken, getAccessLevel } from "../components/navbar/navbarHelperFunctions";
 
 
 const InterviewCard = (props) => {
@@ -12,43 +16,43 @@ const InterviewCard = (props) => {
 
     return (
         <div className="card mb-2 px-3 py-2 w-100">
-            <div className="flex-grid w-100 mb-1 border-bottom">
-                <div className="col pl-0" style={{display:"flex", flexBasis:"25%", flexDirection:"column" }}>
-                    <h4 className="mb-0">{props.applicant.user.firstName} {props.applicant.user.lastName}</h4>
-                    <p className="mb-0">{props.applicant.user.email}</p>
-                     { Boolean(props.applicant.user.phoneNumber) ? <p className="mb-0">{props.applicant.user.phoneNumber}</p> : <p className="mb-0">No phonenumber registered</p>}
-                </div>
-                <div className="col" style={{display:"flex", flexBasis:"65%" }}>
-                    <div className="flex-grid w-100">
-                        <div className="col" style={{display:"flex", flexDirection:"column"}}>
-                            {props.positions.map( position => {
-                                return(
-                                    <div className="flex-grid">
-                                        <p className="mb-0">{Number(position.key)+1} {position.value.section.name}: {position.value.team.name}</p>
-                                        <p className="mb-0 pl-3">{position.value.name}</p>
-                                    </div>
-                                )
-                                }
-                            )}
-                        </div>
-                    </div>
-                </div>
-                <div className="col" style={{display:"flex", justifyContent:"right", flexBasis:"10%"}}>
-                    { true ? <p className="text-success  my-4 mx-2">Approved</p> : <button type="button" className="btn btn-outline-success my-4 mx-2">Approve</button> }
-                </div>
+            <div className="flex-grid" style={{justifyContent:"space-between", alignItems: "center"}}>
+                <h1 className="my-1">{datTime.toDateString()} {datTime.toTimeString().slice(0,2)}:15</h1>
+                {props.accessLevel>1 ? props.children : null}
             </div>
-            <h5 className="my-1">Interview time: {datTime.toDateString()} {datTime.toTimeString().slice(0,2)}:15 (Digital interview)</h5>
-            <div className="border-top">
-                <h5 className="mb-0 mt-2">Interviewers</h5>
-                    { props.interviewers.map( interviewer => {
+            <div className="flex-grid w-100 mb-1">
+                <div className="col pl-0" style={{display:"flex", flexBasis:"50%", flexDirection:"column" }}>
+                    <h3 className="mb-0">{props.applicant.firstName} {props.applicant.lastName}</h3>
+                    <p className="text-muted mb-0">{props.applicant.email}</p>
+                    { Boolean(props.applicant.phoneNumber) ? <p className="text-muted mb-0">{props.applicant.phoneNumber}</p> : <p className="text-muted mb-0">No phonenumber registered</p>}
+                    {props.positions.map( position => {
                         return(
                             <div className="flex-grid">
-                                <p className="mb-0">{interviewer.user.email}</p>
+                                <div className="col pl-0" style={{display:"flex", flexBasis:"5%"}}>
+                                    <h1 className="mb-0">{Number(position.key)+1}</h1>
+                                </div>
+                                <div className="col" style={{display:"flex", flexBasis:"95%", flexDirection:"column"}}>
+                                    <p className="mb-0 mt-1">{position.value.name}</p>
+                                    <small>{position.value.section.name}: {position.value.team.name}</small>
+                                </div>
                             </div>
                         )
+                        }
+                    )}
+                </div>
+                <div className="col" style={{display:"flex", flexBasis:"50%", flexDirection:"column", textAlign:"right"}}>
+                    <h5 className="mt-2">Interviewers</h5>
+                        { props.interviewers.map( interviewer => {
+                            return(
+                                <div>
+                                    <p className="mb-0 mt-1">{interviewer.user.firstName} {interviewer.user.lastName}</p>
+                                    <p className="text-muted" style={{fontSize:"15px"}}>{interviewer.user.email}</p>
+                                </div>
+                            )
 
-                    })
-                    }
+                            })
+                        }
+                </div>
             </div>
         </div>
     );
@@ -56,10 +60,21 @@ const InterviewCard = (props) => {
 
 
 
-const MyInterviewsPage = () => {
+const MyInterviewsPage = ({userAuthKey}) => {
+    const RolesArray = getRolesFromToken(userAuthKey);
+    const AccessLevel = getAccessLevel(RolesArray); 
+
     const myIntervewsQuery = useQuery(MY_INTERVIEWS, {fetchPolicy: "no-cache"});
-    /* const myInterviewsData = Boolean(myIntervewsQuery?.data) ? myIntervewsQuery?.data?.myIntervews : []; */
     const myInterviews = myIntervewsQuery?.data?.myInterviews?.nodes ?? [];
+
+    const [setInterviewStatusMutation] = useMutation(SET_INTERVIEW_STATUS);
+    
+    const setInterviewStatus = (intId, status) => {
+        setInterviewStatusMutation({variables: {interviewId: intId, interviewStatus: status }});
+    };
+
+    const [chosenInterviewStatus, setChosenInterviewStatus] = useState("");
+
 
     return(
         <PageLayout>
@@ -71,10 +86,24 @@ const MyInterviewsPage = () => {
                             return (
                                 <InterviewCard 
                                     startTime = {interview.start}
-                                    applicant = {interview.applicant}
+                                    applicant = {interview.applicant.user}
                                     positions = {interview.application.positions}
                                     interviewers = {interview.interviewers}
-                                />
+                                    accessLevel = {AccessLevel}
+                                > <small>Status: {interview.status ?? "not assigned"}</small>
+                                <div className="flex-grid" style={{alignItems: "center", justifyContent: "center"}}>
+                                 <form action="">
+                                     <select className="w-100" id="status" name="status" onChange={(e) => {setChosenInterviewStatus(e.target.value)}}>
+                                         <option value={"Invitation sent"}>{"Invitation sent"}</option>
+                                         <option value={"Confirmed"} >{"Confirmed"}</option>
+                                         <option value={"Interviewed"} >{"Interviewed"}</option>
+                                         <option value={"Approved"} >{"Approved"}</option>
+                                         <option value={"Denied"} >{"Denied"}</option>
+                                     </select>
+                                 </form>
+                                    <div><button className="btn btn-secondary ml-1 py-1 px-1" onClick={event => setInterviewStatus(interview.id, chosenInterviewStatus)}>Set Status</button></div>
+                                </div>
+                               </InterviewCard>
                             )
                         }
                         )}
@@ -85,4 +114,10 @@ const MyInterviewsPage = () => {
     );
 };
 
-export default MyInterviewsPage;
+const mapStateToProps = state => {
+    return {
+      userAuthKey: getUserAuthKey(state)
+    };
+};
+
+export default connect(mapStateToProps)(MyInterviewsPage);

@@ -24,5 +24,10 @@ namespace RecAPI.Auth.ErrorHandling
         {
             throw new QueryException(ErrorBuilder.New().SetMessage("The user does not exist").Build());
         }
+
+        public static void AuthorizationError()
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("The user is not authorized to use this resource.").Build());
+        } 
     } 
 }

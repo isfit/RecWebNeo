@@ -18,6 +18,7 @@ using RecAPI.Users.ErrorHandling;
 using RecAPI.Users.Input;
 using RecAPI.Users.Models;
 using RecAPI.Users.Repositories;
+using RecAPI.Auth.ErrorHandling;
 
 namespace RecAPI.Users.Mutations
 {
@@ -235,13 +236,22 @@ namespace RecAPI.Users.Mutations
             return !teams.Except(updatedUser.Teams).Any();
         }
 
-        [Authorize(Policy = "superuser")]
+        [Authorize(Policy = "administrator")]
         public bool setUserApproved(
                 string email,
                 bool approved,
-                [Service] IUserRepository userRepository
+                [GlobalState("currentUser")] CurrentUser currentUser,
+                [Service] IUserRepository userRepository,
+                [Service] IAuthRepository authRepository
             )
         {
+            var currentUserObject = authRepository.GetAuthUser(currentUser.UserId);
+            if (currentUserObject.Roles.Contains("admin") && approved)
+            {
+                AuthError.AuthorizationError();
+                return false;
+            }
+
             var user = userRepository.GetUserByEmail(email);
             if (user == null)
             {

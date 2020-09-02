@@ -16,5 +16,7 @@ namespace RecAPI.Interviews
         {
             throw new QueryException(ErrorBuilder.New().SetMessage("The interview does not exist.").Build());
         }
+
+        public static void 
     }
 }

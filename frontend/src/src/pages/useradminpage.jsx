@@ -48,7 +48,6 @@ const UserAdminPage = () => {
     const [updatePassword, updatePasswordData] = useMutation(UPDATE_USER_PASSWORD);
     const [userApproved, userApprovedData] = useMutation(SET_USER_APPROVED);
 
-
     const addToUserList = (user) => {
         let copyList = [...addedUsers]
         copyList.push(user);
@@ -94,7 +93,7 @@ const UserAdminPage = () => {
 
     const setUsersNotApproved = (addedUsers) => {
         addedUsers.map( user => {
-            userApproved({variables: {approved: false, email: user?.email}})
+            userApproved({variables: {email: user?.email, approved: false,}})
         })
     };
 

@@ -47,8 +47,6 @@ const UserAdminPage = () => {
     const [updateTeams, updateTeamsData] = useMutation(SET_TEAMS_TO_USER);
     const [updatePassword, updatePasswordData] = useMutation(UPDATE_USER_PASSWORD);
     const [userApproved, userApprovedData] = useMutation(SET_USER_APPROVED);
-    console.log("SET USER APPROVED DATA: ", userApprovedData)
-
 
     const addToUserList = (user) => {
         let copyList = [...addedUsers]

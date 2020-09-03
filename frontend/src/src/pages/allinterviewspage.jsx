@@ -85,7 +85,7 @@ const AllInterviewsPage = ({userAuthKey}) => {
         setInterviewStatusMutation({variables: {interviewId: intId, interviewStatus: status }});
     };
 
-    const [chosenInterviewStatus, setChosenInterviewStatus] = useState("");
+    const [chosenInterviewStatus, setChosenInterviewStatus] = useState("Not assigned");
 
     if (allIntervewsQuery.loading){
         return (
@@ -112,11 +112,10 @@ const AllInterviewsPage = ({userAuthKey}) => {
                                     <div className="flex-grid" style={{alignItems: "center", justifyContent: "center"}}>
                                      <form action="">
                                          <select className="w-100" id="status" name="status" onChange={(e) => {setChosenInterviewStatus(e.target.value)}}>
+                                             <option value={"Not assigned"}>{"Not assigned"}</option>
                                              <option value={"Invitation sent"}>{"Invitation sent"}</option>
                                              <option value={"Confirmed"} >{"Confirmed"}</option>
                                              <option value={"Interviewed"} >{"Interviewed"}</option>
-                                             <option value={"Approved"} >{"Approved"}</option>
-                                             <option value={"Denied"} >{"Denied"}</option>
                                          </select>
                                      </form>
                                         <div><button className="btn btn-secondary ml-1 py-1 px-1" onClick={event => setInterviewStatus(interview.id, chosenInterviewStatus)}>Set Status</button></div>

@@ -55,7 +55,7 @@ const ApplicationRow = ({applicationData}) => {
                   <small className="ml-2">I am open to other postions within the same genre of the positions I have entered</small>
                 </div>
                 <div> 
-                  <input type="radio" checked={ applicationData.interest === "open" } readOnly={true} />
+                  <input type="radio" checked={ applicationData?.interest?.toLowerCase() === "open" } readOnly={true} />
                   <small className="ml-2">I am open to any other position in ISFiT, regardless of the positions I have entered</small>
                 </div>
               </div>

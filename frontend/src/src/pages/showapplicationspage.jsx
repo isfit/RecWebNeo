@@ -5,10 +5,13 @@ import { useQuery } from "@apollo/client";
 import {APPLICATIONS} from '../requests/applicationRequests';
 import ErrorPage from './errorPage';
 import ScrollList from '../components/scrollList';
+import Loading from '../components/loadingSpinner';
+
 
 
 import { GET_SECTIONS } from "../requests/userRequests";
 import { POSITIONS } from "../requests/positionRequests";
+
 
 
 
@@ -163,13 +166,13 @@ const ApplicationPage = () => {
     )
   }
 
-  if (applicationsData.loading) {
+ /*  if (applicationsData.loading) {
     return(
       <PageLayout>
         Loading
       </PageLayout>
     )
-  }
+  } */
 
   if (applicationsData.error) {
     return <ErrorPage />
@@ -219,12 +222,21 @@ const ApplicationPage = () => {
                       <input type="reset" value="NewSectionResetPositions" ref={positionRef} onClick={() => setChosenPosition("")} style={{display:"none"}}/>
                 </form>
                 <small className="mt-2" style={{textAlign:"center"}}>Number of applications matching your filters:</small>
-                <h5 style={{textAlign:"center"}}>{ApplyFilters(applications)[1]} </h5>
+                { applicationsData.loading ?
+                  <div className="flex-grid" style={{justifyContent:"center"}}>
+                    <div class="spinner-border spinner-border-sm" role="status" style={{color:"#1bae91"}}>
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                  :
+                  <h5 style={{textAlign:"center"}}>{ApplyFilters(applications)[1]} </h5>
+                }
                 <small className="mt-2" style={{textAlign:"center"}}>Please note that unless you are an administrator, you can only see the applications that includes a position associated with your team. If you are not yet associated with a team, you will not be able to see any applications.</small>
               </div>
             </div>
             <div className="col pl-0" style={{flexBasis:"80%"}}>
               <div className="card w-100 h-100 px-3 py-3">
+                {applicationsData.loading ? <div className="mt-5"><Loading loading={true}/></div> : null}
                 <ScrollList minHeight="700px">
                 {
                   ApplyFilters(applications)[0].map(application => {

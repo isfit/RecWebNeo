@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import ApplicationsModule from "../components/applicationsModule";
+import React, { useState, useEffect, useRef } from "react";
 import PageLayout from './pageLayout';
 import PositionChoiceBoxReadOnly from "../components/positionChoiceBoxReadOnly"
 import { useQuery } from "@apollo/client";
@@ -83,7 +82,18 @@ const ApplicationPage = () => {
 
   let applications = applicationsData?.data?.applications?.nodes ?? [];
   let positions = positionsData?.data?.positions?.nodes ?? [];
-  let numApplications = 0;
+
+  const positionRef= useRef(null);
+  const teamRef = useRef(null);
+
+  useEffect(() => {                                                                     //If you choose a new section, reset both chosen team and position
+    Boolean(positionRef?.current?.value) ? positionRef.current.click() : console.log();
+    Boolean(teamRef?.current?.value) ? teamRef.current.click() : console.log();
+  }, [chosenSection]);
+
+  useEffect(() => {                                                                    //If you choose a new team, reset chosen position
+    Boolean(positionRef?.current?.value) ? positionRef.current.click() : console.log();
+  }, [chosenTeam]);
 
 
   const ApplyFilters = (applications) => {
@@ -175,7 +185,7 @@ const ApplicationPage = () => {
                 <h6>Filters</h6>
                 <small>Section</small>
                 <form action="">
-                  <select className="w-100" id="sections" name="sections" onChange={(e) => { setChosenSection(e.target.value) }}>
+                  <select className="w-100" id="sections" name="sections" onChange={(e) => setChosenSection(e.target.value) }>
                       <option value={""}>{"All"}</option>
                       {sectionsData?.data?.sections.map( section => {
                         return (
@@ -186,7 +196,7 @@ const ApplicationPage = () => {
                 </form>
                 <small>Team</small>
                   <form action="">
-                    <select className="w-100" id="teams" name="teams" onChange={(e) => { setChosenTeam(e.target.value) }} >
+                    <select className="w-100" id="teams" name="teams" onChange={(e) => setChosenTeam(e.target.value) } >
                         <option value={""}>{"All"}</option>
                         {getSectionFromID(sectionsData?.data, chosenSection).teams?.map( team => {
                             return (
@@ -194,10 +204,11 @@ const ApplicationPage = () => {
                             )
                             })}
                     </select>
+                      <input type="reset" value="NewSectionResetTeam" ref={teamRef} onClick={() => setChosenTeam("")} style={{display:"none"}}/>
                   </form>
                 <small>Position</small>
                 <form action="">
-                  <select className="w-100" id="positions" name="positions" onChange={(e) => { setChosenPosition(e.target.value) }} >
+                  <select className="w-100" id="positions" name="positions" onChange={(e) => setChosenPosition(e.target.value) } >
                       <option value={""}>{"All"}</option>
                       {filterPositionsResults(positions).map( position => {
                           return (
@@ -205,6 +216,7 @@ const ApplicationPage = () => {
                           )
                       })}
                   </select>
+                      <input type="reset" value="NewSectionResetPositions" ref={positionRef} onClick={() => setChosenPosition("")} style={{display:"none"}}/>
                 </form>
                 <small className="mt-2" style={{textAlign:"center"}}>Number of applications matching your filters:</small>
                 <h5 style={{textAlign:"center"}}>{ApplyFilters(applications)[1]} </h5>

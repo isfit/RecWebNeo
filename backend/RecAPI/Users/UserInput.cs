@@ -24,8 +24,6 @@ namespace RecAPI.Users.Input
         public string FirstName { get; set; }
         [GraphQLNonNullType]
         public string LastName { get; set; }
-        [GraphQLNonNullType]
-        public DateTime BirtDate { get; set; }
     }  
     
     public class UpdateUserInput
@@ -34,7 +32,6 @@ namespace RecAPI.Users.Input
         public string PhoneNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime? BirtDate { get; set; }
 
         [Authorize(Policy = "internal")]
         public List<DateTime>? BusyTime { get; set; }

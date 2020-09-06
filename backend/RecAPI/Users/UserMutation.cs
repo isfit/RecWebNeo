@@ -42,8 +42,14 @@ namespace RecAPI.Users.Mutations
             [Service] IUserRepository userRepository
         )
         {
+            registerUser.Email = registerUser.Email.ToLower();
+            var existingUser = userRepository.GetUserByEmail(registerUser.Email);
+            if (existingUser != null)
+            {
+                UserError.UserNotAvailableError(registerUser.Email);
+                return false;
+            }
             var authUserId = authService.RegisterUser(registerUser.Email, registerUser.Password, authRepository);
-            registerUser.Password = null;
             var user = new User()
             {
                 AuthId = authUserId,
@@ -51,7 +57,6 @@ namespace RecAPI.Users.Mutations
                 PhoneNumber = registerUser.PhoneNumber,
                 FirstName = registerUser.FirstName,
                 LastName = registerUser.LastName,
-                BirtDate = registerUser.BirtDate,
                 Approved = registerUser.Email.Contains("@isfit.no")
             };
             var storedUser = userRepository.CreateUser(user);
@@ -77,20 +82,19 @@ namespace RecAPI.Users.Mutations
             {
                 UserError.UserExistError(userEmail);
             }
-        User updatedUser = new User()
-        {
-            Id = prevUser.Id,
-            AuthId = prevUser.AuthId,
-            Email = prevUser.Email,
-            PhoneNumber = input.PhoneNumber ?? prevUser.PhoneNumber,
-            FirstName = input.FirstName ?? prevUser.FirstName,
-            LastName = input.LastName ?? prevUser.LastName,
-            BirtDate = input.BirtDate ?? prevUser.BirtDate,
-            BusyTime = input.BusyTime ?? prevUser.BusyTime,
-            InterviewTime = prevUser.InterviewTime,
-            Sections = prevUser.Sections,
-            Teams = prevUser.Teams,
-            Approved = prevUser.Approved
+            User updatedUser = new User()
+            {
+                Id = prevUser.Id,
+                AuthId = prevUser.AuthId,
+                Email = prevUser.Email,
+                PhoneNumber = input.PhoneNumber ?? prevUser.PhoneNumber,
+                FirstName = input.FirstName ?? prevUser.FirstName,
+                LastName = input.LastName ?? prevUser.LastName,
+                BusyTime = input.BusyTime ?? prevUser.BusyTime,
+                InterviewTime = prevUser.InterviewTime,
+                Sections = prevUser.Sections,
+                Teams = prevUser.Teams,
+                Approved = prevUser.Approved
             };
             return userRepository.UpdateUser(prevUser.Id, updatedUser);
         }

@@ -3,23 +3,11 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using LoadData.models;
+using Newtonsoft.Json;
 
 namespace LoadData
 {
-    class GraphQLInput
-    {
-        public static string LoginMutation()
-        {
-            string loginMutation = @"
-                    mutation login($email: String!, $password: String!) {
-                      login(email: $email, password: $password)
-                    }
-                ";
-            return loginMutation;
-        }
-    }
-
-
     class APIConnector
     {
 
@@ -34,13 +22,27 @@ namespace LoadData
 
         public async Task<string> Login(string email, string password)
         {
-            HttpContent content = new StringContent("hello");
+            LoginVariables loginVariables = new LoginVariables(){
+                email = email,
+                password = password
+            };
+            LoginRequest requestData = new LoginRequest(){
+                variables = loginVariables,
+                query = GraphQLInput.LoginMutation()
+            };
+            Console.WriteLine(JsonConvert.SerializeObject(requestData));
+            HttpContent content = new StringContent(
+                JsonConvert.SerializeObject(requestData)
+            );
             HttpResponseMessage response = await client.PostAsync(
                     "/",
                     content
                 );
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            //response.EnsureSuccessStatusCode();
+            string data = response.Content.ReadAsStringAsync().Result;
+            //string statusCode = response.StatusCode.GetResponse();
+            Console.WriteLine("Key:", response);
+            return "Key...";
         }
 
     }

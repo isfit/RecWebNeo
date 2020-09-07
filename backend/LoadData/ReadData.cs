@@ -8,9 +8,9 @@ namespace LoadData
     class ReadData
     {
         
-        public static List<string> GetFileNames(string path)
+        public static List<string> GetFileNames(string path, string textExtention)
         {
-            string[] fileNames = Directory.GetFiles(path, "*.txt")
+            string[] fileNames = Directory.GetFiles(path, "*." + textExtention)
                                      .Select(Path.GetFileName)
                                      .ToArray();
             return new List<string>(fileNames);

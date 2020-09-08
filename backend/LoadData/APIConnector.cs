@@ -27,17 +27,17 @@ namespace LoadData
                 password = password
             };
             LoginRequest requestData = new LoginRequest(){
-                variables = loginVariables,
+                variables = loginVariables.ToString(),
                 query = GraphQLInput.LoginMutation()
             };
-            Console.WriteLine(JsonConvert.SerializeObject(requestData));
-            HttpContent content = new StringContent(
-                JsonConvert.SerializeObject(requestData)
-            );
+            var content = new StringContent(requestData.ToString(), Encoding.UTF8, "application/json");
+            Console.WriteLine(content);
             HttpResponseMessage response = await client.PostAsync(
                     "/",
                     content
                 );
+            Console.WriteLine(response.ReasonPhrase);
+            Console.WriteLine(response.Content.ReadAsStringAsync().Result);
             //response.EnsureSuccessStatusCode();
             string data = response.Content.ReadAsStringAsync().Result;
             //string statusCode = response.StatusCode.GetResponse();

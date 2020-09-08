@@ -145,7 +145,7 @@ section = "5f3a7eaf0276b000016a0ed0"
 team = "5f3a7eaf0276b000016a0ed2"
 
 for positionFile in positionFiles:
-    f = open("positionfiles/"+positionFile, "r")
+    f = open("data/"+positionFile, "r")
     data = f.read()
     positions_data = data.split("Title:")[1:]
     for position_data in positions_data:

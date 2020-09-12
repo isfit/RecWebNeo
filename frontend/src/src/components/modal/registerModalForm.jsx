@@ -5,16 +5,21 @@ import RegisterDatePicker from "../datepicker";
 import { useMutation } from "@apollo/client";
 import { REGISTER } from "../../requests/userRequests";
 
-const RegisterModalForm = () => {
+const RegisterModalForm = ({setShowModal}) => {
   const [updateRegistration, { data, error, loading }] = useMutation(REGISTER, {
     onError: () => {},
   });
   const [emailInput, setEmailInput] = useState("");
   const [phonenumberInput, setPhonenumberInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
+  const [passwordSecondInput, setPasswordSecondInput] = useState("");
   const [firstNameInput, setFirstNameInput] = useState("");
   const [lastNameInput, setLastNameInput] = useState("");
   const [startDate, setStartDate] = useState(new Date().toISOString());
+
+  const [passwordsMatchMessage, setPasswordsMatchMessage] = useState(false);
+  const [viewConfirmation, setViewConfirmation] = useState(true);
+
 
   const register = (event) => {
     event.preventDefault();
@@ -30,119 +35,134 @@ const RegisterModalForm = () => {
         }
       }
     };
-    updateRegistration(variableData)
+    if (passwordInput === passwordSecondInput){
+      updateRegistration(variableData)
+    }
   };
 
-  return (
-    <div className="col">
-      <div className="row d-flex justify-content-center mt-5">
-        <h2 className="">Register</h2>
+  if (viewConfirmation) {
+    return (
+      <div className="col">
+        <div className="row d-flex justify-content-center mt-5">
+          <img src="./isfitlogo.png" className="header-brand-img mb-3" alt="Tabler React" style={{ maxWidth: "70px" }}></img>
+          <p>Before you proceed, please note that the positions listed on this page are for arranging and organizing the festival, 
+            and therefore you have to be a student in Trondheim in order to apply for them.
+          </p>
+          <p className="mt-4">
+            If you want to attend ISFiT as a participant, please apply at the <a href="https://participant.isfit.org/">Participant website</a>
+          </p>
+        </div>
+        <div className="flex-grid mt-5" style={{justifyContent:"space-between"}}>
+          <button className="btn btn-secondary mr-2" onClick={() => setShowModal()}>Back</button>
+          <button className="btn btn-success" onClick={() => setViewConfirmation(false)}>I confirm that I am a student that is currently or will be living in Trondheim in the near future</button>
+        </div>
       </div>
-      <form onSubmit={(event) => register(event)}>
+    );
+  }
+  else {
+    return (
+      <div className="col">
         <div className="row d-flex justify-content-center mt-5">
-          <div className="container w-75">
-            <span className="ml-1">Email</span>
-            <input
-              className="navbar-search"
-              placeholder="Type your email..."
-              type="email"
-              value={emailInput}
-              onChange={(event) => {
-                setEmailInput(event.target.value);
-              }}
-            ></input>
-          </div>
+          <h2 className="">Register</h2>
         </div>
-        <div className="row d-flex justify-content-center mt-5">
-          <div className="container w-75">
-            <span className="ml-1">Phone Number</span>
-            <input
-              className="navbar-search"
-              placeholder="Type your phonenumber"
-              value={phonenumberInput}
-              onChange={(event) => {
-                setPhonenumberInput(event.target.value);
-              }}
-            ></input>
-          </div>
-        </div>
-        <div className="row d-flex justify-content-center mt-4">
-          <div className="container w-75">
-            <span className="ml-1">Password</span>
-            <input
-              className="navbar-search"
-              type="password"
-              placeholder="Type your password..."
-              value={passwordInput}
-              onChange={(event) => setPasswordInput(event.target.value)}
-            ></input>
-          </div>
-        </div>
-        <div className="row d-flex justify-content-center mt-4">
-          <div className="container w-75">
-            <span className="ml-1">Repeat password</span>
-            <input
-              className="navbar-search"
-              type="password"
-              placeholder="Type your password..."
-            ></input>
-          </div>
-        </div>
-        <div className="row d-flex justify-content-center mt-4">
-          <div className="container w-75">
-            <span className="ml-1">First name</span>
-            <input
-              className="navbar-search"
-              placeholder="Type your first name..."
-              value={firstNameInput}
-              onChange={(event) => {
-                setFirstNameInput(event.target.value);
-              }}
-            ></input>
-          </div>
-        </div>
-        <div className="row d-flex justify-content-center mt-4">
-          <div className="container w-75">
-            <span className="ml-1">Last name</span>
-            <input
-              className="navbar-search"
-              placeholder="Type your last name..."
-              value={lastNameInput}
-              onChange={(event) => {
-                setLastNameInput(event.target.value);
-              }}
-            ></input>
-          </div>
-        </div>
-        <div className="row d-flex justify-content-center mt-4">
-          <div className="container w-75">
-            <span className="ml-1">Birthday</span>
-            <div>
-              <RegisterDatePicker
-                startDate={new Date(startDate)}
-                setStartDate={setStartDate}
-              />
-
+        <form onSubmit={(event) => register(event)}>
+          <div className="row d-flex justify-content-center mt-4">
+            <div className="container w-75">
+              <span className="ml-1">Email</span>
+              <input
+                className="navbar-search"
+                placeholder="Type your email..."
+                type="email"
+                value={emailInput}
+                onChange={(event) => {
+                  setEmailInput(event.target.value);
+                }}
+              ></input>
             </div>
           </div>
-        </div>
-        {data ? (
-          <div style={{ color: "green" }}>
-            You are registered successfully. Please log in. {" "}
+          <div className="row d-flex justify-content-center mt-4">
+            <div className="container w-75">
+              <span className="ml-1">Phone Number</span>
+              <input
+                className="navbar-search"
+                placeholder="Type your phonenumber"
+                value={phonenumberInput}
+                onChange={(event) => {
+                  setPhonenumberInput(event.target.value);
+                }}
+              ></input>
+            </div>
           </div>
-        ) : null}
+          <div className="row d-flex justify-content-center mt-4">
+            <div className="container w-75">
+              <span className="ml-1">Password</span>
+              <input
+                className="navbar-search"
+                type="password"
+                placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
+                onChange={(event) => setPasswordInput(event.target.value)}
+              ></input>
+            </div>
+          </div>
+          <div className="row d-flex justify-content-center mt-4">
+            <div className="container w-75">
+              <span className="ml-1">Repeat password</span>
+              <input
+                className="navbar-search"
+                type="password"
+                placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
+                onChange={(event) => setPasswordSecondInput(event.target.value)}
+              ></input>
+            </div>
+          </div>
+          <div className="row d-flex justify-content-center mt-4">
+            <div className="container w-75">
+              <span className="ml-1">First name</span>
+              <input
+                className="navbar-search"
+                placeholder="Type your first name..."
+                value={firstNameInput}
+                onChange={(event) => {
+                  setFirstNameInput(event.target.value);
+                }}
+              ></input>
+            </div>
+          </div>
+          <div className="row d-flex justify-content-center mt-4">
+            <div className="container w-75">
+              <span className="ml-1">Last name</span>
+              <input
+                className="navbar-search"
+                placeholder="Type your last name..."
+                value={lastNameInput}
+                onChange={(event) => {
+                  setLastNameInput(event.target.value);
+                }}
+              ></input>
+            </div>
+          </div>
+          
+          {data ? (
+            <div style={{ color: "green" }}>
+              You are registered successfully. Please log in. {" "}
+            </div>
+          ) : null}
 
-        {error ? (
-          <div style={{ color: "red" }}>  
-            Could not register. Try again with different information.{" "}
+          {error ? (
+            <div style={{ color: "red" }}>  
+              Could not register. Try again with different information.{" "}
+            </div>
+          ) : null}
+
+          {passwordInput === passwordSecondInput ? null : <small style={{ color: "red" }}>The passwords you have entered does not match</small>}
+
+          <div className="row d-flex justify-content-center">
+            <button className="signinbutton mt-5">Register</button>
           </div>
-        ) : null}
-        <div className="row d-flex justify-content-center">
-          <button className="signinbutton mt-5">Register</button>
-        </div>
-      </form>
-    </div>
-  );
+        </form>
+      </div>
+    );
+  }
 
 };
 

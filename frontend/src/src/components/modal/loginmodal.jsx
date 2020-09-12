@@ -19,7 +19,7 @@ const LogInModal = ({showLoginModal, closeLoginModal}) =>  {
                 <div className="loginChoice" onClick={() => setAlreadyUser(false)} > Register </div>
             </div>
             {
-                alreadyUser ? <LoginModalForm setShowModal={() => closeLoginModal()} /> : <RegisterModalForm />
+                alreadyUser ? <LoginModalForm setShowModal={() => closeLoginModal()} /> : <RegisterModalForm setShowModal={() => closeLoginModal()} />
             }
         </Modal>
     );

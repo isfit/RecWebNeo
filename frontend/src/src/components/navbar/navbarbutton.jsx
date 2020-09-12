@@ -3,9 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const NavBarButton = (props) => {
     return (
-      <li className="nav-item" >
-        <a href={props.address} className="nav-link px-2" style={{color: "#1BAE91"}}>
-          <FontAwesomeIcon className="mr-1" icon={props.iconstring} />
+      <li className="navbar-item">
+        <a href={props.address} className="navbar-link">
+          <i className="fa">
+            <FontAwesomeIcon className={"fas fa-sm"} icon={props.iconstring} />
+          </i>
           {props.title}
         </a>
       </li>

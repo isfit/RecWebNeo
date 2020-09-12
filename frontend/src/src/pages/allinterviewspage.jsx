@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import PageLayout from './pageLayout';
 import { connect } from "react-redux";
 
+import Loading from '../components/loadingSpinner';
+
 import { useQuery, useMutation } from "@apollo/client";
 
 import { ALL_INTERVIEWS, DELETE_INTERVIEW, SET_INTERVIEW_STATUS } from "../requests/interviewRequests";
@@ -63,23 +65,20 @@ const InterviewCard = (props) => {
 const AllInterviewsPage = ({userAuthKey}) => {
     const RolesArray = getRolesFromToken(userAuthKey);
     const AccessLevel = getAccessLevel(RolesArray); 
+    
+    const allIntervewsQuery = useQuery(ALL_INTERVIEWS, {fetchPolicy: "no-cache"});
+    const allInterviews = allIntervewsQuery?.data?.interviews?.nodes ?? [];
 
     const [deleteInterviewMutation, deleteInterviewMutationData] = useMutation(DELETE_INTERVIEW);
+    const [setInterviewStatusMutation] = useMutation(SET_INTERVIEW_STATUS);
+    
     const [deleteConfirm, setDeleteConfirm] = useState(false);
 
-    const deleteInterview = (event, interviewId) => { 
+    const deleteInterview = (interviewId) => { 
         console.log("INTERVIEW ID:",interviewId)
         deleteInterviewMutation({variables: {input: {id: interviewId}}});
         setDeleteConfirm(false)
     };
-
-
-    const allIntervewsQuery = useQuery(ALL_INTERVIEWS, {fetchPolicy: "no-cache"});
-    /* const myInterviewsData = Boolean(myIntervewsQuery?.data) ? myIntervewsQuery?.data?.myIntervews : []; */
-    const allInterviews = allIntervewsQuery?.data?.interviews?.nodes ?? [];
-
-    const [setInterviewStatusMutation] = useMutation(SET_INTERVIEW_STATUS);
-    
 
     const setInterviewStatus = (intId, status) => {
         setInterviewStatusMutation({variables: {interviewId: intId, interviewStatus: status }});
@@ -87,20 +86,13 @@ const AllInterviewsPage = ({userAuthKey}) => {
 
     const [chosenInterviewStatus, setChosenInterviewStatus] = useState("Not assigned");
 
-    if (allIntervewsQuery.loading){
-        return (
-            <PageLayout>
-                Loading applications. Please wait.
-            </PageLayout>
-        )
-    }
-
     return(
         <PageLayout>
             <div className="container">
                 <div className="flex-grid px-5 py-5" style={{flexDirection:"column"}}>
                     <div className="card py-3 px-5 mb-2 w-100">
                         <h4>All interviews</h4>
+                        { allIntervewsQuery.loading ? <Loading loading={true}/> : null}
                         {allInterviews.map( interview => {
                             return (
                                 <InterviewCard 
@@ -120,7 +112,7 @@ const AllInterviewsPage = ({userAuthKey}) => {
                                      </form>
                                         <div><button className="btn btn-secondary ml-1 py-1 px-1" onClick={event => setInterviewStatus(interview.id, chosenInterviewStatus)}>Set Status</button></div>
                                     </div>
-                                   {(AccessLevel>2) ? deleteConfirm ? <div><button className="btn btn-secondary mr-1" onClick={() => setDeleteConfirm(false)}>Cancel</button><button className="btn btn-danger" onClick={(event) => deleteInterview(event, interview.id)}>DELETE</button></div> : <div className="ml-5"><button className="btn btn-danger" onClick={() => setDeleteConfirm(true)}>Delete</button></div> : null}
+                                   {(AccessLevel>2) ? deleteConfirm ? <div><button className="btn btn-secondary mr-1" onClick={() => setDeleteConfirm(false)}>Cancel</button><button className="btn btn-danger" onClick={() => deleteInterview(interview.id)}>DELETE</button></div> : <div className="ml-5"><button className="btn btn-danger" onClick={() => setDeleteConfirm(true)}>Delete</button></div> : null}
                                 
                                 </InterviewCard>
                             )

@@ -28,11 +28,11 @@ const NavbarProfileIcon = ({accessLevel, logOutUser}) => {
 
     return (
         <a href="/myprofile">
-            <span className="ml-2 d-lg-block">
-            <span className="text-default"> { data.me?.firstName } { data.me?.lastName} </span>
-            <small className="text-muted d-block">{RoleName}</small>
+            <span className="ml-2 d-lg-block" style={{textAlign: "right"}}>
+                <span className="text-default"> { data.me?.firstName } { data.me?.lastName} </span>
+                <small className="text-muted d-block">{RoleName}</small>
             </span>
-        </a>  
+        </a>
     );
 }
 

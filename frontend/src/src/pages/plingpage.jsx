@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PageLayout from "./pageLayout";
 
 import { useQuery } from "@apollo/client";
@@ -30,33 +30,36 @@ const useAudio = url => {
 
 
 const Pling = () => {
-  const { data, error, loading, refetch } = useQuery(GET_APPLICATION_COUNT, {
-    fetchPolicy: "no-cache",
-  });
-  const [prevValue, setPrevValue] = useState(0);
+  const { data, error, loading, refetch } = useQuery(GET_APPLICATION_COUNT, {fetchPolicy: "no-cache",});
 
   const [playing, toggle] = useAudio("/plingsound.mp3");
 
-  useEffect(() => {
+  const playButtonRef = useRef(null);
+  const [plingActive, setPlingActive] = useState(false);
+
+
+  useEffect(() => {                         //Will just continue to run in a loop every 3 seconds, regardless of plingActive
     function RefetchApplicationCount() {
-      setPrevValue(data?.applications?.totalCount);
       refetch();
+      if (plingActive){                 //If you have pressed the Start Pling button, it will play sound every time it loops
+        playButtonRef.current.click();  //Works by using a ref to an invisible play-button below. This is a little hack to make it work :)
+      };
     }
     RefetchApplicationCount();
     const interval = setInterval(() => RefetchApplicationCount(), 3000);
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [plingActive]);
 
-  
 
   return (
     <PageLayout>
       <div>
-        <button onClick={toggle}>{playing ? "Pause" : "Play"}</button> //Lyd fungerer med knapp, men får ikke kalle .play() i useAudio av nettleseren
+        <p>Will just play the pling sound every three seconds for now</p>
+        <button value="test" ref={playButtonRef} onClick={toggle} style={{display:"none"}}> {playing ? "Pause" : "Play"} </button>
+        { plingActive ? <button onClick={() => setPlingActive(false)}>Stop pling</button> : <button onClick={() => setPlingActive(true)}>Start pling</button>}
       </div>
-      <h1>PREV VALUE: {prevValue}</h1>
       <h1>CURRENT VALUE: {data?.applications?.totalCount}</h1>
     </PageLayout>
   );

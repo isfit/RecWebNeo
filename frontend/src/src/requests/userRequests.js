@@ -18,6 +18,7 @@ const ME_NAME = gql`
 const ME = gql`
   query me {
     me {
+      id
       email
       firstName
       lastName
@@ -154,8 +155,10 @@ const UPDATE_USER_PASSWORD = gql`
 const EDIT_USER_INFORMATION = gql`
   mutation EditUserInformation($input: UpdateUserInput!) {
     editUserInformation(input: $input) {
-      id,
-      email 
+      id
+      firstName
+      lastName
+      phoneNumber
     }
   }
   `;

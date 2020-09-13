@@ -1,8 +1,11 @@
-﻿using Autofac;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.IO;
 using LoadData.Config;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Binder;
+using Microsoft.Extensions.Configuration.FileExtensions;
+using Microsoft.Extensions.Configuration.Json;
 
 namespace LoadData
 {
@@ -11,23 +14,35 @@ namespace LoadData
     class Program
     {
 
-        private static readonly IContainer container = Container.Initialize();
-
         static void Main(string[] args)
         {
-            // Config
-            using (var scope = container.BeginLifetimeScope())
+            // Get config from appsettings file
+            var path = Directory.GetCurrentDirectory();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(path)
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var dataConfig = builder.GetSection("data").Get<DataConfig>();
+
+            // Possition 
+            var noe = dataConfig.Directory;
+            List<string> fileNames = ReadData.GetFileNames(
+                    dataConfig.Directory,
+                    dataConfig.TextExtention
+                );
+
+            fileNames.ForEach(x => Console.WriteLine(x));
+
+            Parser parser = new Parser();
+
+            foreach(var fileName in fileNames)
             {
-                var readDataService = scope.Resolve<IReadData>();
-                readDataService.ListConfigData();
+                var rawContent = ReadData.GetDataFromFile(path + "/" + dataConfig.Directory + fileName);
+                var parsedContent = parser.ResolvePossitions(rawContent);
+                Console.WriteLine("Hello there");
             }
-            
-            // Data
 
-
-            //List<string> fileNames = ReadData.GetFileNames(dataPath, textExtention);
-
-            //fileNames.ForEach(x => Console.WriteLine(x));
             /*
             string email = "admin@isfit.com";
             string password = "123456";

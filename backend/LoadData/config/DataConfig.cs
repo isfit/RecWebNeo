@@ -1,19 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace LoadData.Config
 {
+    [JsonObject("data")]
     public class DataConfig
     {
-        public string directory { get; protected set; }
-        public string textExtention { get; protected set; }
+        [JsonProperty("directory")]
+        public string Directory { get; set; }
+        [JsonProperty("textExtention")]
+        public string TextExtention { get; set; }
     }
 
+    [JsonObject("data1")]
     public class OverviewConfig
     {
-        public string directory { get; protected set; }
-        public string textExtention { get; protected set; }
+        [JsonProperty("directory")]
+        public string Directory { get; set; }
+        [JsonProperty("textExtention")]
+        public string TextExtention { get; set; }
     }
 
 }

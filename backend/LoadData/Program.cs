@@ -40,7 +40,6 @@ namespace LoadData
             {
                 var rawContent = ReadData.GetDataFromFile(path + "/" + dataConfig.Directory + fileName);
                 var parsedContent = parser.ResolvePossitions(rawContent);
-                Console.WriteLine("Hello there");
             }
 
             /*

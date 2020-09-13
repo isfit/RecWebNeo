@@ -12,6 +12,10 @@ import { getUserAuthKey } from "../redux/selectors";
 
 import { getRolesFromToken, getAccessLevel } from "../components/navbar/navbarHelperFunctions";
 
+import Accordion from "react-bootstrap/Accordion";
+import Button from 'react-bootstrap/Button';
+import Card from "react-bootstrap/Card";
+
 
 const InterviewCard = (props) => {
     const datTime = new Date(props.startTime);
@@ -56,6 +60,16 @@ const InterviewCard = (props) => {
                         }
                 </div>
             </div>
+            <Accordion defaultActiveKey="0">
+              <Card style={{textAlign:"center"}}>
+                <Accordion.Toggle as={Card.Header} eventKey="1">
+                  <a>Show application text</a>
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="1">
+                  <Card.Body><p>{props.applicationText}</p></Card.Body>
+                </Accordion.Collapse>
+              </Card>
+            </Accordion>
         </div>
     );
 };
@@ -99,6 +113,7 @@ const AllInterviewsPage = ({userAuthKey}) => {
                                     startTime = {interview.start}
                                     applicant = {interview.applicant.user}
                                     positions = {interview.application.positions}
+                                    applicationText = {interview.application.applicationText}
                                     interviewers = {interview.interviewers}
                                 >   <small>Status: {interview.status ?? "not assigned"}</small>
                                     <div className="flex-grid" style={{alignItems: "center", justifyContent: "center"}}>

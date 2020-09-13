@@ -103,6 +103,7 @@ const ALL_INTERVIEWS = gql`
                 }
                 application {
                     id
+                    applicationText
                     positions {
                         key
                         value {

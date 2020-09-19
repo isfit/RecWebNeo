@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Binder;
 using Microsoft.Extensions.Configuration.FileExtensions;
 using Microsoft.Extensions.Configuration.Json;
+using LoadData.Data.Models;
 
 namespace LoadData
 {
@@ -16,6 +17,9 @@ namespace LoadData
 
         static void Main(string[] args)
         {
+            /*
+            Parser parser = new Parser();
+
             // Get config from appsettings file
             var path = Directory.GetCurrentDirectory();
             var builder = new ConfigurationBuilder()
@@ -26,32 +30,28 @@ namespace LoadData
             var dataConfig = builder.GetSection("data").Get<DataConfig>();
 
             // Possition 
-            var noe = dataConfig.Directory;
             List<string> fileNames = ReadData.GetFileNames(
                     dataConfig.Directory,
                     dataConfig.TextExtention
                 );
 
-            fileNames.ForEach(x => Console.WriteLine(x));
-
-            Parser parser = new Parser();
-
+            List<Position> positions = new List<Position>();
             foreach(var fileName in fileNames)
             {
                 var rawContent = ReadData.GetDataFromFile(path + "/" + dataConfig.Directory + fileName);
-                var parsedContent = parser.ResolvePossitions(rawContent);
+                positions.AddRange(parser.ResolvePossitions(rawContent));
             }
+            */
 
-            /*
+            
             string email = "admin@isfit.com";
             string password = "123456";
-            APIConnector apiConnector = new APIConnector("http://localhost:5000/");
+            APIConnector apiConnector = new APIConnector("https://recruitment.isfit.org:5000/");
 
             string authKey = apiConnector.Login(email, password).Result;
             Console.WriteLine("The key is:");
             Console.WriteLine(authKey);
             Console.WriteLine("---------");
-            */
         }
     }
 }

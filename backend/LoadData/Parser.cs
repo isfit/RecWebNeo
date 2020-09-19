@@ -11,10 +11,11 @@ namespace LoadData
 
         private string _contentSplit = "===";
         private string[] _contentCategory = new string []{
-            "Name",
-            "Description", 
-            "Team", 
-            "Section"
+            "Title:",
+            "Description:", 
+            "Team:", 
+            "Section:",
+            "Contact:"
         };
 
 
@@ -27,10 +28,31 @@ namespace LoadData
                 List<string> positionValues = positionText.Split(
                         _contentCategory,
                         StringSplitOptions.RemoveEmptyEntries
-                    ).ToList();
-                positionValues.ForEach(x => Console.WriteLine(x));
+                    )
+                    .Select(x => x.Trim())
+                    .Where(x => !string.IsNullOrEmpty(x))
+                    .ToList();
+                if (positionValues != null && positionValues.Count() > 0)
+                {
+                    var contactInfo = positionValues[4].Split(',').ToList();
+                    var contact = new Contact()
+                    {
+                        Name = contactInfo[0],
+                        PhoneNumer = contactInfo[1],
+                        Email = contactInfo[2]
+                    };
+                    var position = new Position()
+                    {
+                        Name = positionValues[0],
+                        Description = positionValues[1],
+                        Team = positionValues[2],
+                        Section = positionValues[3],
+                        Contact = contact,
+                    };
+                    positions.Add(position);
+                }
             }
-            return null;
+            return positions;
         }
     }
 }

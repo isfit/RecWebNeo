@@ -172,18 +172,20 @@ namespace RecAPI.Users.Mutations
 
 
         [Authorize(Policy = "administrator")]
-        public bool SetUserRole(
+        public User SetUserRole(
             string email,
             string role,
             [GlobalState("currentUser")] CurrentUser user,
-            [Service] IAuthRepository authRepository
+            [Service] IAuthRepository authRepository,
+            [Service] IUserRepository userRepository
         )
         {
-            return authRepository.SetRoleOfUser(user.UserId, email, role);
+            authRepository.SetRoleOfUser(user.UserId, email, role);
+            return userRepository.GetUserByEmail(email);
         }
 
         [Authorize(Policy = "administrator")]
-        public bool SetSectionsToUser(
+        public User SetSectionsToUser(
             string email,
             List<string> sections,
             [Service] IUserRepository userRepository,
@@ -207,12 +209,11 @@ namespace RecAPI.Users.Mutations
                 }
             });
             user.Sections = sections;
-            var updatedUser = userRepository.UpdateUser(user.Id, user);
-            return !sections.Except(updatedUser.Sections).Any();
+            return userRepository.UpdateUser(user.Id, user);
         }
 
         [Authorize(Policy = "administrator")]
-        public bool SetTeamsToUser(
+        public User SetTeamsToUser(
             string email,
             List<string> teams,
             [Service] IUserRepository userRepository,
@@ -236,12 +237,11 @@ namespace RecAPI.Users.Mutations
                 }
             });
             user.Teams = teams;
-            var updatedUser = userRepository.UpdateUser(user.Id, user);
-            return !teams.Except(updatedUser.Teams).Any();
+            return userRepository.UpdateUser(user.Id, user);
         }
 
         [Authorize(Policy = "administrator")]
-        public bool setUserApproved(
+        public User setUserApproved(
                 [GraphQLNonNullType] string email,
                 [GraphQLNonNullType] bool approved,
                 [GlobalState("currentUser")] CurrentUser currentUser,
@@ -253,7 +253,7 @@ namespace RecAPI.Users.Mutations
             if (currentUserObject.Roles.Contains("admin") && approved)
             {
                 AuthError.AuthorizationError();
-                return false;
+                return null;
             }
 
             var user = userRepository.GetUserByEmail(email);
@@ -262,8 +262,7 @@ namespace RecAPI.Users.Mutations
                 UserError.UserExistError(email);
             }
             user.Approved = approved;
-            var updatedUser = userRepository.UpdateUser(user.Id, user);
-            return updatedUser.Approved == approved;
+            return userRepository.UpdateUser(user.Id, user);
         }
 
         [Authorize(Policy = "superuser")]

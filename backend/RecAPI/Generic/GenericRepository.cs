@@ -26,7 +26,7 @@ namespace RecAPI.Generic
             foreach(PropertyInfo pi in _collectionNames.GetType().GetProperties())
             {
                 var name = pi.GetValue(_collectionNames);
-                if (! new string[] { "Users", "AuthCredentials" }.Contains(name.ToString())) {
+                if (! new string[] { "Users", "AuthCredentials", "Teams", "Sections", "Organizations" }.Contains(name.ToString())) {
                     _database.DropCollectionAsync(name.ToString()).GetAwaiter().GetResult();
                 } else
                 {
@@ -35,7 +35,7 @@ namespace RecAPI.Generic
                         var _collection = _database.GetCollection<User>(name.ToString());
                         _collection.DeleteManyAsync(x => !x.Email.Contains("isfit")).GetAwaiter().GetResult();
                     }
-                    else
+                    else if (name.ToString() == "AuthCredentials")
                     {
                         var _collection = _database.GetCollection<AuthUser>(name.ToString());
                         _collection.DeleteManyAsync(x => !x.Email.Contains("isfit")).GetAwaiter().GetResult();

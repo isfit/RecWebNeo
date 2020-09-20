@@ -94,6 +94,7 @@ const GET_ISFIT_USERS = gql`
   query users {
     users (where:{email_contains:"@isfit.no"}) {
       nodes {
+        id
         firstName
         lastName
         email
@@ -124,7 +125,10 @@ const GET_SECTIONS = gql`
 
 const SET_USER_ROLE = gql`
   mutation setUserRole($email: String!, $role: String!) {
-    setUserRole(email: $email, role: $role)
+    setUserRole(email: $email, role: $role){
+      id
+      role
+    }
   }
 `;
 

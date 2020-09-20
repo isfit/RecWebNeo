@@ -6,21 +6,26 @@ import { useQuery, useMutation, gql } from "@apollo/client";
 import { GET_ALL_USERS, GET_SECTIONS, SET_USER_ROLE, SET_SECTIONS_TO_USER, SET_TEAMS_TO_USER, UPDATE_USER_PASSWORD, SET_USER_APPROVED  } from "../requests/userRequests";
 
 
-const UserEntry = (props) => {
+const UserEntry = ({user,children}) => {
+    let userSection = (user.sections !== null && user.sections.length > 0) ? user.sections[0].name : "none" ;
+    let userTeam = (user.teams !== null && user.teams.length > 0) ? user.teams[0].name : "none" ;
+    let userRoles = (user.roles !== null && user.roles.length > 0) ? user.roles[0] : "none" ;
+
+
     return (
         <div className="card w-100 h-10 mb-2 py-1">
             <div className="flex-grid">
                 <div className="col" style={{flex:"1 1 80%", display:"flex",flexDirection:"column"}}>
-                    <h4 className="mb-0" >{props.firstName} {props.lastName}</h4>
-                    <span className="text-muted">{props.email}</span>
+                    <h4 className="mb-0"> {user.firstName} {user.lastName}</h4>
+                    <span className="text-muted">{user.email}</span>
                     <div>
-                        { Boolean(props.sections) ? <p className="text-muted mb-0">Section: {props.sections[0].name}</p> : <p className="text-muted mb-0">Section: none</p> }
-                        { Boolean(props.teams) ? <p className="text-muted mb-0">Team: {props.teams[0].name}</p> : <p className="text-muted mb-0">Team: none</p> }
-                        { Boolean(props.roles) ? <p className="text-muted mb-0">Role: {props.roles[0]}</p> : <p className="text-muted mb-0">Role: none</p> }
+                        <p className="text-muted mb-0">Section: {userSection}</p>
+                        <p className="text-muted mb-0">Team: {userTeam}</p>
+                        <p className="text-muted mb-0">Role: {userRoles}</p>
                     </div>
                 </div>
                 <div className="col" style={{flex:"2 1 20%", display:"flex", justifyContent:"center"}}>
-                    {props.children}
+                    {children}
                 </div>
             </div>
         </div>
@@ -30,7 +35,7 @@ const UserEntry = (props) => {
 
 const UserAdminPage = () => {
     const userData = useQuery(GET_ALL_USERS, {fetchPolicy: "no-cache"});
-    let users = Boolean(userData?.data) ? userData?.data?.users?.nodes : [] ;
+    let users = userData?.data?.users?.nodes ?? [];
 
     const sectionsData = useQuery(GET_SECTIONS);
     const [chosenSection, setChosenSection] = useState({teams:[]});
@@ -121,14 +126,7 @@ const UserAdminPage = () => {
                                 { users.map( user => {
                                     if (user.email.slice(-8) !== "isfit.no"){
                                         return (
-                                            <UserEntry 
-                                                firstName={user.firstName}
-                                                lastName={user.lastName}
-                                                sections={user.sections} 
-                                                teams={user.teams}
-                                                email={user.email}
-                                                roles={user.roles}
-                                            >
+                                            <UserEntry user={user}>
                                                 <button type="button" className="btn btn-outline-success my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
                                             </UserEntry>
                                         )
@@ -145,15 +143,7 @@ const UserAdminPage = () => {
                                 { users.map( user => {
                                     if (user.email.slice(-8) === "isfit.no"){
                                         return (
-                                            <UserEntry 
-                                                firstName={user.firstName}
-                                                lastName={user.lastName}
-                                                sections={user.sections} 
-                                                teams={user.teams}
-                                                email={user.email}
-                                                roles={user.roles}
-                                                >
-                                                    
+                                            <UserEntry user={user}>
                                                 <button type="button" className="btn btn-outline-success my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
                                             </UserEntry>
                                         )
@@ -169,14 +159,7 @@ const UserAdminPage = () => {
                             <h4>Users to be changed</h4>
                             { addedUsers.map( user => {
                                 return (
-                                    <UserEntry 
-                                        firstName={user.firstName}
-                                        lastName={user.lastName}
-                                        sections={user.sections} 
-                                        teams={user.teams}
-                                        email={user.email}
-                                        roles = {user.roles}
-                                        >
+                                    <UserEntry user={user}>
                                         <button type="button" className="btn btn-outline-danger my-4 mx-2" onClick={() => removeFromUserList(user)}>-</button>
                                     </UserEntry>
                                 )

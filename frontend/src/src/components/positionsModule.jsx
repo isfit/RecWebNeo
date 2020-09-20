@@ -55,12 +55,13 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
 
   const [open, setOpen] = useState(false);
   
-  const sectionCards = (sectionId, eventKey) => {
+  const sectionCards = (section, eventKey) => {
+    console.log("SECTIONID", section);
     return (
       <Card>
         <Card.Header>
           <Accordion.Toggle as={Button} variant="btn btn-success dropdown-toggle ml-0 w-100" eventKey={""+ eventKey}>
-            <p >{data.positions.nodes.find(e => e.section.id == sectionId).section.name}</p>
+            <p >{section.name}</p>
           </Accordion.Toggle>
         </Card.Header>
         <Accordion.Collapse eventKey={""+ eventKey}>
@@ -68,7 +69,7 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
             <div className="card-group">
             <ScrollList>
               <div className="flex-grid w-100" style={{flexDirection:"column", maxHeight:"600px"}}>
-                {data.positions.nodes.filter(position => position?.section?.id === sectionId).map(position => {
+                {data.positions.nodes.filter(position => position?.section?.id === section.id).map(position => {
                     return (
                       <PositionRow  
                         position={position}
@@ -76,7 +77,7 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
                           setPositionData(position);
                           openPositionModal();
                         }}
-                        addPositionToApplication={(id, name) => addPositionToApplication(id, name)}
+                        addPositionToApplication={(id, name, admisionPeriode) => addPositionToApplication(id, name, admisionPeriode)}
                       />
                     );
                 })}
@@ -115,13 +116,12 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
       <PositionDescriptionModal position={positionData} />
       <div>
         <Accordion className="customAccordian w-100">
-            {sectionCards(sectionList[0], 0)}
-            {sectionCards(sectionList[1], 1)}
-            {sectionCards(sectionList[2], 2)}
-            {sectionCards(sectionList[3], 3)}
-            {sectionCards(sectionList[4], 4)}
-            {sectionCards(sectionList[5], 5)}
-
+            { sectionQuery?.data?.sections?.map( (section,index) => {
+                return(
+                  sectionCards(section, index)
+                );
+            }
+            )}
         </Accordion>
         <br></br>
 
@@ -149,7 +149,7 @@ const PositionRow = ({ position, openPositionModal, addPositionToApplication }) 
               </div>
           </a>
           <div className="col py-4 px-auto" style={{flexBasis: "10%"}}>
-            <button type="button" style={{float:"right"}} className="btn btn-outline-success" onClick={() => addPositionToApplication(position.id, position.name)}>
+            <button type="button" style={{float:"right"}} className="btn btn-outline-success" onClick={() => addPositionToApplication(position.id, position.name, position.admisionPeriode)}>
               +
             </button>
           </div>

@@ -3,7 +3,6 @@ import { applyMiddleware } from "redux";
 
 const InterviewFilteringFunction = ({allInterviews, chosenSection, chosenTeam, chosenPosition, chosenInterviewStatusFilter, searchTerm}) => {
     let resultList = [...allInterviews];
-    console.log("RESULTLIST: ", resultList)
 
     let hasChosenSection = Boolean(chosenSection);
     let hasChosenTeam = Boolean(chosenTeam);
@@ -47,6 +46,9 @@ const InterviewFilteringFunction = ({allInterviews, chosenSection, chosenTeam, c
     if (hasChosenStatus){
       resultList = resultList.filter(function(interview) {
         if (interview.status === chosenInterviewStatusFilter){
+          return true;
+        }
+        else if ((chosenInterviewStatusFilter.toLowerCase() === "not assigned") && !Boolean(interview.status)){ //If interview has status (""), that means Not assigned
           return true;
         }
         return false;

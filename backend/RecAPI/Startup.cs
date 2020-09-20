@@ -65,6 +65,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using HotChocolate.AspNetCore.Interceptors;
 using System.Security.Claims;
+using RecAPI.Generic;
 
 namespace RecAPI
 {
@@ -161,6 +162,7 @@ namespace RecAPI
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IAdmisionPeriodeRepository, AdmisionPeriodeRepository>();
             services.AddSingleton<IInterviewRepository, InterviewRepository>();
+            services.AddSingleton<IGenericRepository, GenericRepository>();
 
 
             // GraphQL Schema
@@ -186,6 +188,7 @@ namespace RecAPI
                 .AddType<ApplicationMutations>()
                 .AddType<UserMutation>()
                 .AddType<InterviewMutations>()
+                .AddType<GenericMutation>()
                 // Add Model type
                 .AddType<Position>()
                 .AddType<Team>()

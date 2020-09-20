@@ -14,10 +14,14 @@ namespace RecAPI.Database
         public string ApplicationCollectionName { get; set; }
         public string InterviewCollectionName { get; set; }
     }
-    public interface IRecWebDatabaseSettings
+    public interface IRecWebDatabaseSettings : IRecWebCollectionNameSettings
     {
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
+    }
+
+    public interface IRecWebCollectionNameSettings
+    {
         string PositionCollectionName { get; set; }
         string TeamCollectionName { get; set; }
         string SectionCollectionName { get; set; }

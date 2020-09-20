@@ -8,6 +8,14 @@ using RecAPI.Generic.InputType;
 using HotChocolate.Execution;
 using RecAPI.Organizations.ErrorHandling;
 using HotChocolate.AspNetCore.Authorization;
+using RecAPI.Positions.Repositories;
+using RecAPI.Teams.Repositories;
+using RecAPI.Sections.Repositories;
+using RecAPI.Applications.Repositories;
+using RecAPI.Auth.Repositories;
+using RecAPI.Users.Repositories;
+using RecAPI.AdmisionPeriodes.Repositories;
+using RecAPI.Interviews.Repositories;
 
 namespace RecAPI.Organizations.Mutations
 {
@@ -54,5 +62,6 @@ namespace RecAPI.Organizations.Mutations
         {
             return repository.DeleteOrganization(input.Id);
         }
+
     }
 }

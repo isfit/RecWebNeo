@@ -74,8 +74,8 @@ const MY_INTERVIEWS = gql`
                 }
                 applicant {
                     accepted
-                    id
                     user {
+                        id
                         firstName
                         lastName
                         email
@@ -119,7 +119,54 @@ const ALL_INTERVIEWS = gql`
                 }
                 applicant {
                     accepted
+                    user {
+                        id
+                        firstName
+                        lastName
+                        email
+                        phoneNumber
+                    }
+                }
+            }
+        }
+    }
+`;
+
+const ALL_INTERVIEWS_BY_DATE = gql`
+    query interviews{
+        interviews(order_by: {start: ASC}){
+            nodes {
+                id
+                start
+                status
+                interviewers {
+                    user {
+                        firstName
+                        lastName
+                        email
+                    }
+                }
+                application {
                     id
+                    applicationText
+                    positions {
+                        key
+                        value {
+                            id
+                            name
+                            section {
+                                id
+                                name
+                            }
+                            team {
+                                id
+                                name
+                            }
+                        }
+                    }
+                }
+                applicant {
+                    accepted
                     user {
                         id
                         firstName
@@ -157,4 +204,4 @@ const SET_INTERVIEW_STATUS = gql`
 
 
 
-export {CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW,MY_INTERVIEWS,ALL_INTERVIEWS,APPLICATION_BUSY_HOURS, DELETE_INTERVIEW, SET_INTERVIEW_STATUS}
+export {CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW,MY_INTERVIEWS,ALL_INTERVIEWS,APPLICATION_BUSY_HOURS, DELETE_INTERVIEW, SET_INTERVIEW_STATUS, ALL_INTERVIEWS_BY_DATE}

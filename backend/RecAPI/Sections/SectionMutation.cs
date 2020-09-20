@@ -33,7 +33,7 @@ namespace RecAPI.Sections.Mutations
             }
             var section = new Section()
             {
-                Name = input.Name,
+                Name = input.Name.ToLower(),
                 Description = input.Description,
                 Organization = input.Organization
             };
@@ -55,7 +55,7 @@ namespace RecAPI.Sections.Mutations
                 SectionsError.OrganizationExists(_organization, input.Organization);
             }
 
-            section.Name = input.Name ?? section.Name;
+            section.Name = input.Name?.ToLower() ?? section.Name;
             section.Description = input.Description ?? section.Description;
             section.Organization = input.Organization ?? section.Organization;
             return repository.UpdateSection(input.Id ,section);

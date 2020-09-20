@@ -31,7 +31,7 @@ namespace RecAPI.Organizations.Mutations
             OrganizationError.UniqueNameError(repository, input.Name, null); // Checks if the organization name is unique
             var organization = new Organization()
             {
-                Name = input.Name,
+                Name = input.Name.ToLower(),
                 Description = input.Description,
             };
             return repository.CreateOrganization(organization);
@@ -48,7 +48,7 @@ namespace RecAPI.Organizations.Mutations
             var updatedOrganization = new Organization()
             {
                 Id = input.Id,
-                Name = input.Name ?? organization.Name,
+                Name = input.Name?.ToLower() ?? organization.Name,
                 Description = input.Description ?? organization.Description
             };
             return repository.UpdateOrganization(input.Id, updatedOrganization);

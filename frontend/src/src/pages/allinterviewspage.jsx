@@ -6,7 +6,7 @@ import Loading from '../components/loadingSpinner';
 
 import { useQuery, useMutation } from "@apollo/client";
 
-import { ALL_INTERVIEWS, DELETE_INTERVIEW, SET_INTERVIEW_STATUS, ALL_INTERVIEWS_SEARCH  } from "../requests/interviewRequests";
+import { ALL_INTERVIEWS, DELETE_INTERVIEW, SET_INTERVIEW_STATUS, ALL_INTERVIEWS_BY_DATE  } from "../requests/interviewRequests";
 import { GET_SECTIONS } from "../requests/userRequests";
 import { POSITIONS } from "../requests/positionRequests";
 
@@ -114,7 +114,7 @@ const AllInterviewsPage = ({userAuthKey}) => {
     
     
     //QUERIES
-    const allIntervewsQuery = useQuery(ALL_INTERVIEWS_SEARCH);
+    const allIntervewsQuery = useQuery(ALL_INTERVIEWS_BY_DATE);
     const sectionsData = useQuery(GET_SECTIONS);
     const positionsData = useQuery(POSITIONS);
     const allInterviews = allIntervewsQuery?.data?.interviews?.nodes ?? [];

@@ -28,7 +28,7 @@ namespace RecAPI.Teams.Mutations
             TeamError.SectionExists(_section, input.Section);
             var team = new Team()
             {
-                Name = input.Name,
+                Name = input.Name.ToLower(),
                 Description = input.Description,
                 Section = input.Section
             };
@@ -48,7 +48,7 @@ namespace RecAPI.Teams.Mutations
             {
                 TeamError.SectionExists(_section, input.Section);
             }
-            team.Name = input.Name ?? team.Name;
+            team.Name = input.Name?.ToLower() ?? team.Name;
             team.Description = input.Description ?? team.Description;
             team.Section = input.Section ?? team.Section;
             return repository.UpdateTeam(team.Id ,team);

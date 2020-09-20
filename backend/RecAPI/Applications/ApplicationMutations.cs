@@ -110,11 +110,6 @@ namespace RecAPI.Applications.Mutations
             }
             List<DateTime> applicationBusyTimes = application.Available != null && application.Available.Count() > 0 ? application.Available : new List<DateTime>();
             busyTimes.AddRange(applicationBusyTimes);
-            foreach(DateTime busyTimePoint in applicationBusyTimes)
-            {
-                DateTime addedDateTime = busyTimePoint;
-                busyTimes.Add(addedDateTime.AddHours(1.0));
-            }
             List<string> emails = input.InterviewerEmail != null && input.InterviewerEmail.Count() > 0 ? input.InterviewerEmail : new List<string>();
             var users = userRepository.GetUsersByEmail(emails);
             foreach(User user in users)

@@ -58,7 +58,7 @@ namespace RecAPI.Interviews.Mutations
             CreateInterviewInput input,
             [Service] IInterviewRepository interviewRepository,
             [Service] IUserRepository userRepository,
-            [Service]IApplicationRepository applicationRepository
+            [Service] IApplicationRepository applicationRepository
         )
         {
             // Check that the application exists

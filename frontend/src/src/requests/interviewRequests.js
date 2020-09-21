@@ -94,6 +94,7 @@ const ALL_INTERVIEWS = gql`
                 id
                 start
                 status
+                location
                 interviewers {
                     user {
                         firstName
@@ -139,6 +140,7 @@ const ALL_INTERVIEWS_BY_DATE = gql`
                 id
                 start
                 status
+                location
                 interviewers {
                     user {
                         firstName

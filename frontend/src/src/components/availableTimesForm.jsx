@@ -56,11 +56,7 @@ const AvailableTimesForm = ({busyTimes, setBusyTimes, startDate, endDate, hourDi
 
      useEffect(() => {
         setBusyTimesDict((busyTimes != null && busyTimes.length > 0) ?  getWeeks() : [])
-        console.log(busyTimes);
     }, [busyTimes]);
-
-    console.log("Kun busyTimes", busyTimes.slice())
-    console.log("busyTimesUpdated HOOK", busyTimesUpdated);
 
 
     Date.prototype.addDays = function(days) {

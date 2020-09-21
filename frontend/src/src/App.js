@@ -68,7 +68,7 @@ library.add(
   faCheckCircle,
 );
 
-const httpLink = new HttpLink({ uri: 'https://recruitment.isfit.org:5000/'});
+const httpLink = new HttpLink({ uri: 'https://test-recruitment.isfit.org:5000/'});
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists

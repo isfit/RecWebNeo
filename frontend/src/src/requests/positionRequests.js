@@ -14,8 +14,10 @@ const POSITIONS = gql`
             section {
                 id
                 name
+            },
+            admisionPeriode {
+                id
             }
-            
         }
     }
     }
@@ -37,7 +39,10 @@ const FILTER_POSITIONS = gql`
           team {
             id,
             name
-        },
+          },
+          admisionPeriode {
+            id
+          }
         }
       }
     }

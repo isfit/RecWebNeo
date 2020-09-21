@@ -15,11 +15,9 @@ const RegisterModalForm = ({setShowModal}) => {
   const [passwordSecondInput, setPasswordSecondInput] = useState("");
   const [firstNameInput, setFirstNameInput] = useState("");
   const [lastNameInput, setLastNameInput] = useState("");
-  const [startDate, setStartDate] = useState(new Date().toISOString());
 
   const [passwordsMatchMessage, setPasswordsMatchMessage] = useState(false);
   const [viewConfirmation, setViewConfirmation] = useState(true);
-
 
   const register = (event) => {
     event.preventDefault();
@@ -31,7 +29,6 @@ const RegisterModalForm = ({setShowModal}) => {
           firstName: firstNameInput,
           lastName: lastNameInput,
           password: passwordInput,
-          birtDate: startDate,
         }
       }
     };

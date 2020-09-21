@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PageLayout from './pageLayout';
 import ScrollList from '../components/scrollList';
 
@@ -6,10 +6,11 @@ import { useQuery, useMutation, gql } from "@apollo/client";
 import { GET_ALL_USERS, GET_SECTIONS, SET_USER_ROLE, SET_SECTIONS_TO_USER, SET_TEAMS_TO_USER, UPDATE_USER_PASSWORD, SET_USER_APPROVED  } from "../requests/userRequests";
 
 
-const UserEntry = ({user,children}) => {
+const UserEntry = ({user, children}) => {
     let userSection = (user.sections !== null && user.sections.length > 0) ? user.sections[0].name : "none" ;
     let userTeam = (user.teams !== null && user.teams.length > 0) ? user.teams[0].name : "none" ;
     let userRoles = (user.roles !== null && user.roles.length > 0) ? user.roles[0] : "none" ;
+
 
 
     return (
@@ -34,25 +35,29 @@ const UserEntry = ({user,children}) => {
 
 
 const UserAdminPage = () => {
-    const userData = useQuery(GET_ALL_USERS, {fetchPolicy: "no-cache"});
+
+    //QUERIES
+    const userData = useQuery(GET_ALL_USERS);
     let users = userData?.data?.users?.nodes ?? [];
-
     const sectionsData = useQuery(GET_SECTIONS);
-    const [chosenSection, setChosenSection] = useState({teams:[]});
 
+    //HOOKS
+    const [chosenSection, setChosenSection] = useState({teams:[]});
     const [chosenTeam, setChosenTeam] = useState(null);
     const [chosenRole, setChosenRole] = useState("");
     const [chosenPassword, setChosenPassword] = useState("");
-
-
     const [addedUsers, setAddedUsers] = useState([]);
 
+
+    //MUTATIONS
     const [updateRole, setUserRoleData] = useMutation(SET_USER_ROLE);
     const [updateSections, updateSectionsData] = useMutation(SET_SECTIONS_TO_USER);
     const [updateTeams, updateTeamsData] = useMutation(SET_TEAMS_TO_USER);
     const [updatePassword, updatePasswordData] = useMutation(UPDATE_USER_PASSWORD);
     const [userApproved, userApprovedData] = useMutation(SET_USER_APPROVED);
 
+
+    //FUNCTIONS
     const addToUserList = (user) => {
         let copyList = [...addedUsers]
         copyList.push(user);
@@ -69,15 +74,14 @@ const UserAdminPage = () => {
     };
 
     
-    const updateUserSectionTeam = (event, addedUsers, chosenSection, chosenTeam) => {
+    const UpdateUserSectionTeam = ({addedUsers, chosenSection, chosenTeam}) => {
         if (Boolean(chosenSection) && Boolean(chosenTeam) ) {
-                addedUsers.map( user => {
-                    addedUsers.map( user => {
-                        event.preventDefault();
-                        updateSections({variables: {email: user?.email, sections: [chosenSection] }});
-                        updateTeams({variables: {email: user?.email, teams: [chosenTeam] }});
-                    })
-                })
+            addedUsers.map( user => {
+                updateSections({variables: {email: user.email, sections: [chosenSection] }});
+            })
+            addedUsers.map( user => {
+                updateTeams({variables: {email: user.email, teams: [chosenTeam] }});
+            })
         };
     };
     
@@ -114,6 +118,32 @@ const UserAdminPage = () => {
 
         return sectionObject ?? {teams:[]}
     };
+
+
+
+    const UpdateAddedUsers = ({users, addedUsers}) => {
+        let copyList = [...addedUsers]
+        copyList.map( (addedUser, index) => {
+            users.map(newUser => {
+                if (addedUser.id === newUser.id){
+                    copyList[index] = newUser
+                }
+            })
+        })
+        setAddedUsers(copyList);
+    }
+    
+
+    useEffect(() => {
+        UpdateAddedUsers({users, addedUsers})
+    }, [setUserRoleData.data, updateSectionsData.data, updateTeamsData.data]);
+
+
+    const resetTeamsRef = useRef(null);
+
+    useEffect(() => {                   //If you choose a new section, reset chosen team
+        Boolean(resetTeamsRef?.current?.value) ? resetTeamsRef.current.click() : console.log();
+    }, [chosenSection]);
 
 
     return (
@@ -156,10 +186,13 @@ const UserAdminPage = () => {
 
                     <div className="right mx-3" style={{flexBasis:"40%", flexDirection:"column"}}>
                          <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
-                            <h4>Users to be changed</h4>
+                            <div className="flex-grid" style={{justifyContent:"space-between"}}>
+                                <h4>Users to be changed</h4>
+                                <button type="button" className="btn btn-outline-secondary" onClick={() => setAddedUsers([]) }>Reset</button>
+                            </div>
                             { addedUsers.map( user => {
                                 return (
-                                    <UserEntry user={user}>
+                                    <UserEntry user={user} addedUsers={addedUsers} setAddedUsers={setAddedUsers}>
                                         <button type="button" className="btn btn-outline-danger my-4 mx-2" onClick={() => removeFromUserList(user)}>-</button>
                                     </UserEntry>
                                 )
@@ -191,12 +224,13 @@ const UserAdminPage = () => {
                                                 return (
                                                     <option value={team.id}>{team.name}</option>
                                                 )
-                                                })}
+                                            })}
                                         </select>
+                                            <input type="reset" value="NewSectionResetTeams" ref={resetTeamsRef} onClick={() => setChosenTeam(null)} style={{display:"none"}}/>
                                         </form>
                                     </div>
                                     <div className="col" style={{flexBasis:"10%"}}>
-                                        <button type="button" className="btn btn-outline-success mt-2" style={{float:"right"}} onClick={event => updateUserSectionTeam(event, addedUsers, chosenSection, chosenTeam)}>Set section/team</button>
+                                        <button type="button" className="btn btn-outline-success mt-2" style={{float:"right"}} onClick={() => UpdateUserSectionTeam({addedUsers, chosenSection, chosenTeam})}>Set section/team</button>
                                     </div>
                                 </div>
                                         

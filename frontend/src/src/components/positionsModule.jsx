@@ -56,7 +56,6 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
   const [open, setOpen] = useState(false);
   
   const sectionCards = (section, eventKey) => {
-    console.log("SECTIONID", section);
     return (
       <Card>
         <Card.Header>

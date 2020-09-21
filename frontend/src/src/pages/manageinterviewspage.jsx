@@ -17,7 +17,6 @@ const ApplicationEntry = (props) => {
                     <h4 className="mb-0" >{props?.applicant?.firstName} {props?.applicant?.lastName} </h4>
                     <small className="text-muted">{props?.applicant?.email}</small>
                     <div>
-                        {/* {console.log("PROPS ", props)} */}
                         { props.positions.map( position => {
                                 return(
                                     <div className="card">
@@ -67,6 +66,47 @@ const UserEntry = ({user,children}) => {
 };
 
 
+const CreateInterviewBox = ({chosenApplication, addedUsers, chosenTime, chosenLocation, setChosenApplication, removeFromUserList, setChosenLocation}) => {
+
+    return (
+    <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
+        <h4>Create Interview</h4>
+
+        { chosenApplication.map( application => {
+            return(
+                <ApplicationEntry
+                    positions={application.positions}
+                    applicant={application.applicant}
+                >
+                    <button type="button" className="btn btn-outline-danger my-4 mx-2" onClick={() => setChosenApplication([])}>Remove</button>
+                </ApplicationEntry>
+            );
+        }
+        )}
+
+        {chosenApplication.length === 0 ? <div style={{minHeight:"184px"}}></div>: null}
+    
+
+        <h4>Add interviewers</h4>
+        
+        { addedUsers.map( user => {
+                return (
+                    <UserEntry user={user}>
+                        <button type="button" className="btn btn-outline-danger my-4 mx-2" onClick={() => removeFromUserList(user)}>-</button>
+                    </UserEntry>
+                )}
+        )}
+        <h5 className="mt-3">Interview time: { chosenTime?.toString() ?? "Select a time from the table" } </h5>
+        <div className="flex-grid mt-3">
+            <h5 className="mr-1">Enter location:</h5>
+            <input className="w-50" value={chosenLocation} placeholder="Enter room or URL" onChange={(e) => setChosenLocation(e.target.value)}/>
+        </div>
+    </div>
+    );
+
+};
+
+
 const InterviewsPage = () => {
 
     //QUERIES
@@ -94,6 +134,8 @@ const InterviewsPage = () => {
     const [chosenTime, setChosenTime] = useState(null);
     const [createInterviewError, setCreateInterviewError] = useState(null);
     const [chosenLocation, setChosenLocation] = useState("");
+
+
 
     //VARIABLES
     const startInterview = new Date("2020-08-27T00:00:00.000Z");
@@ -124,7 +166,7 @@ const InterviewsPage = () => {
         let emailArray = addedUsers.map(user => {return user.email})
         setCreateInterviewError(null);
         createInterview({
-            variables: {input: {application: application[0]?.id, interviewerEmails: emailArray, start: startTime?.toISOString()}},
+            variables: {input: {application: application[0]?.id, interviewerEmails: emailArray, start: startTime?.toISOString(), location:chosenLocation}},
         });
         setChosenLocation("");
     };
@@ -162,36 +204,7 @@ const InterviewsPage = () => {
                     </div>
                 </div>
                 <div className="middle mx-3" style={{flexBasis:"40%", textAlign:"left"}}>
-                    <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
-                        <h4>Create Interview</h4>
-
-                        { chosenApplication.map( application => {
-                            return(
-                                <ApplicationEntry
-                                    positions={application.positions}
-                                    applicant={application.applicant}
-                                >
-                                    <button type="button" className="btn btn-outline-danger my-4 mx-2" onClick={() => setChosenApplication([])}>Remove</button>
-                                </ApplicationEntry>
-                            );
-                        }
-                        )}
-
-                        {(chosenApplication===[]) ? <h4>Add interviewers</h4> : null }
-                        
-                        { addedUsers.map( user => {
-                                return (
-                                    <UserEntry user={user}>
-                                        <button type="button" className="btn btn-outline-danger my-4 mx-2" onClick={() => removeFromUserList(user)}>-</button>
-                                    </UserEntry>
-                                )}
-                        )}
-                        <h5 className="mt-3">Interview time: { chosenTime?.toString() ?? "Select a time from the table" } </h5>
-                        <div className="flex-grid mt-3">
-                            <h5 className="mr-1">Enter location:</h5>
-                            <input className="w-50" value={chosenLocation} placeholder="Enter room or URL" onChange={(e) => setChosenLocation(e.target.value)}/>
-                        </div>
-                    </div>
+                    <CreateInterviewBox chosenApplication={chosenApplication} addedUsers={addedUsers} chosenLocation={chosenLocation} chosenTime={chosenTime} setChosenApplication={setChosenApplication} removeFromUserList={removeFromUserList} setChosenLocation={setChosenLocation} />
                     <button className="btn btn-secondary mt-1 mr-2" onClick={() => getBusyHoursMutation(chosenApplication, addedUsers)}>See possible hours</button>
                     <button className="btn btn-success mt-1 mr-2 float-right" onClick={() => createInterviewMutation(chosenApplication, addedUsers, chosenTime, chosenLocation)}>Confirm interview</button>
                 </div>

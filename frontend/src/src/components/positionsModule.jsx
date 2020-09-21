@@ -77,7 +77,7 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
                           setPositionData(position);
                           openPositionModal();
                         }}
-                        addPositionToApplication={(id, name, admisionPeriode) => addPositionToApplication(id, name, admisionPeriode)}
+                        addPositionToApplication={(id, name, admisionPeriode) => addPositionToApplication(id, name)}
                       />
                     );
                 })}
@@ -149,7 +149,7 @@ const PositionRow = ({ position, openPositionModal, addPositionToApplication }) 
               </div>
           </a>
           <div className="col py-4 px-auto" style={{flexBasis: "10%"}}>
-            <button type="button" style={{float:"right"}} className="btn btn-outline-success" onClick={() => addPositionToApplication(position.id, position.name, position.admisionPeriode)}>
+            <button type="button" style={{float:"right"}} className="btn btn-outline-success" onClick={() => addPositionToApplication(position.id, position.name)}>
               +
             </button>
           </div>

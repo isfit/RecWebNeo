@@ -127,20 +127,32 @@ const SET_USER_ROLE = gql`
   mutation setUserRole($email: String!, $role: String!) {
     setUserRole(email: $email, role: $role){
       id
-      role
+      roles
     }
   }
 `;
 
 const SET_SECTIONS_TO_USER = gql`
   mutation setSectionsToUser($email: String!, $sections: [String]!) {
-    setSectionsToUser(email: $email, sections: $sections)
+    setSectionsToUser(email: $email, sections: $sections){
+      id
+      sections {
+        id
+        name
+      }
+    }
   }
 `;
 
 const SET_TEAMS_TO_USER = gql`
   mutation setTeamsToUser($email: String!, $teams: [String]!) {
-    setTeamsToUser(email: $email, teams: $teams)
+    setTeamsToUser(email: $email, teams: $teams){
+      id
+      teams {
+        id
+        name
+      }
+    }
   }
 `;
 

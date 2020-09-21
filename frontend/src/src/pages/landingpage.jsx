@@ -50,13 +50,13 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
 
           <div className="shopping-box-right mt-4">
             <PositionChoiceBox />
-            {/* {  userLogedIn ? <button
+            {  userLogedIn ? <button
                 className="btn btn-continue mt-1 mr-2 float-right"
                 onClick={() => history.push("/enterapplication")}
               > Continue</button> :
               <button className="btn btn-success ml-0 w-100"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess
-              </button>} */}
-            <button className="btn btn-success ml-0 w-100" >Application period is over</button>
+              </button>}
+            {/* <button className="btn btn-success ml-0 w-100" >Application period is over</button> */}
           </div>
 
 

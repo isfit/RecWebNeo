@@ -14,7 +14,7 @@ import UserAdminPage from "./pages/useradminpage";
 import InterviewsPage from "./pages/manageinterviewspage";
 import MyInterviewsPage from "./pages/myinterviewspage";
 import AllInterviewsPage from "./pages/allinterviewspage";
-import Unavailabletimes from "./pages/unavailabletimespage";
+import Unavailabletimes from "./pages/internalavailabletimespage";
 import UsersWithoutApplication from "./pages/userswithoutapplicationpage";
 import Pling from "./pages/plingpage";
 

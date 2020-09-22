@@ -46,7 +46,7 @@ namespace LoadData
             
             string email = "admin@isfit.com";
             string password = "123456";
-            APIConnector apiConnector = new APIConnector("https://recruitment.isfit.org:5000/");
+            APIConnector apiConnector = new APIConnector("https://test-recruitment.isfit.org:5000/");
 
             string authKey = apiConnector.Login(email, password).Result;
             Console.WriteLine("The key is:");

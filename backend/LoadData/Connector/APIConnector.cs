@@ -3,34 +3,27 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using GraphQL.Client.Http;
 using LoadData.models;
 using Newtonsoft.Json;
+using GraphQL.Client.Serializer.Newtonsoft;
 
-namespace LoadData
+
+namespace LoadData.Connector
 {
     class APIConnector
     {
 
-        private HttpClient client;
+        private GraphQLHttpClient client;
 
         public APIConnector(string baseUri)
         {
-            client = new HttpClient();
-            client.BaseAddress = new Uri(baseUri);
+            client = new GraphQLHttpClient(baseUri, new NewtonsoftJsonSerializer());
         }
 
 
         public async Task<string> Login(string email, string password)
-        {
-            var LoginMutationObject = new {
-                query = @"mutation login($email: String!, $password: String!) {
-                          login(email: $email, password: $password)
-                        }}",
-                variables = @"{
-                              'email': 'admin@isfit.com',
-                              'password': '123456'
-                               }"
-            };
+        
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,

@@ -82,7 +82,7 @@ namespace RecAPI.Applications.Mutations
             {
                 updateApplication.setInterest(input.Interest);
             }
-            return applicationRepository.UpdateApplication(user.UserId, updateApplication);
+            return applicationRepository.UpdateApplication(application.Id, updateApplication);
         }
 
         [Authorize(Policy = "superuser")]

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import PageLayout from './pageLayout';
-import PositionChoiceBoxReadOnly from "../components/positionChoiceBoxReadOnly"
+import PositionChoiceBoxReadOnly from "../components/positionChoiceBoxSimple"
 import { useQuery } from "@apollo/client";
 import {APPLICATIONS} from '../requests/applicationRequests';
 import ErrorPage from './errorPage';

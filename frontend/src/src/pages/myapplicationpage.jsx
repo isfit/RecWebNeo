@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PositionChoiceBoxReadOnly from '../components/positionChoiceBoxReadOnly';
+import PositionChoiceBoxSimple from '../components/positionChoiceBoxSimple';
 import PageLayout from './pageLayout';
 import ErrorPage from './errorPage';
 import AvailableTimesFormSimple from '../components/availableTimesFormSimple';
@@ -9,34 +9,46 @@ import { MYAPPLICATION } from "../requests/userRequests";
 import PrioritizedCard from '../components/application/prioritizedCard';
 import InterestApplicationCard from '../components/application/interestApplicationCard';
 import { UPDATE_APPLICATION } from "../requests/applicationRequests";
-import { faLessThanEqual } from '@fortawesome/free-solid-svg-icons';
+import { GET_ADMISSION_PERIODS } from  "../requests/orgRequests";
 
 const MyApplicationPage = (props) => {
 
+  //QUERIES
   const { refetch, loading, error, data } = useQuery(MYAPPLICATION, {fetchPolicy: "no-cache"});
+  const admissionPeriodData = useQuery(GET_ADMISSION_PERIODS);
+  let admissionPeriod = admissionPeriodData?.data?.admisionPeriodes[0] ?? [];
+
+  //MUTATIONS
   const [updateApplicationMutation, { updatedData, updateError, updateLoading }] = useMutation(UPDATE_APPLICATION, {
-    onError: () => {},
+    onError: () => {alert("Something went wrong when trying to update your application")},
     onCompleted: () => {alert("Your application is now updated!")}
   });
 
+  //HOOKS
   const [applicationText, changeText] = useState('');
   const [prioritized, setPrioritized] = useState(true);
   const [otherPositions, setOtherPositions] = useState("OnlyPositions");
   const [enteredBusyTimes, setEnteredBusyTimes] = useState([]);
+  const [enteredPositions, setEnteredPositions] = useState([]);
 
   const [editMode, setEditMode] = useState(false);
 
-  const startInterview = new Date("2020-08-27T00:00:00.000Z");
-  const endInterview = new Date("2020-09-10T00:00:00.000Z");
+  const startInterview = new Date(admissionPeriod.startInterviewDate);
+  const endInterview = new Date(admissionPeriod.endInterviewDate);
 
   useEffect( () => {
     changeText(data?.myApplication?.applicationText);
     setPrioritized(data?.myApplication?.prioritized);
     setOtherPositions(data?.myApplication?.interest);
     setEnteredBusyTimes(data?.myApplication?.available);
+    setEnteredPositions(data?.myApplication?.positions);
   }, [data]);
 
+  //FUNCTIONS
   const updateApplication = () => {
+    let positionKeyAndValue = enteredPositions.map(position => {
+      return {key: position.key.toString(), value:position.value.id}
+    })
     const variableData = {
       variables: {
         input: {
@@ -44,7 +56,7 @@ const MyApplicationPage = (props) => {
           prioritized: prioritized,
           interest: otherPositions,
           available: enteredBusyTimes,
-          //positions: data?.myApplication.positions.map( pos => pos.value),
+          positions: positionKeyAndValue,
         }
       }
     };
@@ -52,37 +64,64 @@ const MyApplicationPage = (props) => {
     setEditMode(false);
   };
 
-    if (loading) {  
-        return (
-          <div>Loading</div>
-        )
-    }
 
-    
-    if (error != null) {
-        return (
-          <PageLayout>
-            <ErrorPage 
-              errorMessage={"Could not fetch your application. Make sure you are logged in and have entered an application."}
-              errorType={"AuthenticationError"}
-              refetch={() => refetch()}
-            />
-          </PageLayout>
-        )
+  const MovePositionUp = (id) => {
+    let positionDataCopy = [...enteredPositions]
+    const index = positionDataCopy.findIndex(x => x.value.id === id);
+    if (index > 0) {
+        const newPositionsPri = positionDataCopy;
+        const position = newPositionsPri.splice(index, 1)[0];
+        newPositionsPri.splice(index-1, 0, position);
     }
-    
+    positionDataCopy.map( (position, index) => position.key = index)
+    setEnteredPositions(positionDataCopy);
+  }
 
-    if( data.myApplication == null ) {
-      return(
+
+  const MovePositionDown = (id) => {
+      let positionDataCopy = [...enteredPositions]
+      const index = positionDataCopy.findIndex(x => x.value.id === id);
+      if (index < positionDataCopy.length-1) {
+          const newPositionsPri = positionDataCopy;
+          const position = newPositionsPri.splice(index, 1)[0];
+          newPositionsPri.splice(index+1, 0, position);
+      };
+      positionDataCopy.map( (position, index) => position.key = index)
+      setEnteredPositions(positionDataCopy);
+  }
+
+
+  if (loading) {  
+      return (
+        <div>Loading</div>
+      )
+  }
+
+  
+  if (error != null) {
+      return (
         <PageLayout>
-          <div>
-            You dont have an application registered.
-          </div>
+          <ErrorPage 
+            errorMessage={"Could not fetch your application. Make sure you are logged in and have entered an application."}
+            errorType={"AuthenticationError"}
+            refetch={() => refetch()}
+          />
         </PageLayout>
       )
-    }
+  }
+  
 
-    return (
+  if( data.myApplication == null ) {
+    return(
+      <PageLayout>
+        <div>
+          You dont have an application registered.
+        </div>
+      </PageLayout>
+    )
+  }
+
+  return (
       <PageLayout userLogedIn={ props.userLogedIn }  setUserLogedIn={ userLoginValue => props.setUserLogedIn(userLoginValue) }>
         <div className="container">
           <div className="flex-grid pt-2 px-2" style={{justifyContent: "space-between"}}>
@@ -105,7 +144,7 @@ const MyApplicationPage = (props) => {
               </textarea>
             </div>
             <div className="col col-lg-4">
-              <PositionChoiceBoxReadOnly positions={data?.myApplication.positions.map( pos => pos.value)} title="My Positions"/>
+              <PositionChoiceBoxSimple positions={enteredPositions?.map( pos => pos.value)} title="My Positions" readOnly={!editMode} MovePositionUp={(id) => MovePositionUp(id) } MovePositionDown={(id) => MovePositionDown(id)} />
             </div>
           </div>
           <div className="row">
@@ -115,16 +154,13 @@ const MyApplicationPage = (props) => {
               <h5>Your Schedule</h5>
               <AvailableTimesFormSimple 
                 busyTimes={data?.myApplication?.available ?? []}
-                setBusyTimes={busy => {
-                  setEnteredBusyTimes(busy);
-                }}
+                setBusyTimes={busy => {setEnteredBusyTimes(busy)}}
                 startDate = {startInterview}
                 endDate = {endInterview}
-                hourDiff={2}
+                hourDiff={1}
                 firstTimeSlot={8}
-                lastTimeSlot={20}
+                lastTimeSlot={22}
                 readOnly = { !editMode }
-                selectable = { true }
               />
 
             </div>

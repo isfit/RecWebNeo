@@ -6,6 +6,7 @@ import AvailableTimesFormSimple from '../components/availableTimesFormSimple';
 import ErrorPage from './errorPage';
 
 import { APPLY } from "../requests/userRequests";
+import { GET_ADMISSION_PERIODS } from  "../requests/orgRequests";
 import { useQuery, useMutation } from "@apollo/client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,21 +18,15 @@ const AvailableTimesPage = (props) => {
     onError: () => {},
   });
 
-  const startInterview = new Date("2020-08-27T00:00:00.000Z");
-  const endInterview = new Date("2020-09-10T00:00:00.000Z");
 
+  const admissionPeriodData = useQuery(GET_ADMISSION_PERIODS);
+  let admissionPeriod = admissionPeriodData?.data?.admisionPeriodes[0] ?? [];
+  //Here I just use the first admission period. 
+  //Not a very good solution, but as long we are only working with one admission period, it will work.
+  
+  const startInterview = new Date(admissionPeriod.startInterviewDate);
+  const endInterview = new Date(admissionPeriod.endInterviewDate);
 
-
-  /* const updateStoredBusyTimes = (busy) => {
-    localStorage.setItem("busyTimes", JSON.stringify(busy));
-  } */
-
-  /* const getBusyTimes = () => {
-      const busy = JSON.parse(localStorage.getItem("busyTimes") || "[]");
-      let busyTime = [];
-      busy.map(x => busyTime.push(new Date(x)));
-      return busy;
-  }; */
   const [enteredBusyTimes, setEnteredBusyTimes] = useState([]);
 
   const getPositions = () => {
@@ -135,16 +130,13 @@ const AvailableTimesPage = (props) => {
 
         <AvailableTimesFormSimple 
           busyTimes={[]}
-          setBusyTimes={busy => {
-            setEnteredBusyTimes(busy);
-          }}
+          setBusyTimes={ (busy) => setEnteredBusyTimes(busy) }
           startDate = {startInterview}
           endDate = {endInterview}
-          hourDiff={2}
+          hourDiff={1}
           firstTimeSlot={8}
-          lastTimeSlot={20}
-          readOnly = { false }
-          selectable = { true }
+          lastTimeSlot={22}
+          readOnly = {false}
          />
 
         <div className="row">

@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PageLayout from './pageLayout';
 import ScrollList from '../components/scrollList';
 
 import { useQuery,useLazyQuery, useMutation } from "@apollo/client";
 
-import AvailableTimesForm from '../components/availableTimesForm';
+import AvailableTimesForm from '../components/availableTimesFormSimple';
 import { CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW, APPLICATION_BUSY_HOURS } from "../requests/interviewRequests";
 import { GET_ISFIT_USERS } from "../requests/userRequests";
+import { GET_ADMISSION_PERIODS } from  "../requests/orgRequests";
 
 
 const ApplicationEntry = (props) => {
@@ -114,9 +115,12 @@ const InterviewsPage = () => {
     const applicationArray = Boolean(applicationsQuery?.data) ? applicationsQuery?.data?.applicationWithoutInterview?.nodes : [] ;
     const usersQuery = useQuery(GET_ISFIT_USERS);
     const users = usersQuery?.data?.users?.nodes ?? [];
+    const admissionPeriodData = useQuery(GET_ADMISSION_PERIODS);
+    let admissionPeriod = admissionPeriodData?.data?.admisionPeriodes[0] ?? [];    //Here I just use the first admission period. Not a very good solution, but as long we are only working with one admission period, it will work.
+
 
     //MUTATIONS
-    const [getBusyHours, busyHoursData] = useMutation(APPLICATION_BUSY_HOURS);
+    const [getBusyHours, busyHoursData] = useMutation(APPLICATION_BUSY_HOURS, {fetchPolicy: "no-cache"});
     const [createInterview, { data }] = useMutation(CREATE_INTERVIEW, {
         onError: ({ graphQLErrors, networkError }) => {
             graphQLErrors.map(({ message, locations, path }) => {
@@ -135,11 +139,21 @@ const InterviewsPage = () => {
     const [createInterviewError, setCreateInterviewError] = useState(null);
     const [chosenLocation, setChosenLocation] = useState("");
 
+    const [busyHoursHook, setBusyHoursHook] = useState([]);
+    //console.log("GetBusyHoursMutation ", busyHoursData)
+    //console.log("busyHoursHOOK ", busyHoursHook)
+
+
+    useEffect(() => {
+        if (busyHoursData?.data?.applicationBusyTimes !== undefined && chosenApplication.length > 0 ){
+            setBusyHoursHook(busyHoursData?.data?.applicationBusyTimes);
+        }
+    },[busyHoursData]);
 
 
     //VARIABLES
-    const startInterview = new Date("2020-08-27T00:00:00.000Z");
-    const endInterview = new Date("2020-09-10T00:00:00.000Z");
+    const startInterview = new Date(admissionPeriod.startInterviewDate);
+    const endInterview = new Date(admissionPeriod.endInterviewDate);
     
 
     //FUNCTIONS
@@ -171,11 +185,19 @@ const InterviewsPage = () => {
         setChosenLocation("");
     };
 
-    const getBusyHoursMutation = (addedApplication, addedUsers) => {
+    const GetBusyHoursMutation = ({chosenApplication, addedUsers}) => {
         let emailArray = addedUsers.map(user => {return user.email});
-        getBusyHours({variables: { input: {application: addedApplication[0].id, interviewerEmail: emailArray}}});
+        getBusyHours({variables: { input: {application: chosenApplication[0].id, interviewerEmail: emailArray}}});
     };  
 
+
+    useEffect( () => {
+        if (chosenApplication.length > 0 || addedUsers.length > 0 ){
+            GetBusyHoursMutation({chosenApplication, addedUsers});
+        }else{
+            setBusyHoursHook([]);
+        }
+      }, [chosenApplication, addedUsers]);
 
 
     return (
@@ -205,7 +227,7 @@ const InterviewsPage = () => {
                 </div>
                 <div className="middle mx-3" style={{flexBasis:"40%", textAlign:"left"}}>
                     <CreateInterviewBox chosenApplication={chosenApplication} addedUsers={addedUsers} chosenLocation={chosenLocation} chosenTime={chosenTime} setChosenApplication={setChosenApplication} removeFromUserList={removeFromUserList} setChosenLocation={setChosenLocation} />
-                    <button className="btn btn-secondary mt-1 mr-2" onClick={() => getBusyHoursMutation(chosenApplication, addedUsers)}>See possible hours</button>
+                    <button className="btn btn-secondary mt-1 mr-2" onClick={() => GetBusyHoursMutation({chosenApplication, addedUsers})}>See possible hours</button>
                     <button className="btn btn-success mt-1 mr-2 float-right" onClick={() => createInterviewMutation(chosenApplication, addedUsers, chosenTime, chosenLocation)}>Confirm interview</button>
                 </div>
                 <div className="right mx-3" style={{flexBasis:"30%", flexDirection:"column"}}>
@@ -224,10 +246,9 @@ const InterviewsPage = () => {
             </div>
 
             <AvailableTimesForm
-                busyTimes={busyHoursData?.data?.applicationBusyTimes ?? []}
-                setBusyTimes={busy => {
-                    setChosenTime(busy)
-                }}
+                busyTimes={["2020-09-17T18:00:00.000Z", "2020-09-17T19:00:00.000Z" ]}
+                //busyTimes={busyHoursHook}
+                setBusyTimes={busy => {setChosenTime(busy)}}
                 getTime={true}
                 startDate = {startInterview}
                 endDate = {endInterview}
@@ -235,7 +256,7 @@ const InterviewsPage = () => {
                 firstTimeSlot={8}
                 lastTimeSlot={20}
                 readOnly = { false }
-                selectable = { false }
+                selectSingleTimeMode = {true}
             />
         </PageLayout>
 

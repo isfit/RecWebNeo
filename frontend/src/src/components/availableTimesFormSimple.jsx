@@ -9,6 +9,10 @@ import { useQuery } from "@apollo/client";
 const AvailableTimeSlot = ({ date, time, timeSelected, selectTime, readOnly, selectSingleTimeMode }) => {
     const [selected, setSelected] = useState(timeSelected);
 
+    useEffect(() => {
+        setSelected(timeSelected);
+    },[timeSelected]);
+
     const selectTimePeriode = () => {
         if(!selectSingleTimeMode){
             setSelected(!selected);
@@ -55,6 +59,7 @@ const AvailableTimesFormSimple = ({busyTimes, setBusyTimes, startDate, endDate, 
     const ReadOnly = readOnly ? true : false;
     const daysName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const [busyTimesUpdated, setBusyTimesUpdated] = useState(busyTimes.slice());
+
 
     const IsValidDate = (date) => {
         return date instanceof Date && !isNaN(date);
@@ -117,7 +122,7 @@ const AvailableTimesFormSimple = ({busyTimes, setBusyTimes, startDate, endDate, 
         setBusyTimes(busy);
     }
 
-    const generateTimePeriodes = (hourDiff, firstTimeSlot, lastTimeSlot) => {
+    const GenerateTimePeriodes = ({hourDiff, firstTimeSlot, lastTimeSlot}) => {
         let times = [];
         let timeCounter = firstTimeSlot;
         while (timeCounter <= lastTimeSlot)
@@ -126,14 +131,20 @@ const AvailableTimesFormSimple = ({busyTimes, setBusyTimes, startDate, endDate, 
             timeCounter += hourDiff;
         }
         return times;
-        
     } 
     
-    const [times] = useState(generateTimePeriodes(hourDiff, firstTimeSlot, lastTimeSlot));
+    const [times, setTimes] = useState(GenerateTimePeriodes({hourDiff, firstTimeSlot, lastTimeSlot}));
+    const [getWeeks, setGetWeeks] = useState(null);
+    console.log("getWeeks", getWeeks)
+    //let times = generateTimePeriodes(hourDiff, firstTimeSlot, lastTimeSlot);
+    useEffect(() => {
+        setGetWeeks(GetWeeks())
+    },[startDate, busyTimes]);
+
 
     return(
       <div>
-          {!IsValidDate(startDate) ? <Loading /> : GetWeeks().map( days => {
+          {!IsValidDate(startDate) ? <Loading /> : getWeeks.map( days => {
                   return(
                     <div className="row">
                         <table>
@@ -153,7 +164,7 @@ const AvailableTimesFormSimple = ({busyTimes, setBusyTimes, startDate, endDate, 
                             </thead>
                             
                             <tbody>
-                            {times.slice(0, -1).map((time, index) => {
+                            { times.slice(0, -1).map((time, index) => {
                                 const timePeriode = times[index] + " - " + times[index+1];
                                 return(
                                     <AvailableTimeWeekCard

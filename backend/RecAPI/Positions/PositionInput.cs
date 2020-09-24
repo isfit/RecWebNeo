@@ -6,69 +6,35 @@ namespace RecAPI.Positions.InputType
 {
     public class CreatePositionInput
     {
-        public CreatePositionInput(
-            string name,
-            string description,
-            string admisionPeriode,
-            string section,
-            string team,
-            List<string> tags
-        )
-        {
-            Name = name;
-            Description = description;
-            AdmisionPeriode = admisionPeriode;
-            Section = section;
-            Team = team;
-            Tags = tags;
-        }
         [GraphQLNonNullType]
-        public string Name { get; }
+        public string Name { get; set; }
         [GraphQLNonNullType]
-        public string Description { get; }
+        public string Description { get; set; }
         [BsonId]
         [GraphQLNonNullType]
-        public string AdmisionPeriode { get; }
+        public string AdmisionPeriode { get; set; }
         [BsonId]
-        public string Section { get; }
+        public string Section { get; set; }
         [BsonId]
-        public string Team { get; }
-        public List<string> Tags { get; }
+        public string Team { get; set; }
+        public List<string> Tags { get; set; }
 
     }
 
     public class UpdatePositionInput
     {
-        public UpdatePositionInput(
-            string id,
-            string name,
-            string description,
-            string admisionPeriode,
-            string section,
-            string team,
-            List<string> tags
-        )
-        {
-            Id = id;
-            Name = name;
-            Description = description;
-            AdmisionPeriode = admisionPeriode;
-            Section = section;
-            Team = team;
-            Tags = tags;
-        }
         [BsonId]
         [GraphQLNonNullType]
-        public string Id { get; }
-        public string Name { get; }
-        public string Description { get; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         [BsonId]
-        public string AdmisionPeriode { get; }
+        public string AdmisionPeriode { get; set; }
         [BsonId]
-        public string Section { get; }
+        public string Section { get; set; }
         [BsonId]
-        public string Team { get; }
-        public List<string> Tags { get; }
+        public string Team { get; set; }
+        public List<string> Tags { get; set; }
 
     }
 }

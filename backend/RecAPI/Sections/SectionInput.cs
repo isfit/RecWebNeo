@@ -7,16 +7,6 @@ namespace RecAPI.Sections.InputType
 {
     public class CreateSectionInput
     {
-        public CreateSectionInput(
-            string name,
-            string description,
-            string organization
-        )
-        {
-            Name = name;
-            Description = description;
-            Organization = organization;
-        }
         [GraphQLNonNullType]
         public string Name { get; set; }
         [GraphQLNonNullType]

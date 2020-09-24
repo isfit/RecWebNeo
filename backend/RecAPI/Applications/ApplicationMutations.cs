@@ -103,14 +103,14 @@ namespace RecAPI.Applications.Mutations
         )
         {
             List<DateTime> busyTimes = new List<DateTime>();
-            var application = applicationRepository.GetApplication(input.Application);
-            if (application == null)
+            var application = input.Application != null ? applicationRepository.GetApplication(input.Application) : null;
+            if (application == null && input.Application != null)
             {
                 ApplicationError.ApplicationExistError();
             }
-            List<DateTime> applicationBusyTimes = application.Available != null && application.Available.Count() > 0 ? application.Available : new List<DateTime>();
+            List<DateTime> applicationBusyTimes = application?.Available != null && application.Available.Count() > 0 ? application.Available : new List<DateTime>();
             busyTimes.AddRange(applicationBusyTimes);
-            List<string> emails = input.InterviewerEmail != null && input.InterviewerEmail.Count() > 0 ? input.InterviewerEmail : new List<string>();
+            List<string> emails = input?.InterviewerEmail != null && input.InterviewerEmail.Count() > 0 ? input.InterviewerEmail : new List<string>();
             var users = userRepository.GetUsersByEmail(emails);
             foreach(User user in users)
             {

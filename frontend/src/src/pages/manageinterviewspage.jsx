@@ -139,16 +139,6 @@ const InterviewsPage = () => {
     const [createInterviewError, setCreateInterviewError] = useState(null);
     const [chosenLocation, setChosenLocation] = useState("");
 
-    const [busyHoursHook, setBusyHoursHook] = useState([]);
-    //console.log("GetBusyHoursMutation ", busyHoursData)
-    //console.log("busyHoursHOOK ", busyHoursHook)
-
-
-    useEffect(() => {
-        if (busyHoursData?.data?.applicationBusyTimes !== undefined && chosenApplication.length > 0 ){
-            setBusyHoursHook(busyHoursData?.data?.applicationBusyTimes);
-        }
-    },[busyHoursData]);
 
 
     //VARIABLES
@@ -187,17 +177,10 @@ const InterviewsPage = () => {
 
     const GetBusyHoursMutation = ({chosenApplication, addedUsers}) => {
         let emailArray = addedUsers.map(user => {return user.email});
-        getBusyHours({variables: { input: {application: chosenApplication[0].id, interviewerEmail: emailArray}}});
+        let id = (chosenApplication[0] === undefined) ? null : chosenApplication[0].id;
+        getBusyHours({variables: { input: {application: id, interviewerEmail: emailArray}}});
     };  
 
-
-    useEffect( () => {
-        if (chosenApplication.length > 0 || addedUsers.length > 0 ){
-            GetBusyHoursMutation({chosenApplication, addedUsers});
-        }else{
-            setBusyHoursHook([]);
-        }
-      }, [chosenApplication, addedUsers]);
 
 
     return (
@@ -246,15 +229,14 @@ const InterviewsPage = () => {
             </div>
 
             <AvailableTimesForm
-                busyTimes={["2020-09-17T18:00:00.000Z", "2020-09-17T19:00:00.000Z" ]}
-                //busyTimes={busyHoursHook}
+                busyTimes={busyHoursData?.data?.applicationBusyTimes ?? []}
                 setBusyTimes={busy => {setChosenTime(busy)}}
                 getTime={true}
                 startDate = {startInterview}
                 endDate = {endInterview}
                 hourDiff={1}
                 firstTimeSlot={8}
-                lastTimeSlot={20}
+                lastTimeSlot={22}
                 readOnly = { false }
                 selectSingleTimeMode = {true}
             />

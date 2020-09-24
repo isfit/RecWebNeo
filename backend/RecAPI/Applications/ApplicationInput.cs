@@ -35,10 +35,8 @@ namespace RecAPI.Applications.InputType
 
     public class ApplicationBusyTimesInput
     {
-        [GraphQLNonNullType]
         [BsonId]
         public string Application { get; set; }
-        [GraphQLNonNullType]
         public List<string> InterviewerEmail { get; set; }
     }
 }

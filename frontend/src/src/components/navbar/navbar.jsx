@@ -53,15 +53,16 @@ const NavBar = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey}) => {
                   <ul className="nav navbar-tabs">
                     <NavBarButton title="Overview" iconstring="list-ol" address="/"/>
                     <NavbarMyApplicationButton />
+                    <NavBarButton title="My Interviews" iconstring="user-tie" address="/myinterviews" />
                   </ul>
                  :
                  null 
               }
               { (userLogedIn && (AccessLevel > 1)) ? <ul className="nav navbar-tabs" id={"sideNavBar"}>
                 <NavBarButton title="Overview" iconstring="list-ol" address="/" />
+                <NavBarButton title="My Interviews" iconstring="user-tie" address="/myinterviews" />
                 <NavBarButton title="Unavailable hours" iconstring="calendar-times" address="/unavailabletimes" />
                 <NavBarButton title="Applications" iconstring="file-alt" address="/applications" />
-                <NavBarButton title="My Interviews" iconstring="user-tie" address="/myinterviews" />
                 { AccessLevel > 2 ? <NavBarButton title="All Interviews" iconstring="users" address="/allinterviews" /> : null}
                 { AccessLevel > 2 ? <NavBarButton title="Manage interviews" iconstring="users-cog" address="/manageinterviews" /> : null}
                 { AccessLevel > 2 ? <NavBarButton title="Administer users" iconstring="tasks" address="/useradminpage" /> : null}

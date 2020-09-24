@@ -9,9 +9,10 @@ import { MY_INTERVIEWS, SET_INTERVIEW_STATUS } from "../requests/interviewReques
 import { getUserAuthKey } from "../redux/selectors";
 
 import { getRolesFromToken, getAccessLevel } from "../components/navbar/navbarHelperFunctions";
+import InterviewCard from "../components/interviewCard";
+import Dropdown from "react-bootstrap/Dropdown";
 
-
-const InterviewCard = (props) => {
+const InterviewCardOLD = (props) => {
     const datTime = new Date(props.startTime)
 
     return (
@@ -64,7 +65,7 @@ const MyInterviewsPage = ({userAuthKey}) => {
     const RolesArray = getRolesFromToken(userAuthKey);
     const AccessLevel = getAccessLevel(RolesArray); 
 
-    const myIntervewsQuery = useQuery(MY_INTERVIEWS, {fetchPolicy: "no-cache"});
+    const myIntervewsQuery = useQuery(MY_INTERVIEWS);
     const myInterviews = myIntervewsQuery?.data?.myInterviews?.nodes ?? [];
 
     const [setInterviewStatusMutation] = useMutation(SET_INTERVIEW_STATUS);
@@ -72,8 +73,9 @@ const MyInterviewsPage = ({userAuthKey}) => {
     const setInterviewStatus = (intId, status) => {
         setInterviewStatusMutation({variables: {interviewId: intId, interviewStatus: status }});
     };
+    
 
-    const [chosenInterviewStatus, setChosenInterviewStatus] = useState("Not assigned");
+    let interviewStatuses = ["Invitation sent","Confirmed","Interviewed"];
 
 
     return(
@@ -84,24 +86,22 @@ const MyInterviewsPage = ({userAuthKey}) => {
                         <h4>My interviews</h4>
                         { myInterviews.map( interview => {
                             return (
-                                <InterviewCard 
-                                    startTime = {interview.start}
-                                    applicant = {interview.applicant.user}
-                                    positions = {interview.application.positions}
-                                    interviewers = {interview.interviewers}
-                                    accessLevel = {AccessLevel}
-                                > <small>Status: {interview.status ?? "not assigned"}</small>
-                                <div className="flex-grid" style={{alignItems: "center", justifyContent: "center"}}>
-                                 <form action="">
-                                     <select className="w-100" id="status" name="status" onChange={(e) => {setChosenInterviewStatus(e.target.value)}}>
-                                         <option value={"Not assigned"}>{"Not assigned"}</option>
-                                         <option value={"Invitation sent"}>{"Invitation sent"}</option>
-                                         <option value={"Confirmed"} >{"Confirmed"}</option>
-                                         <option value={"Interviewed"} >{"Interviewed"}</option>
-                                     </select>
-                                 </form>
-                                    <div><button className="btn btn-secondary ml-1 py-1 px-1" onClick={event => setInterviewStatus(interview.id, chosenInterviewStatus)}>Set Status</button></div>
-                                </div>
+                                <InterviewCard interview = {interview}>
+                                    {AccessLevel > 1 ?
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                                            {Boolean(interview.status) ? interview.status : "Not assigned"}
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item onClick={(e) => {setInterviewStatus(interview.id, "")}}>{"Not assigned"}</Dropdown.Item>
+                                            {interviewStatuses.map( status => {
+                                                return (
+                                                    <Dropdown.Item onClick={(e) => {setInterviewStatus(interview.id, status)}}>{status}</Dropdown.Item>
+                                                )
+                                            })}
+                                        </Dropdown.Menu>
+                                    </Dropdown> : null }
                                </InterviewCard>
                             )
                         }

@@ -60,8 +60,8 @@ const InterviewCard = ({interview, interviewStatuses, children}) => {
                     <h3 className="mb-0">{datTime.toDateString()} {datTime.toTimeString().slice(0,2)}:15</h3>
                     <p className="text-muted mb-0">{interview.location}</p>
                     <p className="text-muted mb-0">{interview.applicant.user.email}</p>
-                    { Boolean(interview.applicant.user.phoneNumber) ? <p className="text-muted mb-0">{interview.applicant.user.phoneNumber}</p> : <p className="text-muted mb-0">No phonenumber registered</p>}
-                    {interview.application.positions.map( position => {
+                    { Boolean(interview?.applicant.user.phoneNumber) ? <p className="text-muted mb-0">{interview.applicant.user.phoneNumber}</p> : <p className="text-muted mb-0">No phonenumber registered</p>}
+                    {interview?.application?.positions?.map( position => {
                         return(
                             <div className="flex-grid">
                                 <div className="col pl-0" style={{display:"flex", flexBasis:"5%"}}>
@@ -96,7 +96,7 @@ const InterviewCard = ({interview, interviewStatuses, children}) => {
                   <a>Show application text</a>
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="1">
-                  <Card.Body><p>{interview.application.applicationText}</p></Card.Body>
+                  <Card.Body><p>{interview?.application?.applicationText}</p></Card.Body>
                 </Accordion.Collapse>
               </Card>
             </Accordion>

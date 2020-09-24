@@ -59,7 +59,7 @@ namespace RecAPI.AdmisionPeriodes.Mutations
                 StartDate = startDate,
                 EndDate = endDate
             };
-            return repository.UpdateAdmisionPeriode(admisionPeriode.Id, admisionPeriode);
+            return repository.UpdateAdmisionPeriode(admisionPeriode.Id, updateAdmisionPeriode);
         }
 
         [Authorize(Policy = "superuser")]

@@ -48,16 +48,23 @@ namespace RecAPI.AdmisionPeriodes.Mutations
             AdmisionPeriodeError.OrganizationExists(_organization, input.Organization);
             var admisionPeriode = repository.GetAdmisionPeriode(input.Id);
 
-            var startDate = input.StartDate != null ? input.StartDate : admisionPeriode.StartDate;
-            var endDate = input.EndDate != null ? input.EndDate : admisionPeriode.EndDate;
+            var startDate = input.StartDate ?? admisionPeriode.StartDate;
+            var endDate = input.EndDate ?? admisionPeriode.EndDate;
             AdmisionPeriodeError.ValidDates(startDate, endDate);
+            var startInterviewDate = input.StartInterviewDate ?? admisionPeriode.StartInterviewDate;
+            var endInterviewDate = input.EndInterviewDate ?? admisionPeriode.EndInterviewDate;
+            AdmisionPeriodeError.ValidDates(startInterviewDate, endInterviewDate);
 
             var updateAdmisionPeriode = new AdmisionPeriode()
             {
                 Id = admisionPeriode.Id,
                 Organization = input.Organization ?? admisionPeriode.Organization,
                 StartDate = startDate,
-                EndDate = endDate
+                EndDate = endDate,
+                StartInterviewDate = startInterviewDate,
+                EndInterviewDate = endInterviewDate,
+                MinAppliedPositions = input.MinAppliedPositions ?? admisionPeriode.MinAppliedPositions,
+                MaxAppliedPositions = input.MaxAppliedPositions ?? admisionPeriode.MaxAppliedPositions
             };
             return repository.UpdateAdmisionPeriode(admisionPeriode.Id, updateAdmisionPeriode);
         }

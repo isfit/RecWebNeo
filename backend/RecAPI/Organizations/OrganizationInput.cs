@@ -6,54 +6,20 @@ namespace RecAPI.Organizations.InputType
 {
     public class CreateOrganizationInput
     {
-        public CreateOrganizationInput(
-            string name,
-            string description,
-            List<string> sections,
-            List<string> admisionPeriodes
-        )   
-        {
-            Name = name;
-            Description = description;
-            Sections = sections;
-            AdmisionPeriodes = admisionPeriodes;
-        }
         [GraphQLNonNullType]
-        public string Name { get; }
+        public string Name { get; set; }
         [GraphQLNonNullType]
-        public string Description { get; }
-        [BsonId]
-        public List<string> Sections { get; }
-        [BsonId]
-        public List<string> AdmisionPeriodes { get; }
+        public string Description { get; set; }
     }
 
     public class UpdateOrganizationInput
     {
-        public UpdateOrganizationInput(
-            string id,
-            string name,
-            string description,
-            List<string> sections,
-            List<string> admisionPeriodes
-        )   
-        {
-            Id = id;
-            Name = name;
-            Description = description;
-            Sections = sections;
-            AdmisionPeriodes = admisionPeriodes;
-        }
         [BsonId]
         [GraphQLNonNullType]
-        public string Id { get; }
+        public string Id { get; set; }
         [GraphQLNonNullType]
-        public string Name { get; }
+        public string Name { get; set; }
         [GraphQLNonNullType]
-        public string Description { get; }
-        [BsonId]
-        public List<string> Sections { get; }
-        [BsonId]
-        public List<string> AdmisionPeriodes { get; }
+        public string Description { get; set; }
     }
 }

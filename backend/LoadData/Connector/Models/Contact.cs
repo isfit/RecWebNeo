@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LoadData.Data.Models
+namespace LoadData.Connector.Models
 {
-    class Contact
+    public class Contact
     {
         public string Name { get; set; }
         public string Email { get; set; }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
-using LoadData.Data.Models;
+using LoadData.Connector.Models;
 
 namespace LoadData
 {
@@ -17,7 +17,6 @@ namespace LoadData
             "Section:",
             "Contact:"
         };
-
 
         public List<Position> ResolvePossitions(string text)
         {
@@ -41,12 +40,20 @@ namespace LoadData
                         PhoneNumer = contactInfo[1],
                         Email = contactInfo[2]
                     };
+                    var team = new Team()
+                    {
+                        Name = positionValues[2]
+                    };
+                    var section = new Section()
+                    {
+                        Name = positionValues[3]
+                    };
                     var position = new Position()
                     {
                         Name = positionValues[0],
                         Description = positionValues[1],
-                        Team = positionValues[2],
-                        Section = positionValues[3],
+                        Team = team,
+                        Section = section,
                         Contact = contact,
                     };
                     positions.Add(position);

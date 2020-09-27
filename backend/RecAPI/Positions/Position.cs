@@ -31,6 +31,8 @@ namespace RecAPI.Positions.Models
         public string Team { get; set; }
 
         public List<string> Tags { get; set; }
+        [PrefferedInterviewersResolver]
+        public List<string> PrefferedInterviewers { get; set; }
     }
 
     public interface IPositionConnection

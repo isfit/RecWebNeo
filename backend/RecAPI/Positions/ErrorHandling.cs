@@ -18,6 +18,11 @@ namespace RecAPI.Positions.ErrorHandling
             }
         }
 
+        public static void PossitionExistError()
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("Possition does not exist!").Build());
+        }
+
         // TODO: Check if section exists
         public static void SectionExists(ISectionRepository repository, string sectionId)
         {

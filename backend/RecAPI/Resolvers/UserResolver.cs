@@ -2,8 +2,10 @@
 using HotChocolate.Types.Descriptors;
 using RecAPI.Applications.Models;
 using RecAPI.Auth.Repositories;
+using RecAPI.Positions.Models;
 using RecAPI.Users.Models;
 using RecAPI.Users.Repositories;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace RecAPI.Resolvers
@@ -44,6 +46,28 @@ namespace RecAPI.Resolvers
                 var repository = ctx.Service<IAuthRepository>();
                 var authUser = repository.GetAuthUser(user.AuthId);
                 return authUser != null ? authUser.Roles : null;
+            });
+        }
+    }
+
+    public sealed class PrefferedInterviewersResolver : ObjectFieldDescriptorAttribute
+    {
+        public override void OnConfigure(IDescriptorContext context, IObjectFieldDescriptor descriptor, MemberInfo member)
+        {
+            descriptor.Resolver(ctx =>
+            {
+                var position = ctx.Parent<Position>();
+                if (position.PrefferedInterviewers == null)
+                {
+                    return new List<User>();
+                }
+                var repository = ctx.Service<IUserRepository>();
+                List<User> users = new List<User>();
+                foreach(var userEmail in position.PrefferedInterviewers)
+                {
+                    users.Add( repository.GetUserByEmail(userEmail) );
+                }
+                return users;
             });
         }
     }

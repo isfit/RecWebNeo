@@ -10,6 +10,9 @@ using RecAPI.Sections.Repositories;
 using RecAPI.AdmisionPeriodes.Repositories;
 using RecAPI.Positions.ErrorHandling;
 using HotChocolate.AspNetCore.Authorization;
+using System.Collections.Generic;
+using System.Linq;
+using RecAPI.Users.Repositories;
 
 namespace RecAPI.Positions.Mutations
 {
@@ -95,6 +98,51 @@ namespace RecAPI.Positions.Mutations
         )
         {
             return repository.DeletePosition(input.Id);
+        }
+
+        [Authorize(Policy = "superuser")]
+        public Position AddPreferedInterviewers(
+            [GraphQLNonNullType] string positionId,
+            [GraphQLNonNullType] List<string> interviewers,
+            [Service] IPositionRepository repository,
+            [Service] IUserRepository userRepo
+        )
+        {
+            var possition = repository.GetPosition(positionId);
+            if (possition == null)
+            {
+                PositionError.PossitionExistError();
+            };
+            var preffered = possition.PrefferedInterviewers ?? new List<string>();
+            var newPreffered = interviewers.Where(x => !preffered.Contains(x)).ToList();
+            foreach (var userEmail in newPreffered)
+            {
+                var user = userRepo.GetUserByEmail(userEmail);
+                if (user != null)
+                {
+                    preffered.Add(userEmail);
+                };
+            }
+            possition.PrefferedInterviewers = preffered;
+            return repository.UpdatePosition(possition.Id, possition);
+        }
+
+        [Authorize(Policy = "superuser")]
+        public Position RemovePreferedInterviewers(
+            [GraphQLNonNullType] string positionId,
+            [GraphQLNonNullType] List<string> interviewers,
+            [Service] IPositionRepository repository,
+            [Service] IUserRepository userRepo
+        )
+        {
+            var possition = repository.GetPosition(positionId);
+            if (possition == null)
+            {
+                PositionError.PossitionExistError();
+            };
+            var preffered = possition.PrefferedInterviewers?.Where(x => !interviewers.Contains(x)).ToList() ?? new List<string>();
+            possition.PrefferedInterviewers = preffered;
+            return repository.UpdatePosition(possition.Id, possition);
         }
 
     }

@@ -61,6 +61,11 @@ namespace RecAPI.Interviews.Mutations
             [Service]IApplicationRepository applicationRepository
         )
         {
+            // Check interview time is in future
+            if (input.Start <= DateTime.Now)
+            {
+                InterviewError.InterviewTimeNotAllowed();
+            }
             // Check that the application exists
             var application = applicationRepository.GetApplication(input.Application);
             if (application == null) {
@@ -130,6 +135,11 @@ namespace RecAPI.Interviews.Mutations
             [Service]IApplicationRepository applicationRepository
             )
         {
+            // Check interview time is in future
+            if (input.Start != null && input.Start <= DateTime.Now)
+            {
+                InterviewError.InterviewTimeNotAllowed();
+            }
             // Check that Application does not already have an Interview
             var interview = interviewRepository.GetInterview(input.Id);
             if (interview == null) {

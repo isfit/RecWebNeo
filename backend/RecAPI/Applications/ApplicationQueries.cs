@@ -34,7 +34,7 @@ namespace RecAPI.Applications.Queries
             [Service] IUserRepository userRepository,
             [Service]IApplicationRepository applicationRepository,
             [Service]IPositionRepository positionRepository
-            )
+        )
         {
             var currentUser = authRepository.GetAuthUser(user.UserId);
             var applications = applicationRepository.GetApplications();

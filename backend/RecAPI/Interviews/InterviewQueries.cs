@@ -4,6 +4,7 @@ using HotChocolate.Types;
 using HotChocolate.Types.Relay;
 using RecAPI.AdmisionPeriodes.Models;
 using RecAPI.Auth.Models;
+using RecAPI.Auth.Repositories;
 using RecAPI.Generic.InputType;
 using RecAPI.Interviews.Models;
 using RecAPI.Interviews.Repositories;
@@ -26,10 +27,24 @@ namespace RecAPI.Interviews.Queries
         [UseFiltering]
         [UseSorting]
         public IEnumerable<Interview> GetInterviews(
-            [Service] IInterviewRepository interviewRepository
+            [GlobalState("currentUser")] CurrentUser currentUser,
+            [Service] IInterviewRepository interviewRepository,
+            [Service] IUserRepository userRepository,
+            [Service] IAuthRepository authRepository
         )
         {
-            return interviewRepository.GetInterviews();
+            var currentAuthUser = authRepository.GetAuthUser(currentUser.UserId);
+            var interviews = interviewRepository.GetInterviews();
+            if (currentAuthUser.Roles.Contains("superuser"))
+            {
+                return interviews;
+            }
+            var filteredInterviews = interviews.Where(interview =>
+            {
+                var applicant = userRepository.GetUser(interview.Applicant.User);
+                return (applicant?.Approved ?? false) == true;
+            }).ToList();
+            return filteredInterviews;
         }
 
         [Authorize(Policy = "administrator")]
@@ -59,8 +74,21 @@ namespace RecAPI.Interviews.Queries
             {
                 UserError.UserExistError(input.Name);
             }
-            // TODO: Add suport for multiple admissionPeriodes
-            return interviewRepository.GetUserInterviews(user.Id);
+            var myInterview = interviewRepository.GetUserInterview(user.Id);
+            var connectedInterviews = interviewRepository.GetUserConnectedInterviews(user.Id);
+            if (connectedInterviews == null)
+            {
+                var interviews = new List<Interview>();
+                interviews.Add(myInterview);
+                return interviews;
+            }
+            var filteredInterviews = connectedInterviews.Where(interview =>
+            {
+                var applicant = userRepository.GetUser(interview.Applicant.User);
+                return (applicant?.Approved ?? false) == true;
+            }).ToList() ?? new List<Interview>();
+            filteredInterviews.Add(myInterview);
+            return filteredInterviews;
         }
 
         [Authorize]
@@ -78,8 +106,21 @@ namespace RecAPI.Interviews.Queries
             {
                 UserError.UserExistError("");
             }
-            // TODO: Add suport for multiple admissionPeriodes
-            return interviewRepository.GetUserInterviews(user.Id);
+            var myInterview = interviewRepository.GetUserInterview(user.Id);
+            var connectedInterviews = interviewRepository.GetUserConnectedInterviews(user.Id);
+            if (connectedInterviews == null)
+            {
+                var interviews = new List<Interview>();
+                interviews.Add(myInterview);
+                return interviews;
+            }
+                var filteredInterviews = connectedInterviews.Where(interview =>
+            {
+                var applicant = userRepository.GetUser(interview.Applicant.User);
+                return (applicant?.Approved ?? false) == true;
+            }).ToList() ?? new List<Interview>();
+            filteredInterviews.Add(myInterview);
+            return filteredInterviews;
         }
 
     }

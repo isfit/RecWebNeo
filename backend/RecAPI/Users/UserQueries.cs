@@ -38,13 +38,13 @@ namespace RecAPI.Users.Queries
             return userRepository.GetApprovedUsers();
         }
 
-        [Authorize(Policy = "administrator")]
+        [Authorize(Policy = "superuser")]
         public User GetUser(
             SingleModelInput input,
-            [Service]IUserRepository repository
+            [Service] IUserRepository userRepository
         )
         {
-            return repository.GetUser(input.Id);
+            return userRepository.GetUser(input.Id);
         }
         
         [Authorize]

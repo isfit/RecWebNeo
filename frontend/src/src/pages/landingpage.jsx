@@ -7,15 +7,29 @@ import TextBox from "../components/textBoxModule";
 import {openLoginModal} from "../redux/actions";
 import {getLoginModalState, getUserAuthKey, getUserLogedIn} from "../redux/selectors";
 import {connect} from "react-redux";
-
+import { MYAPPLICATION } from "../requests/userRequests";
+import { useQuery } from "@apollo/client";
 
 const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})  => {
   const history = useHistory();
   const [sectionList, setSectionList] = useState([]);
 
+  const myApplicationData = useQuery(MYAPPLICATION, {fetchPolicy: "no-cache"});
+  const userHasApplication = Boolean(myApplicationData?.data?.myApplication);
+
   const updateSectionList = (sect) => {
     setSectionList(sect);
   };
+
+  function chocieBoxButton(){
+    if (userHasApplication){
+      return (<button className="btn btn-success ml-0 w-100">You already have entered an application. Thank you!</button>)
+    }else if (userLogedIn){
+      return ( <button className="btn btn-continue mt-1 mr-2 float-right" onClick={() => history.push("/enterapplication")}> Continue</button>)
+    }else {
+      return (<button className="btn btn-success ml-0 w-100"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess</button>)
+    }
+  }
 
   return (
     <PageLayout>
@@ -50,12 +64,7 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
 
           <div className="shopping-box-right mt-4">
             <PositionChoiceBox />
-            {  userLogedIn ? <button
-                className="btn btn-continue mt-1 mr-2 float-right"
-                onClick={() => history.push("/enterapplication")}
-              > Continue</button> :
-              <button className="btn btn-success ml-0 w-100"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess
-              </button>}
+            {chocieBoxButton()}
             {/* <button className="btn btn-success ml-0 w-100" >Application period is over</button> */}
           </div>
 

@@ -9,6 +9,10 @@ import { useQuery } from "@apollo/client";
 const AvailableTimeSlot = ({ date, time, timeSelected, selectTime, readOnly, selectSingleTimeMode }) => {
     const [selected, setSelected] = useState(timeSelected);
 
+    useEffect(() => {
+        setSelected(timeSelected)
+    }, [timeSelected]);
+
     const selectTimePeriode = () => {
         if(!selectSingleTimeMode){
             setSelected(!selected);
@@ -130,6 +134,7 @@ const AvailableTimesFormSimple = ({busyTimes, setBusyTimes, startDate, endDate, 
     } 
     
     const [times] = useState(generateTimePeriodes(hourDiff, firstTimeSlot, lastTimeSlot));
+
 
     return(
       <div>

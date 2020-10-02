@@ -46,7 +46,7 @@ const GET_APPLICATIONS_WITHOUT_INTERVIEW = gql`
 
 const MY_INTERVIEWS = gql`
     query myInterviews {
-        myInterviews {
+        myInterviews(order_by: {start: ASC}) {
             nodes {
                 id
                 start
@@ -59,6 +59,8 @@ const MY_INTERVIEWS = gql`
                     }
                 }
                 application {
+                    id
+                    applicationText
                     positions {
                         key
                         value {

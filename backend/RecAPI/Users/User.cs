@@ -8,6 +8,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using RecAPI.Resolvers;
 using RecAPI.Sections.Models;
 using RecAPI.Teams.Models;
+using static RecAPI.Resolvers.InterviewResolver;
 
 namespace RecAPI.Users.Models
 {
@@ -38,6 +39,10 @@ namespace RecAPI.Users.Models
 
         [BsonRequired]
         public DateTime BirtDate { get; set; }
+
+        [Authorize(Policy = "administrator")]
+        [InterviewCountResolver]
+        public int InterviewsCount { get; }
 
         // Interview data
         [Authorize(Policy = "internal")]

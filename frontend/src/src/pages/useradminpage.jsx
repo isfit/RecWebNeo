@@ -49,7 +49,6 @@ const UserEntrySlim = ({user, children}) => {
 
     const UserAdminPage = () => {
     
-
     //HOOKS
     const [chosenSection, setChosenSection] = useState({teams:[]});
     const [chosenTeam, setChosenTeam] = useState(null);
@@ -176,34 +175,6 @@ const UserEntrySlim = ({user, children}) => {
         Boolean(resetTeamsRef?.current?.value) ? resetTeamsRef.current.click() : console.log();
     }, [chosenSection]);
 
-/*     const cache = new InMemoryCache({
-        typePolicies: {
-          position: {
-            fields: {
-              prefferedInterviewers : {
-                merge(existing = [], incoming: any[]) {
-                  return [...existing, ...incoming];
-                },
-              },
-            },
-          },
-        },
-      }); */
-
-    
-
-
-/*     const cache = new InMemoryCache({
-        typePolicies: {
-          Position: {
-            fields: {
-              prefferedInterviewers: {
-                keyArgs: ["number"],
-              },
-            },
-          },
-        },
-      }); */
 
     
 

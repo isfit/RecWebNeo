@@ -311,14 +311,16 @@ const UserEntrySlim = ({user, children}) => {
                         </TabPanel>
                         <TabPanel>
                             <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
-                            { addedUsers.map( user => {
-                                return (
-                                    <UserEntrySlim user={user} addedUsers={addedUsers} setAddedUsers={setAddedUsers}>
-                                        <button type="button" className="btn btn-outline-danger" onClick={() => removeFromUserList(user)}>-</button>
-                                    </UserEntrySlim>
-                                )
-                            }
-                            )}
+                            <ScrollList minHeight="250px">
+                                { addedUsers.map( user => {
+                                    return (
+                                        <UserEntrySlim user={user} addedUsers={addedUsers} setAddedUsers={setAddedUsers}>
+                                            <button type="button" className="btn btn-outline-danger" onClick={() => removeFromUserList(user)}>-</button>
+                                        </UserEntrySlim>
+                                    )
+                                }
+                                )}
+                            </ScrollList>
                             </div>
                             <div className="card w-100 px-3 py-1" style={{minHeight:"30px"}}>
                                 <div className="flex-grid" style={{justifyContent:"space-between", alignItems: "center"}}>

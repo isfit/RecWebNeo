@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PageLayout from './pageLayout';
 import ScrollList from '../components/scrollList';
+import Accordion from "react-bootstrap/Accordion";
+import Button from 'react-bootstrap/Button';
+import Card from "react-bootstrap/Card";
 
 import { useQuery,useLazyQuery, useMutation } from "@apollo/client";
 
@@ -8,6 +11,9 @@ import AvailableTimesForm from '../components/availableTimesFormSimple';
 import { CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW, APPLICATION_BUSY_HOURS } from "../requests/interviewRequests";
 import { GET_ISFIT_USERS } from "../requests/userRequests";
 import { GET_ADMISSION_PERIODS } from  "../requests/orgRequests";
+
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 
 
 const ApplicationEntry = (props) => {
@@ -140,7 +146,6 @@ const InterviewsPage = () => {
     const [chosenLocation, setChosenLocation] = useState("");
 
 
-
     //VARIABLES
     const startInterview = new Date(admissionPeriod.startInterviewDate);
     const endInterview = new Date(admissionPeriod.endInterviewDate);
@@ -214,17 +219,60 @@ const InterviewsPage = () => {
                     <button className="btn btn-success mt-1 mr-2 float-right" onClick={() => createInterviewMutation(chosenApplication, addedUsers, chosenTime, chosenLocation)}>Confirm interview</button>
                 </div>
                 <div className="right mx-3" style={{flexBasis:"30%", flexDirection:"column"}}>
-                    <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
-                        <h4>Available Interviewers</h4>
-                            <ScrollList minHeight="650px">
-                                { users.map( user => {
-                                    return (
-                                        <UserEntry user={user}>
-                                            <button type="button" className="btn btn-outline-success my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
-                                        </UserEntry>
-                                )})}
-                            </ScrollList>
-                    </div>
+                    <Tabs>
+                        <TabList className="p-0 mb-0">
+                            <Tab>All</Tab>
+                            <Tab>Preferred</Tab>
+                        </TabList>
+                        <TabPanel>
+                            <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
+                                <ScrollList minHeight="650px">
+                                    { users.map( user => {
+                                        return (
+                                            <UserEntry user={user}>
+                                                <button type="button" className="btn btn-outline-success my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
+                                            </UserEntry>
+                                    )})}
+                                </ScrollList>
+                            </div>
+                        </TabPanel>
+                        <TabPanel>
+                            <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
+                                <ScrollList minHeight="650px">
+                                    { chosenApplication.map( application => {
+                                        return application.positions.map(position => {
+                                            return(
+                                                <Accordion defaultActiveKey="0">
+                                                  <Card style={{textAlign:"center"}}>
+                                                    <Accordion.Toggle as={Button} variant="btn btn-success dropdown-toggle ml-0 w-100" eventKey={""+position.key+1}>
+                                                      <a>{position.value.name}</a>
+                                                    </Accordion.Toggle>
+                                                    <Accordion.Collapse eventKey={""+position.key+1}>
+                                                      <div className="p-2">
+                                                      { position.value.prefferedInterviewers.map( user => {
+                                                        return(
+                                                            <div className="card w-100 h-10 mb-2 p-1">
+                                                                <div className="flex-grid" style={{justifyContent:"space-between"}}>
+                                                                    <h4 className="mb-0"> {user.firstName} {user.lastName}</h4>
+                                                                    <button type="button" className="btn btn-outline-success" onClick={() => addToUserList(user)}>+</button>
+                                                                </div>
+                                                            </div>
+                                                          )
+                                                        })
+                                                      }
+                                                      </div>
+                                                    </Accordion.Collapse>
+                                                  </Card>
+                                                </Accordion>
+                                            );
+                                        })
+                                    }
+                                    )}
+                                    
+                                </ScrollList>
+                            </div>
+                        </TabPanel>
+                    </Tabs>
                 </div>
             </div>
 

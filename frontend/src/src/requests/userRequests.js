@@ -75,6 +75,7 @@ const GET_ALL_USERS = gql`
     users {
       nodes {
         id
+        __typename
         firstName
         lastName
         email

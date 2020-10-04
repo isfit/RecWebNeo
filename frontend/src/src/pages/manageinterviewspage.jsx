@@ -293,6 +293,7 @@ const InterviewsPage = () => {
                 lastTimeSlot={22}
                 readOnly = { false }
                 selectSingleTimeMode = {true}
+                markPastDates={true}
             />
         </PageLayout>
 

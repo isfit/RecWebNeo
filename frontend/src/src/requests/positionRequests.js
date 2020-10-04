@@ -5,6 +5,7 @@ const POSITIONS = gql`
         positions {
         nodes {
             id,
+            __typename,
             name,
             description,
             team {
@@ -14,6 +15,14 @@ const POSITIONS = gql`
             section {
                 id
                 name
+            },
+            prefferedInterviewers {
+              id
+              __typename
+              firstName
+              lastName
+              email
+              interviewsCount
             },
             admisionPeriode {
                 id
@@ -48,10 +57,38 @@ const FILTER_POSITIONS = gql`
     }
 `;
 
+const ADD_PREFERRED_INTERVIEWERS = gql`
+mutation addPreferedInterviewers($interviewers: [String!]!, $positionId: String!) {
+  addPreferedInterviewers(interviewers: $interviewers, positionId: $positionId){
+    id
+    __typename
+    prefferedInterviewers{
+      id
+      __typename
+    }
+  }
+}
+`;
+
+const REMOVE_PREFERRED_INTERVIEWERS = gql`
+mutation removePreferedInterviewers($interviewers: [String!]!, $positionId: String!) {
+  removePreferedInterviewers(interviewers: $interviewers, positionId: $positionId){
+    id
+    __typename
+    prefferedInterviewers{
+      id
+      __typename
+    }
+  }
+}
+`;
+
 
 
 
 export {
     POSITIONS,
-    FILTER_POSITIONS
+    FILTER_POSITIONS,
+    ADD_PREFERRED_INTERVIEWERS,
+    REMOVE_PREFERRED_INTERVIEWERS
 };

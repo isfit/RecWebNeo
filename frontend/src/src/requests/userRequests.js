@@ -75,6 +75,7 @@ const GET_ALL_USERS = gql`
     users {
       nodes {
         id
+        __typename
         firstName
         lastName
         email
@@ -98,6 +99,7 @@ const GET_ISFIT_USERS = gql`
         firstName
         lastName
         email
+        interviewsCount
         sections {
           name
         }

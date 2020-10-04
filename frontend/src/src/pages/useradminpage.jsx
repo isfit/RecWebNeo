@@ -2,16 +2,18 @@ import React, { useState, useEffect, useRef } from "react";
 import PageLayout from './pageLayout';
 import ScrollList from '../components/scrollList';
 
-import { useQuery, useMutation, gql } from "@apollo/client";
+import { useQuery, useMutation, gql, InMemoryCache } from "@apollo/client";
 import { GET_ALL_USERS, GET_SECTIONS, SET_USER_ROLE, SET_SECTIONS_TO_USER, SET_TEAMS_TO_USER, UPDATE_USER_PASSWORD, SET_USER_APPROVED  } from "../requests/userRequests";
+import { POSITIONS, ADD_PREFERRED_INTERVIEWERS, REMOVE_PREFERRED_INTERVIEWERS } from "../requests/positionRequests";
 
+
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 
 const UserEntry = ({user, children}) => {
     let userSection = (user.sections !== null && user.sections.length > 0) ? user.sections[0].name : "none" ;
     let userTeam = (user.teams !== null && user.teams.length > 0) ? user.teams[0].name : "none" ;
     let userRoles = (user.roles !== null && user.roles.length > 0) ? user.roles[0] : "none" ;
-
-
 
     return (
         <div className="card w-100 h-10 mb-2 py-1">
@@ -33,21 +35,35 @@ const UserEntry = ({user, children}) => {
     );
 };
 
+const UserEntrySlim = ({user, children}) => {
+    return (
+    <div className="card w-100 h-10 mb-2 p-1">
+            <div className="flex-grid" style={{justifyContent:"space-between"}}>
+                <h4 className="mb-0"> {user.firstName} {user.lastName}</h4>
+                {children}
+            </div>
+        </div>
+    )
+}
 
-const UserAdminPage = () => {
 
-    //QUERIES
-    const userData = useQuery(GET_ALL_USERS);
-    let users = userData?.data?.users?.nodes ?? [];
-    const sectionsData = useQuery(GET_SECTIONS);
-
+    const UserAdminPage = () => {
+    
     //HOOKS
     const [chosenSection, setChosenSection] = useState({teams:[]});
     const [chosenTeam, setChosenTeam] = useState(null);
     const [chosenRole, setChosenRole] = useState("");
     const [chosenPassword, setChosenPassword] = useState("");
     const [addedUsers, setAddedUsers] = useState([]);
+    const [chosenPositionId, setChosenPositionId] = useState("");
 
+    //QUERIES
+    const userData = useQuery(GET_ALL_USERS);
+    let users = userData?.data?.users?.nodes ?? [];
+    const sectionsData = useQuery(GET_SECTIONS);
+    const positions = useQuery(POSITIONS);
+    const allPositions = positions?.data?.positions?.nodes ?? [];
+    let preferredInterviewers = allPositions?.find(position => position.id === chosenPositionId) ?? []
 
     //MUTATIONS
     const [updateRole, setUserRoleData] = useMutation(SET_USER_ROLE);
@@ -55,6 +71,8 @@ const UserAdminPage = () => {
     const [updateTeams, updateTeamsData] = useMutation(SET_TEAMS_TO_USER);
     const [updatePassword, updatePasswordData] = useMutation(UPDATE_USER_PASSWORD);
     const [userApproved, userApprovedData] = useMutation(SET_USER_APPROVED);
+    const [addPreferredInterviewers, addPreferredInterviewersData] = useMutation(ADD_PREFERRED_INTERVIEWERS);
+    const [removePreferredInterviewers, removePreferredInterviewersData] = useMutation(REMOVE_PREFERRED_INTERVIEWERS);
 
 
     //FUNCTIONS
@@ -132,6 +150,18 @@ const UserAdminPage = () => {
         })
         setAddedUsers(copyList);
     }
+
+
+    const addInterviewersToPosition = () => {
+        let emailList = addedUsers?.map( user => {return user.email})
+        if (Boolean(chosenPositionId) && addedUsers.length > 0){
+            addPreferredInterviewers({variables: {interviewers: emailList, positionId: chosenPositionId}})
+        }
+    }
+
+    const removeInterviewerFromPosition = (useremail) => {
+        removePreferredInterviewers({variables: {interviewers: [useremail], positionId: chosenPositionId}})
+    }
     
 
     useEffect(() => {
@@ -146,13 +176,15 @@ const UserAdminPage = () => {
     }, [chosenSection]);
 
 
+    
+
     return (
         <PageLayout>
                 <div className="flex-grid-adaptive pt-4 pb-4">
                     <div className="left mx-3" style={{flexBasis:"30%", flexDirection:"column"}}>
                         <div className="card w-100 h-100 px-3 py-3">
                             <h4>Applicants/Other users</h4>
-                            <ScrollList>
+                            <ScrollList minHeight="540px">
                                 { users.map( user => {
                                     if (user.email.slice(-8) !== "isfit.no"){
                                         return (
@@ -169,7 +201,7 @@ const UserAdminPage = () => {
                     <div className="middle mx-3" style={{flexBasis:"30%", textAlign:"left"}}>
                         <div className="card w-100 h-100 px-3 py-3">
                             <h4>@ISFiT Users</h4>
-                            <ScrollList>
+                            <ScrollList minHeight="540px">
                                 { users.map( user => {
                                     if (user.email.slice(-8) === "isfit.no"){
                                         return (
@@ -185,11 +217,16 @@ const UserAdminPage = () => {
                     </div>
 
                     <div className="right mx-3" style={{flexBasis:"40%", flexDirection:"column"}}>
+                         <Tabs>
+                        <TabList className="p-0 mb-0">
+                            <Tab>Users to be changed</Tab>
+                            <Tab>Preferred interviewers</Tab>
+                            <button type="button" className="btn btn-outline-secondary" style={{float:"right"}} onClick={() => setAddedUsers([]) }>Reset</button>
+                        </TabList>
+
+                        <TabPanel>
                          <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
-                            <div className="flex-grid" style={{justifyContent:"space-between"}}>
-                                <h4>Users to be changed</h4>
-                                <button type="button" className="btn btn-outline-secondary" onClick={() => setAddedUsers([]) }>Reset</button>
-                            </div>
+                            <ScrollList minHeight="250px">
                             { addedUsers.map( user => {
                                 return (
                                     <UserEntry user={user} addedUsers={addedUsers} setAddedUsers={setAddedUsers}>
@@ -198,6 +235,7 @@ const UserAdminPage = () => {
                                 )
                             }
                             )}
+                            </ScrollList>
                         </div>
                         <div className="card w-100 px-3 py-3">
                             <div className="flex-grid" style={{flexDirection:"column"}}>
@@ -271,6 +309,54 @@ const UserAdminPage = () => {
                                 </div>
                             </div>
                         </div>
+                        </TabPanel>
+                        <TabPanel>
+                            <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
+                            <ScrollList minHeight="250px">
+                                { addedUsers.map( user => {
+                                    return (
+                                        <UserEntrySlim user={user} addedUsers={addedUsers} setAddedUsers={setAddedUsers}>
+                                            <button type="button" className="btn btn-outline-danger" onClick={() => removeFromUserList(user)}>-</button>
+                                        </UserEntrySlim>
+                                    )
+                                }
+                                )}
+                            </ScrollList>
+                            </div>
+                            <div className="card w-100 px-3 py-1" style={{minHeight:"30px"}}>
+                                <div className="flex-grid" style={{justifyContent:"space-between", alignItems: "center"}}>
+                                    <form action="">
+                                        <select className="w-100" id="roles" name="roles" onChange={(e) => { setChosenPositionId(e.target.value) }}>
+                                            <option value={""}>None</option>
+                                            { allPositions.map( (position, index) => {
+                                                return(
+                                                    <option value={position.id}>{position.name}</option>
+                                                )
+                                             })
+                                            }
+                                        </select>
+                                    </form>
+                                    { (addPreferredInterviewersData.loading || removePreferredInterviewersData.loading) ? <div className="spinner-border spinner-border-sm" role="status" style={{color:"#1bae91"}}>
+                                        <span className="sr-only">Loading...</span>
+                                    </div> : null}
+                                    <button type="button" className="btn btn-outline-success" onClick={() => addInterviewersToPosition() }>Add users</button>
+                                </div>
+                            </div>
+                            <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
+                                <h3>Preferred interviewers:</h3>
+                                <ScrollList minHeight="100px">
+                                { preferredInterviewers?.prefferedInterviewers?.map( user => {
+                                    return (
+                                        <UserEntrySlim user={user} addedUsers={addedUsers} setAddedUsers={setAddedUsers}>
+                                            <button type="button" className="btn btn-outline-danger" onClick={() => removeInterviewerFromPosition(user.email)}>-</button>
+                                        </UserEntrySlim>
+                                    )
+                                }
+                                )}
+                                </ScrollList>
+                            </div>
+                        </TabPanel>
+                        </Tabs>
                     </div>
                 </div>
         </PageLayout>

@@ -184,7 +184,7 @@ const UserEntrySlim = ({user, children}) => {
                     <div className="left mx-3" style={{flexBasis:"30%", flexDirection:"column"}}>
                         <div className="card w-100 h-100 px-3 py-3">
                             <h4>Applicants/Other users</h4>
-                            <ScrollList>
+                            <ScrollList minHeight="540px">
                                 { users.map( user => {
                                     if (user.email.slice(-8) !== "isfit.no"){
                                         return (
@@ -201,7 +201,7 @@ const UserEntrySlim = ({user, children}) => {
                     <div className="middle mx-3" style={{flexBasis:"30%", textAlign:"left"}}>
                         <div className="card w-100 h-100 px-3 py-3">
                             <h4>@ISFiT Users</h4>
-                            <ScrollList>
+                            <ScrollList minHeight="540px">
                                 { users.map( user => {
                                     if (user.email.slice(-8) === "isfit.no"){
                                         return (
@@ -226,7 +226,7 @@ const UserEntrySlim = ({user, children}) => {
 
                         <TabPanel>
                          <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
-                            
+                            <ScrollList minHeight="250px">
                             { addedUsers.map( user => {
                                 return (
                                     <UserEntry user={user} addedUsers={addedUsers} setAddedUsers={setAddedUsers}>
@@ -235,6 +235,7 @@ const UserEntrySlim = ({user, children}) => {
                                 )
                             }
                             )}
+                            </ScrollList>
                         </div>
                         <div className="card w-100 px-3 py-3">
                             <div className="flex-grid" style={{flexDirection:"column"}}>

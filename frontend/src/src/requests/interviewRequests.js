@@ -15,6 +15,7 @@ const GET_APPLICATIONS_WITHOUT_INTERVIEW = gql`
         applicationWithoutInterview {
             nodes {
                 id,
+                __typename,
                 applicationText,
                 prioritized,
                 interest,
@@ -32,10 +33,24 @@ const GET_APPLICATIONS_WITHOUT_INTERVIEW = gql`
                         name,
                         section {
                             name
-                        }
+                        },
                         team {
                             name
-                        }
+                        },
+                        prefferedInterviewers {
+                            id
+                            __typename
+                            firstName
+                            lastName
+                            email
+                            interviewsCount        
+                            sections {
+                              name
+                            }
+                            teams {
+                              name
+                            }
+                        },
                     }
                 }              
             },

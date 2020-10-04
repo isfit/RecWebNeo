@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PageLayout from './pageLayout';
 import ScrollList from '../components/scrollList';
+import Accordion from "react-bootstrap/Accordion";
+import Button from 'react-bootstrap/Button';
+import Card from "react-bootstrap/Card";
 
 import { useQuery,useLazyQuery, useMutation } from "@apollo/client";
 
@@ -8,6 +11,9 @@ import AvailableTimesForm from '../components/availableTimesFormSimple';
 import { CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW, APPLICATION_BUSY_HOURS } from "../requests/interviewRequests";
 import { GET_ISFIT_USERS } from "../requests/userRequests";
 import { GET_ADMISSION_PERIODS } from  "../requests/orgRequests";
+
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 
 
 const ApplicationEntry = (props) => {
@@ -41,12 +47,12 @@ const UserEntry = ({user,children}) => {
     let userSection = (user.sections !== null && user.sections.length > 0) ? user.sections[0].name : "none" ;
     let userTeam = (user.teams !== null && user.teams.length > 0) ? user.teams[0].name : "none" ;
 
-
     return (
         <div className="card w-100 h-10 mb-2 py-1">
             <div className="flex-grid">
                 <div className="col" style={{flex:"1 1 80%", display:"flex",flexDirection:"column"}}>
                     <h4 className="mb-0" >{user.firstName} {user.lastName}</h4>
+                    <small className="text-muted mb-0">Interviews: {user.interviewsCount}</small>
                     <div className="flex-grid">
                         <div className="col pl-0" style={{flexBasis:"50%"}}>
                             <p className="text-muted mb-0">Section:</p>
@@ -121,7 +127,7 @@ const InterviewsPage = () => {
 
     //MUTATIONS
     const [getBusyHours, busyHoursData] = useMutation(APPLICATION_BUSY_HOURS, {fetchPolicy: "no-cache"});
-    const [createInterview, { data }] = useMutation(CREATE_INTERVIEW, {
+    const [createInterview, { data, error }] = useMutation(CREATE_INTERVIEW, {
         onError: ({ graphQLErrors, networkError }) => {
             graphQLErrors.map(({ message, locations, path }) => {
                 setCreateInterviewError(message);
@@ -131,6 +137,7 @@ const InterviewsPage = () => {
             if (networkError) console.log(`[Network error]: ${networkError}`);
         },
       });
+    console.log("ERROR:", error)
 
     //HOOKS
     const [addedUsers, setAddedUsers] = useState([]);
@@ -138,7 +145,6 @@ const InterviewsPage = () => {
     const [chosenTime, setChosenTime] = useState(null);
     const [createInterviewError, setCreateInterviewError] = useState(null);
     const [chosenLocation, setChosenLocation] = useState("");
-
 
 
     //VARIABLES
@@ -169,6 +175,9 @@ const InterviewsPage = () => {
     const createInterviewMutation = (application, addedUsers, startTime, chosenLocation) => {
         let emailArray = addedUsers.map(user => {return user.email})
         setCreateInterviewError(null);
+        console.log({
+            variables: {input: {application: application[0]?.id, interviewerEmails: emailArray, start: startTime?.toISOString(), location:chosenLocation}},
+        })
         createInterview({
             variables: {input: {application: application[0]?.id, interviewerEmails: emailArray, start: startTime?.toISOString(), location:chosenLocation}},
         });
@@ -214,17 +223,62 @@ const InterviewsPage = () => {
                     <button className="btn btn-success mt-1 mr-2 float-right" onClick={() => createInterviewMutation(chosenApplication, addedUsers, chosenTime, chosenLocation)}>Confirm interview</button>
                 </div>
                 <div className="right mx-3" style={{flexBasis:"30%", flexDirection:"column"}}>
-                    <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
-                        <h4>Available Interviewers</h4>
-                            <ScrollList minHeight="650px">
-                                { users.map( user => {
-                                    return (
-                                        <UserEntry user={user}>
-                                            <button type="button" className="btn btn-outline-success my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
-                                        </UserEntry>
-                                )})}
-                            </ScrollList>
-                    </div>
+                    <Tabs>
+                        <TabList className="p-0 mb-0">
+                            <Tab>All</Tab>
+                            <Tab>Preferred</Tab>
+                        </TabList>
+                        <TabPanel>
+                            <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
+                                <ScrollList minHeight="650px">
+                                    { users.map( user => {
+                                        return (
+                                            <UserEntry user={user}>
+                                                <button type="button" className="btn btn-outline-success my-4 mx-2" onClick={() => addToUserList(user)}>+</button>
+                                            </UserEntry>
+                                    )})}
+                                </ScrollList>
+                            </div>
+                        </TabPanel>
+                        <TabPanel>
+                            <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
+                                <ScrollList minHeight="650px">
+                                    { chosenApplication.map( application => {
+                                        return application.positions.map(position => {
+                                            return(
+                                                <Accordion defaultActiveKey="0">
+                                                  <Card style={{textAlign:"center"}}>
+                                                    <Accordion.Toggle as={Button} variant="btn btn-success dropdown-toggle ml-0 w-100" eventKey={""+position.key+1}>
+                                                      <a>{position.value.name}</a>
+                                                    </Accordion.Toggle>
+                                                    <Accordion.Collapse eventKey={""+position.key+1}>
+                                                      <div className="p-2">
+                                                      { position.value.prefferedInterviewers.map( user => {
+                                                        console.log(user)
+                                                        return(
+                                                            <div className="card w-100 h-10 mb-2 p-1">
+                                                                <div className="flex-grid" style={{justifyContent:"space-between"}}>
+                                                                    <h4 className="mb-0"> {user.firstName} {user.lastName}</h4>
+                                                                    <button type="button" className="btn btn-outline-success" onClick={() => addToUserList(user)}>+</button>
+                                                                </div>
+                                                                <small className="text-muted mb-0" style={{textAlign: "left"}}>Interviews: {user.interviewsCount}</small>
+                                                            </div>
+                                                          )
+                                                        })
+                                                      }
+                                                      </div>
+                                                    </Accordion.Collapse>
+                                                  </Card>
+                                                </Accordion>
+                                            );
+                                        })
+                                    }
+                                    )}
+                                    
+                                </ScrollList>
+                            </div>
+                        </TabPanel>
+                    </Tabs>
                 </div>
             </div>
 
@@ -239,6 +293,7 @@ const InterviewsPage = () => {
                 lastTimeSlot={22}
                 readOnly = { false }
                 selectSingleTimeMode = {true}
+                markPastDates={true}
             />
         </PageLayout>
 

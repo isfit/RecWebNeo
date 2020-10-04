@@ -82,8 +82,20 @@ const authLink = setContext((_, { headers }) => {
   }
 });
 
-const client = new ApolloClient({
-  cache: new InMemoryCache(),
+const client = new ApolloClient({   //Cache-policy is for specific situation when removing preferred interviewers in useradminpage
+  cache: new InMemoryCache({
+    typePolicies: {
+      Position: {
+        fields: {
+          prefferedInterviewers: {
+            merge(existing = [], incoming: any[]) {
+              return [...incoming];
+            },
+          },
+        },
+      },
+    },
+  }),
   link: authLink.concat(httpLink),
 });
 

@@ -6,7 +6,7 @@ import Loading from './loadingSpinner.jsx'
 import {ME_BUSY_TIMES} from "../requests/userRequests";
 import { useQuery } from "@apollo/client";
 
-const AvailableTimeSlot = ({ date, time, timeSelected, selectTime, readOnly, selectSingleTimeMode }) => {
+const AvailableTimeSlot = ({ date, time, timeSelected, selectTime, readOnly, selectSingleTimeMode,markPastDates }) => {
     const [selected, setSelected] = useState(timeSelected);
 
     useEffect(() => {
@@ -19,15 +19,24 @@ const AvailableTimeSlot = ({ date, time, timeSelected, selectTime, readOnly, sel
         }
         selectTime(date, time, selected)
     };
-  if (readOnly) {
-     return(<td style={{ backgroundColor: selected ? "#ff5d4f": "" }} ></td>);
-  }
-  else {
-      return (<td onClick={() => selectTimePeriode()} style={{ backgroundColor: selected ? "#ff5d4f": "" }} ></td>);
-  };
+
+    let currentTime = new Date()
+    let slotTime = new Date(date);
+    let hour = parseInt(time.substring(0,2));
+    slotTime.setHours(hour);
+
+    if (readOnly) {
+       return(<td style={{ backgroundColor: selected ? "#ff5d4f": "" }} ></td>);
+    }
+    else if(slotTime < currentTime && markPastDates){
+      return(<td style={{backgroundColor:"#595959"}} ></td>);
+    }
+    else {
+        return (<td onClick={() => selectTimePeriode()} style={{ backgroundColor: selected ? "#ff5d4f": "" }} ></td>);
+    };
 };
 
-const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTime, readOnly, selectSingleTimeMode}) => {
+const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTime, readOnly, selectSingleTimeMode, markPastDates}) => {
 
     const existsInSelected = (date) => {
         let dato = new Date(date);
@@ -43,7 +52,7 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
       {
         days?.map(date => {
           return(
-            <AvailableTimeSlot date={date} time={time} timeSelected={ existsInSelected(date) } selectTime={(d, t, selected) => selectTime(d, t, selected)} readOnly={readOnly} selectSingleTimeMode={selectSingleTimeMode} />
+            <AvailableTimeSlot date={date} time={time} timeSelected={ existsInSelected(date) } selectTime={(d, t, selected) => selectTime(d, t, selected)} readOnly={readOnly} selectSingleTimeMode={selectSingleTimeMode} markPastDates={markPastDates} />
           )
         })
       }
@@ -54,11 +63,12 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
 
 
 
-const AvailableTimesFormSimple = ({busyTimes, setBusyTimes, startDate, endDate, hourDiff, firstTimeSlot, lastTimeSlot, readOnly, selectSingleTimeMode=false }) => {
+const AvailableTimesFormSimple = ({busyTimes, setBusyTimes, startDate, endDate, hourDiff, firstTimeSlot, lastTimeSlot, readOnly, selectSingleTimeMode=false, markPastDates=false}) => {
   
     const ReadOnly = readOnly ? true : false;
     const daysName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const [busyTimesUpdated, setBusyTimesUpdated] = useState(busyTimes.slice());
+
 
     const IsValidDate = (date) => {
         return date instanceof Date && !isNaN(date);
@@ -169,6 +179,7 @@ const AvailableTimesFormSimple = ({busyTimes, setBusyTimes, startDate, endDate, 
                                         selectTime={(date, time, selected) => selectTime(date, time, !selected)}
                                         readOnly = {ReadOnly}
                                         selectSingleTimeMode = {selectSingleTimeMode}
+                                        markPastDates = {markPastDates}
                                     />
                                 )
                                 })

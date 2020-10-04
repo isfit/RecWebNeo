@@ -47,12 +47,12 @@ const UserEntry = ({user,children}) => {
     let userSection = (user.sections !== null && user.sections.length > 0) ? user.sections[0].name : "none" ;
     let userTeam = (user.teams !== null && user.teams.length > 0) ? user.teams[0].name : "none" ;
 
-
     return (
         <div className="card w-100 h-10 mb-2 py-1">
             <div className="flex-grid">
                 <div className="col" style={{flex:"1 1 80%", display:"flex",flexDirection:"column"}}>
                     <h4 className="mb-0" >{user.firstName} {user.lastName}</h4>
+                    <small className="text-muted mb-0">Interviews: {user.interviewsCount}</small>
                     <div className="flex-grid">
                         <div className="col pl-0" style={{flexBasis:"50%"}}>
                             <p className="text-muted mb-0">Section:</p>
@@ -127,7 +127,7 @@ const InterviewsPage = () => {
 
     //MUTATIONS
     const [getBusyHours, busyHoursData] = useMutation(APPLICATION_BUSY_HOURS, {fetchPolicy: "no-cache"});
-    const [createInterview, { data }] = useMutation(CREATE_INTERVIEW, {
+    const [createInterview, { data, error }] = useMutation(CREATE_INTERVIEW, {
         onError: ({ graphQLErrors, networkError }) => {
             graphQLErrors.map(({ message, locations, path }) => {
                 setCreateInterviewError(message);
@@ -137,6 +137,7 @@ const InterviewsPage = () => {
             if (networkError) console.log(`[Network error]: ${networkError}`);
         },
       });
+    console.log("ERROR:", error)
 
     //HOOKS
     const [addedUsers, setAddedUsers] = useState([]);
@@ -174,6 +175,9 @@ const InterviewsPage = () => {
     const createInterviewMutation = (application, addedUsers, startTime, chosenLocation) => {
         let emailArray = addedUsers.map(user => {return user.email})
         setCreateInterviewError(null);
+        console.log({
+            variables: {input: {application: application[0]?.id, interviewerEmails: emailArray, start: startTime?.toISOString(), location:chosenLocation}},
+        })
         createInterview({
             variables: {input: {application: application[0]?.id, interviewerEmails: emailArray, start: startTime?.toISOString(), location:chosenLocation}},
         });
@@ -250,12 +254,14 @@ const InterviewsPage = () => {
                                                     <Accordion.Collapse eventKey={""+position.key+1}>
                                                       <div className="p-2">
                                                       { position.value.prefferedInterviewers.map( user => {
+                                                        console.log(user)
                                                         return(
                                                             <div className="card w-100 h-10 mb-2 p-1">
                                                                 <div className="flex-grid" style={{justifyContent:"space-between"}}>
                                                                     <h4 className="mb-0"> {user.firstName} {user.lastName}</h4>
                                                                     <button type="button" className="btn btn-outline-success" onClick={() => addToUserList(user)}>+</button>
                                                                 </div>
+                                                                <small className="text-muted mb-0" style={{textAlign: "left"}}>Interviews: {user.interviewsCount}</small>
                                                             </div>
                                                           )
                                                         })

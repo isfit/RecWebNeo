@@ -42,7 +42,8 @@ const GET_APPLICATIONS_WITHOUT_INTERVIEW = gql`
                             __typename
                             firstName
                             lastName
-                            email        
+                            email
+                            interviewsCount        
                             sections {
                               name
                             }

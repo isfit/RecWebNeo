@@ -99,6 +99,7 @@ const GET_ISFIT_USERS = gql`
         firstName
         lastName
         email
+        interviewsCount
         sections {
           name
         }

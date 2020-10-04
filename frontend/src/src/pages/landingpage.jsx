@@ -42,12 +42,19 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
               </div>
               <div className="text-right">
                 <div className="flex-grid" style={{flexDirection:"column"}}>
-                  <div className="pt-5">
-                    <h1 style={{textAlign:"center", color: "#983c2e"}}>Applications are closed</h1>
+                  <div className="pt-4">
+                    <h1 style={{textAlign:"center", color: "#983c2e"}}>ISFiT is Recruiting</h1>
+                    <p className="mb-1" style={{textAlign:"center"}}>We are looking for more motivated and excited students to join us.</p>
+                    <p className="mb-0" style={{textAlign:"center"}}>
+                      ISFiT is much more than just a festival. We gather international students from different backgrounds for discussions and debates. 
+                      In addition, we have a wide Cultural Program that you can benefit from as a student or citizen of Trondheim.
+                    </p>
+                    <p style={{textAlign:"center"}}>To make this happen, we need people like you! Apply now!</p>
+                    {/* <h1 style={{textAlign:"center", color: "#983c2e"}}>Applications are closed</h1>
                     <p className="mb-1" style={{textAlign:"center"}}>Sadly, this recruitment period is over, but we are not done recruiting just yet.</p>
-                    <p style={{textAlign:"center"}}>Stay tuned to apply for ISFiT 21 in our next recruitment period!</p>
+                    <p style={{textAlign:"center"}}>Stay tuned to apply for ISFiT 21 in our next recruitment period!</p> */}
                   </div>
-                </div>
+                 </div>
               </div>
             </div>
           </TextBox>

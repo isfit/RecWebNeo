@@ -48,9 +48,9 @@ namespace RecAPI.Applications.Repositories
             _applications.InsertOne(application);
             return GetUserApplication(application.Applicant);
         }
-        public Application UpdateApplication(string userId, Application application)
+        public Application UpdateApplication(string applicationId, Application application)
         {
-            _applications.ReplaceOne(appl => appl.Applicant == userId, application);
+            _applications.ReplaceOne(appl => appl.Id == applicationId, application);
             return GetUserApplication(application.Applicant);
         }
         public bool DeleteApplication(string id)

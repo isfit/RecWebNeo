@@ -9,6 +9,8 @@ import {getLoginModalState, getUserAuthKey, getUserLogedIn} from "../redux/selec
 import {connect} from "react-redux";
 import { MYAPPLICATION } from "../requests/userRequests";
 import { useQuery } from "@apollo/client";
+import { GET_ADMISSION_PERIODS } from  "../requests/orgRequests";
+
 
 const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})  => {
   const history = useHistory();
@@ -17,6 +19,10 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
   const myApplicationData = useQuery(MYAPPLICATION, {fetchPolicy: "no-cache"});
   const userHasApplication = Boolean(myApplicationData?.data?.myApplication);
 
+  const admissionPeriodData = useQuery(GET_ADMISSION_PERIODS);
+  let endTime = new Date(admissionPeriodData?.data?.admisionPeriodes[0].endDate);
+  let currentTime = new Date();
+
   const updateSectionList = (sect) => {
     setSectionList(sect);
   };
@@ -24,6 +30,8 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
   function chocieBoxButton(){
     if (userHasApplication){
       return (<button className="btn btn-success ml-0 w-100">You already have entered an application. Thank you!</button>)
+    }else if (currentTime > endTime){
+      return (<button className="btn btn-success ml-0 w-100">Applications are closed</button>)
     }else if (userLogedIn){
       return ( <button className="btn btn-continue mt-1 mr-2 float-right" onClick={() => history.push("/enterapplication")}> Continue</button>)
     }else {
@@ -42,18 +50,23 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
               </div>
               <div className="text-right">
                 <div className="flex-grid" style={{flexDirection:"column"}}>
-                  <div className="pt-4">
-                    <h1 style={{textAlign:"center", color: "#983c2e"}}>ISFiT is Recruiting</h1>
-                    <p className="mb-1" style={{textAlign:"center"}}>We are looking for more motivated and excited students to join us.</p>
-                    <p className="mb-0" style={{textAlign:"center"}}>
-                      ISFiT is much more than just a festival. We gather international students from different backgrounds for discussions and debates. 
-                      In addition, we have a wide Cultural Program that you can benefit from as a student or citizen of Trondheim.
-                    </p>
-                    <p style={{textAlign:"center"}}>To make this happen, we need people like you! Apply now!</p>
-                    {/* <h1 style={{textAlign:"center", color: "#983c2e"}}>Applications are closed</h1>
-                    <p className="mb-1" style={{textAlign:"center"}}>Sadly, this recruitment period is over, but we are not done recruiting just yet.</p>
-                    <p style={{textAlign:"center"}}>Stay tuned to apply for ISFiT 21 in our next recruitment period!</p> */}
-                  </div>
+                  {(currentTime > endTime) ?
+                        <div className="pt-5">
+                          <h1 style={{textAlign:"center", color: "#983c2e"}}>Applications are closed</h1>
+                          <p className="mb-1" style={{textAlign:"center"}}>Sadly, this recruitment period is over.</p>
+                          <p style={{textAlign:"center"}}>Stay tuned to apply for ISFiT in our next recruitment period!</p>
+                        </div>
+                        :
+                        <div className="pt-4">
+                          <h1 style={{textAlign:"center", color: "#983c2e"}}>ISFiT is Recruiting</h1>
+                          <p className="mb-1" style={{textAlign:"center"}}>We are looking for more motivated and excited students to join us.</p>
+                          <p className="mb-0" style={{textAlign:"center"}}>
+                            ISFiT is much more than just a festival. We gather international students from different backgrounds for discussions and debates. 
+                            In addition, we have a wide Cultural Program that you can benefit from as a student or citizen of Trondheim.
+                          </p>
+                          <p style={{textAlign:"center"}}>To make this happen, we need people like you! Apply now!</p>
+                        </div>
+                    }
                  </div>
               </div>
             </div>

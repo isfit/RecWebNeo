@@ -10,6 +10,7 @@ import PrioritizedCard from "../components/application/prioritizedCard";
 import InterestApplicationCard from "../components/application/interestApplicationCard";
 import { UPDATE_APPLICATION } from "../requests/applicationRequests";
 import { GET_ADMISSION_PERIODS } from "../requests/orgRequests";
+import Loading from '../components/loadingSpinner';
 
 const MyApplicationPage = (props) => {
   //QUERIES
@@ -100,7 +101,15 @@ const MyApplicationPage = (props) => {
   };
 
   if (loading) {
-    return <div>Loading</div>;
+    return (
+    <div>
+      <PageLayout>
+        <div className="container pt-4">
+          <Loading />
+        </div>
+      </PageLayout>
+    </div>
+    )
   }
 
   if (error != null) {

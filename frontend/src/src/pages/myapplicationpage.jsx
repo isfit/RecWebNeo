@@ -10,6 +10,7 @@ import PrioritizedCard from "../components/application/prioritizedCard";
 import InterestApplicationCard from "../components/application/interestApplicationCard";
 import { UPDATE_APPLICATION } from "../requests/applicationRequests";
 import { GET_ADMISSION_PERIODS } from "../requests/orgRequests";
+import Loading from '../components/loadingSpinner';
 
 const MyApplicationPage = (props) => {
   //QUERIES
@@ -39,7 +40,6 @@ const MyApplicationPage = (props) => {
   const [otherPositions, setOtherPositions] = useState("OnlyPositions");
   const [enteredBusyTimes, setEnteredBusyTimes] = useState([]);
   const [enteredPositions, setEnteredPositions] = useState([]);
-  console.log(enteredBusyTimes);
 
   const [editMode, setEditMode] = useState(false);
 
@@ -59,13 +59,15 @@ const MyApplicationPage = (props) => {
     let positionKeyAndValue = enteredPositions.map((position) => {
       return { key: position.key.toString(), value: position.value.id };
     });
+
+    let stringToDatetimeArray = enteredBusyTimes.map((date) => {if(typeof date === "string"){return new Date(date)}else{return date}})
     const variableData = {
       variables: {
         input: {
           applicationText: applicationText,
           prioritized: prioritized,
           interest: otherPositions,
-          available: enteredBusyTimes,
+          available: stringToDatetimeArray,
           positions: positionKeyAndValue,
         },
       },
@@ -99,7 +101,15 @@ const MyApplicationPage = (props) => {
   };
 
   if (loading) {
-    return <div>Loading</div>;
+    return (
+    <div>
+      <PageLayout>
+        <div className="container pt-4">
+          <Loading />
+        </div>
+      </PageLayout>
+    </div>
+    )
   }
 
   if (error != null) {

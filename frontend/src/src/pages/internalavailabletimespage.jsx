@@ -24,21 +24,16 @@ const UnavailableTimesPage = (props) => {
   const startInterview = new Date(admissionPeriod.startInterviewDate);
   const endInterview = new Date(admissionPeriod.endInterviewDate);
   
-
   // Loading sceen while loading new data!
-  if (loading) {
-    return(
-      <div>
-        Loading
-      </div>
-    )
-  }
 
   if (error) {
     return (
-      <div>
-        There occured an error. Please contact the Recruitment web team, to see whan can be done.
-      </div>
+      <PageLayout>
+        <div className="container" style={{textAlign:"center"}}>
+          <p>Error: Could not fetch your unavailable hours.</p>
+          <p>Please contact the recruitment web team through or.it.recruitmentweb@isfit.no or other channels</p>
+        </div>
+      </PageLayout>
     )
   }
 

@@ -78,7 +78,7 @@ const CreateInterviewBox = ({chosenApplication, addedUsers, chosenTime, chosenLo
     return (
     <div className="card w-100 px-3 py-3" style={{minHeight:"300px"}}>
         <h4>Create Interview</h4>
-
+        
         { chosenApplication.map( application => {
             return(
                 <ApplicationEntry
@@ -95,14 +95,15 @@ const CreateInterviewBox = ({chosenApplication, addedUsers, chosenTime, chosenLo
     
 
         <h4>Add interviewers</h4>
-        
-        { addedUsers.map( user => {
-                return (
-                    <UserEntry user={user}>
-                        <button type="button" className="btn btn-outline-danger my-4 mx-2" onClick={() => removeFromUserList(user)}>-</button>
-                    </UserEntry>
-                )}
-        )}
+        <ScrollList minHeight="290px">
+            { addedUsers.map( user => {
+                    return (
+                        <UserEntry user={user}>
+                            <button type="button" className="btn btn-outline-danger my-4 mx-2" onClick={() => removeFromUserList(user)}>-</button>
+                        </UserEntry>
+                    )}
+            )}
+        </ScrollList>
         <h5 className="mt-3">Interview time: { chosenTime?.toString() ?? "Select a time from the table" } </h5>
         <div className="flex-grid mt-3">
             <h5 className="mr-1">Enter location:</h5>
@@ -220,7 +221,7 @@ const InterviewsPage = () => {
                 <div className="middle mx-3" style={{flexBasis:"40%", textAlign:"left"}}>
                     <CreateInterviewBox chosenApplication={chosenApplication} addedUsers={addedUsers} chosenLocation={chosenLocation} chosenTime={chosenTime} setChosenApplication={setChosenApplication} removeFromUserList={removeFromUserList} setChosenLocation={setChosenLocation} />
                     <button className="btn btn-secondary mt-1 mr-2" onClick={() => GetBusyHoursMutation({chosenApplication, addedUsers})}>See possible hours</button>
-                    <button className="btn btn-success mt-1 mr-2 float-right" onClick={() => createInterviewMutation(chosenApplication, addedUsers, chosenTime, chosenLocation)}>Confirm interview</button>
+                    <button className="btn btn-success mt-1 float-right" onClick={() => createInterviewMutation(chosenApplication, addedUsers, chosenTime, chosenLocation)}>Confirm interview</button>
                 </div>
                 <div className="right mx-3" style={{flexBasis:"30%", flexDirection:"column"}}>
                     <Tabs>

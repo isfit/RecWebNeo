@@ -39,7 +39,6 @@ const MyApplicationPage = (props) => {
   const [otherPositions, setOtherPositions] = useState("OnlyPositions");
   const [enteredBusyTimes, setEnteredBusyTimes] = useState([]);
   const [enteredPositions, setEnteredPositions] = useState([]);
-  console.log(data?.myApplication?.available);
 
   const [editMode, setEditMode] = useState(false);
 
@@ -59,22 +58,20 @@ const MyApplicationPage = (props) => {
     let positionKeyAndValue = enteredPositions.map((position) => {
       return { key: position.key.toString(), value: position.value.id };
     });
-    //let datetimeToStringArray = enteredBusyTimes.map((date) => {if(typeof date === "object"){return date}else{return new Date(date)}})
-    let datetimeToStringArray = enteredBusyTimes.map((date) => {if(typeof date === "object"){return date}else{return new Date(date)}})
-    console.log("LIST:", datetimeToStringArray)
+
+    let stringToDatetimeArray = enteredBusyTimes.map((date) => {if(typeof date === "string"){return new Date(date)}else{return date}})
     const variableData = {
       variables: {
         input: {
           applicationText: applicationText,
           prioritized: prioritized,
           interest: otherPositions,
-          available: datetimeToStringArray,
+          available: stringToDatetimeArray,
           positions: positionKeyAndValue,
         },
       },
     };
-    console.log(variableData)
-    //updateApplicationMutation(variableData);
+    updateApplicationMutation(variableData);
     setEditMode(false);
   };
 

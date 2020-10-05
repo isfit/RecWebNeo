@@ -27,11 +27,10 @@ const PositionChoiceField = ({id, currentIndex, title, prioritize, dePrioritize,
 }
 
 const PositionChoiceBoxSimple = ({positions, positionsUpdated, prioritizePosition, dePrioritizePosition, removePositionFromApplication}) => {
-    console.log(positions)
     return(
         <div className="card w-100 px-2">
             <h5 className="page-title border-bottom ml-2 mt-2">My Positions</h5>
-            <div className="flex-grid">
+            <div className="flex-grid" style={{minHeight:"200px"}}>
                 <div className="col-list w-100">
                     { positions.map( (pos, index) => {
                         return(

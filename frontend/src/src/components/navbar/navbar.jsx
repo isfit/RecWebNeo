@@ -46,11 +46,11 @@ const NavBar = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey}) => {
               </div>
         </div>
         <div className="flex-grid" style={{justifyContent:"flex-end"}}>
-        { (AccessLevel > 1) ? <div className="pt-2"><Burger activateSideBar={activateSideBar} /></div> : null}
+          <div className="pt-2"><Burger activateSideBar={activateSideBar} /></div>
         </div>
         <div className="flex-grid pt-1" style={{alignItems:"center", justifyContent:"space-around", borderTop:"1px solid rgba(0, 40, 100, 0.12)"}}>
               { (userLogedIn && (AccessLevel === 1)) ? 
-                  <ul className="nav navbar-tabs">
+                  <ul className="nav navbar-tabs" id={"sideNavBar"}>
                     <NavBarButton title="Overview" iconstring="list-ol" address="/"/>
                     <NavbarMyApplicationButton />
                     <NavBarButton title="My Interviews" iconstring="user-tie" address="/myinterviews" />

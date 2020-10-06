@@ -41,7 +41,6 @@ const AllInterviewsPage = ({userAuthKey}) => {
         allIntervewsQuery.refetch() //When interview is deleted, refetch all interviews
       },
     });
-
     const [setInterviewStatusMutation] = useMutation(SET_INTERVIEW_STATUS);
 
     //HOOKS

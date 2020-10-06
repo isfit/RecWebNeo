@@ -15,7 +15,7 @@ const LogInModal = ({showLoginModal, closeLoginModal}) =>  {
     return(
         <Modal showModal={showLoginModal} setShowModal={ () => closeLoginModal() } >
             <div className="loginChoiceWrapper">
-                <div className="loginChoice" onClick={() => setAlreadyUser(true)} > Login </div>
+                <div className="loginChoice" onClick={() => setAlreadyUser(true)} > Sign in </div>
                 <div className="loginChoice" onClick={() => setAlreadyUser(false)} > Register </div>
             </div>
             {

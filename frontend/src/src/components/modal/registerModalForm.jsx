@@ -141,7 +141,7 @@ const RegisterModalForm = ({setShowModal}) => {
           
           {data ? (
             <div style={{ color: "green" }}>
-              You are registered successfully. Please log in. {" "}
+              You are registered successfully. Please sign in. {" "}
             </div>
           ) : null}
 

@@ -125,7 +125,7 @@ const AllInterviewsPage = ({userAuthKey}) => {
                                              })}
                                            </Dropdown.Menu>
                                          </Dropdown>
-                                         { (AccessLevel>2) ? <button className="btn btn-danger ml-1" onClick={() => showDeleteConfirmModal(interview)}>Delete</button> : null}
+                                         { (AccessLevel>3) ? <button className="btn btn-danger ml-1" onClick={() => showDeleteConfirmModal(interview)}>Delete</button> : null}
                                         {/* {(AccessLevel>2) ? deleteConfirm ? <div><button className="btn btn-secondary mx-1" onClick={() => setDeleteConfirm(false)}>Cancel</button><button className="btn btn-danger" onClick={() => deleteInterview(interview.id)}>DELETE</button></div> : <button className="btn btn-danger ml-1" onClick={() => setDeleteConfirm(true)}>Delete</button> : null} */}
                                     </InterviewCard>
                                 )

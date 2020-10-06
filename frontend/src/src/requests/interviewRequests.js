@@ -67,6 +67,7 @@ const MY_INTERVIEWS = gql`
                 id
                 start
                 status
+                location
                 interviewers {
                     user {
                         firstName

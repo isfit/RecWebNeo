@@ -64,8 +64,8 @@ const NavBar = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey}) => {
                 <NavBarButton title="Unavailable hours" iconstring="calendar-times" address="/unavailabletimes" />
                 <NavBarButton title="Applications" iconstring="file-alt" address="/applications" />
                 { AccessLevel > 2 ? <NavBarButton title="All Interviews" iconstring="users" address="/allinterviews" /> : null}
-                { AccessLevel > 2 ? <NavBarButton title="Manage interviews" iconstring="users-cog" address="/manageinterviews" /> : null}
-                { AccessLevel > 2 ? <NavBarButton title="Administer users" iconstring="tasks" address="/useradminpage" /> : null}
+                { AccessLevel > 3 ? <NavBarButton title="Manage interviews" iconstring="users-cog" address="/manageinterviews" /> : null}
+                { AccessLevel > 3 ? <NavBarButton title="Administer users" iconstring="tasks" address="/useradminpage" /> : null}
               </ul> : null }
         </div>
       </div>

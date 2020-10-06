@@ -21,8 +21,9 @@ const NavbarProfileIcon = ({accessLevel, logOutUser}) => {
 
     let RoleName = "Applicant";
     switch(accessLevel){
-        case 4: RoleName = "Super user"; break;
-        case 3: RoleName = "Admin / Leader in ISFiT"; break;
+        case 5: RoleName = "Super user"; break;
+        case 4: RoleName = "Admin / Leader in ISFiT"; break;
+        case 3: RoleName = "Team Leader"; break;
         case 2: RoleName = "ISFiT Member"; break;
     }
 

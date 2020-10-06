@@ -111,13 +111,9 @@ const PositionRow = ({ position, openPositionModal, addPositionToApplication }) 
       <div className="flex-grid">
           <button className="link-button flex-grid" style={{display:"flex",flexBasis: "90%", flexDirection:"column"}} onClick={() => openPositionModal(position)}>
               <h4>{position?.name}</h4>
-              <div className="flex-grid" style={{alignContent: "space-between"}}>
-                <div className="col pl-0">
+              <div className="flex-grid w-75" style={{justifyContent: "space-between"}}>
                   <p className="text-muted mb-0">Section: {position?.section?.name}</p>
-                </div>
-                <div className="col">
                   <p className="text-muted mb-0">Team: {position?.team?.name}</p>
-                </div>
               </div>
           </button>
           <div className="col py-3 px-auto" style={{flexBasis: "10%"}}>

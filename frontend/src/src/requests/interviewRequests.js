@@ -43,7 +43,8 @@ const GET_APPLICATIONS_WITHOUT_INTERVIEW = gql`
                             firstName
                             lastName
                             email
-                            interviewsCount        
+                            interviewsCount
+                            busyTime        
                             sections {
                               name
                             }

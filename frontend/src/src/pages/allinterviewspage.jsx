@@ -16,15 +16,10 @@ import { getRolesFromToken, getAccessLevel } from "../components/navbar/navbarHe
 import { InterviewFilteringFunction } from "../components/filtering/SectionTeamFilteringFunction";
 
 import Dropdown from "react-bootstrap/Dropdown";
-import Button from 'react-bootstrap/Button';
 import ScrollList from '../components/scrollList';
 import FilterBox from "../components/filtering/filterBox";
 import InterviewCard from "../components/interviewCard"
-
-import gql from 'graphql-tag'
-
-
-
+import Modal from '../components/modal/modal';
 
 
 const AllInterviewsPage = ({userAuthKey}) => {
@@ -42,7 +37,11 @@ const AllInterviewsPage = ({userAuthKey}) => {
     let positions = positionsData?.data?.positions?.nodes ?? [];
 
     //MUTATIONS
-    const [deleteInterviewMutation, deleteInterviewMutationData] = useMutation(DELETE_INTERVIEW);
+    const [deleteInterviewMutation, deleteInterviewMutationData] = useMutation(DELETE_INTERVIEW,{ onCompleted: data => {
+        allIntervewsQuery.refetch() //When interview is deleted, refetch all interviews
+      },
+    });
+
     const [setInterviewStatusMutation] = useMutation(SET_INTERVIEW_STATUS);
 
     //HOOKS
@@ -52,12 +51,14 @@ const AllInterviewsPage = ({userAuthKey}) => {
     const [chosenPosition, setChosenPosition] = useState("");
     const [chosenInterviewStatusFilter, setChosenInterviewStatusFilter] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
+    const [showModal, setShowModal] = useState(false);
+    const [selectedInterviewForDeletion, setSelectedInterviewForDeletion] = useState(null);
 
     
     //FUNCTIONS
     const deleteInterview = (interviewId) => { 
         deleteInterviewMutation({variables: {input: {id: interviewId}}});
-        setDeleteConfirm(false)
+        setShowModal(false)
     };
 
     const setInterviewStatus = (intId, status) => {
@@ -65,8 +66,24 @@ const AllInterviewsPage = ({userAuthKey}) => {
     };
 
 
+    function showDeleteConfirmModal(interview){
+        setSelectedInterviewForDeletion(interview)
+        setShowModal(true)
+    }
+
+
     return(
         <PageLayout>
+            <Modal showModal={showModal} setShowModal={ () => setShowModal() }>
+                <div className="flex-grid" style={{flexDirection:"column"}}>
+                    <h3>Are you sure you want to delete this interview?</h3>
+                    <h4>{selectedInterviewForDeletion?.applicant?.user?.firstName}  {selectedInterviewForDeletion?.applicant?.user?.lastName}</h4>
+                    <div className="flex-grid mt-5" style={{justifyContent:"center"}}>
+                        <button className="btn btn-secondary mx-1" onClick={() => setShowModal(false)}>Cancel</button>
+                        <button className="btn btn-danger" onClick={() => deleteInterview(selectedInterviewForDeletion?.id)}>Delete</button>
+                    </div>
+                </div>
+            </Modal>
             <div className="container pt-4">
                 <h4 className="mb-4">All interviews</h4>
                 <div className="flex-grid-adaptive">
@@ -100,8 +117,7 @@ const AllInterviewsPage = ({userAuthKey}) => {
                                            <Dropdown.Toggle variant="secondary" id="dropdown-basic">
                                              {Boolean(interview.status) ? interview.status : "Not assigned"}
                                            </Dropdown.Toggle>
-
-                                           <Dropdown.Menu>
+                                            <Dropdown.Menu>
                                                <Dropdown.Item onClick={(e) => {setInterviewStatus(interview.id, "")}}>{"Not assigned"}</Dropdown.Item>
                                              {interviewStatuses.map( status => {
                                                  return (
@@ -110,7 +126,8 @@ const AllInterviewsPage = ({userAuthKey}) => {
                                              })}
                                            </Dropdown.Menu>
                                          </Dropdown>
-                                        {(AccessLevel>2) ? deleteConfirm ? <div><button className="btn btn-secondary mx-1" onClick={() => setDeleteConfirm(false)}>Cancel</button><button className="btn btn-danger" onClick={() => deleteInterview(interview.id)}>DELETE</button></div> : <button className="btn btn-danger ml-1" onClick={() => setDeleteConfirm(true)}>Delete</button> : null}
+                                         { (AccessLevel>2) ? <button className="btn btn-danger ml-1" onClick={() => showDeleteConfirmModal(interview)}>Delete</button> : null}
+                                        {/* {(AccessLevel>2) ? deleteConfirm ? <div><button className="btn btn-secondary mx-1" onClick={() => setDeleteConfirm(false)}>Cancel</button><button className="btn btn-danger" onClick={() => deleteInterview(interview.id)}>DELETE</button></div> : <button className="btn btn-danger ml-1" onClick={() => setDeleteConfirm(true)}>Delete</button> : null} */}
                                     </InterviewCard>
                                 )
                             }

@@ -36,8 +36,8 @@ namespace RecAPI.Generic
                         _collection.DeleteManyAsync(x => !x.Email.Contains("isfit")).GetAwaiter().GetResult();
                         var users = _collection.Find(user => true).ToList();
                         foreach(var user in users){
-                            user.BusyTime = new List<DateTime>();
-                            _users.ReplaceOne(us => us.Id == user.Id, user);
+                            user.BusyTime = null;
+                            _collection.ReplaceOne(us => us.Id == user.Id, user);
                         }
                     }
                     else if (name.ToString() == "AuthCredentials")

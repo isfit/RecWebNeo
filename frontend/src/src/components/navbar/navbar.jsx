@@ -37,7 +37,7 @@ const NavBar = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey}) => {
         <div className="flex-grid" style={{alignItems:"center", justifyContent:"space-between"}}>
               <div className="flex-grid" style={{alignItems:"center"}}>
               <a href="/">
-                <img src="./Gråtekst_pa_gjennomsiktig.png" className="header-brand-img" alt="Tabler React" style={{ maxWidth: "70px" }}></img>
+                <img src="./topleftlogo.png" className="header-brand-img" alt="ISFiT Logo" style={{ maxWidth: "100px" }}></img>
                 {/* <span className="d-none d-md-inline ml-4" style={{color: "#ED7F66"}}>RECRUITMENT</span> */}
               </a>
               </div>

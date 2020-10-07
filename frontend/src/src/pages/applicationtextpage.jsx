@@ -52,7 +52,7 @@ const ApplicationTextPage = (props) => {
           </div>
           <div className="row">
             <div className="col mt-2">
-                <button className="btn btn-outline-secondary float-left" onClick={() => goBach()}>Back</button>
+                <button className="btn btn-back float-left" onClick={() => goBach()}>Back</button>
                 <button className="btn btn-continue float-right" onClick={() => continueWithApplication()}>Continue</button>
               </div>
           </div>

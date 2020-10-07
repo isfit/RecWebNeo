@@ -16,15 +16,15 @@ import { getRolesFromToken, getAccessLevel } from '../components/navbar/navbarHe
 
 const ChocieBoxButton = ({userHasApplication, positions, currentTime, endTime, userLogedIn, startTime, AccessLevel, history}) => {
   if (userHasApplication){
-    return (<button className="btn btn-success ml-0 w-100">You have already submitted an application. Thank you!</button>)
+    return (<button className="btn btn-light ml-0 w-100" style={{backgroundColor:"#40B4A3", color:"white"}}>You have already submitted an application. Thank you!</button>)
   }else if (AccessLevel > 1){
-    return (<button className="btn btn-success ml-0 w-100">You are already part of ISFiT!</button>)
+    return (<button className="btn btn-light ml-0 w-100" style={{backgroundColor:"#40B4A3", color:"white"}}>You are already part of ISFiT!</button>)
   }else if (currentTime > endTime || currentTime < startTime){
-    return (<button className="btn btn-success ml-0 w-100">Applications are closed</button>)
+    return (<button className="btn btn-light ml-0 w-100" style={{backgroundColor:"#40B4A3", color:"white"}}>Applications are closed</button>)
   }else if (userLogedIn){
-    return ( <div style={{position:"sticky", top:"10px"}}><PositionChoiceBox /> { (positions.length < 1) ? <button className="btn btn-success ml-0 w-100">Please add at least one position to continue</button> : <button className="btn btn-continue mt-1 float-right" onClick={() => history.push("/enterapplication")}> Continue</button> }</div>)
+    return ( <div style={{position:"sticky", top:"10px"}}><PositionChoiceBox /> { (positions.length < 1) ? <button className="btn btn-light ml-0 w-100" style={{backgroundColor:"#40B4A3", color:"white"}}>Please add at least one position to continue</button> : <button className="btn btn-continue mt-1 float-right" onClick={() => history.push("/enterapplication")}> Continue</button> }</div>)
   }else {
-    return (<button className="btn btn-success ml-0 w-100"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess</button>)
+    return (<button className="btn btn-light ml-0 w-100" style={{backgroundColor:"#40B4A3", color:"white"}} onClick={ () => openLoginModal() }>Sign in to continue the application proccess</button>)
   }
 }
 
@@ -57,7 +57,7 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey, 
     if (currentTime > endTime){
       return(
         <div className="pt-5">
-          <h1 style={{textAlign:"center", color: "#983c2e"}}>Applications are closed</h1>
+          <h1 style={{textAlign:"center", color: "#0099CC"}}>Applications are closed</h1>
           <p className="mb-1" style={{textAlign:"center"}}>Sadly, this recruitment period is over.</p>
           <p style={{textAlign:"center"}}>Stay tuned to apply for ISFiT in our next recruitment period!</p>
         </div>
@@ -65,7 +65,7 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey, 
     } else if (currentTime < startTime){
       return(
         <div className="pt-4">
-          <h1 style={{textAlign:"center", color: "#983c2e"}}>ISFiT is Recruiting</h1>
+          <h1 style={{textAlign:"center", color: "#0099CC"}}>ISFiT is Recruiting</h1>
           <p className="mb-4" style={{textAlign:"center"}}>We are looking for more motivated and excited students to join us!</p>
           <p className="mb-1" style={{textAlign:"center"}}>Application opens {startTime.toString().slice(0, 21)} </p>
           <p style={{textAlign:"center", fontSize:"40px"}}><Countdown date={startTime}><span>Refresh the page to apply!</span></Countdown></p>
@@ -74,7 +74,7 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey, 
     }else{
       return (
         <div className="pt-4">
-          <h1 style={{textAlign:"center", color: "#983c2e"}}>ISFiT is Recruiting</h1>
+          <h1 style={{textAlign:"center", color: "#0099CC"}}>ISFiT is Recruiting</h1>
           <p className="mb-1" style={{textAlign:"center"}}>We are looking for more motivated and excited students to join us.</p>
           <p className="mb-0" style={{textAlign:"center"}}>
             ISFiT is much more than just a festival. We gather international students from different backgrounds for discussions and debates. 

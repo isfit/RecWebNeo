@@ -127,13 +127,13 @@ const MyProfilePage = ({logOutUser}) => {
 
                       <div className="flex-grid mt-5" style={{justifyContent:"space-between"}}>
                         <div>
-                          { editProfileMode || editPasswordMode ? null : <button className="btn btn-secondary" onClick={() => setEditPasswordMode(true)}>Change password</button> }
-                          { editProfileMode || editPasswordMode ? null : <button className="btn btn-secondary ml-1" onClick={() => setEditProfileMode(true)}>Edit Profile</button> }
+                          { editProfileMode || editPasswordMode ? null : <button className="btn btn-back" onClick={() => setEditPasswordMode(true)}>Change password</button> }
+                          { editProfileMode || editPasswordMode ? null : <button className="btn btn-back ml-1" onClick={() => setEditProfileMode(true)}>Edit Profile</button> }
                         </div>
                         <div>
-                          { editPasswordMode || editProfileMode ? null :  <button className="btn btn-danger" onClick={() => LogOutAndRedirect()}>Log out</button>}
-                          { editPasswordMode ? <div><button className="btn btn-secondary" onClick={() => setEditPasswordMode(false)}>Cancel</button><button className="btn btn-success ml-1" onClick={() => changePassword(chosenPassword, currentPassword)}>Confirm</button></div> : null}
-                          { editProfileMode ? <div><button className="btn btn-secondary" onClick={() => setEditProfileMode(false)}>Cancel</button><button className="btn btn-success ml-1" onClick={() => editProfile(newFirstName, newLastName, newPhoneNumber)}>Confirm</button></div> : null}
+                          { editPasswordMode || editProfileMode ? null :  <button className="btn btn-continue" onClick={() => LogOutAndRedirect()}>Log out</button>}
+                          { editPasswordMode ? <div><button className="btn btn-back" onClick={() => setEditPasswordMode(false)}>Cancel</button><button className="btn btn-continue ml-1" onClick={() => changePassword(chosenPassword, currentPassword)}>Confirm</button></div> : null}
+                          { editProfileMode ? <div><button className="btn btn-back" onClick={() => setEditProfileMode(false)}>Cancel</button><button className="btn btn-continue ml-1" onClick={() => editProfile(newFirstName, newLastName, newPhoneNumber)}>Confirm</button></div> : null}
                         </div>
                       </div>
                   </div>

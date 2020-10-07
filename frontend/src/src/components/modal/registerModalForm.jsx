@@ -50,8 +50,8 @@ const RegisterModalForm = ({setShowModal}) => {
           </p>
         </div>
         <div className="flex-grid mt-5" style={{justifyContent:"space-between"}}>
-          <button className="btn btn-secondary mr-2" onClick={() => setShowModal()}>Back</button>
-          <button className="btn btn-success" onClick={() => setViewConfirmation(false)}>I confirm that I am a student that is currently or will be living in Trondheim in the near future</button>
+          <button className="btn btn-back mr-2" onClick={() => setShowModal()}>Back</button>
+          <button className="btn btn-continue" onClick={() => setViewConfirmation(false)}>I confirm that I am a student that is currently or will be living in Trondheim in the near future</button>
         </div>
       </div>
     );

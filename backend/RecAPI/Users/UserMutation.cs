@@ -185,38 +185,15 @@ namespace RecAPI.Users.Mutations
         }
 
         [Authorize(Policy = "administrator")]
-        public User SetSectionsToUser(
-            string email,
-            List<string> sections,
-            [Service] IUserRepository userRepository,
-            [Service] ISectionRepository sectionRepository
-        )
-        {
-            var user = userRepository.GetUserByEmail(email);
-            if (user == null)
-            {
-                UserError.UserExistError(email);
-            };
-            if (user.Sections == null)
-            {
-                user.Sections = new List<string>();
-            };
-            sections.ForEach( section => {
-                var sectionObject = sectionRepository.GetSection(section);
-                if (sectionObject == null)
-                {
-                    SectionsError.SectionExistError(section);
-                }
-            });
-            user.Sections = sections;
-            return userRepository.UpdateUser(user.Id, user);
-        }
+
 
         [Authorize(Policy = "administrator")]
-        public User SetTeamsToUser(
-            string email,
-            List<string> teams,
+        public User SetSectionAndTeamToUser(
+            [GraphQLNonNullType] string email,
+            [GraphQLNonNullType] List<string> sections,
+            [GraphQLNonNullType] List<string> teams,
             [Service] IUserRepository userRepository,
+            [Service] ISectionRepository sectionRepository,
             [Service] ITeamRepository teamRepository
         )
         {
@@ -224,19 +201,39 @@ namespace RecAPI.Users.Mutations
             if (user == null)
             {
                 UserError.UserExistError(email);
+            };
+            if (input.sections.Count() == 0){
+                UserError.ListedSectionsError();
             }
+            if (input.teams.Count() == 0){
+                UserError.ListedTeamsError();
+            }
+            if (user.Sections == null)
+            {
+                user.Sections = new List<string>();
+            };
             if (user.Teams == null)
             {
                 user.Teams = new List<string>();
             }
+            sections.ForEach(section => {
+                var sectionObject = sectionRepository.GetSection(section);
+                if (sectionObject == null)
+                {
+                    SectionsError.SectionExistError(section);
+                }
+            });
+            user.Sections = sections;
+
             teams.ForEach(team => {
                 var teamObject = teamRepository.GetTeam(team);
-                if (teamObject == null)
+                if (teamObject == null || sections.Contains(teamObject.Section))
                 {
                     TeamError.TeamExistError(team);
                 }
             });
             user.Teams = teams;
+
             return userRepository.UpdateUser(user.Id, user);
         }
 

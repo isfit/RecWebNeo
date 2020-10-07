@@ -27,5 +27,14 @@ namespace RecAPI.Users.ErrorHandling
         {
             throw new QueryException(ErrorBuilder.New().SetMessage("The user is not assigned a team. When team leader, you must be assigned a team.").Build());
         }
+
+        public static void ListedSectionsError()
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("No sections were listed.").Build());
+        }
+        public static void ListedTeamsError()
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("No sections were listed.").Build());
+        }
     }
 }

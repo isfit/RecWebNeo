@@ -10,13 +10,16 @@ import {connect} from "react-redux";
 import { MYAPPLICATION } from "../requests/userRequests";
 import { useQuery } from "@apollo/client";
 import { GET_ADMISSION_PERIODS } from  "../requests/orgRequests";
-
 import { getAppliedPositions } from "../redux/selectors";
+import Countdown from 'react-countdown';
+import { getRolesFromToken, getAccessLevel } from '../components/navbar/navbarHelperFunctions';
 
-const ChocieBoxButton = ({userHasApplication, positions, currentTime, endTime, userLogedIn, history}) => {
+const ChocieBoxButton = ({userHasApplication, positions, currentTime, endTime, userLogedIn, startTime, AccessLevel, history}) => {
   if (userHasApplication){
     return (<button className="btn btn-success ml-0 w-100">You have already submitted an application. Thank you!</button>)
-  }else if (currentTime > endTime){
+  }else if (AccessLevel > 1){
+    return (<button className="btn btn-success ml-0 w-100">You are already part of ISFiT!</button>)
+  }else if (currentTime > endTime || currentTime < startTime){
     return (<button className="btn btn-success ml-0 w-100">Applications are closed</button>)
   }else if (userLogedIn){
     return ( <div style={{position:"sticky", top:"10px"}}><PositionChoiceBox /> { (positions.length < 1) ? <button className="btn btn-success ml-0 w-100">Please add at least one position to continue</button> : <button className="btn btn-continue mt-1 float-right" onClick={() => history.push("/enterapplication")}> Continue</button> }</div>)
@@ -27,6 +30,9 @@ const ChocieBoxButton = ({userHasApplication, positions, currentTime, endTime, u
 
 
 const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey, positions, positionsUpdated})  => {
+  const RolesArray = getRolesFromToken(userAuthKey);
+  const AccessLevel = getAccessLevel(RolesArray);
+
   const history = useHistory();
   const [sectionList, setSectionList] = useState([]);
 
@@ -35,27 +41,50 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey, 
 
   const admissionPeriodData = useQuery(GET_ADMISSION_PERIODS);
   let endTime = new Date(admissionPeriodData?.data?.admisionPeriodes[0].endDate);
+  let startTime  = new Date(admissionPeriodData?.data?.admisionPeriodes[0].startDate);
   let currentTime = new Date();
 
   const updateSectionList = (sect) => {
     setSectionList(sect);
   };
 
-  function chocieBoxButton(){
-    if (userHasApplication){
-      return (<button className="btn btn-success ml-0 w-100">You have already submitted an application. Thank you!</button>)
-    }else if (currentTime > endTime){
-      return (<button className="btn btn-success ml-0 w-100">Applications are closed</button>)
-    }else if (userLogedIn){
-      return ( <div style={{position:"sticky", top:"10px"}}><PositionChoiceBox /> { (positions.length < 1) ? <button className="btn btn-success ml-0 w-100">Please add at least one position to continue</button> : <button className="btn btn-continue mt-1 float-right" onClick={() => history.push("/enterapplication")}> Continue</button> }</div>)
-    }else {
-      return (<button className="btn btn-success ml-0 w-100"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess</button>)
-    }
-  }
 
   useEffect(() => {
     myApplicationData.refetch();
   }, [userLogedIn]);
+
+  function landingPageText(){
+    if (currentTime > endTime){
+      return(
+        <div className="pt-5">
+          <h1 style={{textAlign:"center", color: "#983c2e"}}>Applications are closed</h1>
+          <p className="mb-1" style={{textAlign:"center"}}>Sadly, this recruitment period is over.</p>
+          <p style={{textAlign:"center"}}>Stay tuned to apply for ISFiT in our next recruitment period!</p>
+        </div>
+      )
+    } else if (currentTime < startTime){
+      return(
+        <div className="pt-4">
+          <h1 style={{textAlign:"center", color: "#983c2e"}}>ISFiT is Recruiting</h1>
+          <p className="mb-4" style={{textAlign:"center"}}>We are looking for more motivated and excited students to join us!</p>
+          <p className="mb-1" style={{textAlign:"center"}}>Application opens {startTime.toString().slice(0, 21)} </p>
+          <p style={{textAlign:"center", fontSize:"40px"}}><Countdown date={startTime}><span>Refresh the page to apply!</span></Countdown></p>
+        </div>
+      )
+    }else{
+      return (
+        <div className="pt-4">
+          <h1 style={{textAlign:"center", color: "#983c2e"}}>ISFiT is Recruiting</h1>
+          <p className="mb-1" style={{textAlign:"center"}}>We are looking for more motivated and excited students to join us.</p>
+          <p className="mb-0" style={{textAlign:"center"}}>
+            ISFiT is much more than just a festival. We gather international students from different backgrounds for discussions and debates. 
+            In addition, we have a wide Cultural Program that you can benefit from as a student or citizen of Trondheim.
+          </p>
+          <p style={{textAlign:"center"}}>To make this happen, we need people like you! Apply now!</p>
+        </div>
+      )
+    }
+  }
   
 
   return (
@@ -69,23 +98,7 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey, 
               </div>
               <div className="text-right">
                 <div className="flex-grid" style={{flexDirection:"column"}}>
-                  {(currentTime > endTime) ?
-                        <div className="pt-5">
-                          <h1 style={{textAlign:"center", color: "#983c2e"}}>Applications are closed</h1>
-                          <p className="mb-1" style={{textAlign:"center"}}>Sadly, this recruitment period is over.</p>
-                          <p style={{textAlign:"center"}}>Stay tuned to apply for ISFiT in our next recruitment period!</p>
-                        </div>
-                        :
-                        <div className="pt-4">
-                          <h1 style={{textAlign:"center", color: "#983c2e"}}>ISFiT is Recruiting</h1>
-                          <p className="mb-1" style={{textAlign:"center"}}>We are looking for more motivated and excited students to join us.</p>
-                          <p className="mb-0" style={{textAlign:"center"}}>
-                            ISFiT is much more than just a festival. We gather international students from different backgrounds for discussions and debates. 
-                            In addition, we have a wide Cultural Program that you can benefit from as a student or citizen of Trondheim.
-                          </p>
-                          <p style={{textAlign:"center"}}>To make this happen, we need people like you! Apply now!</p>
-                        </div>
-                    }
+                    {landingPageText()}
                  </div>
               </div>
             </div>
@@ -103,7 +116,7 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey, 
 
           <div className="shopping-box-right mt-4">
             {/* {chocieBoxButton()} */}
-            <ChocieBoxButton userHasApplication={userHasApplication} positions={positions} currentTime={currentTime} endTime={endTime} userLogedIn={userLogedIn} history={history} />
+            <ChocieBoxButton userHasApplication={userHasApplication} positions={positions} currentTime={currentTime} endTime={endTime} userLogedIn={userLogedIn} startTime={startTime} AccessLevel={AccessLevel} history={history} />
           </div>
 
 

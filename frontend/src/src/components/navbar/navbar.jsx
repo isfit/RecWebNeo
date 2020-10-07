@@ -46,11 +46,11 @@ const NavBar = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey}) => {
               </div>
         </div>
         <div className="flex-grid" style={{justifyContent:"flex-end"}}>
-        { (AccessLevel > 1) ? <div className="pt-2"><Burger activateSideBar={activateSideBar} /></div> : null}
+          {userLogedIn ? <div className="pt-2"><Burger activateSideBar={activateSideBar} /></div> : null}
         </div>
         <div className="flex-grid pt-1" style={{alignItems:"center", justifyContent:"space-around", borderTop:"1px solid rgba(0, 40, 100, 0.12)"}}>
               { (userLogedIn && (AccessLevel === 1)) ? 
-                  <ul className="nav navbar-tabs">
+                  <ul className="nav navbar-tabs" id={"sideNavBar"}>
                     <NavBarButton title="Overview" iconstring="list-ol" address="/"/>
                     <NavbarMyApplicationButton />
                     <NavBarButton title="My Interviews" iconstring="user-tie" address="/myinterviews" />
@@ -64,8 +64,8 @@ const NavBar = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey}) => {
                 <NavBarButton title="Unavailable hours" iconstring="calendar-times" address="/unavailabletimes" />
                 <NavBarButton title="Applications" iconstring="file-alt" address="/applications" />
                 { AccessLevel > 2 ? <NavBarButton title="All Interviews" iconstring="users" address="/allinterviews" /> : null}
-                { AccessLevel > 2 ? <NavBarButton title="Manage interviews" iconstring="users-cog" address="/manageinterviews" /> : null}
-                { AccessLevel > 2 ? <NavBarButton title="Administer users" iconstring="tasks" address="/useradminpage" /> : null}
+                { AccessLevel > 3 ? <NavBarButton title="Manage interviews" iconstring="users-cog" address="/manageinterviews" /> : null}
+                { AccessLevel > 3 ? <NavBarButton title="Administer users" iconstring="tasks" address="/useradminpage" /> : null}
               </ul> : null }
         </div>
       </div>

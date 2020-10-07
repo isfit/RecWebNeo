@@ -176,7 +176,6 @@ const UserEntrySlim = ({user, children}) => {
     }, [chosenSection]);
 
 
-    
 
     return (
         <PageLayout>
@@ -279,6 +278,7 @@ const UserEntrySlim = ({user, children}) => {
                                         <select className="w-100" id="roles" name="roles" onChange={(e) => { setChosenRole(e.target.value) }} >
                                             <option value={""}>{"Applicant"}</option>
                                             <option value={"internal"} >{"ISFiT Member / Interviewer"}</option>
+                                            <option value={"teamleader"} >{"Team Leader"}</option>
                                             <option value={"admin"} >{"Admin"}</option>
                                         </select>
                                         </form>

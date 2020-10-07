@@ -11,6 +11,7 @@ import AvailableTimesForm from '../components/availableTimesFormSimple';
 import { CREATE_INTERVIEW, GET_APPLICATIONS_WITHOUT_INTERVIEW, APPLICATION_BUSY_HOURS } from "../requests/interviewRequests";
 import { GET_ISFIT_USERS } from "../requests/userRequests";
 import { GET_ADMISSION_PERIODS } from  "../requests/orgRequests";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -51,7 +52,10 @@ const UserEntry = ({user,children}) => {
         <div className="card w-100 h-10 mb-2 py-1">
             <div className="flex-grid">
                 <div className="col" style={{flex:"1 1 80%", display:"flex",flexDirection:"column"}}>
-                    <h4 className="mb-0" >{user.firstName} {user.lastName}</h4>
+                    <div className="flex-grid" style={{alignItems:"center"}}>
+                        {Boolean(user.busyTime) ? null : <span title="This user has not entered any unavailable hours"><FontAwesomeIcon className={"fas fa-sm mr-1"} icon="calendar-times" style={{float:"right",color: "red"}} /></span>}
+                        <h4 className="mb-0" >{user.firstName} {user.lastName}</h4>
+                    </div>
                     <small className="text-muted mb-0">Interviews: {user.interviewsCount}</small>
                     <div className="flex-grid">
                         <div className="col pl-0" style={{flexBasis:"50%"}}>
@@ -138,7 +142,6 @@ const InterviewsPage = () => {
             if (networkError) console.log(`[Network error]: ${networkError}`);
         },
       });
-    console.log("ERROR:", error)
 
     //HOOKS
     const [addedUsers, setAddedUsers] = useState([]);
@@ -176,9 +179,6 @@ const InterviewsPage = () => {
     const createInterviewMutation = (application, addedUsers, startTime, chosenLocation) => {
         let emailArray = addedUsers.map(user => {return user.email})
         setCreateInterviewError(null);
-        console.log({
-            variables: {input: {application: application[0]?.id, interviewerEmails: emailArray, start: startTime?.toISOString(), location:chosenLocation}},
-        })
         createInterview({
             variables: {input: {application: application[0]?.id, interviewerEmails: emailArray, start: startTime?.toISOString(), location:chosenLocation}},
         });
@@ -255,11 +255,13 @@ const InterviewsPage = () => {
                                                     <Accordion.Collapse eventKey={""+position.key+1}>
                                                       <div className="p-2">
                                                       { position.value.prefferedInterviewers.map( user => {
-                                                        console.log(user)
                                                         return(
                                                             <div className="card w-100 h-10 mb-2 p-1">
                                                                 <div className="flex-grid" style={{justifyContent:"space-between"}}>
-                                                                    <h4 className="mb-0"> {user.firstName} {user.lastName}</h4>
+                                                                    <div className="flex-grid" style={{alignItems:"center"}}>
+                                                                        {Boolean(user.busyTime) ? null : <span title="This user has not entered any unavailable hours"><FontAwesomeIcon className={"fas fa-sm mr-1"} icon="calendar-times" style={{float:"right",color: "red"}} /></span>}
+                                                                        <h4 className="mb-0" >{user.firstName} {user.lastName}</h4>
+                                                                    </div>
                                                                     <button type="button" className="btn btn-outline-success" onClick={() => addToUserList(user)}>+</button>
                                                                 </div>
                                                                 <small className="text-muted mb-0" style={{textAlign: "left"}}>Interviews: {user.interviewsCount}</small>

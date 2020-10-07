@@ -9,34 +9,17 @@ import { connect } from "react-redux";
 import { openPositionModal, addPositionToApplication } from "../redux/actions";
 import { getPositionModalState } from "../redux/selectors";
 import ScrollList from "./scrollList";
-import SearchModule from "./searchmodule";
 import {GET_SECTIONS} from "../requests/userRequests";
-import {Promise as resolve} from "q";
 import Button from 'react-bootstrap/Button';
-import Fade from "react-bootstrap/Fade";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 
 
 const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApplication}) => {
 
-  const [positionData, setPositionData] = useState(null);
-
+  //QUERIES
   const sectionQuery = useQuery(GET_SECTIONS);
-
   const sectionList = sectionQuery?.data?.sections?.map(e => e.id);
-
-  
-
-  const [nee, setSectionList] = useState([]);
-
-  function getSectionList() {
-    return sectionList;
-  }
-
-  const addSectionList = () => setSectionList([...sectionList, {}]);
-
-
   const positionQuery = () => {
     if (sectionList?.length === 0) {
       return null
@@ -50,12 +33,19 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
     };
     return queryArguments;
   };
-
   const {data} = useQuery(FILTER_POSITIONS, positionQuery());
 
-  const [open, setOpen] = useState(false);
-  
+  //HOOKS
+  const [positionData, setPositionData] = useState(null);
+
+
   const sectionCards = (section, eventKey) => {
+    const thisSectionHasNoPoitions = (position) => position.section.id === section.id;
+
+    if (!data.positions.nodes.some(thisSectionHasNoPoitions)){
+      return null;
+    }
+
     return (
       <Card>
         <Card.Header>
@@ -86,30 +76,15 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
           </Card.Body>
         </Accordion.Collapse>
       </Card>
-
     )
   }
 
-
-  const allSectionCards = () => {
-      let cards = [];
-      for (var i = 0; i < sectionList; i++) {
-          cards.push(sectionCards(sectionList[i], i));
-      }
-      return (
-        <div>
-          {cards}
-        </div>
-      )
-  }
 
   if (data == null) {
     return <div></div>;
   }
 
-
   return (
-
     <div>
       <small className="text-dark pl-2 pb-2">Click on the positions for more information.</small>
       <PositionDescriptionModal position={positionData} />
@@ -132,22 +107,16 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
 
 const PositionRow = ({ position, openPositionModal, addPositionToApplication }) => {
   return (
-    <div className="position-entry py-3 px-3 mb-2 ml-1">
+    <div className="position-entry p-3 mb-2 ml-1">
       <div className="flex-grid">
-          <a className="flex-grid" style={{flexBasis: "90%", flexDirection:"column"}} onClick={() => openPositionModal(position)}>
-              <div>
-                <h4>{position?.name}</h4>
-              </div>
-              <div className="flex-grid w-75" style={{alignContent: "space-between"}}>
-                <div className="col pl-0">
+          <button className="link-button flex-grid" style={{display:"flex",flexBasis: "90%", flexDirection:"column"}} onClick={() => openPositionModal(position)}>
+              <h4>{position?.name}</h4>
+              <div className="flex-grid w-75" style={{justifyContent: "space-between"}}>
                   <p className="text-muted mb-0">Section: {position?.section?.name}</p>
-                </div>
-                <div className="col">
                   <p className="text-muted mb-0">Team: {position?.team?.name}</p>
-                </div>
               </div>
-          </a>
-          <div className="col py-4 px-auto" style={{flexBasis: "10%"}}>
+          </button>
+          <div className="col py-3 px-auto" style={{flexBasis: "10%"}}>
             <button type="button" style={{float:"right"}} className="btn btn-outline-success" onClick={() => addPositionToApplication(position.id, position.name)}>
               +
             </button>

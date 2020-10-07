@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import PositionsModule from "../components/positionsModule";
 import PageLayout from "./pageLayout";
@@ -11,13 +11,27 @@ import { MYAPPLICATION } from "../requests/userRequests";
 import { useQuery } from "@apollo/client";
 import { GET_ADMISSION_PERIODS } from  "../requests/orgRequests";
 
+import { getAppliedPositions } from "../redux/selectors";
 
-const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})  => {
+const ChocieBoxButton = ({userHasApplication, positions, currentTime, endTime, userLogedIn, history}) => {
+  if (userHasApplication){
+    return (<button className="btn btn-success ml-0 w-100">You have already submitted an application. Thank you!</button>)
+  }else if (currentTime > endTime){
+    return (<button className="btn btn-success ml-0 w-100">Applications are closed</button>)
+  }else if (userLogedIn){
+    return ( <div style={{position:"sticky", top:"10px"}}><PositionChoiceBox /> { (positions.length < 1) ? <button className="btn btn-success ml-0 w-100">Please add at least one position to continue</button> : <button className="btn btn-continue mt-1 float-right" onClick={() => history.push("/enterapplication")}> Continue</button> }</div>)
+  }else {
+    return (<button className="btn btn-success ml-0 w-100"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess</button>)
+  }
+}
+
+
+const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey, positions, positionsUpdated})  => {
   const history = useHistory();
   const [sectionList, setSectionList] = useState([]);
 
   const myApplicationData = useQuery(MYAPPLICATION, {fetchPolicy: "no-cache"});
-  const userHasApplication = Boolean(myApplicationData?.data?.myApplication);
+  let userHasApplication = Boolean(myApplicationData?.data?.myApplication);
 
   const admissionPeriodData = useQuery(GET_ADMISSION_PERIODS);
   let endTime = new Date(admissionPeriodData?.data?.admisionPeriodes[0].endDate);
@@ -29,15 +43,20 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
 
   function chocieBoxButton(){
     if (userHasApplication){
-      return (<button className="btn btn-success ml-0 w-100">You already have entered an application. Thank you!</button>)
+      return (<button className="btn btn-success ml-0 w-100">You have already submitted an application. Thank you!</button>)
     }else if (currentTime > endTime){
       return (<button className="btn btn-success ml-0 w-100">Applications are closed</button>)
     }else if (userLogedIn){
-      return ( <button className="btn btn-continue mt-1 mr-2 float-right" onClick={() => history.push("/enterapplication")}> Continue</button>)
+      return ( <div style={{position:"sticky", top:"10px"}}><PositionChoiceBox /> { (positions.length < 1) ? <button className="btn btn-success ml-0 w-100">Please add at least one position to continue</button> : <button className="btn btn-continue mt-1 float-right" onClick={() => history.push("/enterapplication")}> Continue</button> }</div>)
     }else {
       return (<button className="btn btn-success ml-0 w-100"  onClick={ () => openLoginModal() }>Sign in to continue the application proccess</button>)
     }
   }
+
+  useEffect(() => {
+    myApplicationData.refetch();
+  }, [userLogedIn]);
+  
 
   return (
     <PageLayout>
@@ -83,9 +102,8 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey})
       
 
           <div className="shopping-box-right mt-4">
-            <PositionChoiceBox />
-            {chocieBoxButton()}
-            {/* <button className="btn btn-success ml-0 w-100" >Application period is over</button> */}
+            {/* {chocieBoxButton()} */}
+            <ChocieBoxButton userHasApplication={userHasApplication} positions={positions} currentTime={currentTime} endTime={endTime} userLogedIn={userLogedIn} history={history} />
           </div>
 
 
@@ -100,7 +118,9 @@ const mapStateToProps = state => {
   return {
     showLoginModal: getLoginModalState(state),
     userLogedIn: getUserLogedIn(state),
-    userAuthKey: getUserAuthKey(state)
+    userAuthKey: getUserAuthKey(state),
+    positions: getAppliedPositions(state),
+    positionsUpdated: state.application.positionsUpdated
   };
 };
 

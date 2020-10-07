@@ -23,6 +23,7 @@ const POSITIONS = gql`
               lastName
               email
               interviewsCount
+              busyTime
             },
             admisionPeriode {
                 id

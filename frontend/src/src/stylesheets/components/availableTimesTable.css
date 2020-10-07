@@ -80,11 +80,11 @@ table tbody tr td.hour span {
   table thead tr th .short {
     display: block;
   }
-  table tbody tr td.hour span {
+  /*! table tbody tr td.hour span {
     transform: rotate(270deg);
     -webkit-transform: rotate(270deg);
     -moz-transform: rotate(270deg);
-  }
+  } */
 }
 @media (max-width: 27em) {
   table thead tr th {
@@ -104,11 +104,11 @@ table tbody tr td.hour span {
     color: #626e7e;
   }
   table tbody tr td.hour {
-    font-size: 1.7em;
+    font-size: 0.6em;
   }
-  table tbody tr td.hour span {
+  /*! table tbody tr td.hour span {
     transform: translateY(16px) rotate(270deg);
     -webkit-transform: translateY(16px) rotate(270deg);
     -moz-transform: translateY(16px) rotate(270deg);
-  }
+  } */
 }

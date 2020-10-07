@@ -199,10 +199,10 @@ namespace RecAPI.Users.Mutations
             {
                 UserError.UserExistError(email);
             };
-            if (input.sections.Count() == 0){
+            if (sections.Count() == 0){
                 UserError.ListedSectionsError();
             }
-            if (input.teams.Count() == 0){
+            if (teams.Count() == 0){
                 UserError.ListedTeamsError();
             }
             if (user.Sections == null)

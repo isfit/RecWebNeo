@@ -185,9 +185,6 @@ namespace RecAPI.Users.Mutations
         }
 
         [Authorize(Policy = "administrator")]
-
-
-        [Authorize(Policy = "administrator")]
         public User SetSectionAndTeamToUser(
             [GraphQLNonNullType] string email,
             [GraphQLNonNullType] List<string> sections,

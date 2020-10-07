@@ -22,5 +22,10 @@ namespace RecAPI.Users.ErrorHandling
         {
             throw new QueryException(ErrorBuilder.New().SetMessage("The database corrently does not contain any users").Build());
         }
+
+        public static void UserNotAssignedTeam()
+        {
+            throw new QueryException(ErrorBuilder.New().SetMessage("The user is not assigned a team. When team leader, you must be assigned a team.").Build());
+        }
     }
 }

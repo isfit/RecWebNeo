@@ -16,13 +16,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
+using RecAPI.Applications.ErrorHandling;
+using RecAPI.Positions.Models;
+using RecAPI.Positions.Repositories;
+using RecAPI.Applications.Repositories;
+using RecAPI.Applications.Models;
 
 namespace RecAPI.Interviews.Queries
 {
     [ExtendObjectType(Name = "Query")]
     public class InterviewQueries
     {
-        [Authorize(Policy = "administrator")]
+        [Authorize(Policy = "teamleader")]
         [UsePaging]
         [UseFiltering]
         [UseSorting]
@@ -30,7 +35,9 @@ namespace RecAPI.Interviews.Queries
             [GlobalState("currentUser")] CurrentUser currentUser,
             [Service] IInterviewRepository interviewRepository,
             [Service] IUserRepository userRepository,
-            [Service] IAuthRepository authRepository
+            [Service] IAuthRepository authRepository,
+            [Service] IApplicationRepository applicationRepository,
+            [Service]IPositionRepository positionRepository
         )
         {
             var currentAuthUser = authRepository.GetAuthUser(currentUser.UserId);
@@ -44,7 +51,31 @@ namespace RecAPI.Interviews.Queries
                 var applicant = userRepository.GetUser(interview.Applicant.User);
                 return (applicant?.Approved ?? false) == true;
             }).ToList();
-            return filteredInterviews;
+            if (currentAuthUser.Roles.Contains("admin"))
+            {
+                return filteredInterviews;
+            }
+
+            var user = userRepository.GetUserByAuth(currentAuthUser.Id);
+            var userTeams = user.Teams;
+            if (userTeams == null || userTeams.Count() <= 0)
+            {
+                UserError.UserNotAssignedTeam();
+            }
+            var filteredInterviewsByTeam = filteredInterviews.Where(interview =>
+            {
+                var application = applicationRepository.GetApplication(interview.Application);
+                foreach(var posId in application.Positions.Values)
+                {
+                    Position position = positionRepository.GetPosition(posId);
+                    if (position != null && userTeams.Contains(position.Team))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }).ToList();
+            return filteredInterviewsByTeam;
         }
 
         [Authorize(Policy = "administrator")]
@@ -111,16 +142,20 @@ namespace RecAPI.Interviews.Queries
             if (connectedInterviews == null)
             {
                 var interviews = new List<Interview>();
-                interviews.Add(myInterview);
+                if (myInterview != null) {
+                    interviews.Add(myInterview);
+                }
                 return interviews;
             }
-                var filteredInterviews = connectedInterviews.Where(interview =>
+            var filteredInterviews = connectedInterviews.Where(interview =>
             {
                 var applicant = userRepository.GetUser(interview.Applicant.User);
-                return (applicant?.Approved ?? false) == true;
+                return applicant != null ? applicant.Approved : false;
             }).ToList() ?? new List<Interview>();
-            filteredInterviews.Add(myInterview);
-            return filteredInterviews;
+            if (myInterview != null) {
+                connectedInterviews.Add(myInterview);
+            }
+            return connectedInterviews;
         }
 
     }

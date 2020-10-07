@@ -44,8 +44,8 @@ namespace RecAPI.Auth.Repositories
         {
             var availableRoles = new Dictionary<string, List<string>>()
             {
-                { "superuser", new List<string>() { "internal", "admin", "superuser" } },
-                { "admin", new List<string>() { "internal", "admin" } }
+                { "superuser", new List<string>() { "", "internal", "teamleader", "admin", "superuser" } },
+                { "admin", new List<string>() { "", "internal", "teamleader", "admin" } },
             };
 
             var authUser = GetAuthUser(currentUser);
@@ -55,7 +55,15 @@ namespace RecAPI.Auth.Repositories
                 AuthError.UserExistanceError();
             }
             var roles = authUser.Roles;
-            if (roles != null && roles.Any(ro => availableRoles.ContainsKey(ro) && availableRoles[ro].Contains(role)))
+            if (roles != null && roles.Any(ro => 
+                availableRoles.ContainsKey(ro) 
+                && availableRoles[ro].Contains(role)
+                && 
+                (user.Roles == null
+                || 
+                (user.Roles != null && availableRoles[ro].Contains(user.Roles.FirstOrDefault()))
+                ))
+                )
             {
                 var updateUserRole = user.SetRole(role);
                 if (updateUserRole)

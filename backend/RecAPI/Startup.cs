@@ -135,7 +135,13 @@ namespace RecAPI
                 x.AddPolicy("internal", builder =>
                     builder
                     .RequireAuthenticatedUser()
-                    .RequireRole("internal", "admin", "superuser")
+                    .RequireRole("internal", "teamleader", "admin", "superuser")
+                );
+
+                x.AddPolicy("teamleader", builder =>
+                    builder
+                    .RequireAuthenticatedUser()
+                    .RequireRole("teamleader", "admin", "superuser")
                 );
 
                 x.AddPolicy("administrator", builder =>

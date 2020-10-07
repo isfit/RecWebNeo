@@ -100,7 +100,7 @@ namespace RecAPI.Positions.Mutations
             return repository.DeletePosition(input.Id);
         }
 
-        [Authorize(Policy = "superuser")]
+        [Authorize(Policy = "administrator")]
         public Position AddPreferedInterviewers(
             [GraphQLNonNullType] string positionId,
             [GraphQLNonNullType] List<string> interviewers,
@@ -127,7 +127,7 @@ namespace RecAPI.Positions.Mutations
             return repository.UpdatePosition(possition.Id, possition);
         }
 
-        [Authorize(Policy = "superuser")]
+        [Authorize(Policy = "administrator")]
         public Position RemovePreferedInterviewers(
             [GraphQLNonNullType] string positionId,
             [GraphQLNonNullType] List<string> interviewers,

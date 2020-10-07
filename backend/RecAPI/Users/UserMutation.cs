@@ -32,7 +32,7 @@ namespace RecAPI.Users.Mutations
             [Service] IAuthRepository authRepository
         )
         {
-            return authService.Authenticate(email, password, authRepository);
+            return authService.Authenticate(email.ToLower(), password, authRepository);
         }
 
         public bool RegisterUser(

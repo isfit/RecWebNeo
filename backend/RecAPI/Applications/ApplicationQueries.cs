@@ -24,7 +24,7 @@ namespace RecAPI.Applications.Queries
     [ExtendObjectType(Name = "Query")]
     public class ApplicationQueries
     {
-        [Authorize(Policy = "internal")]
+        [Authorize(Policy = "teamleader")]
         [UsePaging]
         [UseFiltering]
         [UseSorting]

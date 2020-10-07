@@ -17,8 +17,9 @@ const getRolesFromToken = (token) => {
 };
 
 const getAccessLevel = (RolesArray) => {
-if (RolesArray.includes("superuser")) {return 4;}
-    else if (RolesArray.includes("admin")) {  return 3; }
+if (RolesArray.includes("superuser")) {return 5;}
+    else if (RolesArray.includes("admin")) {  return 4; }
+    else if (RolesArray.includes("teamleader")) {  return 3; }
     else if (RolesArray.includes("internal")) { return 2 ;}
     else { return 1;}
 }

@@ -41,7 +41,7 @@ const RegisterModalForm = ({setShowModal}) => {
     return (
       <div className="col">
         <div className="row d-flex justify-content-center mt-5">
-          <img src="./isfitlogo.png" className="header-brand-img mb-3" alt="Tabler React" style={{ maxWidth: "70px" }}></img>
+          <img src="./isfitlogo.png" className="header-brand-img mb-3" alt="ISFiT Logo" style={{ maxHeight: "60px" }}></img>
           <p>Before you proceed, please note that the positions listed on this page are for arranging and organizing the festival, 
             and therefore you have to be a student in Trondheim in order to apply for them.
           </p>
@@ -141,7 +141,7 @@ const RegisterModalForm = ({setShowModal}) => {
           
           {data ? (
             <div style={{ color: "green" }}>
-              You are registered successfully. Please log in. {" "}
+              You are registered successfully. Please sign in. {" "}
             </div>
           ) : null}
 

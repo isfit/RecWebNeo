@@ -24,7 +24,7 @@ namespace RecAPI.Applications.Queries
     [ExtendObjectType(Name = "Query")]
     public class ApplicationQueries
     {
-        [Authorize(Policy = "teamleader")]
+        [Authorize(Policy = "internal")]
         [UsePaging]
         [UseFiltering]
         [UseSorting]
@@ -32,8 +32,9 @@ namespace RecAPI.Applications.Queries
             [GlobalState("currentUser")] CurrentUser user,
             [Service] IAuthRepository authRepository,
             [Service] IUserRepository userRepository,
-            [Service]IApplicationRepository applicationRepository,
-            [Service]IPositionRepository positionRepository
+            [Service] IApplicationRepository applicationRepository,
+            [Service] IPositionRepository positionRepository,
+            [Service] IInterviewRepository interviewRepository
         )
         {
             var currentUser = authRepository.GetAuthUser(user.UserId);
@@ -71,6 +72,15 @@ namespace RecAPI.Applications.Queries
                 return false;
 
             }).ToList();
+            if (currentUser.Roles.Contains("teamleader"))
+            {
+                return filteredApplicationsByTeams;
+            }
+            var connectedApplications = filteredApplicationsByTeams.Where(appl => {
+                var interview = interviewRepository.GetApplicationInterview(appl.Id);
+                return interview.Interviewers.Any(x => x.User == givenUser.Id);
+            });
+            // If not, its internal and should only be the ones with connected interviews
             return filteredApplicationsByTeams;
         }
 

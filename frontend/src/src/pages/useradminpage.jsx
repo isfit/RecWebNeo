@@ -3,7 +3,7 @@ import PageLayout from './pageLayout';
 import ScrollList from '../components/scrollList';
 
 import { useQuery, useMutation, gql, InMemoryCache } from "@apollo/client";
-import { GET_ALL_USERS, GET_SECTIONS, SET_USER_ROLE, SET_SECTIONS_TO_USER, SET_TEAMS_TO_USER, UPDATE_USER_PASSWORD, SET_USER_APPROVED  } from "../requests/userRequests";
+import { GET_ALL_USERS, GET_SECTIONS, SET_USER_ROLE, SET_SECTION_AND_TEAM, UPDATE_USER_PASSWORD, SET_USER_APPROVED  } from "../requests/userRequests";
 import { POSITIONS, ADD_PREFERRED_INTERVIEWERS, REMOVE_PREFERRED_INTERVIEWERS } from "../requests/positionRequests";
 
 
@@ -67,13 +67,14 @@ const UserEntrySlim = ({user, children}) => {
 
     //MUTATIONS
     const [updateRole, setUserRoleData] = useMutation(SET_USER_ROLE);
-    const [updateSections, updateSectionsData] = useMutation(SET_SECTIONS_TO_USER);
-    const [updateTeams, updateTeamsData] = useMutation(SET_TEAMS_TO_USER);
+    const [setSectionTeam, setSectionTeamData] = useMutation(SET_SECTION_AND_TEAM,{ onCompleted: data => {
+        setAddedUsers([]);  //When section and team is set, reset chosen users
+      },
+    });
     const [updatePassword, updatePasswordData] = useMutation(UPDATE_USER_PASSWORD);
     const [userApproved, userApprovedData] = useMutation(SET_USER_APPROVED);
     const [addPreferredInterviewers, addPreferredInterviewersData] = useMutation(ADD_PREFERRED_INTERVIEWERS);
     const [removePreferredInterviewers, removePreferredInterviewersData] = useMutation(REMOVE_PREFERRED_INTERVIEWERS);
-
 
     //FUNCTIONS
     const addToUserList = (user) => {
@@ -95,10 +96,7 @@ const UserEntrySlim = ({user, children}) => {
     const UpdateUserSectionTeam = ({addedUsers, chosenSection, chosenTeam}) => {
         if (Boolean(chosenSection) && Boolean(chosenTeam) ) {
             addedUsers.map( user => {
-                updateSections({variables: {email: user.email, sections: [chosenSection] }});
-            })
-            addedUsers.map( user => {
-                updateTeams({variables: {email: user.email, teams: [chosenTeam] }});
+                setSectionTeam({variables: {email: user.email, sections: [chosenSection], teams: [chosenTeam] }});
             })
         };
     };
@@ -166,7 +164,7 @@ const UserEntrySlim = ({user, children}) => {
 
     useEffect(() => {
         UpdateAddedUsers({users, addedUsers})
-    }, [setUserRoleData.data, updateSectionsData.data, updateTeamsData.data]);
+    }, [setUserRoleData.data]);
 
 
     const resetTeamsRef = useRef(null);

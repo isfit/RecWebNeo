@@ -1,11 +1,30 @@
+.dropdown-toggle::after {
+  color: white;
+}
+
 .page-content {
   background-color: #E8E4D3;
 
 }
 
+.btn-back {
+  background-color: #C4C4C4 !important;
+  color: #413F41 !important;
+}
+
+.btn-back:hover {
+  background-color: #5D5B5D !important;
+  color: #FFFFFF !important;
+}
+
 .btn-continue {
-  background-color: #cc503c !important;
+  background-color: #CC7055 !important;
   color: #E8E4D3 !important;
+}
+
+.btn-continue:hover {
+  background-color: #C4C4C4 !important;
+  color: #413F41 !important;
 }
 
 a:hover {

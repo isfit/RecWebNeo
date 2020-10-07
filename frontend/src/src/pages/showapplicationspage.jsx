@@ -34,7 +34,7 @@ const ApplicationRow = ({applicationData}) => {
   const positions = applicationData.positions.map(x => x.value);
 
   return (
-  <div className="card py-2 px-2 mb-3">
+  <div className="card py-2 px-2 mb-3" style={{borderColor:"#40B4A3"}}>
       <div className="flex-grid">
         <div className="col-list w-100" style={{display:"flex"}}>
           <h4> { applicationData.applicant.firstName } { applicationData.applicant.lastName } </h4>

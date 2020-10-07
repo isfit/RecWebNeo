@@ -49,8 +49,8 @@ const PositionsTable = ({ showPositionModal, openPositionModal, addPositionToApp
     return (
       <Card>
         <Card.Header>
-          <Accordion.Toggle as={Button} variant="btn btn-success dropdown-toggle ml-0 w-100" eventKey={""+ eventKey}>
-            <p >{section.name}</p>
+          <Accordion.Toggle as={Button} style={{backgroundColor:"#40B4A3"}} variant="btn btn-light dropdown-toggle ml-0 w-100" eventKey={""+ eventKey}>
+            <p className="mb-2" style={{color:"white", fontSize:20}}>{section.name}</p>
           </Accordion.Toggle>
         </Card.Header>
         <Accordion.Collapse eventKey={""+ eventKey}>

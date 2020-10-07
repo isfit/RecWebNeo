@@ -135,22 +135,14 @@ const SET_USER_ROLE = gql`
   }
 `;
 
-const SET_SECTIONS_TO_USER = gql`
-  mutation setSectionsToUser($email: String!, $sections: [String]!) {
-    setSectionsToUser(email: $email, sections: $sections){
+const SET_SECTION_AND_TEAM = gql`
+  mutation setSectionAndTeamToUser($email: String!, $sections: [String!]!, $teams: [String!]!) {
+    setSectionAndTeamToUser(email: $email, sections: $sections, teams: $teams){
       id
       sections {
         id
         name
       }
-    }
-  }
-`;
-
-const SET_TEAMS_TO_USER = gql`
-  mutation setTeamsToUser($email: String!, $teams: [String]!) {
-    setTeamsToUser(email: $email, teams: $teams){
-      id
       teams {
         id
         name
@@ -158,6 +150,7 @@ const SET_TEAMS_TO_USER = gql`
     }
   }
 `;
+
 
 const UPDATE_MY_PASSWORD = gql`
   mutation UpdateMyPassword($input: UserUpdatePasswordInput) {
@@ -190,4 +183,4 @@ const SET_USER_APPROVED = gql`
 
 
 
-export { LOGIN, ME, ME_NAME, REGISTER, APPLY, MYAPPLICATION, GET_ALL_USERS, GET_SECTIONS, SET_USER_ROLE, SET_SECTIONS_TO_USER, SET_TEAMS_TO_USER, UPDATE_MY_PASSWORD, UPDATE_USER_PASSWORD, EDIT_USER_INFORMATION, ME_BUSY_TIMES, GET_ISFIT_USERS, SET_USER_APPROVED };
+export { LOGIN, ME, ME_NAME, REGISTER, APPLY, MYAPPLICATION, GET_ALL_USERS, GET_SECTIONS, SET_USER_ROLE, SET_SECTION_AND_TEAM, UPDATE_MY_PASSWORD, UPDATE_USER_PASSWORD, EDIT_USER_INFORMATION, ME_BUSY_TIMES, GET_ISFIT_USERS, SET_USER_APPROVED };

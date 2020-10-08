@@ -21,6 +21,8 @@ namespace RecAPI.Positions.Models
         [BsonRequired]
         public string Description { get; set; }
 
+        public Contact Contact { get; set; }
+
         [AdmisionPeriodeResolver]
         public string AdmisionPeriode { get; set; }
 
@@ -33,6 +35,13 @@ namespace RecAPI.Positions.Models
         public List<string> Tags { get; set; }
         [PrefferedInterviewersResolver]
         public List<string> PrefferedInterviewers { get; set; }
+    }
+
+    public class Contact
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumer { get; set; }
     }
 
     public interface IPositionConnection

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using HotChocolate;
 using MongoDB.Bson.Serialization.Attributes;
+using RecAPI.Positions.Models;
 
 namespace RecAPI.Positions.InputType
 {
@@ -10,6 +11,8 @@ namespace RecAPI.Positions.InputType
         public string Name { get; set; }
         [GraphQLNonNullType]
         public string Description { get; set; }
+        [GraphQLNonNullType]
+        public Contact Contact { get; set; }
         [BsonId]
         [GraphQLNonNullType]
         public string AdmisionPeriode { get; set; }
@@ -28,6 +31,7 @@ namespace RecAPI.Positions.InputType
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public Contact Contact { get; set; }
         [BsonId]
         public string AdmisionPeriode { get; set; }
         [BsonId]

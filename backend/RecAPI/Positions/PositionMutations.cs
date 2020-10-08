@@ -45,7 +45,8 @@ namespace RecAPI.Positions.Mutations
                 AdmisionPeriode = input.AdmisionPeriode,
                 Section = input.Section,
                 Team = input.Team,
-                Tags = input.Tags
+                Tags = input.Tags,
+                Contact = input.Contact
             };
             return repository.AddPosition(position);
         }
@@ -86,7 +87,8 @@ namespace RecAPI.Positions.Mutations
                AdmisionPeriode = input.AdmisionPeriode ?? position.AdmisionPeriode,
                Section = input.Section ?? position.Section,
                Team = input.Team ?? position.Team,
-               Tags = input.Tags ?? position.Tags
+               Tags = input.Tags ?? position.Tags,
+               Contact = input.Contact ?? position.Contact
            };
            return repository.UpdatePosition(input.Id, updatePosition);
         }

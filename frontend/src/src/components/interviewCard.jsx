@@ -9,7 +9,7 @@ const InterviewCard = ({interview, children}) => {
     const datTime = new Date(interview.start);
 
     return (
-        <div className="card mb-2 px-3 py-2 w-100" style={{borderColor:"#40B4A3"}}>
+        <div className="card mb-3 px-3 py-2 w-100" style={{borderColor:"#40B4A3"}}>
             <div className="flex-grid" style={{justifyContent:"space-between", alignItems: "center"}}>
                 <h1 className="my-1">{interview.applicant.user.firstName} {interview.applicant.user.lastName}</h1>
                 <div className="flex-grid">

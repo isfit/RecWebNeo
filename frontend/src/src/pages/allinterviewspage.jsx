@@ -84,7 +84,6 @@ const AllInterviewsPage = ({userAuthKey}) => {
                 </div>
             </Modal>
             <div className="container pt-4">
-                <h4 className="mb-4">All interviews</h4>
                 <div className="flex-grid-adaptive">
                     <div className="col pl-0" style={{flexBasis:"20%"}}>
                         <FilterBox sections={sectionsData?.data} positions={positions} chosenSection={chosenSection} setChosenSection={setChosenSection} chosenTeam={chosenTeam} setChosenTeam={setChosenTeam} chosenPosition={chosenPosition} setChosenPosition={setChosenPosition} setSearchTerm={setSearchTerm}>
@@ -106,9 +105,10 @@ const AllInterviewsPage = ({userAuthKey}) => {
                         </FilterBox>
                     </div>
                     <div className="col pl-0" style={{flexBasis:"80%"}}>
-                        <div className="card py-3 px-5 mb-2 w-100">
+                        <div className="card py-3 px-3 mb-2 w-100">
                             { allIntervewsQuery.loading ? <Loading loading={true}/> : null}
                             <ScrollList minHeight="700px">
+                            <h4 className="mb-4">Interviews</h4>
                             {InterviewFilteringFunction({allInterviews, chosenSection, chosenTeam, chosenPosition, chosenInterviewStatusFilter, searchTerm})[0].map( interview => {
                                 return (
                                     <InterviewCard interview={interview} interviewStatuses={interviewStatuses}>

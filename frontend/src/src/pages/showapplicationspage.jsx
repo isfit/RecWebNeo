@@ -34,36 +34,49 @@ const ApplicationRow = ({applicationData}) => {
   const positions = applicationData.positions.map(x => x.value);
 
   return (
-  <div className="card py-2 px-2 mb-3" style={{borderColor:"#40B4A3"}}>
+  <div className="card py-2 px-2 mb-4" style={{borderColor:"#40B4A3"}}>
       <div className="flex-grid">
         <div className="col-list w-100" style={{display:"flex"}}>
-          <h4> { applicationData.applicant.firstName } { applicationData.applicant.lastName } </h4>
-          <strong className="text-muted">Email: { applicationData?.applicant?.email }</strong>
-          <strong className="text-muted">Phone Number: {applicationData?.applicant?.phoneNumber} </strong>
+          <div className="flex-grid" style={{justifyContent:"space-between"}}>
+            <h4> { applicationData.applicant.firstName } { applicationData.applicant.lastName } </h4>
+            <h5 className="text-muted">{ applicationData?.applicant?.email }</h5>
+            <h5 className="text-muted">{applicationData?.applicant?.phoneNumber} </h5>
+          </div>
           <small><br></br> { applicationData.applicationText } </small>
           <div className="flex-grid border-top mt-2 pt-2">
-            <div className="col">
-              <div className="flex-grid col-list mt-3">
-                <div>
-                  <input type="checkbox" checked={ applicationData.prioritized } readOnly={true}/>
-                  <small className="ml-2">The positions in my application are prioritized</small>
-                </div>
-                <div>
-                  <input type="radio" checked={ applicationData.interest === "OnlyPositions" } readOnly={true} />
-                  <small className="ml-2">I am only interested in the positions I have entered</small>
-                </div>
-                <div>
-                  <input type="radio" checked={ applicationData.interest === "Same" } readOnly={true} />
-                  <small className="ml-2">I am open to other postions within the same genre of the positions I have entered</small>
-                </div>
-                <div> 
-                  <input type="radio" checked={ applicationData?.interest?.toLowerCase() === "open" } readOnly={true} />
-                  <small className="ml-2">I am open to any other position in ISFiT, regardless of the positions I have entered</small>
-                </div>
-              </div>
+            <div className="col pr-0"  style={{flex:"1 1 0"}}>
+              {applicationData?.positions?.map( position => {
+                  return(
+                      <div className="flex-grid">
+                          <div className="col pl-0" style={{display:"flex", flexBasis:"5%"}}>
+                              <h1 className="mb-0">{Number(position.key)+1}</h1>
+                          </div>
+                          <div className="col" style={{display:"flex", flexBasis:"95%", flexDirection:"column"}}>
+                              <p className="mb-0 mt-1">{position.value.name}</p>
+                              <small>{position.value.section.name}: {position.value.team.name}</small>
+                          </div>
+                      </div>
+                  )
+                  }
+              )}
             </div>
-            <div className="col">
-              <PositionChoiceBoxSimple positions={positions} readOnly={true} style={{ float:"right"}}/>
+            <div className="col pl-0" style={{flex:"1 1 0", flexDirection:"column"}}>
+                <div className="flex-grid mb-3">
+                    <input type="checkbox" checked={applicationData.prioritized} />
+                    <small className="page-title pl-2 mb-0">The positions in my application are prioritized</small>
+                </div>
+                <div className="flex-grid">
+                    <input type="radio" checked={applicationData.interest === "OnlyPositions"} />
+                    <small className="page-title ml-2 mb-0">I am only interested in the positions I have entered</small>
+                </div>
+                <div className="flex-grid mt-2">
+                    <input type="radio" checked={applicationData.interest === "Same"} />
+                    <small className="page-title ml-2 mb-0">I am open to other postions within the same genre of the positions I have entered</small>
+                </div>
+                <div className="flex-grid mt-2">
+                    <input type="radio" checked={applicationData.interest.toLowerCase() === "open"} />
+                    <small className="page-title ml-2 mb-0">I am open to any other position in ISFiT, regardless of the positions I have entered</small>
+                </div>
             </div>
           </div>
         </div>
@@ -181,10 +194,9 @@ const ApplicationPage = () => {
   return (
     <PageLayout>
       <div className="container pt-4">
-        <h4 className="mb-4">View Applications</h4>
           <div className="flex-grid-adaptive">
             <div className="col pl-0" style={{flexBasis:"20%"}}>
-              <div className="card py-2 px-2 mb-3">
+              <div className="card py-2 px-2 mb-3" style={{borderColor:"#40B4A3"}}>
                 <h6>Filters</h6>
                 <small>Section</small>
                 <form action="">
@@ -236,8 +248,9 @@ const ApplicationPage = () => {
             </div>
             <div className="col pl-0" style={{flexBasis:"80%"}}>
               <div className="card w-100 h-100 px-3 py-3">
+                <ScrollList minHeight="700px" >
+                <h4 className="mb-3 pb-1">Applications</h4>
                 {applicationsData.loading ? <div className="mt-5"><Loading loading={true}/></div> : null}
-                <ScrollList minHeight="700px">
                 {
                   ApplyFilters(applications)[0].map(application => {
                     return(<ApplicationRow applicationData={application} />)

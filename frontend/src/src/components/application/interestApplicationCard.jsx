@@ -14,7 +14,7 @@ const InterestApplicationCard = ({readOnly=false, interest, setInterest}) => {
                     <h6 className="page-title ml-2 mb-0">I am open to other postions within the same genre of the positions I have entered</h6>
                 </div>
                 <div className="flex-grid mt-3">
-                    <input type="radio" checked={interest === "Open"} />
+                    <input type="radio" checked={interest.toLowerCase() === "open"} />
                     <h6 className="page-title ml-2 mb-0">I am open to any other position in ISFiT, regardless of the positions I have entered</h6>
                 </div> 
             </div>

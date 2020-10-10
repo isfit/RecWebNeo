@@ -8,8 +8,8 @@ table {
   text-align: center;
 }
 table thead tr th {
-  background: #626e7e;
-  color: #d1d5db;
+  background: #4F4F4F;
+  color: #F1EDE2;
   padding: 0.5em;
   overflow: hidden;
 }
@@ -41,10 +41,10 @@ table thead tr th i {
   font-size: 2em;
 }
 table tbody tr {
-  background: #d1d5db;
+  background: #A5A5A5;
 }
 table tbody tr:nth-child(odd) {
-  background: #c8cdd4;
+  background: #BDBDBD;
 }
 table tbody tr:nth-child(1n + 0) td {
   border-bottom: 1px solid #626e7e;

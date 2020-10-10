@@ -93,7 +93,7 @@ button {
   font-size: 16px;
   line-height: 1.2;
   color: #fff;
-  background-color: #57b846;
+  background-color: #CC7055;
   border-radius: 25px;
   text-transform: uppercase;
   padding: 0 20px;
@@ -103,7 +103,7 @@ button {
 }
 
 .signinbutton:hover {
-  background-color: #82d774;
-
+  background-color: #C4C4C4;
+  color: #413F41;
 }
 

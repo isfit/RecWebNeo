@@ -224,7 +224,7 @@ namespace RecAPI.Users.Mutations
 
             teams.ForEach(team => {
                 var teamObject = teamRepository.GetTeam(team);
-                if (teamObject == null || sections.Contains(teamObject.Section))
+                if (teamObject == null || !sections.Contains(teamObject.Section))
                 {
                     TeamError.TeamExistError(team);
                 }

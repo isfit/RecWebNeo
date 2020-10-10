@@ -14,7 +14,6 @@ using RecAPI.AdmisionPeriodes.InputType;
 using LoadData.Connector.Models;
 using RecAPI.Sections.InputType;
 using RecAPI.Teams.InputType;
-using RecAPI.Positions.InputType;
 
 namespace LoadData
 {
@@ -37,7 +36,7 @@ namespace LoadData
                 .Build();
 
             var dataConfig = builder.GetSection("data").Get<DataConfig>();
-
+            var admisionConfig = builder.GetSection("admission").Get<AdmissionConfig>();
 
             // Possition 
             List<string> fileNames = ReadData.GetFileNames(
@@ -51,29 +50,10 @@ namespace LoadData
                 readPositions.AddRange(parser.ResolvePossitions(rawContent));
             }
 
-
-            // DATA --------------------------------------
-            //string baseUrl = "https://test-recruitment.isfit.org:5000/";
-            string baseUrl = "http://localhost:5000/";
-
-            string email = "admin@isfit.com";
-            string password = "123456";
-
-            string organizationName = "isfit 2021";
-            string organizationDescription = "International student festival in Trondheim";
-
-            string admisionPeriodeStartDate = "2020-09-13T00:00:00.000Z";
-            string admisionPeriodeEndDate = "2020-11-11T00:00:00.000Z";
-            string admisionPeriodeInterviewStart = "2020-09-17T00:00:00.000Z";
-            string admisionPeriodeInterviewEnd = "2020-09-22T00:00:00.000Z";
-            int minAppliedPositions = 1;
-            int maxAppliedPositions = 3; 
-            // ---------------------------------------------
-
-            APIConnector apiConnector = new APIConnector(baseUrl);
+            APIConnector apiConnector = new APIConnector(admisionConfig.ConnectionProperties.BaseUrl);
 
             // LOGIN
-            bool authKey = apiConnector.Login(email, password).Result;
+            bool authKey = apiConnector.Login(admisionConfig.ConnectionProperties.Email, admisionConfig.ConnectionProperties.Password).Result;
             if (!authKey)
             {
                 ErrorMessage();
@@ -87,14 +67,14 @@ namespace LoadData
                 ErrorMessage();
                 return;
             }
-            var existingOrganization = organizations.Where(x => x.Name == organizationName).FirstOrDefault();
+            var existingOrganization = organizations.Where(x => x.Name == admisionConfig.OrganizationProperties.OrganizationName).FirstOrDefault();
             if (existingOrganization == null)
             {
                 // Create organization
                 CreateOrganizationInput organizationInput = new CreateOrganizationInput()
                 {
-                    Name = organizationName,
-                    Description = organizationDescription
+                    Name = admisionConfig.OrganizationProperties.OrganizationName,
+                    Description = admisionConfig.OrganizationProperties.OrganizationDescription
                 };
                 existingOrganization = apiConnector.CreateOrganization(organizationInput).Result;
             }
@@ -106,18 +86,18 @@ namespace LoadData
                 ErrorMessage();
                 return;
             }
-            var existingAdmisionPeriode = admisionPeriodes.Where(x => x.Organization.Id.Equals(existingOrganization.Id) && x.StartDate.Equals(DateTimeOffset.Parse(admisionPeriodeStartDate).UtcDateTime) && x.EndDate.Equals(DateTimeOffset.Parse(admisionPeriodeEndDate).UtcDateTime)).FirstOrDefault();
+            var existingAdmisionPeriode = admisionPeriodes.Where(x => x.Organization.Id.Equals(existingOrganization.Id) && x.StartDate.Equals(DateTimeOffset.Parse(admisionConfig.AdmisionPeriodeProperties.AdmisionPeriodeStartDate).UtcDateTime) && x.EndDate.Equals(DateTimeOffset.Parse(admisionConfig.AdmisionPeriodeProperties.AdmisionPeriodeEndDate).UtcDateTime)).FirstOrDefault();
             if (existingAdmisionPeriode == null)
             {
                 CreateAdmisionPeriodeInput admisionPeriodeInput = new CreateAdmisionPeriodeInput()
                 {
                     Organization = existingOrganization.Id,
-                    StartDate = DateTimeOffset.Parse(admisionPeriodeStartDate).UtcDateTime,
-                    EndDate = DateTimeOffset.Parse(admisionPeriodeEndDate).UtcDateTime,
-                    StartInterviewDate = DateTimeOffset.Parse(admisionPeriodeInterviewStart).UtcDateTime,
-                    EndInterviewDate = DateTimeOffset.Parse(admisionPeriodeInterviewEnd).UtcDateTime,
-                    MinAppliedPositions = minAppliedPositions,
-                    MaxAppliedPositions = maxAppliedPositions
+                    StartDate = DateTimeOffset.Parse(admisionConfig.AdmisionPeriodeProperties.AdmisionPeriodeStartDate).UtcDateTime,
+                    EndDate = DateTimeOffset.Parse(admisionConfig.AdmisionPeriodeProperties.AdmisionPeriodeEndDate).UtcDateTime,
+                    StartInterviewDate = DateTimeOffset.Parse(admisionConfig.AdmisionPeriodeProperties.AdmisionPeriodeInterviewStart).UtcDateTime,
+                    EndInterviewDate = DateTimeOffset.Parse(admisionConfig.AdmisionPeriodeProperties.AdmisionPeriodeInterviewEnd).UtcDateTime,
+                    MinAppliedPositions = admisionConfig.AdmisionPeriodeProperties.MinAppliedPositions,
+                    MaxAppliedPositions = admisionConfig.AdmisionPeriodeProperties.MaxAppliedPositions
                 };
                 existingAdmisionPeriode = apiConnector.CreateAdmisionPeriode(admisionPeriodeInput).Result;
             }
@@ -186,10 +166,14 @@ namespace LoadData
                         Description = position.Description,
                         Section = section.Id,
                         Team = team.Id,
-                        AdmisionPeriode = existingAdmisionPeriode.Id
+                        AdmisionPeriode = existingAdmisionPeriode.Id,
+                        Contact = position.Contact
                     };
                     var newPosition = apiConnector.CreatePosition(positionInput).Result;
-                    positions.Add(newPosition);
+                    if (newPosition != null)
+                    {
+                        positions.Add(newPosition);
+                    }
                 }
             });
         }

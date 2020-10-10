@@ -1,7 +1,7 @@
 ﻿using GraphQL;
+using LoadData.Connector.Models;
 using RecAPI.AdmisionPeriodes.InputType;
 using RecAPI.Organizations.InputType;
-using RecAPI.Positions.InputType;
 using RecAPI.Sections.InputType;
 using RecAPI.Teams.InputType;
 using System;

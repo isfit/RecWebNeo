@@ -14,7 +14,6 @@ using RecAPI.AdmisionPeriodes.InputType;
 using LoadData.Connector.Models;
 using RecAPI.Sections.InputType;
 using RecAPI.Teams.InputType;
-using RecAPI.Positions.InputType;
 
 namespace LoadData.Connector
 {

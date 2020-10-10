@@ -12,10 +12,10 @@ namespace LoadData
         private string _contentSplit = "===";
         private string[] _contentCategory = new string []{
             "Title:",
-            "Description:", 
-            "Team:", 
             "Section:",
-            "Contact:"
+            "Team:", 
+            "Description:",
+            "ContactPerson:"
         };
 
         public List<Position> ResolvePossitions(string text)
@@ -46,12 +46,12 @@ namespace LoadData
                     };
                     var section = new Section()
                     {
-                        Name = positionValues[3]
+                        Name = positionValues[1]
                     };
                     var position = new Position()
                     {
                         Name = positionValues[0],
-                        Description = positionValues[1],
+                        Description = positionValues[3],
                         Team = team,
                         Section = section,
                         Contact = contact,

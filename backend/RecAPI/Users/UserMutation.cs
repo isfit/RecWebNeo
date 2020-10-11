@@ -57,7 +57,7 @@ namespace RecAPI.Users.Mutations
                 PhoneNumber = registerUser.PhoneNumber,
                 FirstName = registerUser.FirstName,
                 LastName = registerUser.LastName,
-                Approved = true //registerUser.Email.Contains("@isfit.no")
+                Approved = registerUser.Email.Contains("@isfit.no")
             };
             var storedUser = userRepository.CreateUser(user);
             if (storedUser != null)

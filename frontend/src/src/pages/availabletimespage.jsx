@@ -42,7 +42,7 @@ const AvailableTimesPage = (props) => {
   const variableData = {
     variables: {
       input: {
-        admissionPeriode: "5f68c8e740b7780001bf3d10",
+        admissionPeriode: "5f81e32d6a81a500011ae8d7",
         applicationText: localStorage.getItem("applicationText") || "",
         available: enteredBusyTimes,
         interest: localStorage.getItem("otherPositions") || "OnlyPositions",

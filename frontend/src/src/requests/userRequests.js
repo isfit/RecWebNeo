@@ -177,7 +177,11 @@ const EDIT_USER_INFORMATION = gql`
 
 const SET_USER_APPROVED = gql`
   mutation SetUserApproved($approved: Boolean!, $email: String!) {
-    setUserApproved(approved: $approved, email: $email)
+    setUserApproved(approved: $approved, email: $email){
+      id
+    	email
+    	approved
+    }
   }
 `;
 

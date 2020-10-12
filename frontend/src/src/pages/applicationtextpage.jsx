@@ -36,9 +36,10 @@ const ApplicationTextPage = (props) => {
           <div className="page-header pt-3 mb-4">
             <h4 className="page-title">Enter application details</h4>
           </div>
+          <small>Please write a short application about why you would like to apply for these positions. Please also specify if you prefer a digital or physical interview. </small>
           <div className="-adaptive">
             <div className="position-box-left mb-2">
-              <textarea className="w-100 h-100" placeholder="Please write a short application about why you would like to apply for these positions..." value={text} onChange={e => changeText( e.target.value )} type="text" style={{minHeight:"200px"}} />
+              <textarea className="w-100 h-100" placeholder="Write here..." value={text} onChange={e => changeText( e.target.value )} type="text" style={{minHeight:"200px"}} />
             </div>
             <div className="shopping-box-right w-100 h-100">
               <PositionChoiceBox />

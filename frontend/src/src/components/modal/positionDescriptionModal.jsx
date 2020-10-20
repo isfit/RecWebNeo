@@ -19,15 +19,19 @@ const PositionModal = ({position, showPositionModal, closePositionModal, addPosi
         <Modal showModal={ showPositionModal }  setShowModal={ () => closePositionModal() }>
             <img src="./isfitlogo.png" className="header-brand-img mb-3" alt="Tabler React" style={{ maxWidth: "70px" }}></img>
             <h4>{position?.name}</h4>
+            <div className="mb-2">
+                <p className="text-muted mb-0 mt-2">Contact: {position?.contact?.name}</p>
+                <p className="text-muted mb-0"> {position?.contact?.email} / {position?.contact?.phoneNumer}</p>
+            </div>
             <span> {position?.description} </span>
-            <div className="flex-grid mt-4 mx-5">
-                <div className="col-list ml-auto">
-                        <h5>Team</h5>
-                        <h4>{position?.team.name}</h4>
+            <div className="flex-grid mt-4 mx-5" style={{justifyContent:"space-evenly"}}>
+                <div>
+                        <h5>Section</h5>
+                        <h4>{position?.section.name}</h4>
                 </div>
-                <div className="col-list ml-auto mr-auto">
-                    <h5>Section</h5>
-                    <h4>{position?.section.name}</h4>
+                <div>
+                    <h5>Team</h5>
+                    <h4>{position?.team.name}</h4>
                 </div>
             </div>
             <div className="flex-grid mt-4 mx-5">

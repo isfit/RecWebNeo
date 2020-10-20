@@ -50,6 +50,11 @@ const FILTER_POSITIONS = gql`
             id,
             name
           },
+          contact {
+            email
+            name
+            phoneNumer
+          },
           admisionPeriode {
             id
           }

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import PageLayout from './pageLayout';
 import AvailableTimesFormSimple from '../components/availableTimesFormSimple';
 import ErrorPage from './errorPage';
@@ -16,16 +16,18 @@ const UnavailableTimesPage = (props) => {
   });
 
   const {data, error, loading} = useQuery(ME_BUSY_TIMES, {fetchPolicy: "no-cache"});
-  const [updatedBusyTimes, setUpdatedBusyTimes] = useState(data?.me.busyTime ?? []);
+  
   
   const admissionPeriodData = useQuery(GET_ADMISSION_PERIODS);
   let admissionPeriod = admissionPeriodData?.data?.admisionPeriodes[0] ?? [];
-
+  
   const startInterview = new Date(admissionPeriod.startInterviewDate);
   const endInterview = new Date(admissionPeriod.endInterviewDate);
-  
-  // Loading sceen while loading new data!
 
+  
+  const [updatedBusyTimes, setUpdatedBusyTimes] = useState([]);
+
+  // Loading sceen while loading new data!
   if (error) {
     return (
       <PageLayout>
@@ -39,7 +41,7 @@ const UnavailableTimesPage = (props) => {
 
 
   const submitUnavailableTimes = () => {
-      editUserInformation({variables: {"input": {"busyTime": updatedBusyTimes == null || updatedBusyTimes.length == 0 ? data?.me.busyTime ?? [] : updatedBusyTimes }}});
+      editUserInformation({variables: {"input": {"busyTime": updatedBusyTimes}}});
   };
 
   return (
@@ -51,14 +53,16 @@ const UnavailableTimesPage = (props) => {
         
 
         <AvailableTimesFormSimple
-          busyTimes={data?.me.busyTime ?? []}
-          setBusyTimes={busy => {setUpdatedBusyTimes(busy)}}
+          busyTimes={data?.me?.busyTime ?? []}
+          setBusyTimes={(busy) => {
+            setUpdatedBusyTimes(busy);
+          }}
           startDate = {startInterview}
           endDate = {endInterview}
           hourDiff={1}
           firstTimeSlot={8}
           lastTimeSlot={22}
-          readOnly = { false }
+          readOnly ={false}
          />
 
         <div className="row">

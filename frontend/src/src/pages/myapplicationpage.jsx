@@ -60,14 +60,13 @@ const MyApplicationPage = (props) => {
       return { key: position.key.toString(), value: position.value.id };
     });
 
-    let stringToDatetimeArray = enteredBusyTimes.map((date) => {if(typeof date === "string"){return new Date(date)}else{return date}})
     const variableData = {
       variables: {
         input: {
           applicationText: applicationText,
           prioritized: prioritized,
           interest: otherPositions,
-          available: stringToDatetimeArray,
+          available: enteredBusyTimes,
           positions: positionKeyAndValue,
         },
       },

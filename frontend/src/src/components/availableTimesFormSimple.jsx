@@ -63,17 +63,24 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
 
 
 
-const AvailableTimesFormSimple = ({busyTimes, setBusyTimes, startDate, endDate, hourDiff, firstTimeSlot, lastTimeSlot, readOnly, selectSingleTimeMode=false, markPastDates=false}) => {
+const AvailableTimesFormSimple = ({busyTimes=[], setBusyTimes, startDate, endDate, hourDiff, firstTimeSlot, lastTimeSlot, readOnly, selectSingleTimeMode=false, markPastDates=false}) => {
   
     const ReadOnly = readOnly ? true : false;
     const daysName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const [busyTimesUpdated, setBusyTimesUpdated] = useState(busyTimes.slice());
 
+    useEffect(() => {                       //If given list of busy times, use that as initial state for busyTimesUpdated
+        if (busyTimes?.length && selectSingleTimeMode===false){
+            let copyList = busyTimes.slice()
+            let stringToDatetimeArray = copyList.map((date) => {if(typeof date === "string"){return new Date(date)}else{return date}})
+            setBusyTimesUpdated(stringToDatetimeArray)
+            setBusyTimes(stringToDatetimeArray)
+        }
+    }, [busyTimes]);
 
     const IsValidDate = (date) => {
         return date instanceof Date && !isNaN(date);
-      }
-
+    }
 
     Date.prototype.addDays = function(days) {
         var date = new Date(this.valueOf());

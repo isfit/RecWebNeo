@@ -17,6 +17,9 @@ using System.Linq;
 using RecAPI.Users.Repositories;
 using RecAPI.Users.ErrorHandling;
 using RecAPI.Users.Models;
+using System.Threading.Tasks;
+using HotChocolate.Subscriptions;
+using RecAPI.Applications.Subscriptions;
 
 namespace RecAPI.Applications.Mutations
 {
@@ -24,12 +27,13 @@ namespace RecAPI.Applications.Mutations
     public class ApplicationMutations
     {
         [Authorize]
-        public Application CreateApplication(
+        public async Task<Application> CreateApplication(
             [GlobalState("currentUser")] CurrentUser user,
             CreateApplicationInput input,
             [Service]IApplicationRepository applicationRepository,
             [Service]IAdmisionPeriodeRepository admisionPeriodeRepository,
-            [Service]IPositionRepository positionRepository
+            [Service]IPositionRepository positionRepository,
+            [Service] IEventSender eventSender
         )
         {
             ApplicationError.AlreadyRegisteredApplication(applicationRepository, user.UserId, input.AdmissionPeriode);
@@ -46,7 +50,9 @@ namespace RecAPI.Applications.Mutations
                 //PreferDigital = input.PreferDigital
             };
             application.setInterest(input.Interest);
-            return applicationRepository.CreateApplication(application);
+            var newApplication = applicationRepository.CreateApplication(application);
+            await eventSender.SendAsync(new OnNewApplicationMessage(newApplication));
+            return newApplication;
         }
 
         [Authorize]

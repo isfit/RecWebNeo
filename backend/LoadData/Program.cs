@@ -128,7 +128,7 @@ namespace LoadData
             readPositions.ForEach(position =>
             {
                 // Check if section exists, or create
-                Section section = sections.Where(x => x.Name.Equals(position.Section.Name)).FirstOrDefault();
+                Section section = sections.Where(x => x.Name.Equals(position.Section.Name.ToLower())).FirstOrDefault();
                 if (section == null)
                 {
                     // Create section, and add to sections list
@@ -142,7 +142,7 @@ namespace LoadData
                     sections.Add(newSection);
                     section = newSection;
                 }
-                Team team = teams.Where(x => x.Name.Equals(position.Team.Name)).FirstOrDefault();
+                Team team = teams.Where(x => x.Name.Equals(position.Team.Name.ToLower())).FirstOrDefault();
                 if (team == null)
                 {
                     // Create team, and add to teams list
@@ -156,7 +156,7 @@ namespace LoadData
                     teams.Add(newTeam);
                     team = newTeam;
                 }
-                Position selectedPosition = positions.Where(x => x.Name.Equals(position.Name)).FirstOrDefault();
+                Position selectedPosition = positions.Where(x => x.Name.Equals(position.Name.ToLower())).FirstOrDefault();
                 if (selectedPosition == null)
                 {
                     // Create team, and add to teams list

@@ -28,17 +28,13 @@ namespace RecAPI.Applications.Subscriptions
         : EventMessage
     {
         public OnNewApplicationMessage(Application application)
-            : base(CreateEventDescription(application))
+            : base(CreateEventDescription(application), application.Id)
         {
         }
 
         private static EventDescription CreateEventDescription(Application application)
         {
-            return new EventDescription("onNewApplication",
-                new ArgumentNode("episode",
-                    new EnumValueNode(
-                            application.Id
-                        )));
+            return new EventDescription("onNewApplication");
         }
     }
 }

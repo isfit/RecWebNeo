@@ -66,6 +66,8 @@ using System.Text;
 using HotChocolate.AspNetCore.Interceptors;
 using System.Security.Claims;
 using RecAPI.Generic;
+using HotChocolate.Subscriptions;
+using RecAPI.Applications.Subscriptions;
 
 namespace RecAPI
 {
@@ -170,12 +172,14 @@ namespace RecAPI
             services.AddSingleton<IInterviewRepository, InterviewRepository>();
             services.AddSingleton<IGenericRepository, GenericRepository>();
 
+            services.AddInMemorySubscriptionProvider();
 
             // GraphQL Schema
             services.AddGraphQL(sp => SchemaBuilder.New()
                 .AddServices(sp)
                 .AddQueryType(d => d.Name("Query"))
                 .AddMutationType(d => d.Name("Mutation"))
+                .AddSubscriptionType(d => d.Name("Subscription"))
                 // Add Query types
                 .AddType<PositionQueries>()
                 .AddType<TeamQueries>()
@@ -195,6 +199,8 @@ namespace RecAPI
                 .AddType<UserMutation>()
                 .AddType<InterviewMutations>()
                 .AddType<GenericMutation>()
+                // Add subscriptions
+                .AddType<ApplicationSubscription>()
                 // Add Model type
                 .AddType<Position>()
                 .AddType<Team>()
@@ -236,6 +242,8 @@ namespace RecAPI
             }
             // CORS
             app.UseCors();
+
+            app.UseWebSockets();
 
             app.UseAuthentication();
             app.UseAuthorization();

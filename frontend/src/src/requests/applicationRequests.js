@@ -55,8 +55,21 @@ const GET_APPLICATION_COUNT = gql`
     }
 `;
 
+
+
+const NEW_APPLICATION_SUBSCRIPTION = gql`
+    subscription onNewApplication {
+        onNewApplication
+    }
+`;
+
+
+
+
+
 export {
     APPLICATIONS,
     UPDATE_APPLICATION,
-    GET_APPLICATION_COUNT
+    GET_APPLICATION_COUNT,
+    NEW_APPLICATION_SUBSCRIPTION
 }

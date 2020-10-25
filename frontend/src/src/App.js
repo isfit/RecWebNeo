@@ -22,9 +22,11 @@ import Pling from "./pages/plingpage";
 
 
 
-import { ApolloProvider, ApolloClient, HttpLink, ApolloLink, InMemoryCache, concat } from '@apollo/client';
+import { ApolloProvider, ApolloClient, HttpLink, ApolloLink, InMemoryCache, concat, split } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import { getMainDefinition } from '@apollo/client/utilities';
+import { WebSocketLink } from '@apollo/client/link/ws';
 
 import { connect } from "react-redux";
 import { getUserAuthKey } from "./redux/selectors";
@@ -68,7 +70,31 @@ library.add(
   faCheckCircle,
 );
 
-const httpLink = new HttpLink({ uri: 'https://recruitment.isfit.org:5000/'});
+const httpLink = new HttpLink({ uri: 'https://recruitment.isfit.org:5000/'}); //For queries+mutations
+
+
+const wsLink = new WebSocketLink({               //For subscriptions (plingpage)
+  uri: `ws://recruitment.isfit.org:5001/`,
+  options: {
+    reconnect: true
+  }
+});
+
+// The split function takes three parameters:
+// * A function that's called for each operation to execute
+// * The Link to use for an operation if the function returns a "truthy" value
+// * The Link to use for an operation if the function returns a "falsy" value
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  httpLink,
+);
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
@@ -96,7 +122,7 @@ const client = new ApolloClient({   //Cache-policy is for specific situation whe
       },
     },
   }),
-  link: authLink.concat(httpLink),
+  link: authLink.concat(splitLink),
 });
 
 const App = () => {

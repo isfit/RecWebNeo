@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import PageLayout from "./pageLayout";
 
-import { useQuery } from "@apollo/client";
+import { useSubscription } from "@apollo/client";
 
-import { GET_APPLICATION_COUNT } from "../requests/applicationRequests";
-import { wait } from "@testing-library/react";
+import { NEW_APPLICATION_SUBSCRIPTION } from "../requests/applicationRequests";
 
 const useAudio = url => {
     const [audio] = useState(new Audio(url));
@@ -29,38 +28,40 @@ const useAudio = url => {
   };
 
 
+
 const Pling = () => {
-  const { data, error, loading, refetch } = useQuery(GET_APPLICATION_COUNT, {fetchPolicy: "no-cache",});
 
-  const [playing, toggle] = useAudio("/plingsound.mp3");
-
+  const [applicationCount, setApplicationCount] = useState(0);
+  
+  //SUBSCRIPTION
+  const Sub = useSubscription(NEW_APPLICATION_SUBSCRIPTION,{ onSubscriptionData: () => {PlingNow()}});
+  
+  
+  //HOOKS
+  const [playing, toggle] = useAudio("/plingsound.mp3");  //Play sound hook
   const playButtonRef = useRef(null);
   const [plingActive, setPlingActive] = useState(false);
 
 
-  useEffect(() => {                         //Will just continue to run in a loop every 3 seconds, regardless of plingActive
-    function RefetchApplicationCount() {
-      refetch();
-      if (plingActive){                 //If you have pressed the Start Pling button, it will play sound every time it loops
-        playButtonRef.current.click();  //Works by using a ref to an invisible play-button below. This is a little hack to make it work :)
-      };
-    }
-    RefetchApplicationCount();
-    const interval = setInterval(() => RefetchApplicationCount(), 3000);
-    return () => {
-      clearInterval(interval);
+  //FUNCTIONS
+  function PlingNow(){
+    if (plingActive){                 //You need to first have a "Start pling" button for the browser to allow the page to play sound
+      playButtonRef.current.click();  //Works by using a ref to an invisible play-button below. This is a little hack to make it work :)
+      setApplicationCount(applicationCount+1);
     };
-  }, [plingActive]);
-
+  }
 
   return (
     <PageLayout>
-      <div>
-        <p>Will just play the pling sound every three seconds for now</p>
+      <div className="container pt-5" style={{textAlign:"center"}}>
+        <p className="mb-0"style={{fontFamily:"Parisienne", fontSize: "50px"}}>Welcome to</p>
+        <h1 style={{fontFamily:"Parisienne", fontSize: "120px"}}>The Pling</h1>
+        <h1 style={{fontFamily:"Parisienne", fontSize: "70px", marginTop:"30px"}}>{applicationCount}</h1>
         <button value="test" ref={playButtonRef} onClick={toggle} style={{display:"none"}}> {playing ? "Pause" : "Play"} </button>
-        { plingActive ? <button onClick={() => setPlingActive(false)}>Stop pling</button> : <button onClick={() => setPlingActive(true)}>Start pling</button>}
+        <div className="mt-5">
+        { plingActive ? <button className="btn btn-danger" onClick={() => setPlingActive(false)}>Stop pling</button> : <button className="btn btn-success" onClick={() => setPlingActive(true)}>Start pling</button>}
+        </div>
       </div>
-      <h1>CURRENT VALUE: {data?.applications?.totalCount}</h1>
     </PageLayout>
   );
 };

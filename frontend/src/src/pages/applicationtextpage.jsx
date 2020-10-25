@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import PositionChoiceBox from '../components/positionChoiceBox';
 import PageLayout from './pageLayout';
@@ -12,7 +12,9 @@ const ApplicationTextPage = (props) => {
     const [prioritized, setPrioritized] = useState(localStorage.getItem("prioritized") || true);
     const [otherPositions, setOtherPositions] = useState(localStorage.getItem("otherPositions") || "OnlyPositions");
 
-
+    useEffect(() => {      //When entering page, go to the top of the page. Needed for iphone.
+      window.scrollTo(0, 0)
+    }, [])
 
     const storeData = () => {
       localStorage.setItem("applicationText", text);

@@ -55,7 +55,7 @@ const Pling = () => {
   let client = null;
   let wsLink = null;
 
-  if (onHttp && plingActive) {
+  if (plingActive) {
     wsLink = new WebSocketLink({               //For subscriptions (plingpage)
       uri: `ws://recruitment.isfit.org:5001/`,
       options: {

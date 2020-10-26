@@ -19,12 +19,10 @@ import UsersWithoutApplication from "./pages/userswithoutapplicationpage";
 import Pling from "./pages/plingpage";
 
 
-
-
-
 import { ApolloProvider, ApolloClient, HttpLink, ApolloLink, InMemoryCache, concat } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+
 
 import { connect } from "react-redux";
 import { getUserAuthKey } from "./redux/selectors";
@@ -68,7 +66,8 @@ library.add(
   faCheckCircle,
 );
 
-const httpLink = new HttpLink({ uri: 'https://recruitment.isfit.org:5000/'});
+const httpLink = new HttpLink({ uri: 'https://recruitment.isfit.org:5000/'}); //For queries+mutations
+
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists

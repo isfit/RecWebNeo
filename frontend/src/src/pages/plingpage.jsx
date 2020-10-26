@@ -103,7 +103,8 @@ const Pling = () => {
         <div className="mt-5">
           { secondPlingActive ? <button className="btn btn-danger" onClick={() => setSecondPlingActive(false)}>Stop secondary pling</button> : <button className="btn btn-success" onClick={() => setSecondPlingActive(true)}>Start secondary pling</button>}
         </div>
-        <p className="mb-0 mt-5">The second pling is in case the first one doesn't work. Both plings are not supposed to be active at the same time, but they probably can be.</p>
+        <p className="mb-0 mt-5">The second pling is in case the first one doesn't work, and you need to be logged in to use it.</p>
+        <p className="mb-0">Both plings are not supposed to be active at the same time, but they probably can be.</p>
       </div>
     </PageLayout>
   );

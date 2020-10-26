@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import PageLayout from './pageLayout';
 
 import AvailableTimesFormSimple from '../components/availableTimesFormSimple';
@@ -38,6 +38,10 @@ const AvailableTimesPage = (props) => {
     }
     return positionInput;
   };
+
+  useEffect(() => {      //When entering page, go to the top of the page. Needed for iphone.
+    window.scrollTo(0, 0)
+  }, [])
 
   const variableData = {
     variables: {

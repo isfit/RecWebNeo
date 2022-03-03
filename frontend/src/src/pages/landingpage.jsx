@@ -40,8 +40,10 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey, 
   let userHasApplication = Boolean(myApplicationData?.data?.myApplication);
 
   const admissionPeriodData = useQuery(GET_ADMISSION_PERIODS);
-  let endTime = new Date(admissionPeriodData?.data?.admisionPeriodes[0].endDate);
-  let startTime  = new Date(admissionPeriodData?.data?.admisionPeriodes[0].startDate);
+  //let endTime = new Date(admissionPeriodData?.data?.admisionPeriodes[0].endDate);
+  let endTime = new Date(2023, 11, 21)
+  //let startTime  = new Date(admissionPeriodData?.data?.admisionPeriodes[0].startDate);
+  let startTime = new Date(2019, 11, 21)
   let currentTime = new Date();
 
   const updateSectionList = (sect) => {

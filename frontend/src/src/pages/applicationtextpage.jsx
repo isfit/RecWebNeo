@@ -39,6 +39,7 @@ const ApplicationTextPage = (props) => {
           <div className="page-header pt-3 mb-4">
             <h4 className="page-title">Enter application details</h4>
           </div>
+          <h5 style={{ color: 'red'}}>APPLICATIONS FOR STUDENTS STUDIYING OUTSIDE OF TRONDHEIM HAVE NOT OPENED YET</h5>
           <small>Please write a short application about why you would like to apply for these positions. Please also specify if you prefer a digital or physical interview. </small>
           <div className="-adaptive">
             <div className="position-box-left mb-2">

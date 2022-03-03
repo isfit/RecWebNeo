@@ -22,6 +22,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-spinners": "^0.9.0",
+    "react-tabs": "^4.0.1",
     "redux": "^4.0.5",
     "subscriptions-transport-ws": "^0.9.18"
   },

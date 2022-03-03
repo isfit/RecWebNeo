@@ -43,7 +43,7 @@ const AvailableTimeWeekCard = ({time, timePeriode, days, timeSelected, selectTim
         dato.setHours(time.substring(0,2));
         return timeSelected.some(x => (new Date(x)).toString() === dato.toString());
     }
-
+    
   return(
     <tr>
       <td className="hour" rowSpan="1">
@@ -117,10 +117,11 @@ const AvailableTimesFormSimple = ({busyTimes=[], setBusyTimes, startDate, endDat
         return weeks;
     }
 
-    const selectTime = (date, time, selected) => {
+    const selectTime = (date, time, selected, timeArr) => {
         let dato = new Date(date);
         const hour = parseInt(time.substring(0,2));
         dato.setHours(hour);
+        dato.setMinutes(parseInt(time.substring(3,5)))
         if (selectSingleTimeMode != undefined && selectSingleTimeMode) {
             setBusyTimesUpdated([dato]);
             setBusyTimes(dato);
@@ -139,14 +140,20 @@ const AvailableTimesFormSimple = ({busyTimes=[], setBusyTimes, startDate, endDat
     }
 
     const generateTimePeriodes = (hourDiff, firstTimeSlot, lastTimeSlot) => {
-        let times = [];
-        let timeCounter = firstTimeSlot;
-        while (timeCounter <= lastTimeSlot)
-        {
-            times.push( (timeCounter < 10 ?  "0" + String(timeCounter) : String(timeCounter) ) + ":00" );
-            timeCounter += hourDiff;
-        }
-        return times;
+        // let times = [];
+        // let timeCounter = firstTimeSlot;
+        // while (timeCounter <= lastTimeSlot)
+        // {
+        //     times.push( (timeCounter < 10 ?  "0" + String(timeCounter) : String(timeCounter) ) + ":00" );
+        //     timeCounter += hourDiff;
+        // }
+
+        let arr = ["08:30","09:00","09:30","10:00","10:00","10:30","11:00","11:30","12:00",
+            "12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00",
+            "17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00",
+        ]
+
+        return arr;
         
     } 
     
@@ -183,7 +190,7 @@ const AvailableTimesFormSimple = ({busyTimes=[], setBusyTimes, startDate, endDat
                                         timePeriode={timePeriode} 
                                         days={days} 
                                         timeSelected={ busyTimes }
-                                        selectTime={(date, time, selected) => selectTime(date, time, !selected)}
+                                        selectTime={(date, time, selected, timeArr) => selectTime(date, time, !selected, times)}
                                         readOnly = {ReadOnly}
                                         selectSingleTimeMode = {selectSingleTimeMode}
                                         markPastDates = {markPastDates}

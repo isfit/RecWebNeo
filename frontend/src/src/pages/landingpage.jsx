@@ -96,7 +96,7 @@ const LandingPage = ({userLogedIn, showLoginModal, openLoginModal, userAuthKey, 
           <TextBox>
             <div className="flex-grid-adaptive">
               <div className="image-left">
-                <img src="./Gråtekst_pa_gjennomsiktig.png" className='flex-sm-shrink-1 w-10 my-4 some-pic' alt="No image" style={{width: '100%', height: 'auto'}}></img>
+                <img src="./isfitlogo.png" className='flex-sm-shrink-1 w-10 my-4 some-pic' alt="No image" style={{width: '100%', height: 'auto'}}></img>
               </div>
               <div className="text-right">
                 <div className="flex-grid" style={{flexDirection:"column"}}>

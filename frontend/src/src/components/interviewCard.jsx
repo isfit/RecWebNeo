@@ -18,7 +18,7 @@ const InterviewCard = ({interview, children}) => {
             </div>
             <div className="flex-grid w-100 mb-1">
                 <div className="col pl-0" style={{display:"flex", flexBasis:"50%", flexDirection:"column" }}>
-                    <h3 className="mb-0">{datTime.toDateString()} {datTime.toTimeString().slice(0,2)}:15</h3>
+                    <h3 className="mb-0">{datTime.toDateString()} {datTime.toTimeString().substring(0,2)}:{datTime.toTimeString().substring(3,5)}</h3>
                     <p className="text-muted mb-0">{interview.location}</p>
                     <p className="text-muted mb-0">{interview.applicant.user.email}</p>
                     { Boolean(interview?.applicant.user.phoneNumber) ? <p className="text-muted mb-0">{interview.applicant.user.phoneNumber}</p> : <p className="text-muted mb-0">No phonenumber registered</p>}

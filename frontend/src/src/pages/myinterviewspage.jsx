@@ -18,7 +18,7 @@ const InterviewCardOLD = (props) => {
     return (
         <div className="card mb-2 px-3 py-2 w-100">
             <div className="flex-grid" style={{justifyContent:"space-between", alignItems: "center"}}>
-                <h1 className="my-1">{datTime.toDateString()} {datTime.toTimeString().slice(0,2)}:15</h1>
+                <h1 className="my-1">{datTime.toDateString()} {datTime.toTimeString().substring(0,2)}:{datTime.toTimeString().substring(3, 5)}</h1>
                 {props.accessLevel>1 ? props.children : null}
             </div>
             <div className="flex-grid w-100 mb-1">

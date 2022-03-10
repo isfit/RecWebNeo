@@ -23,7 +23,7 @@ const PositionModal = ({position, showPositionModal, closePositionModal, addPosi
                 <p className="text-muted mb-0 mt-2">Contact: {position?.contact?.name}</p>
                 <p className="text-muted mb-0"> {position?.contact?.email} / {position?.contact?.phoneNumer}</p>
             </div>
-            <span> {position?.description} </span>
+            <span style={{whiteSpace: 'pre-line'}}> {position?.description} </span>
             <div className="flex-grid mt-4 mx-5" style={{justifyContent:"space-evenly"}}>
                 <div>
                         <h5>Section</h5>

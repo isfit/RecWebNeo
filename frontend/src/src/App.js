@@ -22,7 +22,7 @@ import Pling from "./pages/plingpage";
 import { ApolloProvider, ApolloClient, HttpLink, ApolloLink, InMemoryCache, concat } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
-
+import HttpsRedirect from 'react-https-redirect';
 
 import { connect } from "react-redux";
 import { getUserAuthKey } from "./redux/selectors";
@@ -105,6 +105,7 @@ const App = () => {
 
   return (
     <ApolloProvider client={client}>
+      <HttpsRedirect>
       <React.Fragment>
         <Router>
           <Switch>
@@ -163,6 +164,7 @@ const App = () => {
           </Switch>
         </Router>
       </React.Fragment>
+      </HttpsRedirect>
     </ApolloProvider>
   );
 };

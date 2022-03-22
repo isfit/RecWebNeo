@@ -105,6 +105,7 @@ const App = () => {
 
   return (
     <ApolloProvider client={client}>
+      <HttpsRedirect>
       <React.Fragment>
         <Router>
           <Switch>
@@ -163,6 +164,7 @@ const App = () => {
           </Switch>
         </Router>
       </React.Fragment>
+      </HttpsRedirect>
     </ApolloProvider>
   );
 };

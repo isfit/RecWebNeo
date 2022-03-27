@@ -10,7 +10,7 @@ import { GET_APPLICATION_COUNT, NEW_APPLICATION_SUBSCRIPTION } from '../requests
 export default function PlingFest() {
 
     const wsLink = new WebSocketLink({
-        uri: 'ws://recruitment.isfit.org:5001/',
+        uri: 'wss://recruitment.isfit.org:5001/',
     })
     const client = new ApolloClient({
         cache: new InMemoryCache(),

@@ -46,6 +46,7 @@ import {
   faUserTie,
   faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import PlingFest from "./pages/pling";
 
 library.add(
   faCheckSquare,
@@ -109,6 +110,10 @@ const App = () => {
       <React.Fragment>
         <Router>
           <Switch>
+            <Route path="/pling">
+              {" "}
+              <PlingFest/>{" "}
+            </Route>
             <Route path="/enterapplication">
               {" "}
               <ApplicationTextPage/>{" "}
@@ -152,10 +157,6 @@ const App = () => {
             <Route path="/userswithoutapplication">
               {" "}
               <UsersWithoutApplication />{" "}
-            </Route>
-            <Route path="/pling">
-              {" "}
-              <Pling />{" "}
             </Route>
             <Route path="/">
               {" "}

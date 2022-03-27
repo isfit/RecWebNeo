@@ -57,7 +57,7 @@ const Pling = () => {
 
   if (plingActive) {
     wsLink = new WebSocketLink({               //For subscriptions (plingpage)
-      uri: `ws://recruitment.isfit.org:5001/`,
+      uri: `ws://localhost:5001/`,
       options: {
         reconnect: true
       }

@@ -83,6 +83,8 @@ const RegisterModalForm = ({setShowModal}) => {
               <input
                 className="navbar-search"
                 placeholder="Type your phonenumber"
+                type="tel"
+                required
                 value={phonenumberInput}
                 onChange={(event) => {
                   setPhonenumberInput(event.target.value);
@@ -96,6 +98,7 @@ const RegisterModalForm = ({setShowModal}) => {
               <input
                 className="navbar-search"
                 type="password"
+                required
                 placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
                 onChange={(event) => setPasswordInput(event.target.value)}
               ></input>
@@ -108,6 +111,7 @@ const RegisterModalForm = ({setShowModal}) => {
                 className="navbar-search"
                 type="password"
                 placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
+                required
                 onChange={(event) => setPasswordSecondInput(event.target.value)}
               ></input>
             </div>
@@ -119,6 +123,7 @@ const RegisterModalForm = ({setShowModal}) => {
                 className="navbar-search"
                 placeholder="Type your first name..."
                 value={firstNameInput}
+                required
                 onChange={(event) => {
                   setFirstNameInput(event.target.value);
                 }}
@@ -131,6 +136,7 @@ const RegisterModalForm = ({setShowModal}) => {
               <input
                 className="navbar-search"
                 placeholder="Type your last name..."
+                required
                 value={lastNameInput}
                 onChange={(event) => {
                   setLastNameInput(event.target.value);

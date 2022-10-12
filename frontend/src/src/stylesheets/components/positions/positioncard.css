@@ -3,7 +3,7 @@
 }
 
 .page-content {
-  background-color: #E8E4D3;
+  background-color: white;
 
 }
 
@@ -19,7 +19,7 @@
 
 .btn-continue {
   background-color: #CC7055 !important;
-  color: #E8E4D3 !important;
+  color: #FFFFFF !important;
 }
 
 .btn-continue:hover {
